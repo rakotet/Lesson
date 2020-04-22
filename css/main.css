@@ -1,0 +1,67 @@
+ /* <!импорт другого css файла в данный> */
+@import url("color.css");
+
+/* <!подключение шрифта> */
+@font-face {
+    font-family: BadScript;
+    src: url("../fonts/18428.woff2") format("woff2"), url("../fonts/18428.woff") format("woff"); 
+}
+
+body {
+	/* <!подключение шрифта> */
+	font-family: BadScript; 
+	/* <!размер шрифта по умолчанию> */
+	font-size: 12pt; 
+}
+
+h1, h2 {
+	/* <!положение текста на экране> */
+    text-align: center; 
+}
+p {
+	/* <!процентное увеличение шрифта> */
+	font-size: 150%; 
+	/* <!толщина шрифта> */
+	font-weight: normal; 
+	/* <!высота строки> */
+	line-height: 300%; 
+	/* отступ сначала нового обзаца */
+	text-indent: 50px;
+	/* курсив */
+	font-style: italic;
+}
+.underline {
+	/* подчеркивание и отступ 0 */
+	text-decoration: underline;
+	text-indent: 0;
+}
+.strike {
+	/* зачеркнутый текст */
+	text-decoration: line-through;
+}
+
+a {
+	color: aqua;
+	/* убрать подчеркивание с сылки */
+	text-decoration: none;
+	font-size: 150%;
+}
+
+
+a.upper {
+	/*Все буквы заглавные*/
+	text-transform: uppercase;
+}
+a.lower {
+	/*Все буквы маленькие*/
+	text-transform: lowercase;
+}
+a {
+	color: aqua;
+}
+
+p.shadow {
+	text-shadow: 5px 4px 5px blue;
+}
+
+

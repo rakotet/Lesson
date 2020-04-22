@@ -1,0 +1,68 @@
+<!DOCUMENT html>
+<html>
+<head>
+	<title>Дз формы</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Описание форм" />
+	<meta name="keywords" content="ссылка, картинка, html" />
+</head>
+<body>
+	<form name="form" action="script.php" metod="get">
+		<legend>Основная форма</legend>
+	<br/> 
+		<div>
+			<label for="firstname" >Ваше имя:</label>
+			<input id="firstname" type="text" name="firstname" placeholder="Введите имя" />
+		</div>
+	<br/>
+		<div>
+			<label for="email" >Ваш email:</label>
+			<input id="email" type="email" name="email" placeholder="Введите email" />
+		</div>
+	<br/>
+		<div>
+			<label for="password" >Ваш пароль:</label>
+			<input id="password" type="password" name="password" placeholder="Введите пароль" />
+		</div>
+	<br/>
+		<div>
+			<label for="password1" >Подтвердите пароль:</label>
+			<input id="password1" type="password" name="password1" placeholder="Введите пароль" />
+		</div>
+	<br/>
+		<div>
+			<label for="tel" >Ваш телефон:</label>
+			<input id="tel" type="tel" name="tel" placeholder="Введите телефон" />
+		</div>
+	<br/>
+		<div>
+			<label for="city">Выберите Город:</label>
+			<select id="city" name="city">
+				<optgroup label="Большие города">
+					<option value="1">Москва</option>
+					<option value="2">Омск</option>
+					<option value="3" selected="selected">Питер</option>
+				</optgroup>
+				<optgroup label="Мелкие города">
+					<option value="4">Котово</option>
+					<option value="5">Камышин</option>
+				</optgroup>
+			</select>
+		</div>
+	<br/>
+		<div>
+			<label for="message" >Ваше пожелание:</label>
+			<textarea id="message" type="message" name="message" placeholder="Введите пожелание" ></textarea>
+		</div>
+	<br/>
+		<div>
+			<label>Подписка на новости:</label>
+			<input type="checkbox" name="order" value="1" checked="checked" />
+		</div>
+	<br />
+		<div>
+			<input type="submit" name="submit" value="Отправить" />
+		</div>
+	</form>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCUMENT html>
+<html>
+<head>
+	<title>Формы</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Описание форм" />
+	<meta name="keywords" content="ссылка, картинка, html" />
+</head>
+<body>
+	<form name="form" action="script.php" method="post" enctype="multipart/form-data"> <!--параметры формы-->
+		<fieldset> <!--разбивка на блоки формы -->
+			<legend>Основные данные</legend>
+			<div>
+				<label for="firstname">Ваше имя:</label>
+				<input id="firstname" type="text" name="firstname" value="Николай" disabled="disabled" />
+			</div>
+		<br />
+			<div>
+				<label for="surname">Ваша фамилия:</label>
+				<input id="surname" type="text" name="surname" placeholder="Введите фамилию" />
+			</div>
+		<br />
+			<div>
+				<label for="password">Ваш пароль:</label>
+				<input id="password" type="password" name="password" placeholder="Введите пароль" />
+			</div>
+		</fieldset>
+		<fieldset>
+		<br />
+			<div>
+				<input type="submit" name="submit" value="Отправить" />
+			</div>
+		<br />
+			<div>
+				<label for="email">Ваш email:</label>
+				<input id="email" type="email" name="email" placeholder="Введите email" />
+			</div>
+		<br />
+			<div>
+				<label for="tel">Ваш телефон:</label>
+				<input id="tel" type="tel" name="tel" placeholder="Введите телефон" />
+			</div>
+		<br />
+			<div>
+				<label for="url">Ваш сайт:</label>
+				<input id="url" type="url" name="url" placeholder="Введите сайт" />
+			</div>
+		<br />
+			<div>
+				<label>Ваш любимый цвет:</label>
+				<input type="radio" name="color" value="1" />Зеленый
+				<input type="radio" name="color" value="2" checked="checked" />Красный
+				<input type="radio" name="color" value="3" />Желтый
+			</div>
+		<br />
+			<div>
+				<label>Что вам принести:</label>
+				<input type="checkbox" name="order" value="1" />Суп
+				<input type="checkbox" name="order" value="2" />Мясо
+				<input type="checkbox" name="order" value="3" />Рыба
+			</div>
+		<br />
+			<div>
+				<label for="search">Ваш любимый поисковик:</label>
+				<input id="search" type="text" name="search" list="search_list" />
+				<datalist id="search_list">
+					<option value="Google"></option>
+					<option value="Яндекс"></option>
+				</datalist>
+			</div>
+		<br />
+			<div>
+				<label for="file">Файл:</label>
+				<input id="file" type="file" name="file" />
+			</div>
+		<br />
+			<div>
+				<label for="number">Количество копий:</label>
+				<input id="number" type="number" name="number" min="1" max="10" />
+			</div>
+		<br />
+			<div>
+				<label for="range">Диапазон:</label>
+				<input id="range" type="range" name="range" min="1" max="10" step="1" />
+			</div>
+		<br />
+			<div>
+				<label for="date">Дата:</label>
+				<input id="date" type="date" name="date" />
+			</div>
+		<br />
+			<div>
+				<label for="color">Цвет:</label>
+				<input id="color" type="color" name="color" />
+			</div>
+			<div>
+				<input type="hidden" name="article_id" value="100" /> <!--отправка скрытых данных, не отображается на странице -->
+			</div>
+		<br />
+			<div>
+				<input type="reset" value="Сбросить" />
+			</div>
+		<br />
+			<div>
+				<label for="message">Сообщение:</label>
+				<textarea id="message" name="message" placeholder="Введите сообщение" ></textarea>
+			</div>
+		<br />
+			<div>
+				<label for="city">Город:</label>
+				<select id="city" name="city">
+					<optgroup label="Большие города">
+						<option value="1">Москва</option>
+						<option value="2">Омск</option>
+						<option value="3" selected="selected">Питер</option>
+					</optgroup>
+					<optgroup label="Мелкие города">
+						<option value="4">Котово</option>
+						<option value="5">Камышин</option>
+					</optgroup>
+				</select>
+			</div>
+		</fieldset>
+	</form>
+</body>
+</html>
