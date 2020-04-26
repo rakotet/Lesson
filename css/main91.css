@@ -1,0 +1,44 @@
+body {
+    /*Размер шрифта 30px*/
+    font-size: 30px;
+}
+
+ul {
+    /*Маркер списка в виде круга (есть множество других стандартных маркеров)*/
+    list-style-type: circle;
+}
+/*Маркер из скаченной картинки*/
+ul.icon {
+    list-style-image: url(../images/check.png);
+}
+
+ul.meny {
+    /*Убрали маркеры*/
+    list-style-type: none;
+}
+
+nav a {
+    /*Убрали подчеркивание ссылок*/
+    text-decoration: none;
+}
+
+nav a:hover {
+    /*При наведении на ссылку мышкой она становится красной*/
+    color: red;
+}
+
+nav ul {
+    /*Убрали поля и отступы*/
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    /*Увеличили высоту строки*/
+    line-height: 150%;
+}
+/*Цвет посещенной ссылки*/
+a:visited {
+    color: blue;
+}
+
