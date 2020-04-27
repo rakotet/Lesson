@@ -1,0 +1,20 @@
+div.lg {
+    /*Градиент сверху вниз от красного к черному*/
+    background: linear-gradient(180deg, #c00, rgb(14, 13, 13));
+    height: 500px;
+    width: 500px;
+}
+
+div.lg_2 {
+    /*Градиент от красного к зеленому а потмо к черному на 20 %*/
+    background: linear-gradient(180deg, #c00, #0c0 20%,  rgb(14, 13, 13));
+    height: 500px;
+    width: 500px;
+}
+
+div.rg {
+    /*Радиальный градиент*/
+    background: radial-gradient(#000, #c00);
+    height: 500px;
+    width: 500px;
+}

@@ -1,0 +1,49 @@
+body {
+    /*Задание фона страницы (в конце может иметь свойство repeat-x или repeat-y что значит растянуть по одной из осей)*/
+    background: url("../images/fon.jpg") repeat;
+    margin: 0;
+    padding: 0;
+}
+
+.red {
+    background-color: #c00;
+    height: 400px;
+    width: 400px;
+    margin: 40px;
+    padding: 40px;
+}
+
+.red:hover {
+    /*Меняет фон при наведении мышкой на картинку*/
+    background-image: url("../images/Котик маленький.jpg");
+}
+
+.image_blue {
+    /*задали синию рамку, фон картинкой, под партинкой фон оранжевый, расположение картинки 20% со всех сторон отступ*/
+    background: url("../images/fon.jpg") no-repeat 20% 20% rgb(236, 100, 8);
+    border: 10px solid rgb(46, 15, 189);
+    height: 600px;
+    width: 1200px;
+}
+
+.image_blue:last-child {
+    background-position: center center ;
+}
+
+.bg_size {
+    /*не растягивать картинку на весь блок*/
+    background: url("../images/fon.jpg") no-repeat rgb(24, 219, 66);
+    /*Растянуть фон на весь блок сохраняя пропорции (есть и другие свойства)*/
+    background-size: cover;
+    width: 1000px;
+    height: 600px;
+    border: 10px solid #c00;
+}
+
+.bg_multi {
+    width: 1000px;
+    height: 600px;
+    border: 10px solid #c00;
+    /*несколько картинок на фон*/
+    background: url("../images/fon.jpg") no-repeat top left, url("../images/check.png") repeat bottom right rgb(24, 219, 66);
+}
