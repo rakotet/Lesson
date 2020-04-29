@@ -1,0 +1,39 @@
+body {
+    /*Отступ слева*/
+    padding-left: 200px;
+}
+
+div {
+    height: 500px;
+    width: 500px;
+}
+
+.block_1 {
+    background-color: chartreuse;
+    /*Свойство которое позволяет сдвигать блоки с помощью команд*/
+    position: relative;
+    /*Сдвигаем блок в лево на 50px (не путать с полями)*/
+    left: 50px;
+    /*Свойство, чем больше число тем "выше" блок над другими*/
+    z-index: 1;
+}
+
+.block_2 {
+    background-color: cornflowerblue;
+    /*Свойство которое считает отступ от верхнего угла родительского блока*/
+    position: absolute;
+    left: 100px;
+    top: 300px;
+    z-index: 2;
+}
+
+.top {
+    background-color: darkcyan;
+    height: 100px;
+    width: 100%;
+    /*Свойство при котором блок всегда остается сверху страницы, даже с полосой прокрутки*/
+    position: fixed;
+    /*Отступ сверху 20px от родительского блока*/
+    top: 20px;
+    z-index: 3;
+}
