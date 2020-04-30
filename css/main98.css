@@ -1,0 +1,33 @@
+div {
+    /*Указываем градиент, переход от красного к зеленому*/
+    background: linear-gradient(180deg, #c00, #0c0);
+    height: 300px;
+    width: 500px;
+}
+
+.t_1 {
+    /*Поворот блока на 50 градусов*/
+    transform: rotate(50deg);
+    /*Поворот относительно какого угла (указываем в свойствах transform-origin)*/
+    transform-origin: bottom left;
+}
+
+.t_2 {
+    /*Растянуть блок по оси X в два раза*/
+    transform: scaleX(2);
+}
+
+.t_3 {
+    /*Скосить углы в блоке на 30 градусов (через пробел можно перечислять несколько свойст можификации блока)*/
+    transform: skew(30deg) scaleX(2);;
+}
+
+.t_4 {
+    margin-top: 100px;
+    transition-duration: 1s;
+}
+
+.t_4:hover {
+    transform: rotate(-200deg);
+}
+

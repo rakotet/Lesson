@@ -1,0 +1,59 @@
+a {
+    font-size: 300%;
+    color: darkcyan;
+    /*Свойство перехода в нашем случае цвет*/
+    transition-property: color;
+    /*Продолжительность перехода*/
+    transition-duration: 1s;
+}
+
+a:hover {
+    color: darkred;
+}
+
+.block {
+    background-color: violet;
+    height: 500px;
+    width: 30%;
+    /*Свойство анимации в нашем случае ширина*/
+    transition-property: width;
+    /*Время анимации*/
+    transition-duration: 1s;
+    /*Ускоряющаяся анимация*/
+    transition-timing-function: ease-in;
+}
+
+.block:hover {
+    width: 90%;
+}
+
+.block_1 {
+   background-color: #000;
+    height: 300px;
+    width: 300px;
+}
+
+.block_1:hover {
+     /*Подключаем анимацию, сделанную ниже*/
+     animation-name: bc;
+     /*Время исполнения анимации*/
+     animation-duration: 1s;
+}
+/*Создаём свойство анимации медиа запросом и придумываем ей имя, в данном случае "bc"*/
+@keyframes bc {
+    0% {
+        background-color: #000;
+    }
+
+    30% {
+        background-color: #555;
+    }
+
+    70% {
+        background-color: #999;
+    }
+
+    100% {
+        background-color: #fff;
+    }
+}
