@@ -1,0 +1,44 @@
+ul {
+    font-size: 200%;
+    list-style: none;
+}
+
+li a span {
+    background: url("../images/aHsgqxaaD4g.jpg") no-repeat;
+    height: 57px;
+    width: 57px;
+    /*Свойство меняющее тип блоков (В нашем случае из строчного span в блочный)*/
+    display: inline-block;
+}
+
+li:nth-child(1) a span {
+    background-position: 0 -58px;
+}
+
+li:nth-child(1) a:hover span {
+    background-position: 0px 0px;
+}
+
+li:nth-child(2) a span {
+    background-position: -58px -58px;
+}
+
+li:nth-child(2) a:hover span {
+    background-position: -58px 0px;
+}
+
+li:nth-child(3) a span {
+    background-position: -118px -58px;
+}
+
+li:nth-child(3) a:hover span {
+    background-position: -118px 0px;
+}
+
+li:nth-child(4) a span {
+    background-position: -177px -58px;
+}
+
+li:nth-child(4) a:hover span {
+    background-position: -177px 0px;
+}
