@@ -1,17 +1,34 @@
 var $start = document.querySelector('#start')//Получаем доступ к элементу с id start
 var $game = document.querySelector('#game')
 var $time = document.querySelector('#time')
+var $result = document.querySelector('#result')
+var $timeHeader = document.querySelector('#time-header')
+var $resultHeader = document.querySelector('#result-header')
+var $gameTime = document.querySelector('#game-time')
 
+var colors = ['red', 'blue', 'green', 'yellow', 'pink', 'black']//список цветов (массив)
 var score = 0 //переменная для записи счета сликнутых квадратов
 var isGameStarted = false //изначальное состояние игры
 
 $start.addEventListener('click', startGame)//Вешаем слушатель на нажатие на этот элемент (button)
 $game.addEventListener('click', handleBoxClick)
+$gameTime.addEventListener('input', setGameTime)//слушаем поле ввода input
+
+function show($el) {
+    $el.classList.remove('hide')
+}
+
+function hide($el) {
+    $el.classList.add('hide')
+}
 
 function startGame() {
+    score = 0 //обнуляем счет
+    setGameTime()
+    $gameTime.setAttribute('disabled', 'true')//блокируем окно ввода
     isGameStarted = true
     $game.style.backgroundColor = '#fff'
-    $start.classList.add('hide')//Добавляем в элемент еще один класс (hide - описан в css файле)
+    hide($start)//Добавляем в элемент еще один класс (hide - описан в css файле)
 
     var interval = setInterval(function() {//Выполнять код функции через указанное время во втором аргументе в мили секундах
         var time = parseFloat($time.textContent) //Получаем значение элемента span id time в формате float
@@ -27,11 +44,26 @@ function startGame() {
     renderBox()
 }
 
+function setGameScore() {
+    $result.textContent = score.toString()//записываем счет в элемент 
+}
+
+function setGameTime() {
+    var time = parseInt($gameTime.value)//Приводим число с input в int и записываем в переменную time
+    $time.textContent = time.toFixed(1) //округляем до одного знака после запятой
+    show($timeHeader)//делаем элемент видимым
+    hide($resultHeader)//делаем элемент не видимым
+}
+
 function endGame() {
     isGameStarted = false
-    $start.classList.remove('hide') //Удаляем класс из атрибутов элемента
+    setGameScore()
+    $gameTime.removeAttribute('disabled')//разблокируем окно ввода
+    show($start) //Удаляем класс из атрибутов элемента
     $game.style.backgroundColor = '#ccc' // Возвращаем цвет элементу game
     $game.innerHTML = '' // очищаем контейнер (блок div#game)
+    hide($timeHeader)
+    show($resultHeader)
 
 }
 
@@ -53,11 +85,11 @@ function renderBox() {//функция которая создаёт квадр�
     var gameSize = $game.getBoundingClientRect()//Возвращает объект с полями свойств блока game
     var maxTop = gameSize.height - boxSize //Максимально возможное и случайное отклонение внутри блока game
     var maxLeft = gameSize.width - boxSize
-    
+    var randomColorIndex = getRandom(0, colors.length)//случайный индекс массива
 
     box.style.height = box.style.width = boxSize + 'px'//ширина и высота блока div
     box.style.position = 'absolute'//Положение в блоке родителя
-    box.style.backgroundColor = '#000'//цвет блока
+    box.style.backgroundColor = colors[randomColorIndex]//цвет блока
     box.style.top = getRandom(0, maxTop) + 'px'// отступы от родительского элемента
     box.style.left = getRandom(0, maxLeft) + 'px'
     box.style.cursor = 'pointer'//изменяет курсор при наведении на элемент
