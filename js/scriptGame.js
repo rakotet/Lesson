@@ -7,7 +7,7 @@ var $resultHeader = document.querySelector('#result-header')
 var $gameTime = document.querySelector('#game-time')
 
 var colors = ['red', 'blue', 'green', 'yellow', 'pink', 'black']//список цветов (массив)
-var score = 0 //переменная для записи счета сликнутых квадратов
+var score = 0 //переменная для записи счета кликнутых квадратов
 var isGameStarted = false //изначальное состояние игры
 
 $start.addEventListener('click', startGame)//Вешаем слушатель на нажатие на этот элемент (button)
