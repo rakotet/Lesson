@@ -33,3 +33,41 @@ var person1 = {
 }
 
 person1.displayInfo1(5000)
+
+console.log('\n');
+console.log('\n');
+console.log('\n');
+console.log('\n');
+
+
+//Урок привязка контекста
+
+function printObject(objName) {
+    console.log('Printing object: ', objName)
+    for(var key in this) {
+        if(this.hasOwnProperty(key)) {
+            console.log('[' + key + ']', this[key])
+        }
+    }
+}
+
+var person3 = {
+    firstName3: 'Max3',
+    job3: 'Backend3',
+    age3: 23,
+    friends3: ['Elena3', 'Igor3']
+}
+
+var car3 = {
+    name3: 'Ford3',
+    model3: 'Focus3',
+    year3: 2013
+} 
+
+
+var printPerson = printObject.bind(person3)//bind привязывает контекст
+printPerson('Person3')
+
+printObject.call(car3, 'Car3')//делает тоже что и bind но при этом сразу вызывает футкцию
+
+printObject.apply(car3, ['Car3'])//делает тоже что и call
