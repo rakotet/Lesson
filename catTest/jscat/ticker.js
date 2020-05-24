@@ -16,4 +16,4 @@ document.Tekst.tekst.value = NowMsg
 bannerid=setTimeout("prokrutka()", 300)
 }
 
-tekst("Бегущая строка в JavaScript", 160)
+tekst("Бегущая строка", 160)
