@@ -47,15 +47,17 @@ html, body {
 
 #ticker {
     width: 100%;
-    height: 31px;
-    background-color: #0d1630;
-    border: black 1px solid;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    background-color: #0a1123;
+    /* border: black 1px solid; */
     margin: 0;
     vertical-align: bottom;
     
 }
 
-#spanticker {
+/* #spanticker {
     width: 100%;
     height: 31px;
     background-color: #0d1630;
@@ -63,7 +65,7 @@ html, body {
     overflow: hidden;
     display: block;
     margin-top: auto;
-}
+} */
 
 #contentcenter {
     width: 100%;

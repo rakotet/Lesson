@@ -14,6 +14,8 @@ var slideInterval3 = setInterval(nextSlide3,3000);
 function nextSlide() {
     slides[currentSlide].className = 'slide';
     currentSlide = (currentSlide+1)%slides.length;
+    console.log(currentSlide);
+    
     slides[currentSlide].className = 'slide showing';
 }
 
