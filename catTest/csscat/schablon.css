@@ -145,42 +145,6 @@ p {
     font-size: 16px;
 }
 
-#centerText {
-    font: 14px Arial, Helvetica, sans-serif;
-    color: #e2db7f;
-    text-align: center;
-    overflow: hidden;
-    display: block;
-    margin: 0;
-    padding: 0;
-}
-
-#photo {
-    width: 240px;
-    overflow: hidden;
-    display: block;
-    float: left;
-    
-}
-
-#stih {
-    margin-left: 20px;
-    padding: 0;
-    width: 230px;
-    overflow: hidden;
-    display: block;
-    float: left;
-    
-    
-}
-
-#photo2 {
-    width: 240px;
-    overflow: hidden;
-    display: block;
-    float: right;
-}
-
 #leftContent {
     width: 177px;
     height: 382px;
@@ -188,9 +152,9 @@ p {
     overflow: hidden;
     display: block;
     margin: 0;
+    padding: 0;
     margin-top: 50px;
     margin-left: 10px;
-    padding: 0;
     float: left;
     border: 1px solid #ccffff;
     border-radius: 5px;
@@ -200,6 +164,7 @@ p {
     height: 100px;
     flex: 0 0 auto;
 }
+
 
 footer {
     font: 14px Arial, Helvetica, sans-serif;
@@ -293,3 +258,4 @@ footer a {
     padding: 1px;
     max-width: 100%;
 }
+
