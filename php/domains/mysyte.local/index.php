@@ -1,51 +1,46 @@
 <?php
-    class User {
 
-        public $name = 'User';
-        public $email;
+//магические методы надо определять самому, php обращается к ним когда идет запрос к несуществующей переменной
+// все магические методы начинаются с __метод
 
-        public function __construct($name, $email) { // создаём конструктор класса, конструктор это начальное состояние объекта
-            $this->name = $name; // присваиваем значение переменной $name полю класса $name
-            $this->email = $email;
+    class Request {
+
+        private $data;
+
+        public function __construct() {
+            $this->data = $_REQUEST; // в переменную записываем массив из все GET и POST запросов
         }
 
-        public function getName() {
-            return $this->name;
+        public function __get($name) { // определили магический метод __get который принимает несуществующие переменные
+            if (isset($this->data[$name])) return $this->data[$name]; // если в массиве date есть такая переменная $name возвращаем её значение, если нет то возвращаем null
+            return null;
         }
 
-        public function getEmail() {
-            return $this->email;
+        public function __set($name, $value) {// определили магический метод __set который вызывается когда мы пытаемся изменить не существующию в классе переменную
+            $this->data[$name] = $value;
         }
 
-        public function setName($name) {
-            $this->name = $name;
+        public function __isset($name) { // определили магический метод __isset который определяет существуел ли переменная не указанная в классе
+            return isset($this->data[$name]);
         }
 
-        public function setEmail($email) {
-            $this->email = $email;
-        }
-
-
-        // деструкторы
-
-        public function __destruct() { // срабатывает когда php удалил объект user после завершения скрипта, что бы освободить память, так же вызовится если вручную удалить объект или назначить ему другое значение
-            echo 'Удаляем объект';
+        public function __toString() { // определили магический метод __toString, к которому обращается php при попытке преобразовать объект в строку (который переводит объект класса в строковое значение)
+            $s = '';
+            foreach ($this->data as $k=>$v) $s .= "$k = $v; ";
+            return $s;
         }
     }
 
-    $user = new User('Igor', 'abc@abc.ru'); // создаем объект следую параметрам конструктора
+    $request = new Request();
+    echo $request->a.'<br/>'; // обращаемся к несуществующиму свойству, но ошибки нет т.к. мы определили магический метод __get который принимает такие переменные
 
-    echo $user->name.'<br/>';
-    echo $user->email.'<br/>';
+    $request->a = 5;
 
-    echo $user->getName().'<br/>';
-    echo $user->getEmail().'<br/>';
+    echo $request->a.'<br/>';
 
-    $user->setName('Michail');
-    $user->setEmail('asd@mail.ru');
+    echo isset($request->a).'<br/>';
 
-    echo $user->getName().'<br/>';
-    echo $user->getEmail().'<br/>';
+    echo $request.'<br/>';
 
-
+    
 ?>
