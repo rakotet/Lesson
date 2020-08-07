@@ -21,18 +21,18 @@ class MainController extends AbstractController {
     }
     
     public function actionIndex() {
-        $this->title = 'Главная страница';
-        $this->meta_desc = 'Описание главной страницы';
-        $this->meta_keywords = 'описание, главная страниц';
+        $this->title = 'Главная страница1';
+        $this->meta_desc = 'Описание главной страницы1';
+        $this->meta_keywords = 'описание, главная страниц1';
         
         $content = $this->view->render('index', [], true);
         $this->render($content);
     }
     
     public function actionPage() {
-        $this->title = 'Внутренняя страница';
-        $this->meta_desc = 'Описание внутренней страницы';
-        $this->meta_keywords = 'описание, внутренняя страниц';
+        $this->title = 'Внутренняя страница2';
+        $this->meta_desc = 'Описание внутренней страницы2';
+        $this->meta_keywords = 'описание, внутренняя страниц2';
         $email = 'abc@mail.ru'; // Допустим, получено из базы с помощью Model
         $content = $this->view->render('page', ['email' => $email], true);
         $this->render($content);

@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Добро пожаловать!</h1>
+        <h1>Добро пожаловать!3</h1>
     </header>
     <hr />
     <div id="content"><?=$content?></div>
