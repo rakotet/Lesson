@@ -1,6 +1,8 @@
 <?php
-require_once 'bd_autorizacion.php';
-session_start(); // начинаем сессию пользователя
+require_once 'bd_authorization.php';
+
+session_start();
+
 $error = false; // устанавливаем флаг ошибки
 if (isset($_POST['auth'])) // проверяем была ли переданна форма
 {
@@ -14,15 +16,23 @@ if (isset($_GET['f']) && $_GET['f'] == 'logout') // проверяем есть 
     unset($_SESSION['login']);
     unset($_SESSION['password']);
 }
-$login = 'admin';
-$password = '202cb962ac59075b964b07152d234b70';
-$auth = false;
+
 $iss = isset($_SESSION['login']) && isset($_SESSION['password']);
-if ($iss && $_SESSION['login'] === $login && $_SESSION['password'] === $password) { // если введенные в форму данные совпадают с $login и $password то true
-    $auth = true;
-    $error = false;
 
-
+if ($iss) {
+    $pdo = new BdAuthorization();
+    $pdo->connect();
+    $login = $pdo->searchLogin($_SESSION['login']);
+    $password = $pdo->searchPassword($_SESSION['password']);
 }
 
+$auth = false;
 
+if ($iss && $_SESSION['login'] === $login['login'] && $_SESSION['password'] === $password['password']) { // если введенные в форму данные совпадают с $login и $password то true
+    $auth = true;
+    $error = false;
+}
+
+$pdo = null;
+$login = null;
+$password = null;

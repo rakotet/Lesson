@@ -1,5 +1,7 @@
 <?php
+require_once 'core/bd_authorization.php';
 require_once 'core/session.php';
+
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -14,7 +16,7 @@ require_once 'core/session.php';
         <?php if ($error) { ?><p>Неверный логин или пароль!<p/><?php } ?>
         <?php if ($auth) { ?>
             <p>
-                Здравствуйте, <?=$login?>!
+                Здравствуйте, <?=$_SESSION['login']?>!
             </p>
             <a href="index.php?f=logout">Выход</a>
         <?php } else { ?>
