@@ -1,5 +1,5 @@
 <?php
-require_once 'core/bd_authorization.php';
+//require_once 'core/bd_authorization.php';
 require_once 'core/session.php';
 
 ?>
