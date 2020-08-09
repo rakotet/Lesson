@@ -1,5 +1,5 @@
 <?php
-require_once 'start.php';
+require_once 'core/session_class.php';
 
 ?>
 <!DOCTYPE html>
