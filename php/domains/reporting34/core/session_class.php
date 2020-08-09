@@ -1,6 +1,12 @@
 <?php
 require_once 'bd_authorization_class.php';
 
+if ((isset($_GET['f']) && $_GET['f'] == 'slu') )
+{
+    header("Location: view/main_view.php");
+    exit;
+}
+
 $error = false; // устанавливаем флаг ошибки
 if (isset($_POST['auth'])) // проверяем была ли переданна форма
 {
@@ -33,6 +39,4 @@ if ($iss && $_SESSION['login'] === $login['login'] && $_SESSION['password'] === 
     $error = false;
 }
 
-$pdo = null;
-$login = null;
-$password = null;
+

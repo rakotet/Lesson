@@ -1,6 +1,5 @@
 <?php
 require_once 'core/session_class.php';
-
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -15,9 +14,11 @@ require_once 'core/session_class.php';
         <?php if ($error) { ?><p>Неверный логин или пароль!<p/><?php } ?>
         <?php if ($auth) { ?>
             <div>
-                Здравствуйте, <?=$_SESSION['login']?>!
+                <a href="index.php?f=slu">Написать служебку</a>
             </div>
-            <a href="index.php?f=logout">Выход</a>
+            <div>
+                <a href="index.php?f=logout">Выход</a>
+            </div>
         <?php } else { ?>
         <form name="auth" method="post" action="index.php">
             <div>
