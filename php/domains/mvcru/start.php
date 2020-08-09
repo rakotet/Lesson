@@ -3,6 +3,6 @@
     spl_autoload_extensions('_class.php');
     spl_autoload_register();
     
-    define('DIR_TMPL', "C:/Lesson/php/domains/mvcru/tmpl/");
+    define('DIR_TMPL', "D:/Lesson/php/domains/mvcru/tmpl/");
     define('MAIN_LAYOUT', 'main');
 ?>

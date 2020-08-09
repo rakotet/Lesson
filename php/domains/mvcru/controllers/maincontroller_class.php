@@ -37,6 +37,14 @@ class MainController extends AbstractController {
         $content = $this->view->render('page', ['email' => $email], true);
         $this->render($content);
     }
+
+    public function actionAutoriz() {
+        $this->title = 'Авторизация';
+        $this->meta_desc = 'Авторизация';
+        $this->meta_keywords = 'Авторизация';
+        $content = $this->view->render('autoriz', [], true);
+        $this->render($content);
+    }
     
     protected function render($content) {
         $params = [];

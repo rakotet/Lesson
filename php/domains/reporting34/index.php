@@ -1,5 +1,8 @@
 <?php
 require_once 'core/session_class.php';
+if ($auth) {
+    header('Location: http://reporting34/view/main_view.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -12,14 +15,6 @@ require_once 'core/session_class.php';
 <body>
     <div>
         <?php if ($error) { ?><p>Неверный логин или пароль!<p/><?php } ?>
-        <?php if ($auth) { ?>
-            <div>
-                <a href="index.php?f=slu">Написать служебку</a>
-            </div>
-            <div>
-                <a href="index.php?f=logout">Выход</a>
-            </div>
-        <?php } else { ?>
         <form name="auth" method="post" action="index.php">
             <div>
                 <div>Логин</div>
@@ -31,7 +26,6 @@ require_once 'core/session_class.php';
             </div>
             <div><input type="submit" name="auth" value="Войти"/></div>
         </form>
-        <?php } ?>
     </div>
 </body>
 </html>
