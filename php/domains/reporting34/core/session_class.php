@@ -36,7 +36,6 @@ $auth = false;
 if ($iss && $_SESSION['login'] === $login['login'] && $_SESSION['password'] === $password['password']) { // если введенные в форму данные совпадают с $login и $password то true
     $auth = true;
     $error = false;
-    $lo = $login['login'];
 }
 
 
