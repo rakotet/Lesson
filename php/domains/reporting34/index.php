@@ -1,5 +1,5 @@
 <?php
-require_once 'core/session.php';
+require_once 'start.php';
 
 ?>
 <!DOCTYPE html>
@@ -14,9 +14,9 @@ require_once 'core/session.php';
     <div>
         <?php if ($error) { ?><p>Неверный логин или пароль!<p/><?php } ?>
         <?php if ($auth) { ?>
-            <p>
-                Здравствуйте, <?=$_SESSION['password']?>!
-            </p>
+            <div>
+                Здравствуйте, <?=$_SESSION['login']?>!
+            </div>
             <a href="index.php?f=logout">Выход</a>
         <?php } else { ?>
         <form name="auth" method="post" action="index.php">

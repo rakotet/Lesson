@@ -1,5 +1,5 @@
 <?php
-require_once 'bd_authorization.php';
+require_once 'bd_authorization_class.php';
 
 session_start();
 

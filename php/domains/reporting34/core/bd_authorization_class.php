@@ -1,5 +1,5 @@
 <?php
-require_once 'constant.php';
+require_once 'constant_class.php';
 
 class BdAuthorization  {
 
