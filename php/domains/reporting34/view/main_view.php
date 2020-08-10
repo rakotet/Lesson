@@ -1,15 +1,6 @@
 <?php
-require_once '../core/session_class.php';
-session_start();
-print_r($_SESSION);
-echo '<br/>';
-echo $_SESSION['login'].'<br/>';
-echo $lo;
+require_once '../core/autch.php';
 
-//if($_SESSION['login'] !== $lo){
-//    header("Location: http://reporting34/");
-//    exit;
-//}
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -18,9 +9,18 @@ echo $lo;
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-<form name="slu" method="post" action="../index.php">
-    <div><input type="submit" name="slu" value="Написать служебку"/></div>
-</form>
-<a href="../index.php?f=logout">Выход</a>
+<div>
+    <form name="search" method="post" action="../index.php">
+        <div><input type="submit" name="search" value="Найти служебку"/></div>
+    </form>
+</div>
+    <div>
+        <form name="slu" method="post" action="../index.php">
+            <div><input type="submit" name="slu" value="Написать служебку"/></div>
+        </form>
+    </div>
+    <div>
+        <a href="../index.php?f=logout">Выход</a>
+    </div>
 </body>
 </html>

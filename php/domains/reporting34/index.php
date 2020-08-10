@@ -1,8 +1,6 @@
 <?php
-require_once 'core/session_class.php';
-if ($auth) {
-    header('Location: http://reporting34/view/main_view.php');
-}
+require_once 'core/route.php';
+
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -14,7 +12,9 @@ if ($auth) {
 </head>
 <body>
     <div>
-        <?php if ($error) { ?><p>Неверный логин или пароль!<p/><?php } ?>
+        <?php if ($error) { ?>
+            <p>Неверный логин или пароль!</p>
+        <?php } ?>
         <form name="auth" method="post" action="index.php">
             <div>
                 <div>Логин</div>
