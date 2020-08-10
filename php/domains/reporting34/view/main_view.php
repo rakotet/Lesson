@@ -18,8 +18,9 @@ echo $lo;
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-<form name="slu" method="post" action="index.php">
+<form name="slu" method="post" action="../index.php">
     <div><input type="submit" name="slu" value="Написать служебку"/></div>
 </form>
+<a href="../index.php?f=logout">Выход</a>
 </body>
 </html>
