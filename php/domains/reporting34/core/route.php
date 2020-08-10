@@ -14,3 +14,7 @@ if ($auth) {
 if (isset($_GET['f']) && $_GET['f'] == 'slu') {
     header('Location: http://reporting34/view/slu_view.php');
 }
+
+if (isset($_GET['f']) && $_GET['f'] == 'main') {
+    header('Location: http://reporting34/view/main_view.php');
+}
