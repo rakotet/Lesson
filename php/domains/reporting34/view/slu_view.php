@@ -11,7 +11,9 @@ require_once '../core/autch.php';
 <body>
     <div>
         <h3>Ниписать служебку</h3>
-        <form name="slujebka" method="post" action="../index.php"></form>
+        <form name="slujebka" method="post" action="../index.php">
+
+        </form>
         <div>
             <a href="../index.php?f=logout">Выход</a>
         </div>
