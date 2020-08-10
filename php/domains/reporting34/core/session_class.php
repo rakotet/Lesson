@@ -1,5 +1,5 @@
 <?php
-require_once 'bd_authorization_class.php';
+require_once 'database_class.php';
 
 session_start();
 $error = false; // устанавливаем флаг ошибки
@@ -14,7 +14,7 @@ if (isset($_POST['auth'])) // проверяем была ли переданн�
 $iss = isset($_SESSION['login']) && isset($_SESSION['password']);
 
 if ($iss) {
-    $pdo = new BdAuthorization();
+    $pdo = new DataBase();
     $pdo->connect();
     $login = $pdo->searchLogin($_SESSION['login']);
     $password = $pdo->searchPassword($_SESSION['password']);

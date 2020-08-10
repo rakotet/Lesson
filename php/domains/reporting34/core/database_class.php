@@ -1,7 +1,7 @@
 <?php
 require_once 'constant_class.php';
 
-class BdAuthorization  {
+class DataBase  {
 
     public $bd;
 
@@ -15,11 +15,11 @@ class BdAuthorization  {
 
     public function searchLogin($login) {
         try {
-        $query = 'SELECT `login` FROM `secret_user` WHERE `login` = ?';
-        $query = $this->bd->prepare($query);
-        $query->execute([$login]);
-        $row = $query->fetch();
-        return $row;
+            $query = 'SELECT `login` FROM `secret_user` WHERE `login` = ?';
+            $query = $this->bd->prepare($query);
+            $query->execute([$login]);
+            $row = $query->fetch();
+            return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }
@@ -27,11 +27,22 @@ class BdAuthorization  {
 
     public function searchPassword($password) {
         try {
-        $query = 'SELECT `password` FROM `secret_user` WHERE `password` = ?';
-        $query = $this->bd->prepare($query);
-        $query->execute([$password]);
-        $row = $query->fetch();
-        return $row;
+            $query = 'SELECT `password` FROM `secret_user` WHERE `password` = ?';
+            $query = $this->bd->prepare($query);
+            $query->execute([$password]);
+            $row = $query->fetch();
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function users() {
+        try {
+            $query = 'SELECT `login` FROM `secret_user`';
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }

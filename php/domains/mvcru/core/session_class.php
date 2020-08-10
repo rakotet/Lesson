@@ -28,7 +28,7 @@ if (isset($_POST['auth'])) // проверяем была ли переданн�
 $iss = isset($_SESSION['login']) && isset($_SESSION['password']);
 
 if ($iss) {
-    $pdo = new BdAuthorization();
+    $pdo = new DataBase();
     $pdo->connect();
     $login = $pdo->searchLogin($_SESSION['login']);
     $password = $pdo->searchPassword($_SESSION['password']);
