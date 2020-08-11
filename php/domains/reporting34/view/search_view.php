@@ -1,5 +1,10 @@
 <?php
 require_once '../core/autch_class.php';
+
+$pdo = new DataBase();
+$pdo->connect();
+$userlist = $pdo->users();
+$searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
 ?>
 
 <!DOCTYPE html>
@@ -25,11 +30,6 @@ require_once '../core/autch_class.php';
             <label for="searchlist">От кого</label>
             <select name="searchlist">
                 <option value=""></option>
-                <?php
-                $pdo = new DataBase();
-                $pdo->connect();
-                $userlist = $pdo->users();
-                ?>
                 <?php for ($i = 0; $i < count($userlist); $i++) { ?>
                     <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
                 <?php } ?>
@@ -39,11 +39,6 @@ require_once '../core/autch_class.php';
             <label for="searchkomu">Кому</label>
             <select name="searchkomu">
                 <option value=""></option>
-                <?php
-                $pdo = new DataBase();
-                $pdo->connect();
-                $userlist = $pdo->users();
-                ?>
                 <?php for ($i = 0; $i < count($userlist); $i++) { ?>
                     <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
                 <?php } ?>
@@ -52,9 +47,11 @@ require_once '../core/autch_class.php';
         <div>
             <input type="submit" name="searchslu" value="Найти"/>
         </div>
-        <div>
-            <?= print_r($_POST); ?>
-        </div>
     </form>
+    <div>
+        <?php for($i = 0; $i < count($searchslu); $i++) { ?>
+            <p id="p<?=$i?>"><?=$searchslu[$i]['data_create'].' От: '.$searchslu[$i]['login'].' Кому: '.$searchslu[$i]['list'].' Тема: '.$searchslu[$i]['topic']?></p>
+        <?php } ?>
+    </div>
 </body>
 </html>

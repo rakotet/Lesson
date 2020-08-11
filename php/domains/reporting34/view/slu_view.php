@@ -1,5 +1,9 @@
 <?php
 require_once '../core/autch_class.php';
+
+$pdo = new DataBase();
+$pdo->connect();
+$userlist = $pdo->users();
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -24,11 +28,6 @@ require_once '../core/autch_class.php';
             <div>
                 <label for="list">Кому</label>
                 <select name="list">
-                    <?php
-                    $pdo = new DataBase();
-                    $pdo->connect();
-                    $userlist = $pdo->users();
-                    ?>
                     <?php for ($i = 0; $i < count($userlist); $i++) { ?>
                         <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
                     <?php } ?>

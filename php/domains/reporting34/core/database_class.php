@@ -51,8 +51,23 @@ class DataBase  {
     public function handlerSlu($login, $list, $topic, $text) {
         try {
             $query = "INSERT INTO `secret_slujebka` (`login`, `list`, `topic`, `text`, `data_create`, `status`, `who_change`) 
-                    VALUES ('$login', '$list', '$topic', '$text', UNIX_TIMESTAMP(), '0', '$login')";
+                    VALUES ('$login', '$list', '$topic', '$text', CURRENT_DATE(), '0', '$login')";
             $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSlu($login, $list, $data_create) {
+        try {
+            $query = "SELECT `login`, `list`, `topic`, `data_create` FROM `secret_slujebka` 
+                    WHERE (`login` = '$login' AND `list` = '$list' AND `data_create` = '$data_create') OR 
+                    (`data_create` = '$data_create') OR (`login` = '$login') OR (`list` = '$list') OR 
+                    (`login` = '$login' AND `list` = '$list') OR (`login` = '$login' AND `data_create` = '$data_create')
+                     OR (`list` = '$list' AND `data_create` = '$data_create')";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }
