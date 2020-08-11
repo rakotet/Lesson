@@ -1,5 +1,5 @@
 <?php
-require_once '../core/autch.php';
+require_once '../core/autch_class.php';
 
 ?>
 <!DOCTYPE html>

@@ -1,6 +1,5 @@
 <?php
-require_once '../core/autch.php';
-require_once '../core/handler_slu_class.php';
+require_once '../core/autch_class.php';
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -17,7 +16,7 @@ require_once '../core/handler_slu_class.php';
             <a href="../index.php?f=main">Назад на главную</a>
         </div>
         <h3>Написать служебку</h3>
-        <form name="slujebka" method="post" action="#">
+        <form name="slujebka" method="post" action="../index.php">
             <div>
                 <label for="login">От кого</label>
                 <input type="text" name="login" value="<?=$_SESSION['login']?>" disabled/>
@@ -36,6 +35,10 @@ require_once '../core/handler_slu_class.php';
                 </select>
             </div>
             <div>
+                <label for="topic">Тема</label>
+                <input type="text" name="topic" required>
+            </div>
+            <div>
                 <label for="text"></label>
                 <textarea name="text" required cols="50" rows="10"></textarea>
             </div>
@@ -43,11 +46,6 @@ require_once '../core/handler_slu_class.php';
                 <input type="submit" name="slujebka" value="Отправить"/>
             </div>
         </form>
-        <div>
-            <?php if (isset($_POST['slujebka'])) {
-                print_r($_POST);
-             } ?>
-        </div>
     </div>
 </body>
 </html>

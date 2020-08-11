@@ -48,10 +48,10 @@ class DataBase  {
         }
     }
 
-    public function handlerSlu($login, $list, $text) {
+    public function handlerSlu($login, $list, $topic, $text) {
         try {
-            $query = "INSERT INTO `secret_slujebka` (`login`, `list`, `text`, `data_create`, `status`, `who_change`) 
-                    VALUES ('$login', '$list', '$text', UNIX_TIMESTAMP(), '0', '$login')";
+            $query = "INSERT INTO `secret_slujebka` (`login`, `list`, `topic`, `text`, `data_create`, `status`, `who_change`) 
+                    VALUES ('$login', '$list', '$topic', '$text', UNIX_TIMESTAMP(), '0', '$login')";
             $this->bd->query($query);
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
