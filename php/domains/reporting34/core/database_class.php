@@ -61,7 +61,55 @@ class DataBase  {
     public function searchSlu($login, $list, $data_create) {
         try {
             $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
-                    WHERE  (`data_create` = '$data_create') OR (`login` = '$login') OR (`list` = '$list')";
+                    WHERE `login` = '$login' OR `list` = '$list' OR `data_create` = '$data_create'";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluLoginDate($login, $data_create) {
+        try {
+            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
+                    WHERE `login` = '$login' AND `data_create` = '$data_create'";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluListDate($list, $data_create) {
+        try {
+            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
+                    WHERE `list` = '$list' AND `data_create` = '$data_create'";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluLoginList($login, $list) {
+        try {
+            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
+                    WHERE `login` = '$login' AND `list` = '$list'";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluLoginListDate($login, $list, $data_create) {
+        try {
+            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
+                    WHERE `login` = '$login' AND `list` = '$list' AND `data_create` = '$data_create'";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;

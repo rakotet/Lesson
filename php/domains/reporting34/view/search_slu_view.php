@@ -5,7 +5,16 @@ $pdo = new DataBase();
 $pdo->connect();
 $userlist = $pdo->users();
 if (isset($_POST['searchslu'])) {
-    $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    if (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar']))
+        $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    elseif (isset($_POST['searchlist']) && isset($_POST['calendar']))
+        $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
+    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']))
+        $searchslu = $pdo->searchSluListDate($_POST['searchkomu'], $_POST['calendar']);
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']))
+        $searchslu = $pdo->searchSluLoginList($_POST['searchlist'], $_POST['searchkomu']);
+    elseif (isset($_POST['searchlist']) || isset($_POST['searchkomu']) || isset($_POST['calendar']))
+        $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
 }
 ?>
 
@@ -64,7 +73,7 @@ if (isset($_POST['searchslu'])) {
         } ?>
     </div>
     <div>
-        <?= print_r($userlist) ?>
+        <?= print_r($_POST) ?>
     </div>
 </body>
 </html>
