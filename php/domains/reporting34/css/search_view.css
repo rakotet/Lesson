@@ -1,0 +1,5 @@
+.text {
+    width: 25%;
+    border: 1px solid #000;
+    word-wrap: break-word;
+}

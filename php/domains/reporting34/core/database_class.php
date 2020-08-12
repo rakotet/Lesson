@@ -60,7 +60,7 @@ class DataBase  {
 
     public function searchSlu($login, $list, $data_create) {
         try {
-            $query = "SELECT `login`, `list`, `topic`, `data_create` FROM `secret_slujebka` 
+            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
                     WHERE (`login` = '$login' AND `list` = '$list' AND `data_create` = '$data_create') OR 
                     (`data_create` = '$data_create') OR (`login` = '$login') OR (`list` = '$list') OR 
                     (`login` = '$login' AND `list` = '$list') OR (`login` = '$login' AND `data_create` = '$data_create')
@@ -70,6 +70,17 @@ class DataBase  {
             return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchTopic($id) {
+        try {
+            $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
+            $result = $this->bd->query($query);
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            return $row['text'];
+        } catch(PDOException $e) {
+            echo 'Ошибка: '.$e->getMessage();
         }
     }
 }

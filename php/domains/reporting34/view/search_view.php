@@ -4,7 +4,9 @@ require_once '../core/autch_class.php';
 $pdo = new DataBase();
 $pdo->connect();
 $userlist = $pdo->users();
-$searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+if (isset($_POST['searchslu'])) {
+    $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +14,7 @@ $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST[
 <head>
     <title>Найти служебку</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="../css/search_view.css" />
 </head>
 <body>
     <div>
@@ -21,7 +24,7 @@ $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST[
         <a href="../index.php?f=main">Назад на главную</a>
     </div>
     <h3>Найти служебку</h3>
-    <form name="searchslu" method="post" action="#">
+    <form name="searchslu" method="post" action="">
         <div>
             <label for="calendar">Выберите дату</label>
             <input type="date" name="calendar" />
@@ -49,9 +52,19 @@ $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST[
         </div>
     </form>
     <div>
-        <?php for($i = 0; $i < count($searchslu); $i++) { ?>
-            <p id="p<?=$i?>"><?=$searchslu[$i]['data_create'].' От: '.$searchslu[$i]['login'].' Кому: '.$searchslu[$i]['list'].' Тема: '.$searchslu[$i]['topic']?></p>
-        <?php } ?>
+        <?php
+        if (isset($_POST['searchslu'])) {
+            for($i = 0; $i < count($searchslu); $i++) { ?>
+                <div class="text">
+                    <p><?=$searchslu[$i]['data_create'].'</br>'.' От: '.$searchslu[$i]['login'].'</br>'.' Кому: '.$searchslu[$i]['list'].'</br>'.' Тема: '.$searchslu[$i]['topic'].'</br>'?></p>
+                    <p><?=$searchslu[$i]['text'].'</br>'?></p>
+                </div>
+                <p></p>
+            <?php }
+        } ?>
+    </div>
+    <div>
+        <?= print_r($userlist) ?>
     </div>
 </body>
 </html>
