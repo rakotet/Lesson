@@ -4,17 +4,28 @@ require_once '../core/autch_class.php';
 $pdo = new DataBase();
 $pdo->connect();
 $userlist = $pdo->users();
-if (isset($_POST['searchslu'])) {
-    if (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar']))
-        $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
-    elseif (isset($_POST['searchlist']) && isset($_POST['calendar']))
-        $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
-    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']))
-        $searchslu = $pdo->searchSluListDate($_POST['searchkomu'], $_POST['calendar']);
-    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']))
-        $searchslu = $pdo->searchSluLoginList($_POST['searchlist'], $_POST['searchkomu']);
-    elseif (isset($_POST['searchlist']) || isset($_POST['searchkomu']) || isset($_POST['calendar']))
+if (isset($_POST)) {
+    if (isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
         $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    }
+    elseif (isset($_POST['searchkomu']) && $_POST['searchlist'] == '' && $_POST['calendar'] == '') {
+        $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    }
+    elseif (isset($_POST['calendar']) && $_POST['searchkomu'] == '' && $_POST['searchlist'] == '') {
+        $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    }
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar'])) {
+        $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    }
+    elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& $_POST['searchkomu'] == '') {
+        $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
+    }
+    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']) && $_POST['searchlist'] == '') {
+        $searchslu = $pdo->searchSluListDate($_POST['searchkomu'], $_POST['calendar']);
+    }
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && $_POST['calendar'] == '') {
+        $searchslu = $pdo->searchSluLoginList($_POST['searchlist'], $_POST['searchkomu']);
+    }
 }
 ?>
 
