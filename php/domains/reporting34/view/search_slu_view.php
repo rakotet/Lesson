@@ -14,7 +14,7 @@ if (isset($_POST['searchslu'])) {
 <head>
     <title>Найти служебку</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" media="all" href="../css/search_view.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="../css/search_slu_view.css" />
 </head>
 <body>
     <div>

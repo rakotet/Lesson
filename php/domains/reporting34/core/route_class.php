@@ -12,7 +12,7 @@ if ($auth) {
 }
 
 if (isset($_GET['f']) && $_GET['f'] == 'slu') {
-    header('Location: http://reporting34/view/slu_view.php'); // нажимаем написать служебку и переходим на страницу формы
+    header('Location: http://reporting34/view/slu_create_view.php'); // нажимаем написать служебку и переходим на страницу формы
 }
 
 if (isset($_GET['f']) && $_GET['f'] == 'main') {
@@ -20,7 +20,7 @@ if (isset($_GET['f']) && $_GET['f'] == 'main') {
 }
 
 if (isset($_GET['f']) && $_GET['f'] == 'search') {
-    header('Location: http://reporting34/view/search_view.php'); // на поиск служебки
+    header('Location: http://reporting34/view/search_slu_view.php'); // на поиск служебки
 }
 
 if (isset($_POST['slujebka'])) { // запись служебки в базу данных
