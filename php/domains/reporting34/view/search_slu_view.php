@@ -4,7 +4,8 @@ require_once '../core/autch_class.php';
 $pdo = new DataBase();
 $pdo->connect();
 $userlist = $pdo->users();
-if (isset($_POST)) {
+
+if (isset($_POST['searchslu'])) {
     if (isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
         $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
@@ -28,7 +29,6 @@ if (isset($_POST)) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang='ru'>
 <head>
@@ -52,9 +52,14 @@ if (isset($_POST)) {
         <div>
             <label for="searchlist">От кого</label>
             <select name="searchlist">
-                <option value=""></option>
+                <?php if ($search == '0') { ?>
+                    <option value="<?=$_SESSION['login']?>"><?=$_SESSION['login']?></option>
+                <?php } ?>
+                <?php if ($search == '1') { ?>
+                    <option></option>
                 <?php for ($i = 0; $i < count($userlist); $i++) { ?>
                     <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
+                <?php } ?>
                 <?php } ?>
             </select>
         </div>
@@ -82,9 +87,6 @@ if (isset($_POST)) {
                 <p></p>
             <?php }
         } ?>
-    </div>
-    <div>
-        <?= print_r($_POST) ?>
     </div>
 </body>
 </html>

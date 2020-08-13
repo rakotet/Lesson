@@ -13,6 +13,8 @@ if (isset($_POST['auth'])) // проверяем была ли переданн�
 
 $iss = isset($_SESSION['login']) && isset($_SESSION['password']);
 
+$search = 0;
+
 if ($iss) {
     $pdo = new DataBase();
     $pdo->connect();
@@ -25,6 +27,7 @@ $auth = false;
 if ($iss && $_SESSION['login'] === $login['login'] && $_SESSION['password'] === $password['password']) { // если введенные в форму данные совпадают с $login и $password то true
     $auth = true;
     $error = false;
+    $search = $login['search'];
 }
 
 $pdo = null;

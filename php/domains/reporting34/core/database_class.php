@@ -15,7 +15,7 @@ class DataBase  {
 
     public function searchLogin($login) {
         try {
-            $query = 'SELECT `login` FROM `secret_user` WHERE `login` = ?';
+            $query = 'SELECT `login`, `search` FROM `secret_user` WHERE `login` = ?';
             $query = $this->bd->prepare($query);
             $query->execute([$login]);
             $row = $query->fetch();
