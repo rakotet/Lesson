@@ -14,9 +14,6 @@ if (isset($_POST)) {
     elseif (isset($_POST['calendar']) && $_POST['searchkomu'] == '' && $_POST['searchlist'] == '') {
         $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar'])) {
-        $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
-    }
     elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& $_POST['searchkomu'] == '') {
         $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
     }
@@ -25,6 +22,9 @@ if (isset($_POST)) {
     }
     elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && $_POST['calendar'] == '') {
         $searchslu = $pdo->searchSluLoginList($_POST['searchlist'], $_POST['searchkomu']);
+    }
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar'])) {
+        $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
 }
 ?>
