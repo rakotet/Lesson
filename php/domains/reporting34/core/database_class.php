@@ -58,10 +58,10 @@ class DataBase  {
         }
     }
 
-    public function searchSlu($login, $list, $data_create) {
+    public function searchSluOne($login, $list, $data_create) {
         try {
-            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
-                    WHERE `login` = '$login' OR `list` = '$list' OR `data_create` = '$data_create'";
+            $query = "SELECT * FROM `secret_slujebka` 
+                    WHERE `login` = '$login' OR `list` = '$list' OR `data_create` = '$data_create' ORDER BY `data_create` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;
@@ -72,8 +72,8 @@ class DataBase  {
 
     public function searchSluLoginDate($login, $data_create) {
         try {
-            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
-                    WHERE `login` = '$login' AND `data_create` = '$data_create'";
+            $query = "SELECT * FROM `secret_slujebka` 
+                    WHERE `login` = '$login' AND `data_create` = '$data_create' ORDER BY `data_create` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;
@@ -84,8 +84,8 @@ class DataBase  {
 
     public function searchSluListDate($list, $data_create) {
         try {
-            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
-                    WHERE `list` = '$list' AND `data_create` = '$data_create'";
+            $query = "SELECT * FROM `secret_slujebka` 
+                    WHERE `list` = '$list' AND `data_create` = '$data_create' ORDER BY `data_create` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;
@@ -96,8 +96,8 @@ class DataBase  {
 
     public function searchSluLoginList($login, $list) {
         try {
-            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
-                    WHERE `login` = '$login' AND `list` = '$list'";
+            $query = "SELECT * FROM `secret_slujebka` 
+                    WHERE `login` = '$login' AND `list` = '$list' ORDER BY `data_create` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;
@@ -108,8 +108,30 @@ class DataBase  {
 
     public function searchSluLoginListDate($login, $list, $data_create) {
         try {
-            $query = "SELECT `id`, `login`, `list`, `topic`, `text`, `data_create` FROM `secret_slujebka` 
-                    WHERE `login` = '$login' AND `list` = '$list' AND `data_create` = '$data_create'";
+            $query = "SELECT * FROM `secret_slujebka` 
+                    WHERE `login` = '$login' AND `list` = '$list' AND `data_create` = '$data_create' ORDER BY `data_create` DESC";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluWork($status) {
+        try {
+            $query = "SELECT * FROM `secret_slujebka` WHERE `status` = '$status' ORDER BY `data_create` DESC";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluLoginWork($login, $status) {
+        try {
+            $query = "SELECT * FROM `secret_slujebka` WHERE `login` = '$login' AND `status` = '$status' ORDER BY `data_create` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;

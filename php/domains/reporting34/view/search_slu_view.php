@@ -6,27 +6,34 @@ $pdo->connect();
 $userlist = $pdo->users();
 
 if (isset($_POST['searchslu'])) {
-    if (isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
-        $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    if (isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '' && !isset($_POST['status'])) {
+        $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchkomu']) && $_POST['searchlist'] == '' && $_POST['calendar'] == '') {
-        $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    elseif (isset($_POST['searchkomu']) && $_POST['searchlist'] == '' && $_POST['calendar'] == '' && !isset($_POST['status'])) {
+        $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['calendar']) && $_POST['searchkomu'] == '' && $_POST['searchlist'] == '') {
-        $searchslu = $pdo->searchSlu($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    elseif (isset($_POST['calendar']) && $_POST['searchkomu'] == '' && $_POST['searchlist'] == '' && !isset($_POST['status'])) {
+        $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& $_POST['searchkomu'] == '') {
+    elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& $_POST['searchkomu'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']) && $_POST['searchlist'] == '') {
+    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']) && $_POST['searchlist'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluListDate($_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && $_POST['calendar'] == '') {
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && $_POST['calendar'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginList($_POST['searchlist'], $_POST['searchkomu']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar'])) {
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar']) && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
+    elseif ((isset($_POST['status']) && $_POST['calendar'] == '' && $_POST['searchlist'] == '' && $_POST['searchkomu'] == '')) {
+        $searchslu = $pdo->searchSluWork($_POST['status']);
+    }
+    elseif (isset($_POST['searchlist']) && isset($_POST['status']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
+        $searchslu = $pdo->searchSluLoginWork($_POST['searchlist'], $_POST['status']);
+    }
+    else $searchslu = [];
 }
 ?>
 <!DOCTYPE html>
@@ -73,6 +80,10 @@ if (isset($_POST['searchslu'])) {
             </select>
         </div>
         <div>
+            В работе<input type="checkbox" name="status" value="0" />
+            Выполнена<input type="checkbox" name="status" value="1" />
+        </div>
+        <div>
             <input type="submit" name="searchslu" value="Найти"/>
         </div>
     </form>
@@ -81,6 +92,13 @@ if (isset($_POST['searchslu'])) {
         if (isset($_POST['searchslu'])) {
             for($i = 0; $i < count($searchslu); $i++) { ?>
                 <div class="text">
+                    <?php if ($searchslu[$i]['status'] == 0) { ?>
+                        <p id="work">В работе</p>
+                    <?php }
+                        elseif ($searchslu[$i]['status'] == 1) { ?>
+                    <p id="nowork">Выполненна</p>
+                    <?php } ?>
+
                     <p><?=$searchslu[$i]['data_create'].'</br>'.' От: '.$searchslu[$i]['login'].'</br>'.' Кому: '.$searchslu[$i]['list'].'</br>'.' Тема: '.$searchslu[$i]['topic'].'</br>'?></p>
                     <p><?=$searchslu[$i]['text'].'</br>'?></p>
                 </div>

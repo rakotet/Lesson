@@ -3,3 +3,11 @@
     border: 1px solid #000;
     word-wrap: break-word;
 }
+
+#work {
+    color: #00cc00;
+}
+
+#nowork {
+    color: #cc0000;
+}
