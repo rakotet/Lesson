@@ -142,10 +142,10 @@ class DataBase  {
 
     public function searchTopic($id) {
         try {
-            $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
+            $query = "SELECT * FROM `secret_user` WHERE `id` = '$id'";
             $result = $this->bd->query($query);
             $row = $result->fetch(PDO::FETCH_ASSOC);
-            return $row['text'];
+            echo json_encode($row);
         } catch(PDOException $e) {
             echo 'Ошибка: '.$e->getMessage();
         }
