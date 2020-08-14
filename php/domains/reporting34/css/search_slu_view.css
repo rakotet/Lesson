@@ -11,3 +11,7 @@
 #nowork {
     color: #cc0000;
 }
+
+a {
+    text-decoration: none;
+}
