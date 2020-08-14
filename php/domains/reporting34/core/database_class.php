@@ -140,6 +140,15 @@ class DataBase  {
         }
     }
 
+    public function updateStatus($id, $status) {
+        try {
+            $query = "UPDATE `secret_slujebka` SET `status` = '$status' WHERE `id` = '$id'";
+            $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
     public function searchTopic($id) {
         try {
             $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";

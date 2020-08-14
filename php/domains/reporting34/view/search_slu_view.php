@@ -38,58 +38,22 @@ if (isset($_POST['searchslu'])) {
     }
     else $searchslu = [];
 
-    for ($i = 0; $i < count($searchslu); $i++) {
-        setcookie($i, $searchslu[$i][Array()], time() + 3600);
-    }
-
-//    if (isset($_POST['searchlist']))
-//    setcookie('searchlist', $_POST['searchlist'], time() + 3600);
-//    else setcookie('searchlist', '', time() + 3600);
-//
-//    if (isset($_POST['searchkomu']))
-//    setcookie('searchkomu', $_POST['searchkomu'], time() + 3600);
-//    else setcookie('searchkomu', '', time() + 3600);
-//
-//    if (isset($_POST['calendar']))
-//    setcookie('calendar', $_POST['calendar'], time() + 3600);
-//    else setcookie('calendar', '', time() + 3600);
-//
-//    if (isset($_POST['status']))
-//    setcookie('status', $_POST['status'], time() + 3600);
-//    else setcookie('status', '', time() + 3600);
-
+    setcookie('searchslu', json_encode($searchslu), time() + 3600);
 }
 else {
-    if (isset($_COOKIE['searchlist']) && $_COOKIE['searchkomu'] == '' && $_COOKIE['calendar'] == '' && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluOne($_COOKIE['searchlist'], $_COOKIE['searchkomu'], $_COOKIE['calendar']);
-    }
-    elseif (isset($_COOKIE['searchkomu']) && $_COOKIE['searchlist'] == '' && $_COOKIE['calendar'] == '' && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluOne($_COOKIE['searchlist'], $_COOKIE['searchkomu'], $_COOKIE['calendar']);
-    }
-    elseif (isset($_COOKIE['calendar']) && $_COOKIE['searchkomu'] == '' && $_COOKIE['searchlist'] == '' && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluOne($_COOKIE['searchlist'], $_COOKIE['searchkomu'], $_COOKIE['calendar']);
-    }
-    elseif (isset($_COOKIE['searchlist']) && isset($_COOKIE['calendar'] )&& $_COOKIE['searchkomu'] == '' && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluLoginDate($_COOKIE['searchlist'], $_COOKIE['calendar']);
-    }
-    elseif (isset($_COOKIE['searchkomu']) && isset($_COOKIE['calendar']) && $_COOKIE['searchlist'] == '' && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluListDate($_COOKIE['searchkomu'], $_COOKIE['calendar']);
-    }
-    elseif (isset($_COOKIE['searchlist']) && isset($_COOKIE['searchkomu']) && $_COOKIE['calendar'] == '' && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluLoginList($_COOKIE['searchlist'], $_COOKIE['searchkomu']);
-    }
-    elseif (isset($_COOKIE['searchlist']) && isset($_COOKIE['searchkomu']) && isset($_COOKIE['calendar']) && !isset($_COOKIE['status'])) {
-        $searchslu = $pdo->searchSluLoginListDate($_COOKIE['searchlist'], $_COOKIE['searchkomu'], $_COOKIE['calendar']);
-    }
-    elseif ((isset($_COOKIE['status']) && $_COOKIE['calendar'] == '' && $_COOKIE['searchlist'] == '' && $_COOKIE['searchkomu'] == '')) {
-        $searchslu = $pdo->searchSluWork($_COOKIE['status']);
-    }
-    elseif (isset($_COOKIE['searchlist']) && isset($_COOKIE['status']) && $_COOKIE['searchkomu'] == '' && $_COOKIE['calendar'] == '') {
-        $searchslu = $pdo->searchSluLoginWork($_COOKIE['searchlist'], $_COOKIE['status']);
-    }
-    else $searchslu = [];
-
+    if (isset($_COOKIE['searchslu']))
+    $searchslu = json_decode($_COOKIE['searchslu'], true);
 }
+
+if (isset($_GET['id']) && isset($_GET['status'])) {
+    if($_GET['status'] == 0)
+        $_GET['status'] = 1;
+    elseif ($_GET['status'] == 1)
+        $_GET['status'] = 0;
+
+    $pdo->updateStatus($_GET['id'], $_GET['status']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -150,10 +114,10 @@ else {
             for($i = 0; $i < count($searchslu); $i++) { ?>
                 <div class="text">
                     <?php if ($searchslu[$i]['status'] == 0) { ?>
-                        <a href="?a=1"><p id="work">В работе</p></a>
+                        <a href="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>"><p id="work">В работе</p></a>
                     <?php }
                         elseif ($searchslu[$i]['status'] == 1) { ?>
-                    <a href="?a=2"><p id="nowork">Выполненна</p></a>
+                    <a href="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>"><p id="nowork">Выполненна</p></a>
                     <?php } ?>
 
                     <p><?=$searchslu[$i]['data_create'].'</br>'.' От: '.$searchslu[$i]['login'].'</br>'.' Кому: '.$searchslu[$i]['list'].'</br>'.' Тема: '.$searchslu[$i]['topic'].'</br>'?></p>
@@ -167,11 +131,12 @@ else {
         <h3 style='cursor: pointer;'>Получить случайного пользователя из БД</h3>
     </div>
     <div id="result"></div>
-
-    <div>POST:<?=print_r($_POST)?></div>
-    <p></p>
-<div>searchslu:<?php print_r($searchslu)?></div>
-    <p></p>
-<div>куки:<?=print_r($_COOKIE)?></div>
+<div>POST:<?=print_r($_POST)?></div>
+<p></p>
+<div>GET:<?=print_r($_GET)?></div>
+<p></p>
+<div>КУКИ: <?=print_r($_COOKIE['searchslu'])?></div>
+<p></p>
+    <div>searchslu: <?=print_r($searchslu)?></div>
 </body>
 </html>
