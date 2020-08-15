@@ -16,6 +16,17 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
     header("Refresh: ");
 }
 
+
+if (isset($_GET['open'])) {
+    setcookie('id', $_GET['open'], time() + 3600);
+}
+
+if (isset($_POST['commit']) && $_POST['commit'] == 'Добавить комментарий') {
+    $pdo->updateText($_COOKIE['id'], $_POST['text'], $_SESSION['login']);
+    $_POST['commit'] = '';
+
+}
+
 //Условия поиска по заданным значениям формы
 if (isset($_POST['searchslu'])) {
 
@@ -80,7 +91,7 @@ else {
     elseif (isset($_POST['calendar']) && @$_POST['searchkomu'] == '' && @$_POST['searchlist'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluOne(@$_POST['searchlist'], @$_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& $_POST['searchkomu'] == '' && !isset($_POST['status'])) {
+    elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& @$_POST['searchkomu'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
     }
     elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']) && @$_POST['searchlist'] == '' && !isset($_POST['status'])) {
@@ -109,7 +120,6 @@ else {
 //}
 
 
-
 ?>
 <!DOCTYPE html>
 <html lang='ru'>
@@ -117,7 +127,7 @@ else {
     <title>Найти служебку</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet" media="all" href="../css/search_slu_view.css" />
-    <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
+<!--    <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>-->
 <!--    <script type="text/javascript" src="../js/status.js"></script>-->
 </head>
 <body>
@@ -170,14 +180,38 @@ else {
             for($i = 0; $i < count($searchslu); $i++) { ?>
                 <div class="text">
                     <?php if ($searchslu[$i]['status'] == 0) { ?>
+                        <?php if ($search == 1) { ?>
                         <a href="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>"><p id="work">В работе</p></a>
+                        <?php } ?>
+                        <?php if ($search == 0) { ?>
+                        <p id="work">В работе</p>
+                        <?php } ?>
                     <?php }
                         elseif ($searchslu[$i]['status'] == 1) { ?>
+                        <?php if ($search == 1) { ?>
                     <a href="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>"><p id="nowork">Выполненна</p></a>
+                        <?php } ?>
+                        <?php if ($search == 0) { ?>
+                            <p id="nowork">Выполненна</p>
+                        <?php } ?>
                     <?php } ?>
 
                     <p><?=$searchslu[$i]['data_create'].'</br>'.' От: '.$searchslu[$i]['login'].'</br>'.' Кому: '.$searchslu[$i]['list'].'</br>'.' Тема: '.$searchslu[$i]['topic'].'</br>'?></p>
                     <p><?=$searchslu[$i]['text'].'</br>'?></p>
+                    <p></p>
+                    <div>
+                        <?php if (!isset($_GET['open'])) { ?>
+                            <a class="commit" href="?open=<?=$searchslu[$i]['id']?>">Добавить комментарий</a>
+                        <?php }
+                        else { ?>
+                            <form name="commit" method="post" action="search_slu_view.php">
+                            <textarea name="text" required cols="60" rows="10" ></textarea>
+                                <p></p>
+                            <input type="submit" name="commit" value="Добавить комментарий"/>
+                                <p></p>
+                            </form>
+                        <?php } ?>
+                    </div>
                 </div>
                 <p></p>
             <?php }

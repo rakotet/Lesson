@@ -149,6 +149,19 @@ class DataBase  {
         }
     }
 
+    public function updateText($id, $text, $login) {
+        try {
+            $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
+            $result = $this->bd->query($query);
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            $text = $row['text'].'</br></br>'.$login.': '.'</br>'.$text;
+            $query = "UPDATE `secret_slujebka` SET `text` = '$text' WHERE `id` = '$id'";
+            $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
     public function searchTopic($id) {
         try {
             $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
