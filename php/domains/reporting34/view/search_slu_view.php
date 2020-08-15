@@ -58,36 +58,44 @@ if (isset($_POST['searchslu'])) {
 //    setcookie('searchslu', json_encode($searchslu), time() + 3600);
 }
 else {
+    if (isset($_COOKIE['searchlist']) && $_COOKIE['searchlist'] !== '')
     $_POST['searchlist'] = $_COOKIE['searchlist'];
+
+    if (isset($_COOKIE['searchkomu']) && $_COOKIE['searchkomu'] !== '')
     $_POST['searchkomu'] = $_COOKIE['searchkomu'];
+
+    if (isset($_COOKIE['calendar']) && $_COOKIE['calendar'] !== '')
     $_POST['calendar'] = $_COOKIE['calendar'];
+
+    if (isset($_COOKIE['status']) && $_COOKIE['status'] !== '')
     $_POST['status'] = $_COOKIE['status'];
 
-    if (isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '' && !isset($_POST['status'])) {
-        $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+
+    if (isset($_POST['searchlist']) && @$_POST['searchkomu'] == '' && @$_POST['calendar'] == '' && !isset($_POST['status'])) {
+        $searchslu = $pdo->searchSluOne($_POST['searchlist'], @$_POST['searchkomu'], @$_POST['calendar']);
     }
-    elseif (isset($_POST['searchkomu']) && $_POST['searchlist'] == '' && $_POST['calendar'] == '' && !isset($_POST['status'])) {
-        $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    elseif (isset($_POST['searchkomu']) && @$_POST['searchlist'] == '' && @$_POST['calendar'] == '' && !isset($_POST['status'])) {
+        $searchslu = $pdo->searchSluOne(@$_POST['searchlist'], $_POST['searchkomu'], @$_POST['calendar']);
     }
-    elseif (isset($_POST['calendar']) && $_POST['searchkomu'] == '' && $_POST['searchlist'] == '' && !isset($_POST['status'])) {
-        $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
+    elseif (isset($_POST['calendar']) && @$_POST['searchkomu'] == '' && @$_POST['searchlist'] == '' && !isset($_POST['status'])) {
+        $searchslu = $pdo->searchSluOne(@$_POST['searchlist'], @$_POST['searchkomu'], $_POST['calendar']);
     }
     elseif (isset($_POST['searchlist']) && isset($_POST['calendar'] )&& $_POST['searchkomu'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginDate($_POST['searchlist'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']) && $_POST['searchlist'] == '' && !isset($_POST['status'])) {
+    elseif (isset($_POST['searchkomu']) && isset($_POST['calendar']) && @$_POST['searchlist'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluListDate($_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && $_POST['calendar'] == '' && !isset($_POST['status'])) {
+    elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && @$_POST['calendar'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginList($_POST['searchlist'], $_POST['searchkomu']);
     }
     elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar']) && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif ((isset($_POST['status']) && $_POST['calendar'] == '' && $_POST['searchlist'] == '' && $_POST['searchkomu'] == '')) {
+    elseif ((isset($_POST['status']) && @$_POST['calendar'] == '' && @$_POST['searchlist'] == '' && @$_POST['searchkomu'] == '')) {
         $searchslu = $pdo->searchSluWork($_POST['status']);
     }
-    elseif (isset($_POST['searchlist']) && isset($_POST['status']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
+    elseif (isset($_POST['searchlist']) && isset($_POST['status']) && @$_POST['searchkomu'] == '' && @$_POST['calendar'] == '') {
         $searchslu = $pdo->searchSluLoginWork($_POST['searchlist'], $_POST['status']);
     }
     else $searchslu = [];
