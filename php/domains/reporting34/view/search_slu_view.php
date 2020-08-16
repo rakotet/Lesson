@@ -6,6 +6,8 @@ $pdo = new DataBase();
 $pdo->connect();
 $userlist = $pdo->users();
 
+$openid = '';
+
 if (isset($_GET['id']) && isset($_GET['status'])) {
     if($_GET['status'] == 0)
         $_GET['status'] = 1;
@@ -19,7 +21,9 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
 
 if (isset($_GET['open'])) {
     setcookie('id', $_GET['open'], time() + 3600);
+    $openid = $_GET['open'];
 }
+
 
 if (isset($_POST['commit']) && $_POST['commit'] == 'Добавить комментарий') {
     $pdo->updateText($_COOKIE['id'], $_POST['text'], $_SESSION['login']);
@@ -127,7 +131,7 @@ else {
     <title>Найти служебку</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet" media="all" href="../css/search_slu_view.css" />
-<!--    <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>-->
+    <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
 <!--    <script type="text/javascript" src="../js/status.js"></script>-->
 </head>
 <body>
@@ -204,12 +208,14 @@ else {
                             <a class="commit" href="?open=<?=$searchslu[$i]['id']?>">Добавить комментарий</a>
                         <?php }
                         else { ?>
+                            <?php if ($searchslu[$i]['id'] == $openid) { ?>
                             <form name="commit" method="post" action="search_slu_view.php">
                             <textarea name="text" required cols="60" rows="10" ></textarea>
                                 <p></p>
                             <input type="submit" name="commit" value="Добавить комментарий"/>
                                 <p></p>
                             </form>
+                            <?php } ?>
                         <?php } ?>
                     </div>
                 </div>
