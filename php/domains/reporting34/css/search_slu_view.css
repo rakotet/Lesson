@@ -6,10 +6,12 @@
 
 #work {
     color: #00cc00;
+    border:none;
 }
 
 #nowork {
     color: #cc0000;
+    border:none;
 }
 
 a {

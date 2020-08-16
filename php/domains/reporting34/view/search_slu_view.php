@@ -133,6 +133,17 @@ else {
     <link type="text/css" rel="stylesheet" media="all" href="../css/search_slu_view.css" />
     <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
 <!--    <script type="text/javascript" src="../js/status.js"></script>-->
+    <script>
+        $(window).on("scroll", function(){
+            $('input[name="scroll"]').val($(window).scrollTop());
+        });
+
+        <?php if (!empty($_REQUEST['scroll'])): ?>
+        $(document).ready(function(){
+            window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);
+        });
+        <?php endif; ?>
+    </script>
 </head>
 <body>
     <div>
@@ -142,7 +153,7 @@ else {
         <a href="../index.php?f=main">Назад на главную</a>
     </div>
     <h3>Найти служебку</h3>
-    <form name="searchslu" method="post" action="">
+    <form name="searchslu" method="post" action="?">
         <div>
             <label for="calendar">Выберите дату</label>
             <input type="date" name="calendar" />
@@ -185,7 +196,11 @@ else {
                 <div class="text">
                     <?php if ($searchslu[$i]['status'] == 0) { ?>
                         <?php if ($search == 1) { ?>
-                        <a href="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>"><p id="work">В работе</p></a>
+                            <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
+                                <input type="hidden" name="scroll" value="">
+                                <input id="work" type="submit" name="commit" value="В работе"/>
+                                <p></p>
+                            </form>
                         <?php } ?>
                         <?php if ($search == 0) { ?>
                         <p id="work">В работе</p>
@@ -193,7 +208,11 @@ else {
                     <?php }
                         elseif ($searchslu[$i]['status'] == 1) { ?>
                         <?php if ($search == 1) { ?>
-                    <a href="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>"><p id="nowork">Выполненна</p></a>
+                            <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
+                                <input type="hidden" name="scroll" value="">
+                                <input id="nowork" type="submit" name="commit" value="Выполненна"/>
+                                <p></p>
+                            </form>
                         <?php } ?>
                         <?php if ($search == 0) { ?>
                             <p id="nowork">Выполненна</p>
@@ -205,14 +224,19 @@ else {
                     <p></p>
                     <div>
                         <?php if (!isset($_GET['open'])) { ?>
-                            <a class="commit" href="?open=<?=$searchslu[$i]['id']?>">Добавить комментарий</a>
+                            <form method="post" action="?open=<?=$searchslu[$i]['id']?>">
+                            <input type="hidden" name="scroll" value="">
+                            <input class="commit" type="submit" name="commit" value="Комментарий"/>
+                            <p></p>
+                            </form>
                         <?php }
                         else { ?>
                             <?php if ($searchslu[$i]['id'] == $openid) { ?>
-                            <form name="commit" method="post" action="search_slu_view.php">
+                            <form name="commit" method="post" action="?">
                             <textarea name="text" required cols="60" rows="10" ></textarea>
                                 <p></p>
-                            <input type="submit" name="commit" value="Добавить комментарий"/>
+                            <input class="commit" type="submit" name="commit" value="Добавить комментарий"/>
+                                <input type="hidden" name="scroll" value="">
                                 <p></p>
                             </form>
                             <?php } ?>
