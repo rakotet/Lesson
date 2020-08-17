@@ -8,19 +8,19 @@ if (isset($_GET['f']) && $_GET['f'] == 'logout') { // кнопка выхода 
 }
 
 if ($auth) {
-    header('Location: http://reporting34/view/main_view.php'); // если прошла авторизация переходим на главную
+    header('Location: /view/main_view.php'); // если прошла авторизация переходим на главную
 }
 
 if (isset($_GET['f']) && $_GET['f'] == 'slu') {
-    header('Location: http://reporting34/view/slu_create_view.php'); // нажимаем написать служебку и переходим на страницу формы
+    header('Location: /view/slu_create_view.php'); // нажимаем написать служебку и переходим на страницу формы
 }
 
 if (isset($_GET['f']) && $_GET['f'] == 'main') {
-    header('Location: http://reporting34/view/main_view.php'); // назад на главную
+    header('Location: /view/main_view.php'); // назад на главную
 }
 
 if (isset($_GET['f']) && $_GET['f'] == 'search') {
-    header('Location: http://reporting34/view/search_slu_view.php'); // на поиск служебки
+    header('Location: /view/search_slu_view.php'); // на поиск служебки
 }
 
 if (isset($_POST['slujebka'])) { // запись служебки в базу данных

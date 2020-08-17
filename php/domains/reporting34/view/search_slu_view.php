@@ -205,7 +205,7 @@ else {
                         <?php if ($search == 0) { ?>
                         <p id="work">В работе</p>
                         <?php } ?>
-                    <?php }
+                        <?php }
                         elseif ($searchslu[$i]['status'] == 1) { ?>
                         <?php if ($search == 1) { ?>
                             <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
@@ -247,16 +247,5 @@ else {
             <?php }
         } ?>
     </div>
-    <div>
-        <h3 style='cursor: pointer;'>Получить случайного пользователя из БД</h3>
-    </div>
-    <div id="result"></div>
-<div>POST:<?=print_r($_POST)?></div>
-<p></p>
-<div>GET:<?=print_r($_GET)?></div>
-<p></p>
-<div>КУКИ: <?=print_r($_COOKIE)?></div>
-<p></p>
-    <div>searchslu: <?=print_r($searchslu)?></div>
 </body>
 </html>
