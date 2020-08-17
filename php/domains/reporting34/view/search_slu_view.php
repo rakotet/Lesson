@@ -146,106 +146,106 @@ else {
     </script>
 </head>
 <body>
-    <div>
-        <a href="../index.php?f=logout">Выход</a>
-    </div>
-    <div>
-        <a href="../index.php?f=main">Назад на главную</a>
-    </div>
-    <h3>Найти служебку</h3>
-    <form name="searchslu" method="post" action="?">
+    <div id="container">
         <div>
-            <label for="calendar">Выберите дату</label>
-            <input type="date" name="calendar" />
+            <a href="../index.php?f=logout">Выход</a>
         </div>
         <div>
-            <label for="searchlist">От кого</label>
-            <select name="searchlist">
-                <?php if ($search == '0') { ?>
-                    <option value="<?=$_SESSION['login']?>"><?=$_SESSION['login']?></option>
-                <?php } ?>
-                <?php if ($search == '1') { ?>
-                    <option></option>
-                <?php for ($i = 0; $i < count($userlist); $i++) { ?>
-                    <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
-                <?php } ?>
-                <?php } ?>
-            </select>
+            <a href="../index.php?f=main">Назад на главную</a>
         </div>
-        <div>
-            <label for="searchkomu">Кому</label>
-            <select name="searchkomu">
-                <option value=""></option>
-                <?php for ($i = 0; $i < count($userlist); $i++) { ?>
-                    <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <div>
-            В работе<input type="checkbox" name="status" value="0" />
-            Выполнена<input type="checkbox" name="status" value="1" />
-        </div>
-        <div>
-            <input type="submit" name="searchslu" value="Найти"/>
-        </div>
-    </form>
-    <div>
-        <?php
-        if (isset($_POST['searchslu']) || isset($searchslu)) {
-            for($i = 0; $i < count($searchslu); $i++) { ?>
-                <div class="text">
-                    <?php if ($searchslu[$i]['status'] == 0) { ?>
-                        <?php if ($search == 1) { ?>
-                            <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
-                                <input type="hidden" name="scroll" value="">
-                                <input id="work" type="submit" name="commit" value="В работе"/>
-                                <p></p>
-                            </form>
+        <h3>Найти служебку</h3>
+        <form name="searchslu" method="post" action="?">
+            <div class="form1">
+                <div>Выберите дату</div>
+                <div><input type="date" name="calendar" /></div>
+                <div>От кого</div>
+                <div>
+                    <select name="searchlist">
+                        <?php if ($search == '0') { ?>
+                            <option value="<?=$_SESSION['login']?>"><?=$_SESSION['login']?></option>
                         <?php } ?>
-                        <?php if ($search == 0) { ?>
-                        <p id="work">В работе</p>
+                        <?php if ($search == '1') { ?>
+                            <option></option>
+                        <?php for ($i = 0; $i < count($userlist); $i++) { ?>
+                            <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
                         <?php } ?>
-                        <?php }
-                        elseif ($searchslu[$i]['status'] == 1) { ?>
-                        <?php if ($search == 1) { ?>
-                            <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
-                                <input type="hidden" name="scroll" value="">
-                                <input id="nowork" type="submit" name="commit" value="Выполненна"/>
-                                <p></p>
-                            </form>
                         <?php } ?>
-                        <?php if ($search == 0) { ?>
-                            <p id="nowork">Выполненна</p>
-                        <?php } ?>
+                    </select>
+                </div>
+                <div>Кому</div>
+                <div>
+                <select name="searchkomu">
+                    <option value=""></option>
+                    <?php for ($i = 0; $i < count($userlist); $i++) { ?>
+                        <option value="<?=$userlist[$i]['login']?>"><?=$userlist[$i]['login']?></option>
                     <?php } ?>
-
-                    <p><?=$searchslu[$i]['data_create'].'</br>'.' От: '.$searchslu[$i]['login'].'</br>'.' Кому: '.$searchslu[$i]['list'].'</br>'.' Тема: '.$searchslu[$i]['topic'].'</br>'?></p>
-                    <p><?=$searchslu[$i]['text'].'</br>'?></p>
-                    <p></p>
-                    <div>
-                        <?php if (!isset($_GET['open'])) { ?>
-                            <form method="post" action="?open=<?=$searchslu[$i]['id']?>">
-                            <input type="hidden" name="scroll" value="">
-                            <input class="commit" type="submit" name="commit" value="Комментарий"/>
-                            <p></p>
-                            </form>
-                        <?php }
-                        else { ?>
-                            <?php if ($searchslu[$i]['id'] == $openid) { ?>
-                            <form name="commit" method="post" action="?">
-                            <textarea name="text" required cols="60" rows="10" ></textarea>
-                                <p></p>
-                            <input class="commit" type="submit" name="commit" value="Добавить комментарий"/>
-                                <input type="hidden" name="scroll" value="">
-                                <p></p>
-                            </form>
+                </select>
+                </div>
+                <div>
+                    В работе<input type="checkbox" name="status" value="0" />
+                    Выполнена<input type="checkbox" name="status" value="1" />
+                </div>
+                <div><input type="submit" name="searchslu" value="Найти"/></div>
+            </div>
+        </form>
+        <div class="formtext">
+            <?php
+            if (isset($_POST['searchslu']) || isset($searchslu)) {
+                for($i = 0; $i < count($searchslu); $i++) { ?>
+                    <div class="text">
+                        <?php if ($searchslu[$i]['status'] == 0) { ?>
+                            <?php if ($search == 1) { ?>
+                                <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
+                                    <input type="hidden" name="scroll" value="">
+                                    <input id="work" type="submit" name="commit" value="В работе"/>
+                                    <p></p>
+                                </form>
+                            <?php } ?>
+                            <?php if ($search == 0) { ?>
+                            <p id="work">В работе</p>
+                            <?php } ?>
+                            <?php }
+                            elseif ($searchslu[$i]['status'] == 1) { ?>
+                            <?php if ($search == 1) { ?>
+                                <form method="post" action="?id=<?=$searchslu[$i]['id']?>&status=<?=$searchslu[$i]['status']?>">
+                                    <input type="hidden" name="scroll" value="">
+                                    <input id="nowork" type="submit" name="commit" value="Выполненна"/>
+                                    <p></p>
+                                </form>
+                            <?php } ?>
+                            <?php if ($search == 0) { ?>
+                                <p id="nowork">Выполненна</p>
                             <?php } ?>
                         <?php } ?>
+
+                        <div><?=$searchslu[$i]['data_create'].'</br>'.' От: '.$searchslu[$i]['login'].'</br>'.' Кому: '.$searchslu[$i]['list'].'</br>'.' Тема: '.$searchslu[$i]['topic']?></div>
+                        <p><?=$searchslu[$i]['text'].'</br>'?></p>
+                        <p></p>
+                        <div>
+                            <?php if (!isset($_GET['open'])) { ?>
+                                <form method="post" action="?open=<?=$searchslu[$i]['id']?>">
+                                <input type="hidden" name="scroll" value="">
+                                <input class="commit" type="submit" name="commit" value="Комментарий"/>
+                                <p></p>
+                                </form>
+                            <?php }
+                            else { ?>
+                                <?php if ($searchslu[$i]['id'] == $openid) { ?>
+                                <form name="commit" method="post" action="?">
+                                <textarea name="text" required cols="60" rows="10" ></textarea>
+                                    <p></p>
+                                <input class="commit" type="submit" name="commit" value="Добавить комментарий"/>
+                                    <input type="hidden" name="scroll" value="">
+                                    <p></p>
+                                </form>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
                     </div>
-                </div>
-                <p></p>
-            <?php }
-        } ?>
+                    <p></p>
+                <?php }
+            } ?>
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,27 @@
+body {
+    background-color: #efebeb;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+a:hover {
+    color: #158b00;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#top {
+    width: 30%;
+    height: 300px;
+}
+
+#container div {
+    margin: 10px;
+}
+

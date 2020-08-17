@@ -1,0 +1,35 @@
+body {
+    background-image: url(../image/fon.png);
+    background-size: cover;
+}
+
+#container {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+#top {
+    width: 30%;
+    height: 300px;
+}
+
+#form {
+    width: 20%;
+    height: 200px;
+    /*border: 1px solid black;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+ .center {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+ }
+
+ form div {
+     margin: 5px;
+ }

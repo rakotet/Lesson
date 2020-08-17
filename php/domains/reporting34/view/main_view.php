@@ -7,16 +7,20 @@ require_once '../core/autch_class.php';
 <head>
     <title>Главная страница</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" media="all" href="../css/main_view.css" />
 </head>
 <body>
-    <div>
-        <a href="../index.php?f=search">Найти служебку</a>
-    </div>
-    <div>
-        <a href="../index.php?f=slu">Написать служебку</a>
-    </div>
-    <div>
-        <a href="../index.php?f=logout">Выход</a>
+    <div id="container">
+        <div id="top"></div>
+        <div>
+            <a href="../index.php?f=search">Найти служебку</a>
+        </div>
+        <div>
+            <a href="../index.php?f=slu">Написать служебку</a>
+        </div>
+        <div>
+            <a href="../index.php?f=logout">Выход</a>
+        </div>
     </div>
 </body>
 </html>
