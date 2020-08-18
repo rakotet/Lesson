@@ -37,6 +37,9 @@ if (isset($_POST['searchslu'])) {
     if (isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
+    elseif (isset($_POST['mne']) && isset($_POST['status']) && isset($_POST['searchlist']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
+        $searchslu = $pdo->searchSluMneStatus($_SESSION['login'], $_POST['status']);
+    }
     elseif (isset($_POST['searchkomu']) && $_POST['searchlist'] == '' && $_POST['calendar'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluOne($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
@@ -55,7 +58,7 @@ if (isset($_POST['searchslu'])) {
     elseif (isset($_POST['searchlist']) && isset($_POST['searchkomu']) && isset($_POST['calendar']) && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluLoginListDate($_POST['searchlist'], $_POST['searchkomu'], $_POST['calendar']);
     }
-    elseif ((isset($_POST['status']) && $_POST['calendar'] == '' && $_POST['searchlist'] == '' && $_POST['searchkomu'] == '')) {
+    elseif (isset($_POST['status']) && $_POST['calendar'] == '' && $_POST['searchlist'] == '' && $_POST['searchkomu'] == '') {
         $searchslu = $pdo->searchSluWork($_POST['status']);
     }
     elseif (isset($_POST['searchlist']) && isset($_POST['status']) && $_POST['searchkomu'] == '' && $_POST['calendar'] == '') {
@@ -69,6 +72,9 @@ if (isset($_POST['searchslu'])) {
     if (isset($_POST['status']))
     setcookie('status', $_POST['status'], time() + 3600);
     else setcookie('status', '', time() + 3600);
+    if (isset($_POST['mne']))
+    setcookie('mne', $_POST['mne'], time() + 3600);
+    else setcookie('mne', '', time() + 3600);
 
 //    setcookie('searchslu', json_encode($searchslu), time() + 3600);
 }
@@ -85,9 +91,15 @@ else {
     if (isset($_COOKIE['status']) && $_COOKIE['status'] !== '')
     $_POST['status'] = $_COOKIE['status'];
 
+    if (isset($_COOKIE['mne']) && $_COOKIE['mne'] !== '')
+        $_POST['mne'] = $_COOKIE['mne'];
+
 
     if (isset($_POST['searchlist']) && @$_POST['searchkomu'] == '' && @$_POST['calendar'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluOne($_POST['searchlist'], @$_POST['searchkomu'], @$_POST['calendar']);
+    }
+    elseif (isset($_POST['mne']) && isset($_POST['status']) && isset($_POST['searchlist']) && @$_POST['searchkomu'] == '' && @$_POST['calendar'] == '') {
+        $searchslu = $pdo->searchSluMneStatus($_SESSION['login'], $_POST['status']);
     }
     elseif (isset($_POST['searchkomu']) && @$_POST['searchlist'] == '' && @$_POST['calendar'] == '' && !isset($_POST['status'])) {
         $searchslu = $pdo->searchSluOne(@$_POST['searchlist'], $_POST['searchkomu'], @$_POST['calendar']);
@@ -182,8 +194,9 @@ else {
                 </select>
                 </div>
                 <div>
-                    В работе<input type="checkbox" name="status" value="0" />
-                    Выполнена<input type="checkbox" name="status" value="1" />
+                    <div>В работе<br><input type="checkbox" name="status" value="0" /><br></div>
+                    <div>Выполнена<br><input type="checkbox" name="status" value="1" /><br></div>
+                    <div>Адресованные мне<br><input type="checkbox" name="mne" value="3"/></div>
                 </div>
                 <div><input type="submit" name="searchslu" value="Найти"/></div>
             </div>

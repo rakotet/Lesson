@@ -7,7 +7,7 @@ class DataBase  {
 
     public function connect() {
         try { // создаем объект подключения к базе
-            $this->bd = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''] ); // 1 передаем драйвер базы с именем сервера, 2 название базы данных, 3 пользователь, 4 пароль, 5 включение отображение ошибок
+            $this->bd = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''] ); // 1 передаем драйвер базы с именем сервера, 2 название базы данных, 3 пользователь, 4 пароль, 5 включение отображение ошибок, кодировка
         } catch (PDOException $e) {
             echo 'Ошибка при подключении к базе данных!';
         }
@@ -157,6 +157,17 @@ class DataBase  {
             $text = $row['text'].'</br></br>'.$login.': '.'</br>'.$text;
             $query = "UPDATE `secret_slujebka` SET `text` = '$text' WHERE `id` = '$id'";
             $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function searchSluMneStatus($login, $status) {
+        try {
+            $query = "SELECT * FROM `secret_slujebka` WHERE `list` = '$login' AND `status` = '$status' ORDER BY `data_create` DESC";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }
