@@ -28,7 +28,10 @@ if (isset($_GET['open'])) {
 if (isset($_POST['commit']) && $_POST['commit'] == 'Добавить комментарий') {
     $pdo->updateText($_COOKIE['id'], $_POST['text'], $_SESSION['login']);
     $_POST['commit'] = '';
+}
 
+if (isset($_POST['sign']) && $_POST['sign'] == 'Подписать') {
+    $pdo->sign($_GET['open'], $_SESSION['login']);
 }
 
 //Условия поиска по заданным значениям формы
@@ -235,10 +238,11 @@ else {
                         <p><?=$searchslu[$i]['text'].'</br>'?></p>
                         <p></p>
                         <div>
-                            <?php if (!isset($_GET['open'])) { ?>
+                            <?php if (!isset($_GET['open']) || isset($_POST['sign'])) { ?>
                                 <form method="post" action="?open=<?=$searchslu[$i]['id']?>">
                                 <input type="hidden" name="scroll" value="">
                                 <input class="commit" type="submit" name="commit" value="Комментарий"/>
+                                <input class="commit" type="submit" name="sign" value="Подписать"/>
                                 <p></p>
                                 </form>
                             <?php }
