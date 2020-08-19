@@ -189,9 +189,7 @@ class DataBase  {
     public function redirect($id, $list) {
         try {
             $query = "UPDATE `secret_slujebka` SET `list` = '$list' WHERE `id` = '$id'";
-            $query = $this->bd->query($query);
-            $row = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $row;
+            $this->bd->query($query);
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }

@@ -244,17 +244,19 @@ else {
                         <div>
                             <?php if (!isset($_GET['open']) || isset($_POST['sign']) || isset($_POST['redirect'])) { ?>
                                 <form method="post" action="?open=<?=$searchslu[$i]['id']?>">
-                                <input type="hidden" name="scroll" value="">
-                                <input class="commit" type="submit" name="commit" value="Комментарий"/>
-                                <input class="commit" type="submit" name="sign" value="Подписать"/>
-                                <input class="commit" type="submit" name="redirect" value="Направить"/>
-                                <select name="redirectList">
-                                    <option value=""></option>
-                                    <?php for ($i2 = 0; $i2 < count($userlist); $i2++) { ?>
-                                        <option value="<?=$userlist[$i2]['login']?>"><?=$userlist[$i2]['login']?></option>
+                                    <input type="hidden" name="scroll" value="">
+                                    <input class="commit" type="submit" name="commit" value="Комментарий"/>
+                                    <input class="commit" type="submit" name="sign" value="Подписать"/>
+                                    <?php if ($_SESSION['login'] == $searchslu[$i]['who_change']) { ?>
+                                        <input class="commit" type="submit" name="redirect" value="Направить"/>
+                                        <select name="redirectList">
+                                            <option value=""></option>
+                                            <?php for ($i2 = 0; $i2 < count($userlist); $i2++) { ?>
+                                                <option value="<?=$userlist[$i2]['login']?>"><?=$userlist[$i2]['login']?></option>
+                                            <?php } ?>
+                                        </select>
                                     <?php } ?>
-                                </select>
-                                <p></p>
+                                    <p></p>
                                 </form>
                             <?php }
                             else { ?>
