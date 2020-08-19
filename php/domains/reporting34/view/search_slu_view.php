@@ -34,6 +34,10 @@ if (isset($_POST['sign']) && $_POST['sign'] == 'Подписать') {
     $pdo->sign($_GET['open'], $_SESSION['login']);
 }
 
+if (isset($_POST['redirect']) && $_POST['redirectList'] !== '') {
+    $pdo->redirect($_GET['open'], $_POST['redirectList']);
+}
+
 //Условия поиска по заданным значениям формы
 if (isset($_POST['searchslu'])) {
 
@@ -197,8 +201,8 @@ else {
                 </select>
                 </div>
                 <div>
-                    <div>В работе<br><input type="checkbox" name="status" value="0" /><br></div>
-                    <div>Выполнена<br><input type="checkbox" name="status" value="1" /><br></div>
+                    <div>У меня в работе<br><input type="checkbox" name="status" value="0" /><br></div>
+                    <div>Выполненные<br><input type="checkbox" name="status" value="1" /><br></div>
                     <div>Адресованные мне<br><input type="checkbox" name="mne" value="3"/></div>
                 </div>
                 <div><input type="submit" name="searchslu" value="Найти"/></div>
@@ -238,11 +242,18 @@ else {
                         <p><?=$searchslu[$i]['text'].'</br>'?></p>
                         <p></p>
                         <div>
-                            <?php if (!isset($_GET['open']) || isset($_POST['sign'])) { ?>
+                            <?php if (!isset($_GET['open']) || isset($_POST['sign']) || isset($_POST['redirect'])) { ?>
                                 <form method="post" action="?open=<?=$searchslu[$i]['id']?>">
                                 <input type="hidden" name="scroll" value="">
                                 <input class="commit" type="submit" name="commit" value="Комментарий"/>
                                 <input class="commit" type="submit" name="sign" value="Подписать"/>
+                                <input class="commit" type="submit" name="redirect" value="Направить"/>
+                                <select name="redirectList">
+                                    <option value=""></option>
+                                    <?php for ($i2 = 0; $i2 < count($userlist); $i2++) { ?>
+                                        <option value="<?=$userlist[$i2]['login']?>"><?=$userlist[$i2]['login']?></option>
+                                    <?php } ?>
+                                </select>
                                 <p></p>
                                 </form>
                             <?php }

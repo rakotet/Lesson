@@ -186,6 +186,17 @@ class DataBase  {
         }
     }
 
+    public function redirect($id, $list) {
+        try {
+            $query = "UPDATE `secret_slujebka` SET `list` = '$list' WHERE `id` = '$id'";
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
     public function searchTopic($id) {
         try {
             $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
