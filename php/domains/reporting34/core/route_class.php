@@ -23,6 +23,10 @@ if (isset($_GET['f']) && $_GET['f'] == 'search') {
     header('Location: /view/search_slu_view.php'); // на поиск служебки
 }
 
+if (isset($_GET['f']) && $_GET['f'] == 'download') {
+    header('Location: /view/download_view.php'); // на загрузку файлов
+}
+
 if (isset($_POST['slujebka'])) { // запись служебки в базу данных
     $handlerSlu = new DataBase();
     $handlerSlu->connect();

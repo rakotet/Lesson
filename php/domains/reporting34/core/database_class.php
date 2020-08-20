@@ -154,7 +154,7 @@ class DataBase  {
             $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
             $result = $this->bd->query($query);
             $row = $result->fetch(PDO::FETCH_ASSOC);
-            $text = $row['text'].'</br></br>'.$login.': '.'</br>'.$text;
+            $text = $row['text'].'</br></br>'.'Комментарий от '.$login.': '.'</br>'.$text;
             $query = "UPDATE `secret_slujebka` SET `text` = '$text' WHERE `id` = '$id'";
             $this->bd->query($query);
         }catch (PDOException $e) {
@@ -167,7 +167,7 @@ class DataBase  {
             $query = "SELECT `text` FROM `secret_slujebka` WHERE `id` = '$id'";
             $result = $this->bd->query($query);
             $row = $result->fetch(PDO::FETCH_ASSOC);
-            $text = $row['text'].'</br></br>'.'Подписано: '.$login;
+            $text = $row['text'].'</br></br>'.'<b>Подписано</b>: '.$login;
             $query = "UPDATE `secret_slujebka` SET `text` = '$text' WHERE `id` = '$id'";
             $this->bd->query($query);
         }catch (PDOException $e) {

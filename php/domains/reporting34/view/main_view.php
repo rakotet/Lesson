@@ -19,6 +19,12 @@ require_once '../core/autch_class.php';
             <a href="../index.php?f=slu">Написать служебку</a>
         </div>
         <div>
+            <a href="../index.php?f=">Написать Акт 1С</a>
+        </div>
+        <div>
+            <a href="../index.php?f=download">Загрузить сканы логистов</a>
+        </div>
+        <div>
             <a href="../index.php?f=logout">Выход</a>
         </div>
     </div>
