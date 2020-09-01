@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Переменные и их типы</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        var b; // устаревшее объявление переменной, уже почти не используется, нужно использовать let
+        let a; // обявление переменной
+        a = 5; // инициализация переменной (присваивание значение), тип данных Number
+        console.log(a); // выводим переменную в консоль
+        a = 'Hello'; // тип данных String
+        console.log(a);
+        let name = 'Alex';
+        console.log(name);
+        let age = 18.7, single = true; // Number и Boolean, можно объявлять переменные через запятую
+        let str_1 = "${name}, Вам ${age} лет";
+        let str_2 = `${name}, Вам ${age} лет`; // `` Служат для вывода переменных в строках (как "" в php)
+        console.log(str_1);
+        console.log(str_2);
+
+        let inf = 1 / 0; // тип данных Infinity (Бесконечность)
+        console.log(inf);
+
+        let nan = 'abc' * 5; // тип данных NaN - не определенный тип данных (ни чего)
+        console.log(nan);
+
+        let und; // тип данных undefined (переменная не определенна)
+        console.log(und);
+
+        let n = null; // тип данных в виде пустого объекта (пустота)
+        console.log(n);
+
+        console.log(typeof (single)); // функция определяет тип переменной
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Преобразование типов</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let str = '12.5';
+        console.log(typeof(str));
+        let number = Number(str); // преобразуем строку в число
+        console.log(typeof(number));
+        console.log(Number('abc')); // будет NaN т.к. js не может определить такой тип
+        console.log(Number(true) + ' ' + Number(false)); // будет 1 и 0
+        console.log(Number('1') + Number('2') + ' number'); // складываем строки предварительно преобразовав их в числа, в рузультате складуются числа
+
+        console.log(String(true)); // преобразуем в строку
+
+        console.log(Boolean(15) + ' ' + Boolean('asd') + ' ' + Boolean(0) + ' ' + Boolean('')); // любое число или строка отличная от 0 или пустой строки будет true
+
+        console.log(+'15' + +'17');// если перед строкой поставить '+' то она преобразуется в число (более краткая запись, но менее читаемая)
+    </script>
+</head>
+<body>
+
+</body>
+</html>
