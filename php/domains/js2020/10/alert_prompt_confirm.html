@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Функции alert, prompt и confirm</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        alert('Hello');
+        let a = prompt('Введите первое число'); //записываем в переменную данные введенные пользователем всплывающем окне
+        let b = prompt('Введите второе число', '000'); //второй параметр задаёи значение по умолчанию в окне ввода
+        console.log(a);
+        a = Number(a);// преобразуем полученную строку в число
+        b = Number(b);
+        if (Number.isNaN(a)) alert('Некорректное первое число');
+        else if (Number.isNaN(b)) alert('Некорректное второе число');
+        else {
+            alert('Сумма этих чисел равна ' + (a + b));
+            let bool = confirm('Хотите узнать их произведение?'); // функция confirm даёт всплывающее окно с двумя вариантами ответа, возвращает true или false
+            if (bool) alert('Произведение этих чисел равно ' + (a * b));
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

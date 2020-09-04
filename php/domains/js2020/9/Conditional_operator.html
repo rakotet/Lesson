@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Условный оператор</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let a = 5;
+        if (a > 5) { // условный оператор if
+            console.log('Переменная а больше 5')
+        }
+        else if (a == 5) {
+            console.log('Переменная а = 5')
+        }
+        else {
+            console.log('Переменная а не больше 5')
+        }
+
+        let b = 0;
+        let result = (b != 0)? a / b : 0; // тернарный оператор (более краткая запись if else)
+        /* Ниже тоже самое но запись не тернарным оператором
+        * let result;
+        * if (b != 0) result = a / b;
+        * else result = 0
+        * */
+
+        //ниже более сложный пример тернарного оператора с if, else if, else
+        let lang = 'ru';
+        let str = (lang == 'ru')? 'Здравствуйте': (lang == 'en')? 'Hello' : (lang == 'fr')? 'Bonjour' : 'Неизвестный язык';
+        console.log(str);
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
