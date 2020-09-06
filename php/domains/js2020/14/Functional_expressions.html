@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Функциональные выражения</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        function hello() {
+            console.log('Выводим что нибудь в консоль')
+        }
+
+        console.log(hello); // по сути функция hello это объект и его можно вывести
+
+        let f = hello; // ссылку на функцию можно записать в переменную и эта переменная станет функцией записанной в нее
+        f();
+
+        let h = function () {
+            console.log('Функциональное выражение')
+        }
+        h();
+
+        function success(name) {
+            alert(`Спасибо, ${name}!`);
+        }
+        function error() {
+            alert('Некорректный ввод');
+        }
+        function errorName() {
+            alert('Некорректное имя');
+        }
+        function checkName(name, success, error) {
+            if (name.length >= 2) success(name);
+            else error();
+        }
+
+        let name = prompt('Введите имя: ');
+        checkName(name, success, error); // передаем в параметр функции другие функции (облегчает использование чужих или других методов и сокращает код, callback функция)
+
+        let func;
+        let  x = +prompt('Введите число:'); // Запрашиваем ввод от пользователя и преобразуем строку к числу
+        if (x < 0) func = function () {
+            alert('Вы ввели отрицательное чило');
+        }
+        else if (x == 0) func = function () {
+            alert('Вы ввели 0')
+        }
+        else func = function () {
+            alert('Вы ввели положительнео число');
+        }
+
+        func();
+    </script>
+</head>
+<body>
+
+</body>
+</html>

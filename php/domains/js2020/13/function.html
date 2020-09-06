@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Функции</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        const LENGTH = 2;
+        function hello() { // создаем функцию
+            console.log('hello')
+        }
+        function toLog(msg) {
+            console.log('Вывод в консоль внутри функции: ' + msg);
+        }
+
+        function sum(x, y, r = false) { // r = false это параметр по умолчанию, если мы не передаем его значение при вызове функции
+            let result = x + y;
+            if (r) return result; // возвращает значение (после вызова return работа функции прекращается)
+            toLog(result); // вызываем функцию внутри функции
+        }
+
+        function checkName(name) {
+            let c = name.length >= LENGTH;
+            return c;
+        }
+
+        hello(); // вызываем функцию
+        toLog('что - то'); // вызываем функцию с параметром
+        sum(10, 5);
+        let s = sum(15, 20, true); // записываем в переменную значение которое вернула функция sum
+        console.log(s);
+
+        let name = prompt('Введите имя: ');
+        if (checkName(name)) alert(`Спасибо, ${name}!`);
+        else alert(`Некорректное имя: минимальная длина ${LENGTH} символа`);
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Стрелочные функции</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        function sum(x, y, z) {
+            return x + y + z;
+        }
+        console.log(sum(5, 10 ,3));
+
+        // ниже тоже самое, но с использованием стрелочной функции
+        let sum2 = (x, y , z) => (x + y + z);
+        console.log(sum2(5, 10 ,3));
+
+        // ниже примеры стрелочных функций
+        let hello = () => console.log('hello');
+        hello();
+
+        let div = (x, y) => {
+            if (y == 0) return false;
+            return x / y;
+        }
+        console.log(div(10, 0));
+        console.log(div(10, 3));
+    </script>
+</head>
+<body>
+
+</body>
+</html>

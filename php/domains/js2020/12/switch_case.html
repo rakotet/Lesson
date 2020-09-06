@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Оператор switch-case</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let a = +prompt('Введите целое число от 1 до 5')
+        console.log(a + ' ' + typeof (a));
+        switch (a) {
+            case 1:
+                alert('Вы ввели один');
+                break;
+            case 2:
+                alert('Вы ввели два');
+                break;
+            case 3:
+                alert('Вы ввели три');
+                break;
+            case 4:
+            case 5:
+                alert('Вы ввели четыре или пять')
+                break;
+            default:
+                alert('Некорректный ввод')
+                break;
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Обработка ошибок через try-catch</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        function div(x, y) {
+            let result;
+            try {
+                if (y == 0) throw new Error('Деление на ноль'); // выбрасываем собственное исключение
+                result = x / y;
+                return result;
+            }
+            catch (e) {
+                console.log('Ошибка: ' + e.name);
+                console.log(e);
+            }
+            finally {
+                console.log('В любом случае, finally выполняется');
+            }
+        }
+
+        let d = div(10, 5);
+        console.log(d);
+
+        window.onerror = function (msg, url, line) { // выводим в сплывающем окне вообще все ошибки скрипта
+            alert(`Ошибка ${msg} на ${line} строке в файле ${url}`);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
