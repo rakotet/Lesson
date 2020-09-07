@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Массивы</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let arr = []; // создание пустого массива (let arr = new Array() - устаревшая запись создание пустого массива)
+        arr = ['Строка', 10, true, false, 'Alex']; // заполняем массив, в масиве могут хнаниться любые типы данных примитивные, массивы, объекты....
+        console.log(arr[1]); // выводим значение массива 10, у него индекс 1 т.к. у первого элемента массива индекс равен 0
+
+        arr[4] = 'John'; // меняем значение элемента в массиве
+        console.log(arr[4]);
+
+        arr[5] = '40'; // добавляем новый элемента массива
+        console.log(arr); // в консоль можно вывести массив без перебора циклом
+
+        function printArray(arr) { // пример вывода значений массива через цикл
+            console.log(`Длина массива: ` + arr.length);
+            for (let i = 0; i < arr.length; i++ ) {
+                console.log(`Элемент с индексом ${i} равен ${arr[i]}`);
+            }
+            for (let key in arr) { // можно переберать массивы через ключ-значение
+                console.log(`Элемент с индексом ${key} равен ${arr[key]}`);
+            }
+            for (let elem of arr) { // цикл выводит только значение элементов массива (как foreach в php)
+                console.log(`Элемент ${elem}`);
+            }
+        }
+
+        printArray(arr); // вызываем функцию и передаем в нее массив
+
+        function getAverageValue(arr) { // функция находит среднее значение, значений массива
+            let sum = 0;
+            for (let elem of arr) sum +=elem;
+            return sum / arr.length;
+        }
+
+        console.log('--------------------------------');
+        console.log('Сумма элементов массива [10, 10, 26] равна ' + getAverageValue([10, 10, 26]));
+
+        function getMaxValue(arr) { // функция находит максимальное значение элемента в массиве
+            let max = arr[0];
+            for (let elem of arr) {
+                if (elem > max) max = elem;
+            }
+            return max;
+        }
+
+        console.log('Максимальным элементом массива [10, 10, 26] является ' + getMaxValue([10, 10, 26]));
+        console.log('--------------------------------');
+
+        arr = [[1, 2, 3], [4, 5]]; // двумерный массив
+        console.log(arr[0][2]); // выводим цифру 3 из первого массива
+
+        for (let row in arr) { // перебор двумерного массива
+            for (let col in arr[row]) {
+                console.log(`Элемент с индоксом ${row},${col} равен ${arr[row][col]}`);
+            }
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
