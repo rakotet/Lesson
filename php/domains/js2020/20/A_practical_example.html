@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Практический пример</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let arr = [];
+        while (true) {
+            let code = prompt('Введите код операции\n(1 - добавить элемент; 2 - вывести массив; 3 - выход из цикла):');
+            if (code == '1') arr[arr.length] = prompt('Введите элемент:'); // добавляем элемент в конец массива
+            else if (code == '2') {
+                let str = '';
+                for (let index in arr) {
+                    str += `${index}-й элемент равен ${arr[index]}`;
+                    if (+index + 1 != arr.length) str += '\n'; // если это последний элемент массива, то не добавляем переход на новую строку
+                }
+                alert(str);
+            }
+            else if (code == '3') break;
+            else alert('Неизвестный код!');
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

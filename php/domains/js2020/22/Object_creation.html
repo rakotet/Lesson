@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Создание объекта</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let point = {}; // создание пустого объекта
+        point = { // инициализация объекта
+          x: 10, // название свойства объекта : значение свойства,
+          y: 20
+        };
+        console.log(point); // выводим объект в консоль
+        console.log(point.x); // выводим свойство объекта в консоль
+        console.log(point.y);
+        point.x = 15; // меняем свойство объекта
+        console.log(point.x);
+        point.z = 40; // добавляем новое свойство объекта
+        console.log(point);
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
