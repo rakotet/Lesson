@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Методы toString и valueOf</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        // В JS если мы пытаемся работать с объектом как с числом то автоматически вызывается метод toString, а если как с числом то valueOf
+        function Point(x, y) {
+            this.x = x;
+            this.y = y;
+            this.toString = function () { // Метод который есть в JS по умолчанию, служит для строкового вывода объектов, его можно переопределить как нам надо
+                return `Точка с координатами ${this.x} и ${this.y}`;
+            }
+            this.valueOf = function () { // Метод который есть в JS по умолчанию, служит для работы с объектом как с числом, его можно переопределить как нам надо
+                return Math.sqrt(this.x ** 2 + this.y ** 2);
+            }
+        }
+
+        let p = new Point(10, 20);
+        alert(p);
+        alert(Number(p));
+    </script>
+</head>
+<body>
+
+</body>
+</html>

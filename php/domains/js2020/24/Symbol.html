@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Symbol</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        /*Код стороннего разработчика: НАЧАЛО*/
+        let point = {
+            x: 10,
+            y: 20
+        }
+        point.z = 50;
+        /*Код стороннего разработчика: КОНЕЦ*/
+
+        // Что бы расширить или дополнить чужой код своим, не обходимо использовать специальную функцию Symbol
+        let z = Symbol();
+        point[z] = 100;
+
+        console.log('От стороннего разработчика свойство z: ' + point.z);
+        console.log('Наше добавленное свойство z через Symbol: ' + point[z]);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

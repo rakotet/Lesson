@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Создание конструктора и методов</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        // По сути конструктор это функция которая возвращвет некий объект (грубо это шаблон для создания объектов)
+
+        function Point(x, y) { // конструктор принято писать название с большой буквы
+            this.x = x; // this это ссылка на текущий объект
+            this.y = y;
+            this.print = function () {
+                console.log(`Точка с координатами ${this.x} и ${this.y}`);
+            }
+            this.distance = function () { // метод находит растояние до точки координатами
+                return Math.sqrt(this.x ** 2 + this.y ** 2);
+            }
+        }
+        let p = new Point(10, 20); // new это создание объекта
+        console.log(p.x + '; ' + p.y);
+        console.log(p);
+        p.print();
+        console.log(p.distance());
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

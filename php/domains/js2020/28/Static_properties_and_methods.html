@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Статические свойства и методы</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        // Статические свойства и методы принадлежат не объектам класса, а самим классам!!!
+        class Point {
+            static counter = 0; // статическое свойство класса (переменная)
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        console.log(Point.counter); // статические свойства и методы вызываются не через объект а через название класса
+    </script>
+</head>
+<body>
+
+</body>
+</html>
