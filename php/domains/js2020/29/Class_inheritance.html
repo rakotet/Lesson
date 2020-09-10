@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Наследование классов</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        class Shape {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            getDistance() {
+                return Math.sqrt(this.x ** 2 + this.y ** 2);
+            }
+
+            draw() {
+                console.log('Начало рисования');
+            }
+        }
+
+        class Point extends Shape { // наследуемся от другого класса ключевым словом extends, при этом копируются все свойства и методы класса родителя
+            draw() { // переопределяем родительский метод (полиморфизм)
+                console.log('Рисуем точку');
+            }
+        }
+
+        class Circle extends Shape {
+            constructor(x, y, r) {
+                super(x, y); // с помощью super обращаемся к родительскому конструктору и передаем в него переменные
+                this.r = r; // инициализируем новую уникальную переменную только этого класса
+            }
+
+            draw() {
+                super.draw(); // через super можно так же вызывать реализицию родительского метода
+                console.log('Рисуем окружность');
+            }
+        }
+
+        let s = new Shape(5, 7);
+        let p = new Point(15, 20);
+        let c = new Circle(10, 5, 30);
+
+        console.log(s);
+        console.log(p);
+        console.log(c);
+
+        console.log(s.getDistance());
+        console.log(p.getDistance());
+        console.log(c.getDistance());
+
+        s.draw();
+        p.draw();
+        c.draw();
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

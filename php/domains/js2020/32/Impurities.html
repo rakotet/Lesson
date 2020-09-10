@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Примеси</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        // Примеси нужны что бы уменьшить повторение кода и расширять разные не связанные классы
+
+        let log = { // примесь
+            toLog(str) {
+                console.log(str);
+            }
+        }
+
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.toLog('Создан новый объект Point');
+            }
+        }
+
+        class User {
+            constructor() {
+                this.toLog('Добавлен новый пользователь');
+            }
+        }
+
+        Object.assign(Point.prototype, log); // через глобальный объект Object добавляем примесь в наши классы
+        Object.assign(User.prototype, log);
+
+        let p = new Point();
+        p.toLog('Какая то запись'); // к примеси можно обращаться и за пределами класса если она добавленна в класс объекта
+    </script>
+</head>
+<body>
+
+</body>
+</html>

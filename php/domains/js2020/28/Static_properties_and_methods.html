@@ -11,10 +11,19 @@
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
+                Point.counter++; // теперь всякий раз как будет создаваться объект класса Point, counter(счетчик) будет увеличиваться на 1
+            }
+
+            static getCounter() { // создание статического метода класса
+                return Point.counter;
             }
         }
 
         console.log(Point.counter); // статические свойства и методы вызываются не через объект а через название класса
+        let p1 = new Point(5, 10);
+        console.log(Point.counter);
+        console.log(Point.getCounter()); // для вызова статического метода обращаемся к классу а не объекту
+
     </script>
 </head>
 <body>

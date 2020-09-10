@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Флаги свойств</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        let p = new Point(10, 20);
+        let descriptor = Object.getOwnPropertyDescriptor(p, 'x'); // статический метод класса Object который выводит все флаги и свойства переданного в него объекта и свойства переданного объекта
+        console.log(descriptor);
+        p.x = 15;
+
+        Object.defineProperty(p, 'x', { // меняем флаги свойств объекта с true по умолчанию, на false
+            writable: false, // флаг разрешаюший или запрещающий менять значение свойств объекта
+            enumerable: false, // флаг разрешаюший или запрещающий переберать свойства объекта
+            configurable: true // флаг разрешаюший или запрещающий удалять свойства объекта
+        });
+
+        for (let field in p) console.log(field);
+
+        //p.x = 25; Ошибка если writable false
+
+        delete p.x; // так можно удалить свойство объекта
+
+        console.log(p);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

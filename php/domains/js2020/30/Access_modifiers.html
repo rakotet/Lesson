@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Модификаторы доступа</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        class Point {
+            constructor(x, y) {
+                this._x = x; // защищенные переменные от изменения (свойства объекта)(аналог protected)
+                this._y = y;
+            }
+
+            getX() {
+                return this._x;
+            }
+
+            getY() {
+                return this._y;
+            }
+
+            setX(coor) { // сеттеры нужны для изменения состояния свойств объектов (можно менять сразу с проверкой какой либо)
+                if (this.checkCoor(coor)) this._x = coor;
+            }
+
+            setY(coor) {
+                if (this.checkCoor(coor)) this._y = coor;
+            }
+
+            checkCoor(coor) {
+                if (coor < 0) throw new Error('Отрицательные координаты не поддерживаются!');
+                return true;
+            }
+
+        }
+
+        let p = new Point(10, 20);
+        console.log(p.getX());
+        console.log(p.getY());
+
+        try { // обрабатываем наше исключение указанное в методе checkCoor
+            p.setX(-25);
+        } catch (e) {
+            console.log(e);
+        }
+
+        console.log(p.getX());
+
+        try { // обрабатываем наше исключение указанное в методе checkCoor
+            p.setY(50);
+        } catch (e) {
+            console.log(e);
+        }
+
+        console.log(p.getY());
+    </script>
+</head>
+<body>
+
+</body>
+</html>

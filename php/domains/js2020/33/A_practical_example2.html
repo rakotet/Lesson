@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Практический пример 2</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let log = {
+            log(msg) {
+                console.log(msg);
+            }
+        }
+
+        class User {
+
+            static MIN_LENGTH = 3;
+            static MIN_LENGTH_PASSWORD = 6;
+            _login = '';
+            _password = '';
+            _firstname = '';
+            _surname = '';
+            _auth = false;
+
+            constructor() {
+                this.log('Создан новый объект User');
+            }
+
+            setLogin(login) {
+                if (login.length < User.MIN_LENGTH) throw  new Error('Логин слишком короткий');
+                this._login = login;
+            }
+
+            setPassword(password) {
+                if (password.length < User.MIN_LENGTH_PASSWORD) throw  new Error('Пароль слишком короткий');
+                this._password = password;
+            }
+
+            setFirstname(firstname) {
+                if (firstname.length < User.MIN_LENGTH) throw  new Error('Имя слишком короткое');
+                this._firstname = firstname;
+            }
+
+            setSurname(surname) {
+                if (surname.length < User.MIN_LENGTH) throw  new Error('Фамилия слишком короткая');
+                this._surname = surname;
+            }
+
+            get name() {
+                return this._firstname + ' ' + this._surname;
+            }
+
+            auth() {
+                this.log('Соединение с базой данных для авторизации');
+                let result = (this._login == 'admin' && this._password == '123456');
+                if (result) {
+                    this._auth = true;
+                    this.log('Авторизация у пользователя ' + this._login + ' прошла успешна');
+                }
+                else this.log('Ошибка авторизации ' + this._login);
+                return result;
+            }
+
+            logout() {
+                if (this._auth) {
+                    this._auth = false;
+                    this.log('Пользователь ' + this._login + ' вышел из системы');
+                }
+            }
+        }
+
+        Object.assign(User.prototype, log);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
