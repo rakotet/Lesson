@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Строковые функции</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let str = 'Слово в \'кавычках\', слешь \\ и символ unicode \u23F1 \u0BF6';
+        console.log(str);
+        console.log(str.length); // свойство строк, возвращает длину строки
+        console.log(str[0]); // к строкам можно обращаться как к массивам
+        console.log(str.codePointAt(0)); // выводит юникод символа переданного индекса строки
+
+        console.log('абвгд' < 'ббвгд'); // строки сравниваются по значениям юникода первых символов
+
+        console.log(str.indexOf('с')); // возвращает индекс символа в строке
+        console.log(str.indexOf('с', 25)); // с какого индекса начинать поиск символа в строке
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

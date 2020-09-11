@@ -65,10 +65,26 @@
                     this._auth = false;
                     this.log('Пользователь ' + this._login + ' вышел из системы');
                 }
+                else throw new Error('Пользователь еще не авторизован');
             }
         }
 
-        Object.assign(User.prototype, log);
+        Object.assign(User.prototype, log); // добавляем примесь в класс
+
+        try {
+            let user = new User();
+            user.setLogin('admin');
+            user.setPassword('123456');
+            user.setFirstname('Геннадий');
+            user.setSurname('Иванов');
+            console.log(user.name);
+
+            user.auth();
+            user.logout();
+            //user.logout();
+        } catch (e) {
+            console.log(e);
+        }
     </script>
 </head>
 <body>
