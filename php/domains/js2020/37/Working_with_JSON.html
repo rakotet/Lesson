@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Работа с JSON</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        class Circle {
+            constructor(p, r) {
+                this.p = p;
+                this.r = r;
+                this.color = ['red', 'green', 'blue'];
+            }
+        }
+
+        let p = new Point(5, 10);
+        let c = new Circle(p, 20);
+        console.log(p);
+        console.log(c.p.x); // вызываем свойство объекта через другой объект который является свойством объекта
+
+        let json = JSON.stringify(c); // кодируем объект в json строку
+        console.log(json);
+
+        let obj = JSON.parse(json); // декодируем json строку обратно в объект
+        console.log(obj);
+        console.log(obj.color);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
