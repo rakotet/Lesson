@@ -9,11 +9,45 @@
         console.log(x);
         console.log(y);
 
-        let array = [x=10, z=15, 5, 7, 10];
+        let array = [10, 15, 5, 7, 10];
 
         console.log(array);
         console.log(array.length); // возвращает длину массива
 
+        array.push(15); // добавляет значение аргумента в конец массива
+        console.log(array);
+
+        array.unshift(7); // добавляет значение аргумента в начало массива
+        console.log(array);
+
+        array.pop(); // удаляет последний элемент массива и возвращает его
+        console.log(array);
+
+        array.shift(); // удаляет первый элемент массива
+        console.log(array);
+
+        console.log('---------------------------------------');
+
+        console.log(array.indexOf(10)); // возвращает индекс значения аргумента в массиве
+        console.log(array.indexOf(10, 2)); // возвращает индекс значения 1 аргумента в массиве, 2 начиная с элемета с индексом 2
+        console.log(array.lastIndexOf(10)); // возвращает индекс значения аргумента в массиве, начинает поиск с конца строки
+        console.log(array.indexOf(9)); // если элемент не найден то возвращает -1
+
+        let points = [
+            {x: 5, y:10},
+            {x: 7, y:15},
+            {x: 5, y:23}
+        ];
+
+        function filter(item, index, array) {
+            return item.x == 5;
+        }
+
+        console.log(points.find(filter)); // метод для запуска метода написанного нами для какого то объекта (в основном поиск и перебор)
+        console.log(points.findIndex(filter)); // возвращаем индекс объекта найденного в массиве
+
+        let pointsFilter = points.filter(filter); // возвращает отсортированный массив по заданному нами правилу
+        console.log(pointsFilter);
     </script>
 </head>
 <body>
