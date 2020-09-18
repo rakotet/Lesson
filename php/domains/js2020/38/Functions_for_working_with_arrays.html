@@ -40,14 +40,18 @@
         ];
 
         function filter(item, index, array) {
-            return item.x == 5;
+            return item.x === 5;
         }
 
         console.log(points.find(filter)); // метод для запуска метода написанного нами для какого то объекта (в основном поиск и перебор)
         console.log(points.findIndex(filter)); // возвращаем индекс объекта найденного в массиве
 
-        let pointsFilter = points.filter(filter); // возвращает отсортированный массив по заданному нами правилу
+        let pointsFilter = points.filter(filter); // возвращает отсортированный массив по заданному нами правилу со всеми объектами
         console.log(pointsFilter);
+
+        console.log('---------------------------------------');
+
+
     </script>
 </head>
 <body>
