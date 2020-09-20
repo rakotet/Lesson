@@ -39,15 +39,48 @@
             {x: 5, y:23}
         ];
 
-        function filter(item, index, array) {
-            return item.x == 5;
+        function filter(item) {
+            return item.x === 5;
         }
 
         console.log(points.find(filter)); // метод для запуска метода написанного нами для какого то объекта (в основном поиск и перебор)
         console.log(points.findIndex(filter)); // возвращаем индекс объекта найденного в массиве
 
-        let pointsFilter = points.filter(filter); // возвращает отсортированный массив по заданному нами правилу
+        let pointsFilter = points.filter(filter); // возвращает отсортированный массив по заданному нами правилу со всеми объектами
         console.log(pointsFilter);
+
+        console.log('---------------------------------------');
+
+        console.log(array);
+        console.log(array.sort()); // сортирует массив по возрастанию юникода символов
+
+        array.sort(function (item1, item2) { // функция sort может принимать в качесте правила сортировки другую функцию
+            return item1 - item2; // возвращаем положительное число если 1 итем больше второго, тоесть сортируем массив по возрастанию
+        })
+        console.log(array);
+
+        console.log('---------------------------------------');
+
+        array = array.concat([2, 3], [3, 5]); // возвращает один массив (склеивает разные массивы в один)
+        console.log(array);
+
+        array.splice(5); // берет первые элементы исходного массива, количество указывается в аргументе, и возвращает в виде нового массива
+        console.log(array);
+        array.splice(3, 1); // удаляет количество элементов массива указанного во втором аргументе, начина с индекса указанного в первом аргументе
+        console.log(array);
+        array.splice(2, 2, 100, 200, 300); // заменяем удаленные элементы массива указанными, начиная с третьего аргумента метода
+        console.log(array);
+
+        console.log('---------------------------------------');
+
+        let str = '15,30,40,25,7';
+        array = str.split(','); // переводит строку в массив, в аргумент передается разделитель элементов
+        console.log(array);
+
+        array = array.map(function (item, index, array) { // переводим все элементы массива из строк в числа, использую map в который передаём функцию
+            return Number(item);
+        });
+        console.log(array);
     </script>
 </head>
 <body>

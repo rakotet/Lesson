@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Объект Map</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        // Map служит для создания массивов, в которых индексы элементов не цифры а строки
+
+        let m = new Map(); // создаём объект класса Map
+
+        m.set('name', 'Alex'); // 1 аргумент - ключ, 2 аргумент - значение ключа массива
+        m.set('age', '25');
+        m.set('single', true);
+
+        console.log(m); // В итоге получили массив ключ-значение в объекте типа Map
+        console.log(m.size); // количество элементов объекта
+        console.log(m.get('name')); // обращаемся к свойству объекта через get метод
+        console.log(m.has('single')); // проверяет есть ли данный ключ в объекте
+        m.delete('single'); // удаляет ключ
+        console.log(m);
+        m.set('single', false); // добавляем новый ключ-значение в объект Map, если такой ключ уже есть, тогда перезаписываем его значение
+
+        console.log('------------------------');
+
+        for (let k of m.keys()) { // выводим все ключи объекта через метод keys который возвращает массив ключей
+            console.log(k);
+        }
+
+        for (let v of m.values()) { // выводим все значени объекта через метод values который возвращает массив значений
+            console.log(v);
+        }
+
+        console.log('------------------------');
+
+        for (let entries of m.entries()) { // выводим все ключ-значени объекта через метод entries который возвращает массив ключ-значений
+            console.log(`Ключ ${entries[0]} и значение ${entries[1]}`);
+        }
+
+        m.clear(); // очищает объект от всех ключей и значений
+        console.log(m);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
