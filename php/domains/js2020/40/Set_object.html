@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Объект Set</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        //Set очень похож на обычный массив, но это такой массив в котором не могут быть повторные значения, так же у множества нет индексов значений
+        let s = new Set([20, 30, 40, 20]); // в качесте параметра принимает массив, который уже формирует в объект типа Set
+        console.log(s); // последний элемент не выведется т.к. он повторный
+        s.add(15); // добавляем новый элемент
+        console.log(s);
+        console.log(s.size); // колличество элементов
+        console.log(s.has(30)); // есть ли такой элемент в множестве
+        s.delete(30);
+        console.log(s);
+        for (let v of s) console.log(v); // перебираем и выводим значения множества
+        s.clear(); // очищаем значения множества
+        console.log(s);
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
