@@ -5,6 +5,49 @@
     <title>Функции для работы с датой и временем</title>
     <script>
         'use strict'; // Включение строгого режима типизации
+        let date = new Date(); // создаём объект встроенного объекта Date
+        console.log(date);
+        console.log(date.getTime()); // возвращает колличество мили-секунд прошедших с 01.01.1970г 00:00:00 дата начала Unix систем
+
+        // нумерация месяцев в js начинается с 0 поэтому декабрь будет 11 месяц
+
+        console.log(date.getFullYear()); // возвращает текущий год
+        console.log(date.getMonth()); // возвращает текущий месяц
+        console.log(date.getDate()); // возвращает текущий день
+        console.log(date.getHours());
+        console.log(date.getMinutes());
+        console.log(date.getSeconds());
+        console.log(date.getDay());
+
+        console.log(date.getUTCFullYear()); // getUTC возвращает время по Гринвичу
+        console.log('-----------------------------')
+
+        // устанавливаем новую дату через метод set
+        date.setFullYear(2021);
+        date.setMonth(2);
+        date.setDate(21);
+        date.setHours(15);
+        date.setMinutes(14);
+        date.setSeconds(20);
+        date.setMilliseconds(0);
+        console.log(date);
+        console.log('-----------------------------')
+
+        date = new Date(86400000); // создаём объект с параметром (передаем колличество миллисекунд прошедших с 01.01.1970г 00:00:00) который будет устанавливать дату
+        console.log(date);
+
+        date = new Date(2020, 1, 27, 12, 40, 50, 100); // можно задать дату объекта Date и так, используя значения год, месяц, цисло, день, час, минута, секунда
+        console.log(date);
+
+        date.setDate(date.getDate() + 5); // прибавляем в дате в объекте + пять дней
+        console.log(date);
+        console.log('-----------------------------')
+
+        // для парсенга дат в js используется формат YYYY-MM-DDTHH:mm:ss.sss:+-hh:mm
+
+        let ms = Date.parse('2022-12-31T23:59:59.999+03:00');
+        console.log(new Date(ms));
+
 
     </script>
 </head>

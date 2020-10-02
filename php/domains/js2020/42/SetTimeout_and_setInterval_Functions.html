@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Функции setTimeout и setInterval</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let c = 0;
+
+        function toLog(msg) {
+            console.log(msg);
+        }
+
+        function forInterval() {
+            c++;
+            console.log('Start interval: ' + c);
+            if (c < 10) setTimeout(forInterval, 500)
+        }
+
+        setTimeout(toLog, 3000, Math.random()); // первый параметр это имя функции, второй через какое время запустить переданную функцию (в миллисекундах), третий, четвертый и т.д параметры это аргументы передаваемой функции
+        setTimeout(() => toLog(Math.random()), 2000); // можно записать и так
+
+        let tid = setTimeout(toLog, 3000, Math.random());
+        clearTimeout(tid); // отменяем этот таймаут, можно использовать дальше в коде
+
+        console.log('------------------');
+
+        let iid = setInterval(forInterval, 500); // запускает переданную функцию через заланный во второй аргументе интервал
+        clearInterval(iid);
+
+        // использовать setInterval опасно, поэтому просто setTimeout внутри вызываемой функции
+
+        setTimeout(forInterval, 500);
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
