@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Практический пример 3</title>
+    <script>
+        // Анализируем функцию Random, насколько точно она генерирует значения 50 на 50
+        //let start = Date.now(); (Date.now() - start) спомощью этой конструкции можно узнать общее время работы искрипта или отдельной функции
+
+        'use strict'; // Включение строгого режима типизации
+
+        let start = Date.now(); // Аналог let start = (new Date()).getTime(); // количество миллисекунд в момент начала работы программы (текущее время)
+
+        const MIN = 1;
+        const MAX = 2;
+        const COUNT = 5000; // количество выполнений функции
+        const DELAY = 1; // Timeout выполнения
+        let data = []; // массив в который записываем полученный результат
+        let c = 0; // счетчик колличества выполненных итераций
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min; // генерируем случайные числи в диапазоне от min до max
+        }
+
+        function add() {
+            if (c < COUNT) { // выполняем пока счетчик не дойдет до заданного колличества итераций
+                c++;
+                let n = random(MIN, MAX);
+                console.log(n);
+                data.push(n); // добавляем полученное случайное число из диапазона в массив
+                setTimeout(add, DELAY); // вызывем функцию через заданный таймаут
+            }
+            else annalysis();
+        }
+
+        function annalysis() {
+            console.log(data);
+            let map = new Map();
+            for (let v of data) {
+                if (map.has(v)) map.set(v, map.get(v) + 1);
+                else map.set(v, 1);
+            }
+            console.log('------------------------------------');
+            for (let entry of map) {
+                console.log(entry[0] + ' - ' + entry[1]);
+            }
+
+            console.log('Общее время работы скрипта: ' + (Date.now() - start) / 1000 + ' сек'); // от текущего времени отнимаем время старта скрипта и находим время выполнения скрипта
+        }
+
+        setTimeout(add, DELAY);
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

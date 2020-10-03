@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Навигация по дереву элементов</title>
+</head>
+<body>
+    <h1>Заголовок статью</h1>
+    <p>Текст статьи...</p>
+    <p>Текст статьи...</p>
+    <ul>
+        <li>Раз</li>
+        <li>Два</li>
+        <li>Три</li>
+    </ul>
+    <p>Текст <strong>статьи</strong>....</p>
+    <script>
+        // Такой способ навигации по DOM дереву уже не используется, но дает понимание как это работает
+
+        'use strict';
+        console.log(document.documentElement); // получаем весь HTML документ
+        console.log(document.head);
+        console.log(document.body);
+
+        console.log('---------------');
+
+        for (let node of document.body.childNodes) { // перебираем и выводим все дочерние элементы body
+            console.log(node);
+            if (node.nodeName == 'UL') {
+                console.log(node.childNodes);
+            }
+        }
+
+        console.log('---------------');
+
+        console.log(document.body.childNodes[7]); // к элементам страницы можно обращатсья как с элементам массива, начинаются с 0, пробелы перед тегами тоже считаются элементами
+        console.log(document.body.childNodes[7].childNodes[3]); // выводим элемент в элементе
+        console.log(document.body.childNodes[7].childNodes[3].nextSibling); // выводи следующий элемент через nextSibling
+        console.log(document.body.childNodes[7].childNodes[3].nextSibling.nextSibling);
+        console.log(document.body.childNodes[7].childNodes[3].previousSibling); // выводим предыдущий элемент через previousSibling
+        console.log(document.body.childNodes[7].childNodes[3].previousSibling.previousSibling);
+        console.log(document.body.childNodes[7].childNodes[3].parentNode); // выводим родителя элемента через parentNode
+
+        console.log('---------------');
+
+        let elem = document.body.childNodes[7];
+
+        elem.innerHTML = '<li>1</li><li>2</li><li>3</li>'; // свойство innerHTML даёт доступ к содержимому элемента, и позволяет его менять
+
+    </script>
+</body>
+</html>

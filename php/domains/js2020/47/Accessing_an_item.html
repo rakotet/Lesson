@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Получение доступа к элементу</title>
+</head>
+<body>
+    <h1 id="header">Заголовок статью</h1>
+    <p class="test">Текст статьи...</p>
+    <p>Текст статьи...</p>
+    <ul class="test">
+        <li>Раз</li>
+        <li>Два</li>
+        <li>Три</li>
+    </ul>
+    <p>Текст <strong>статьи</strong>....</p>
+    <script>
+        'use strict';
+        let header = document.getElementById('header'); // получаем доступ к нужному элементу через его id
+        header.innerHTML = 'Новый заголовок';
+
+        let elements = document.querySelectorAll('ul li'); // получаем доступ к нужным элементам через селектор CSS
+
+        for (let elem of elements) { // выводим все элементы записанные в переменную
+            console.log(elem);
+            elem.style.color = '#0c0'; // меняем цвет элементов, поместив в него CSS стиль
+            console.log(elem.closest('.test').nodeName); // ищет предков нашего элемента, но только с указанным class
+        }
+
+        console.log(document.querySelector('.test').nodeName); // возвращает первый элемент удовлетворяющий class
+    </script>
+</body>
+</html>

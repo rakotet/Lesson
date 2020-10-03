@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Объекты Intl</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let str_1 = 'ё';
+        let str_2 = 'я';
+        console.log(str_1 > str_2); // ё больше потому что находится дальше по списку в таблице юникода
+
+        let arr = ['Ёлка', 'Ягода', 'Апельсин', 'Береза'];
+        console.log(arr.sort()); // сортировка не правильно работает потому что сортировка идет по юникоду а не по русскому алфовиту
+
+        let collator = new Intl.Collator(); // создаём объект для верной сортировки по нашей локали
+
+        console.log(arr.sort( // сортируем через созданную функцию использующую объект collator, теперь сортировка будет идти по локали пользователя
+        function (item1, item2) {
+            return collator.compare(item1, item2)
+        }));
+
+        let dtfru = new Intl.DateTimeFormat('ru-RU'); // создаём объект Intl для правильного отображения даты для русской локали
+        let dtfen = new Intl.DateTimeFormat('en-EN', { // первый параметр локаль, второй не обязательный это передаваемый объект который отвечает за формат даты
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        });
+
+        console.log(dtfru.format(new Date())); // выводим текущию дату используя объект Intl.DateTimeFormat для правильного вывода даты в заданной локали
+        console.log(dtfen.format(new Date()));
+
+        let nfru = new Intl.NumberFormat(); // если не указывать параметры объекта, то он берет локаль пользователя, создаем объект для Intl для чисел
+        let nfen = new Intl.NumberFormat('en-EN', {
+            style: 'currency',
+            currency: 'EUR'
+        });
+
+        console.log(nfru.format(38592395329.39)); // будет русский формат числа
+        console.log(nfen.format(38592395329.39)); // будет английский формат числа + значек валюты указанный в параметре объекта
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
