@@ -3,10 +3,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Управление атрибутами элемента</title>
+    <style>
+        .big {
+            font-size: 500%;
+        }
+    </style>
 </head>
 <body>
-    <h1 id="header">Заголовок статью</h1>
-    <p class="test">Текст статьи...</p>
+    <h1 data-id="1">Заголовок статьи</h1>
+    <p class="test" style="font-size: 150%;">Текст статьи...</p>
     <p>Текст статьи...</p>
     <ul class="test">
         <li>Раз</li>
@@ -14,9 +19,31 @@
         <li>Три</li>
     </ul>
     <p>Текст <strong>статьи</strong>....</p>
+    <p>Небольшая <a href="https://1.ru">ссылка</a></p>
+    <p>Ещё <a href="https://2.ru">ссылка</a></p>
     <script>
         'use strict';
+        let element = document.querySelector('h1'); // получаем доступ к элементу h1
+        console.log(element.hasAttribute('data-color')); // проверям есть ли у тега h1 атрибут data-color (вернет false т.к. данного атрибута нет)
+        console.log(element.hasAttribute('data-id')); // вернет true
+        console.log(element.getAttribute('data-id')); // возвращает значение атрибута тега
 
+        element.setAttribute('data-id', '5'); // меняем значение атрибута тега
+        console.log(element.getAttribute('data-id'));
+
+        element.removeAttribute('data-id'); // удаляем атрибут тега
+        console.log(element.hasAttribute('data-id'));
+
+        for (let attr of document.querySelector('p.test').attributes) { // выводим все атрибуты тега
+            console.log(attr);
+        }
+
+        let elements = document.querySelectorAll('a'); // получаем доступ к всем ссылкам на странице
+        for (let a of elements) {
+            a.setAttribute('target', '_blank'); // довабляем новый атрибут к всем ссылкам на странице
+        }
+
+        document.querySelector('h1').classList.add('big'); // добавляем новый CSS класс к тегу
     </script>
 </body>
 </html>

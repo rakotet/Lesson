@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Добавление и удаление элементов</title>
+</head>
+<body>
+    <h1>Заголовок статью</h1>
+    <p>Текст статьи...</p>
+    <p>Текст статьи...</p>
+    <ul>
+        <li>Раз</li>
+        <li>Два</li>
+        <li>Три</li>
+    </ul>
+    <p>Текст <strong>статьи</strong>....</p>
+    <p>Небольшая <a href="https://1.ru">ссылка</a></p>
+    <p>Ещё <a href="https://2.ru">ссылка</a></p>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        let p = document.createElement('p');
+        p.innerHTML = 'Это строка добавленна через <strong>JavaScript</strong>';
+
+        //Созданный элемент один!!! и если хотим вставить его в несколько мест, то нужно его клонировать!
+
+        document.body.append(p); // добавляем созданный элемент 'p' в конец body через метод append
+        document.body.prepend(p); // добавляет созданный элемент в начало элемента body
+
+        document.querySelector('ul').before(p); // дабавляет наш созданный элемент выше указанного элемента (не внутри, как предыдущие методы)
+        document.querySelector('ul').after(p); //  дабавляет наш созданный элемент ниже указанного элемента (не внутри, как предыдущие методы)
+
+        document.querySelector('ul').insertAdjacentHTML('beforebegin','<p style="color:red;">Вставка через insertAdjacentHTML</p>'); // служит для вставки HTML кода, 1 куда вставляем, 2 что вставляем, если 4 варианта куда вставить
+        document.querySelector('ul').insertAdjacentHTML('afterend','<p style="color:red;">Вставка через insertAdjacentHTML</p>'); // вставить после элемента
+        document.querySelector('ul').insertAdjacentHTML('afterbegin','<li style="color:red;">Вставка через insertAdjacentHTML</li>'); // вставить в начало текущего элемента
+        document.querySelector('ul').insertAdjacentHTML('beforeend','<li style="color:red;">Вставка через insertAdjacentHTML</li>'); // вставить в конец текущего элемента
+
+        // Далее удаление элементов
+        document.querySelector('a').remove(); // удаляем первую ссылку (элемент удалён совсем)
+
+        let ul = document.querySelector('ul').cloneNode(true); // клонируем элемент со всем содержимым если true, если false копируем просто сам элемент
+
+        document.body.append(ul); // добавляем элемент в конец body
+
+    </script>
+</body>
+</html>

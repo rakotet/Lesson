@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Работа со стилями элементов</title>
+    <style>
+        #header {
+            font-size: 500%;
+        }
+    </style>
+</head>
+<body>
+<h1 id="header">Заголовок статьи</h1>
+<p >Текст статьи...</p>
+<p>Текст статьи...</p>
+<ul>
+    <li>Раз</li>
+    <li>Два</li>
+    <li>Три</li>
+</ul>
+<p>Текст <strong>статьи</strong>....</p>
+<p>Небольшая <a href="https://1.ru">ссылка</a></p>
+<p>Ещё <a href="https://2.ru">ссылка</a></p>
+<script>
+    'use strict';
+    let h1 = document.querySelector('#header'); // получаем доступ к элементу h1
+    h1.style.fontSize = '100%'; // меняем размер элемента
+    h1.style.color = 'red'; // меняем цвет элемента
+
+    for (let elem of document.querySelectorAll('p')) { // получаем доступ ко всем тегам 'p' на странице
+        elem.style.fontStyle = 'italic'; // меняем шрифт всех тегов 'p' на странице
+    }
+
+    function hide() { // функция постепенно затемняет body до полной непрозразности
+        let opacity = Number(document.body.style.opacity); // записываем в переменную текущее значение прозрачности элемента
+        opacity -= 0.01; // уменьшаем не прозрачность элемента
+        if (opacity <= 0) opacity = 0; //что бы не уйти в минусовые значения
+
+        document.body.style.opacity = opacity;
+        console.log(opacity);
+        if (opacity > 0) setTimeout(hide, 100); // вызываем функцию каждые 10 миллисекунд, пока выполняется условие (рекурсия, функция вызывает сама себя)
+    }
+
+
+    document.body.style.opacity = 1; // задаем тегу body полную непрозрачность
+    hide();
+</script>
+</body>
+</html>
