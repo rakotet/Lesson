@@ -3,11 +3,46 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Практический пример 4</title>
+    <style>
+        #user-template {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    <h1>Пользователи</h1>
+    <div id="user-template">
+        <p><strong>Имя: </strong><span class="name"></span></p>
+        <p><strong>Возраст: </strong><span class="age"></span> лет</p>
+        <p><strong>Холост: </strong><span class="single"></span></p>
+        <hr />
+    </div>
     <script>
+        // Вывод случайно сгенерированных объектов в HTML документ
         'use strict';
 
+        let count = 10;
+        let names = ['Алексей', 'Владимир', 'Михаил', 'Ольга', 'Елена', 'Константин'];
+        let users = [];
+
+        for (let i = 0; i < count; i++) { // создаем объект случайный пользователь 10 раз
+            let user = {
+                name: names[Math.floor(Math.random() * names.length)], // случайный индекс массива от 0 до 5
+                age: Math.floor(Math.random() * 100) + 1, // случайный возраст от 1 до 100
+                single: Math.random() > 0.5 // случайное true или false
+            };
+            users.push(user); // добавляем в массив наш случайно сгенерированный объект user
+        }
+        console.log(users);
+
+        for (let user of users) {
+            let template = document.getElementById('user-template').cloneNode(true); // копируем блок div со всем содержимым (внутренними блоками) блоки копируются вместе со своими стилями и атрибутами
+            template.removeAttribute('id'); // удаляем атрибут блока id
+            template.querySelector('.name').innerHTML = user.name; // находим нужный класс в теги и записываем в его значение свойство объекта user
+            template.querySelector('.age').innerHTML = user.age;
+            template.querySelector('.single').innerHTML = (user.single)? 'Да' : 'Нет'; // используем тернарный оператор (если свойство объекта true то 'да' если false то 'нет')
+            document.body.append(template); // выводим настраницу в конец тега body
+        }
     </script>
 </body>
 </html>
