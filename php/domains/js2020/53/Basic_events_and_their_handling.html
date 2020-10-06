@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Базовые события и их обработка</title>
+</head>
+<body>
+<!--    Есть основных три способа повесить обработчик события на кнопку-->
+    <button onclick="handlerButton1(this)">Кнопка 1</button> <!--первый способ это выполнение переданной функции через атрибут тега onclick (при нажатии на кнопку)-->
+    <button id="button2">Кнопка 2</button>
+    <button id="button3">Кнопка 3</button>
+    <script>
+        'use strict';
+        function handlerButton1(obj) { // при нажатии на кнопку выводим содержимое тега
+            console.log(obj.innerHTML);
+        }
+
+        // второй метод повесить обработчик
+
+        function handlerButton2(event) {
+            console.log(event); // выводим информацию о событии
+            console.log(event.target.innerHTML); // выводим содержимое элемента
+        }
+
+        document.getElementById('button2').onclick = handlerButton2; // при клике на элемент вызывается обработчик события handlerButton2
+
+        // третий метод повесить обработчик, можно вешать сразу несколько обработчиков
+
+        document.getElementById('button3').addEventListener('click', handlerButton3); // 1 аргумент - событие, 2 аргумент это вызываемая функция при событии
+
+        function handlerButton3(event) {
+            console.log(event.target.innerHTML);
+        }
+
+        document.getElementById('button3').removeEventListener('click', handlerButton3); // удаляем событие, 1 арг - удаляемое событие, 2 - какую функцию
+
+    </script>
+</body>
+</html>

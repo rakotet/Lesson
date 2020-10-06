@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Браузерные события</title>
+    <script>
+        'use strict';
+
+        function myClick() {
+            if (confirm('Вы уверенны, что хотите перейти по ссылке?')) return true;
+            return false;
+        }
+
+        function clickLink(event) {
+            event.preventDefault(); // отменяет стандартное браузерное события для этого события (отменяет переход по ссыле в нашем случае)
+            console.log('Клик по ссылке: ' + event.target); // выводим строку + содержимое ссылки
+        }
+
+        console.log(document.querySelector('a')); // выведится null т.к. мы не имеем доступа к элементу т.к. он еще не загрузился
+
+        document.addEventListener('DOMContentLoaded', function (event) { // обработчик события, срабатывает когда HTML документ полностью загружен
+            console.log('Документ полностью загружен');
+            for (let a of document.querySelectorAll('a')) { // получаем доступ ко всем элеменном 'a'
+                if (!a.onclick) a.addEventListener('click', clickLink); // если в теге 'a' нет атрибута onclick, тогда вешаем слушатель события
+            }
+        });
+
+        console.log(document.querySelector('a')); // выведится null т.к. мы не имеем доступа к элементу т.к. он еще не загрузился
+
+
+    </script>
+</head>
+<body>
+    <a href="http://1.ru">Ссылка1</a>
+    <a href="http://2.ru">Ссылка2</a>
+    <a href="http://3.ru" onclick=" return myClick()">Ссылка3</a> <!-- если результат атрибута onclick будет возвращать false то ссылка не будет работать, но это устаревший метод отмены браузерного события -->
+
+</body>
+</html>

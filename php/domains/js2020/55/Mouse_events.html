@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>События мыши</title>
+    <script>
+        'use strict';
+
+        function mouseOver(event) {
+            console.log('Наведение курсора мыши на элемент: ' + event.target); // выводим элемент на который наведена мышь и на котором висит обработчик этого события
+        }
+
+        function mouseOut(event) {
+            console.log('Уведение курсора мыши с элемента: ' + event.target);
+        }
+
+        function mouseMove(event) {
+            console.log('Мышь двигается над элементом: ' + event.x + '; ' + event.y); // выводим координаты положения курсора мыши
+        }
+
+        function mouseDown(event) {
+            console.log('Нажитие мыши на элементе: ' + event.target); // Нажатие кнопок мыши на элементе
+        }
+
+        function mouseUp(event) {
+            console.log('Отпускание кнопок мыши на элементе: ' + event.target); // Отпускание кнопок мыши на элементе
+        }
+
+        window.addEventListener('scroll', function (event) { // событие прокрутки колеса мыши
+            console.log(event);
+            console.log('Смещение: ' + window.pageYOffset); // выводим смещение скрола относительно верхней точки окна
+        });
+
+        document.addEventListener('DOMContentLoaded', function (event) { // обрабочкик события - полной загрузки страницы
+            let div = document.querySelector('div');
+            div.addEventListener('mouseover', mouseOver); // обработчик события мыши - наведение на элемент
+            div.addEventListener('mouseout', mouseOut); // уведение курсора мыши
+            //div.addEventListener('mousemove', mouseMove); // движение курсора мыши по элементу
+            div.addEventListener('mousedown', mouseDown); // Нажатие кнопок мыши
+            div.addEventListener('mouseup', mouseUp); // Отпускание кнопок мыши
+
+        });
+    </script>
+</head>
+<body style="height: 1000px;">
+    <div style="text-align: center; border: 1px solid #000;"><h1>Наш подопытный элемент</h1></div>
+</body>
+</html>

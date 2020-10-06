@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>События клавиатуры</title>
+    <script>
+        'use strict';
+
+        function checkName(event) {
+            if (!event.key.match(/[a-zа-я]/i) && event.key.toLowerCase() != 'ё') event.preventDefault(); // проверяем через регулярное выражение, выводить только буквы, цыфры не будут выводиться т.к. отменяем стандартное событие браузера через event.preventDefault()
+
+        }
+
+        function keyDown(event) {
+            console.log('Код нажатой клавиши: ' + event.keyCode + ' - ' + event.code + ' - ' + event.key);
+        }
+
+        function keyUp(event) {
+            console.log('Код отпускание клавиши: ' + event.keyCode + ' - ' + event.code + ' - ' + event.key);
+        }
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            document.querySelector('input').addEventListener('keydown', checkName); // событие нажатие кнопки на клавиатуре
+            document.querySelector('div').addEventListener('keydown', keyDown);
+            window.addEventListener('keydown', keyDown); // вешаем обработчик на всё окно
+            window.addEventListener('keyup', keyUp); // обработчик отпускание клавиши клавиатуры
+
+        });
+    </script>
+</head>
+<body>
+    <input type="text" name="firstname" />
+    <div tabindex="0">Блок</div> <!-- tabindex="0" служит для того что бы можно было вешать обработчик клавиатуры на блоки а не поля ввода -->
+</body>
+</html>
