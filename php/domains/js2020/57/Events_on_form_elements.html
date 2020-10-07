@@ -3,15 +3,64 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>События на элементах формы</title>
+    <style>
+        body {
+            font-size: 150%;
+        }
+
+        #error {
+            color: #c00;
+            display: none;
+        }
+    </style>
     <script>
         'use strict';
 
-        document.addEventListener('DOMContentLoaded', function (event) {
+        function handlerFocus(event) {
+            if (event.type == 'focus') console.log('Фокус установлен на элементе: ' + event.target);
+            else if (event.type == 'blur') console.log('Фокус снят с элемента: ' + event.target);
+            console.log(event);
+        }
 
+        function submitForm(event) {
+            console.log('Попытка отправить форму');
+            let form = event.target; // записываем в переменную доступ к элементу form
+            let error = document.querySelector('#error'); // записываем в переменную доступ к элементу
+            error.innerHTML = ''; // очищаем элемент от старых сообщений
+            let name = form.querySelector('input[name="name"]'); // записываем в переменную доступ к элементу
+            if (name.value.length == 0) { // если длина введенного значение равно 0 то
+                error.innerHTML += 'Вы не ввели имя<br/>'; // записываем новое значение в элемент
+                name.focus(); // возвращаем курсор в строку ввода
+            }
+            if (!form.querySelector('input[name="rules"]').checked) { // если чекбокс не включен то
+                error.innerHTML += 'Вы не согласились с правилами<br/>';
+            }
+            if (error.innerHTML) { // если элемент не пустой значит есть ошибки, и тогда будет true
+                error.style.display = 'inline'; // меняем стить CSS элемента (включаем видимость)
+                event.preventDefault(); // убираем браузерное событие по умолчанию при отправке формы (форма не отправится)
+            }
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            document.querySelector('input[name="name"]').addEventListener('focus', handlerFocus); // получаем доступ к элементу по селектору CSS и вешаем обработчик фокуса (по факту первое нажатае на элемент)
+            document.querySelector('input[name="name"]').addEventListener('blur', handlerFocus); // снятие фокуса
+            document.querySelector('form').addEventListener('submit', submitForm); // вешаем обработчик отправки формы
         });
     </script>
 </head>
 <body>
-
+<form name="myform" action="#" method="post">
+    <p id="error"></p>
+    <div>
+        <label>Имя:</label> <input type="text" name="name" />
+    </div>
+    <div>
+        <label>Согласен с правилами сайта:</label> <input type="checkbox" name="rules" value="1"/>
+    </div>
+    <div>
+        <input type="submit" name="sbutton" value="Отправить"/>
+    </div>
+</form>
 </body>
 </html>
