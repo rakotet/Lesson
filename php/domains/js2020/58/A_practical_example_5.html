@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Практический пример 5</title>
+    <style>
+        ul {
+            font-size: 150%;
+        }
+
+        ul ul {
+            font-size: 70%;
+            display: none;
+        }
+
+        .item {
+            border-bottom: 1px dashed #000;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        'use strict';
+
+        function menu(event) {
+            let ul = event.target.parentNode.querySelector('ul'); // получаем доступ к элементу ul
+            console.log(ul.style.display); // ОСОБЕННОСТЬ JS!!!!! свойства из тега style или импортированного файла CSS НЕ ОТОБРАЖАЮТСЯ В КОНСОЛИ JS
+            if (ul.style.display == '' || ul.style.display == 'none') ul.style.display = 'block'; // делаем элемент видимым если скрыт, и на оборот
+            else ul.style.display = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            for (let item of document.querySelectorAll('.item')) { // перебираем все элементы с указанным классом и вешаем на них обработчик
+                item.addEventListener('click', menu);
+            }
+
+            document.querySelector('button').addEventListener('click', function (event) { // вешаем обработчик на кнопку
+                let text = document.querySelector('textarea');
+                if (text.value.length == 0) alert('Вы не ввели комментрарий');
+                else {
+                    let comment = document.querySelector('.comment').cloneNode(); // копируем элемент
+                    let date = new Date();
+                    comment.innerHTML = `${date.getDay()}.${date.getMonth()}.${date.getFullYear()} `; // записываем в значение элемента дату + строку введенную пользователем
+                    comment.innerHTML += `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${text.value}`;
+                    document.querySelector('#count').innerHTML = document.querySelectorAll('.comment').length; // считаем колличество комментариев
+                    text.before(comment); // вставить перед элементом
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-
+    <ul>
+        <li>
+            <span class="item">Пункт меню 1</span>
+            <ul>
+                <li>Пункт подменю 1</li>
+                <li>Пункт подменю 2</li>
+            </ul>
+        </li>
+        <li>
+            <span class="item">Пункт меню 2</span>
+            <ul>
+                <li>Пункт подменю 1</li>
+                <li>Пункт подменю 2</li>
+            </ul>
+        </li>
+    </ul>
+    <div id="comments">
+        <h2>Комментарий (<span id="count">0</span>):</h2>
+        <div class="comment"></div>
+        <textarea placeholder="Ваш комментарий"></textarea>
+        <br/>
+        <button>Отправить</button>
+    </div>
 </body>
 </html>
