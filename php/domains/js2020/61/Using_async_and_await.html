@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Использование async и await</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        function success() {
+            console.log('Задача успешно выполненна');
+        }
+
+        function error(msg) {
+            console.log(msg);
+        }
+
+        async function test() { // это означает что ф-я будет всегда выполняться асинхронно и возвращать промис (тоесть у нашей ф-т будут все методы и свойства промиса)
+            console.log('Функция test');
+            //throw new Error('Ошибка'); // если есть не обработанное исключение то будет error а не success
+            let p = await new Promise(function (resolve, reject) { // await работает только в асинхронных ф-ях, асинхронная ф-я не идет дальше пока не отработает то что стоит после await, в нашем случае это промис
+               setTimeout(() => resolve(), 2000); // выполняем resolve через 2 сек
+            });
+            console.log('Завершаем выполнение ф-и test');
+        }
+
+        test().then(success, error);
+        console.log('Hello');
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

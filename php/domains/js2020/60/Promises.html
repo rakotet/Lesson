@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Промисы</title>
+    <script>
+        'use strict';
+        // Промисы - это некий объект в js который содержит в себе некую функцию которая будет выполняться асинхронно и после выполнения сообщит о том что её данные можно использовать в коде
+
+        let ps = new Promise(function (resolve, reject) { // создание объекта промис, всегда принимает функцию с двумя параметрами (которые тоже фу-и)
+            resolve('success'); // вызывается когда промис отработал без ошибки, аргумент можно не указывать
+
+        });
+        let pe = new Promise(function (resolve, reject) {
+            reject('error'); // вызывается когда промис отработал с ошибкой, аргумент можно не указывать
+        });
+
+        console.log(ps);
+        console.log(pe);
+
+        function success() {
+            console.log('Задача выполненна успешно');
+        }
+
+        function error(e) {
+            console.log('Задача выполненна с ошибкой: ' + e);
+        }
+
+        ps.then(success, error); // вызывается после выполнения промиса, что бы узнать результат (успешно или нет)
+        pe.then(success, error);
+
+        ps.finally(() => console.log('Вызвался finally у ps')); // срабатывает вне зависимости от результата промиса, после завершения промиса (не обязательно должна быть)
+        pe.finally(() => console.log('Вызвался finally у pe'));
+
+        // Пример
+
+        function loadjQuery() {
+            return new Promise(function (resolve, reject) {
+                let jquery = document.createElement('script'); // создаём элемент
+                jquery.src = 'https://code.jquery.com/jquery-3.4.1.min.js'; // загрузка ссылок в js происходит асинхронно (параллельно с другими процессами)
+                document.head.append(jquery); // добавляем созданный элемент в конец head
+                jquery.onload = resolve; // вызывает функцию если загрузил успешно
+                jquery.onerror = () => reject(new Error('Ошибка при загрузке')); // вызывает функцию если загрузил не успешно, через стрелочную ф-ю можно передать параметр в reject
+            });
+        };
+
+        let p = loadjQuery(); // записываем полученный объект в переменную
+        p.then(success, error); // узнаем результат промиса
+
+        p.then(loadjQuery).then(loadjQuery).then(success).catch(error); // теперь можно через объект промиса вызывать сколько угодно функций последовательно! и так же разом обработать все их ошибки выполнения промиса через catch
+
+        /* Промисы это задаем функцию которая выполняется асинхронно, при успешном выполнении вызывается первая функция при не успешном вторая, которые задаем мы сами */
+    </script>
+</head>
+<body>
+
+</body>
+</html>

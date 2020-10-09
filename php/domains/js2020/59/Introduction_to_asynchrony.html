@@ -4,8 +4,33 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Введение в асинхронность</title>
     <script>
-        'use strict'; // Включение строгого режима типизации
+        'use strict';
+        // Асинхронность - это некоторые процессы которые происходят параллельно с основным потокам программы
 
+        function loadjQuery(succes, error) { // в функцию передаются функции, которые смотрят загрузилась ли jquery или была ошибка загрузки
+            let jquery = document.createElement('script'); // создаём элемент
+            jquery.src = 'https://code.jquery.com/jquery-3.4.1.min.js'; // загрузка ссылок в js происходит асинхронно (параллельно с другими процессами)
+            document.head.append(jquery); // добавляем созданный элемент в конец head
+            jquery.onload = succes; // вызывает функцию если загрузил успешно
+            jquery.onerror = error; // вызывает функцию если загрузил не успешно
+        }
+
+        loadjQuery( // после загрузки первого скрипта, загружем еще один, а если будет нужен еще один то уже очень не удобно, более удобный способ в след. уроках
+            function () {
+                console.log('Скрипт загружен: ' + $);
+                loadjQuery(
+                    function () {
+                        console.log('Ещё один скрипт загружен: ' + $);
+                    },
+                    function () {
+                        console.log('Ошибка при загрузке 2 скрипта');
+                    }
+                );
+            },
+            function () {
+                console.log('Ошибка при загрузке 1 скрипта');
+            }
+        );
     </script>
 </head>
 <body>
