@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Запросы через fetch</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        // Все сетевые функции должны быть асинхронные!!!
+
+        async function getData(url, json = false, headers = false) {
+            let response = await fetch(url); // ждем когда отработает соединение с url и запишим его в переменную
+            let text; // просто инициализируем переменную
+            if (json) text = await response.json(); // с сервера приходит json, то ждем ответа в json формате
+            else text = await response.text(); // ждем когда получим какой либо строковый ответ с сервера и записуем его в переменную
+
+            if (response.ok) { // проверяем было ли соединение с сервером успешным
+                console.log('Данные полученны: ' + text);
+                if (json) console.log('JSON: ' + text['name'] + ' ' + text['age'] + ' лет');
+            }
+            else {
+                console.log('Ошибка: ' + response.status); // код ответа
+            }
+
+            if (headers) { // выводим заголовки через массив ключ - значение
+                for (let [key, value] of response.headers) {
+                    console.log(key + ' = ' + value);
+                }
+            }
+        }
+
+        getData('Fetch_requests.php'); // получаем данные с скрипта сервена на php
+        getData('Fetch_requests_json.php', true, true);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

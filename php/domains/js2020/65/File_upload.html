@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Отправка файлов</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        let input; // инициализируем переменную для дальнейшего использования
+
+        async function sendImage() {
+            let image = input.files[0]; // записываем в переменную выбраный пользователем файл (нулевой индекс массива т.к. всего 1 файл)
+            console.log(image);
+            let response = await fetch('File_upload.php', { // отправляем файл на сервер
+                method: 'POST',
+                body: image
+            });
+
+            if (response.ok) { // если отправка успешна
+                let text = await response.text(); // записываем в переменную ссылку на изображение полученное с сервера
+                console.log(text);
+                document.querySelector('img').src = text; // записываем в атрибут элемента ссылку на изображение
+                document.querySelector('img').height = 300;
+                document.querySelector('img').width = 300;
+            } else console.log('Ошибка');
+        }
+
+        document.addEventListener('DOMContentLoaded', function (event) { // ждем прогрузки всей страницы
+            input = document.querySelector('input[name="image"]'); // записываем в переменную доступ к элементу
+            input.addEventListener('change', sendImage); // вешаем обработчик на то как пользователь выберет загружаемый файл
+
+        });
+    </script>
+</head>
+<body>
+    <img src="" alt="">
+    <form name="myform">
+        <input type="file" name="image">
+    </form>
+</body>
+</html>

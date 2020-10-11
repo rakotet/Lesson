@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Отправка POST-запросов</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+        async function getResult(x) {
+            let response = await fetch('Sending_POST_requests.php', { // соединяемся с сервером, отправляем POST запрос (указываем php скрипт который должен обработать запрос)
+                method: 'POST', // метод отправки
+                headers: { // заголовки
+                    'Content-Type': 'application/json;charset=utf-8' // тип
+                },
+                body: JSON.stringify({'x': x}) // тело запроса, передаем объект в json формате (через запятую можно передавать несколько объектов)
+            });
+            let text = await response.text(); // ждем и получаем ответ от сервера в текстовом виде
+            console.log(text);
+        }
+
+        getResult(5);
+    </script>
+</head>
+<body>
+
+</body>
+</html>
