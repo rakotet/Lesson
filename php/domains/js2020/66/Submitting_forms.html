@@ -5,12 +5,33 @@
     <title>Отправка форм</title>
     <script>
         'use strict'; // Включение строгого режима типизации
-        document.addEventListener('DOMContentLoaded', function (event) {
 
+        async function sendForm(event) { // ф-и отправляющие на сервер данные нужно делать асинхронными
+            event.preventDefault();
+            let response = await fetch('Submitting_forms.php', { // передаем серверу форму через пост запрос
+               method: 'POST',
+               body: new FormData(event.target) // используем спецальный обект для отправки форм, передавая в него нужную форму
+            });
+
+            if (response.ok) {
+                let text = await response.text(); // получаем ответ с сервера
+                console.log(text);
+                if (text == 'string') text = 'Не корректные данные';
+                document.querySelector('#response').innerHTML = 'Сумма равна: ' + text;
+            } else console.log('Ошибка');
+        }
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            document.querySelector('form').addEventListener('submit', sendForm);
         });
     </script>
 </head>
 <body>
-
+<form name="myform">
+    <label>X:</label><input type="text" name="x"> <br>
+    <label>Y:</label><input type="text" name="y"> <br><br>
+    <input type="submit" name="sbutton" value="Отправить">
+    <p id="response"></p>
+</form>
 </body>
 </html>

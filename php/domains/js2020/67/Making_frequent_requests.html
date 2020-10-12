@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Выполнение частых запросов</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        async function checkCourse(stock) {
+            let response = await fetch('Making_frequent_requests.php?stock=' + stock); // передаём GET запрос на сервер
+            if (response.ok) {
+                let course = await response.text(); // получаем текстовый ответ с сервера
+                let elem = document.createElement('p');
+                elem.innerHTML = stock + ': ' + course + '$';
+                document.querySelector('#courses').append(elem);
+            }
+            setTimeout(checkCourse, 1000, stock); // вызываем ф-ю каждую 1 сек с пааметром stock
+        }
+
+        checkCourse('XYZ');
+    </script>
+</head>
+<body>
+    <div id="courses">
+        <h2>Курс акций XYZ</h2>
+    </div>
+</body>
+</html>

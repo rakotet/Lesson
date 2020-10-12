@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Практический пример 7</title>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        function error(msg) {
+            console.log(msg);
+        }
+
+        async function sendForm(event) {
+            event.preventDefault(); // отменяем стандартную обработку события браузером
+            let response = await fetch('A_practical_example_7.php', { // отправляем форму на сервер POST методом
+                method: 'POST',
+                body: new FormData(event.target)
+            });
+
+            if (response.ok) {
+                event.target.text.value = '';
+                let text = await response.text(); // получаем ответ от сервера
+                console.log(text);
+                if (text != 'ok') error('Сообщение не доставленно: ' + text);
+            }
+            else error('Проблемы соединения с сервером');
+        }
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+           document.querySelector('form[name="add"]').addEventListener('submit', sendForm); // вешаем обработчик на отправку формы
+        });
+    </script>
+</head>
+<body>
+    <form name="add" action="#" method="post">
+        <textarea name="text" placeholder="Ваше сообщение"></textarea>
+        <input type="submit" name="add" value="Отправить">
+    </form>
+    <div id="chat">
+        <h2>Сообщения</h2>
+    </div>
+</body>
+</html>
