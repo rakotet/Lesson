@@ -10,6 +10,24 @@
             console.log(msg);
         }
 
+        async function updateChat() {
+            let response = await fetch('A_practical_example_7.php'); // соединяемся с сервером
+            if (response.ok) {
+                let json = await response.json(); // получаем ответ от сервера в виде json и декодируем обратно в массив
+                //console.log(json);
+                let messages = document.querySelectorAll('.message'); // получаем доступ ко всем элементам с классом message
+                for (let m of messages) m.remove(); // удаляем все элементы через цикл
+                for (let text of json) {
+                    if (text == '') continue;
+                    let m = document.createElement('p'); // создаем новый элемент 'p'
+                    m.innerHTML = text; // записуем в него строку из массива полученного из файла
+                    m.classList.add('message'); // записуем атрибут класса в элемент
+                    document.querySelector('#chat').append(m); // добавляем полученный элемент на страницу
+                }
+            }
+            setTimeout(updateChat, 1000); // ф-я вызывается через 1 сек
+        }
+
         async function sendForm(event) {
             event.preventDefault(); // отменяем стандартную обработку события браузером
             let response = await fetch('A_practical_example_7.php', { // отправляем форму на сервер POST методом
@@ -20,7 +38,7 @@
             if (response.ok) {
                 event.target.text.value = '';
                 let text = await response.text(); // получаем ответ от сервера
-                console.log(text);
+                //console.log(text);
                 if (text != 'ok') error('Сообщение не доставленно: ' + text);
             }
             else error('Проблемы соединения с сервером');
@@ -28,6 +46,7 @@
 
         document.addEventListener('DOMContentLoaded', function (event) {
            document.querySelector('form[name="add"]').addEventListener('submit', sendForm); // вешаем обработчик на отправку формы
+            updateChat();
         });
     </script>
 </head>
