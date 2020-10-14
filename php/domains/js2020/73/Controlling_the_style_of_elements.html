@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Управление стилем элементов</title>
+    <style>
+        .red {
+            color: #c00;
+        }
+
+        .green {
+            color: #0c0;
+        }
+    </style>
+    <script src="../jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        $(document).ready(function () { // обработчик полной загрузки страницы (аналог document.addEventListener('DOMContentLoaded', function (event) {});)
+            let messages = $('.message'); // получаем доступ ко всем элементам с указанным классом
+            for (let m of messages) { // перебираем все элементы в цикле
+                if (Math.random() < 0.5) $(m).addClass('red'); // если рандомное число меньше 0.5 то присваиваем класс элементу red
+                else $(m).addClass('green'); // если больше 0.5 то присваиваем класс элементу green
+                console.log($(m).text() + '; red =  ' + $(m).hasClass('red')); // .hasClass() возвращает true если у элемента есть указанный класс иначе false
+            }
+            $('.message').removeClass('red'); // удаляем класс из атрибута элемента
+            $('h2').css('font-size', '300%'); // устанавливаем css style для элемента
+            $('p').css('font-size', '150%'); // можно установить стиль сразу на множество элементов 'p'
+            console.log($('p').css('font-size')); // выводим значение font-size для элемента 'p'
+        });
+    </script>
+</head>
+<body>
+<div id="main">
+    <h2>Сообщение</h2>
+    <p class="message" data-id="1">Сообщение 1</p>
+    <p class="message" data-id="2">Сообщение 2</p>
+    <p class="message" data-id="3">Сообщение 3</p>
+    <p class="message" data-id="4">Сообщение 4</p>
+    <p class="message" data-id="5">Сообщение 5</p>
+</div>
+</body>
+</html>
