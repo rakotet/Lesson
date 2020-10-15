@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Обработка событий</title>
+    <style>
+        .message {
+            cursor: pointer;
+        }
+    </style>
+    <script src="../jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        // Любой объект стандартного JS можно превратить в объект jquery обернув его в $() и далее вызывать у него ф-и jquery
+
+        $(document).ready(function () { // обработчик полной загрузки страницы (аналог document.addEventListener('DOMContentLoaded', function (event) {});)
+        /* $('#main').click(function(e) { // вешаем обработчик на клик по элементу и его дочерним элементам соответственно
+            console.log(e); // выводим сам объект event
+            console.log('Клик мыши по ' + $(e.target).html()); // выводим значение элемента на который кликнули
+        }); */
+
+        /* $('p').click(function (e) {
+            $('p:last-child').after('<p>Еще один элемент</p>');
+        }); */
+
+        // click не работает на элементах созданных при этом же событии
+        // Поэтому удобнее использовать другой вариант обработчика
+
+        $(document).on('click', 'p', function (e) { // вешаем обработчик на весь документ, 1 - событие, 2 - элемент(ы), ф-я
+            console.log(e);
+            $('p:last-child').after('<p>Еще один элемент</p>'); // при клике на 'p' добавляем после последнего 'p' указанный элемент (в нашем случае <p>Еще один элемент</p>)
+        });
+
+        $(document).on('mouseover', '.message', function (e) { // обработчик наведения мыши на элемент с дескриптором '.message'
+            console.log('Навили курсор мыши на элемент: ' + e.target);
+            $(e.target).css('color', 'red'); // добавляем css стить элементу
+            $(e.target).css('font-weight', 'bold');
+        });
+
+        $(document).on('mouseout', '.message', function (e) { // обработчик убратия мыши с элемент с дескриптором '.message'
+            console.log('Увели курсор мыши с элемент: ' + e.target);
+            $(e.target).css('color', 'black'); // добавляем css стить элементу
+            $(e.target).css('font-weight', 'normal');
+        });
+    });
+</script>
+</head>
+<body>
+<div id="main">
+    <h2>Сообщение</h2>
+    <p class="message" data-id="1">Сообщение 1</p>
+    <p class="message" data-id="2">Сообщение 2</p>
+    <p class="message" data-id="3">Сообщение 3</p>
+    <p class="message" data-id="4">Сообщение 4</p>
+    <p class="message" data-id="5">Сообщение 5</p>
+</div>
+</body>
+</html>

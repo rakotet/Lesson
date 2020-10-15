@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Добавление и удаление элементов</title>
+    <script src="../jquery/jquery-3.5.1.min.js"></script>
+    <script>
+        'use strict'; // Включение строгого режима типизации
+
+        $(document).ready(function () { // обработчик полной загрузки страницы (аналог document.addEventListener('DOMContentLoaded', function (event) {});)
+            $('p').append('<strong> Конец</strong>'); // добавляет в конец элемент в нутрь указанного элемента
+            $('p').prepend('<strong>Начало </strong>'); // добавляет в начало элемент в нутрь указанного элемента
+            $('p:last-child').after('<p>Последнее сообщение</p>'); // добавляем элемент сразу после указанного элемента
+            $('p:first').before('<p>Первое сообщение</p>'); // добавляем элемент перед указанным элементом
+            $($('p').get(0)).before('<p>Нулевое сообщение</p>'); // можно через индекс элемента (нумерация с 0 как в массиве)
+
+            $('h2').empty(); // очищает содержимое указанного элемента
+            $('h2').remove(); // удаляет указанный элемент со всем содержимым
+        });
+    </script>
+</head>
+<body>
+<div id="main">
+    <h2>Сообщение</h2>
+    <p class="message" data-id="1">Сообщение 1</p>
+    <p class="message" data-id="2">Сообщение 2</p>
+</div>
+</body>
+</html>
