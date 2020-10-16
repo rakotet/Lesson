@@ -12,12 +12,45 @@
     <script>
         'use strict'; // Включение строгого режима типизации
 
-        $(document).ready(function () { // обработчик полной загрузки страницы (аналог document.addEventListener('DOMContentLoaded', function (event) {});)
+        // Ajax асинхронная ф-я
 
+        function before() {
+            $('#result').text('Ожидание данных....');
+        }
+
+        function success(data) { // data это данные ответа от сервера
+            $('#result').text('Сумма равна: ' + data);
+        }
+
+        function error() {
+            $('#result').text('Ошибка загрузки данных');
+        }
+
+        $(document).ready(function () { // обработчик полной загрузки страницы (аналог document.addEventListener('DOMContentLoaded', function (event) {});)
+            $(document).on('submit', 'form', function (e) { // вешаем обработчик отправки формы
+               e.preventDefault(); // отменяем стандартное браузерное событие
+                let form = $(e.target); // записуем в переменную доступ к элементу (фактически создаём объект jquery со свойствами и ф-ми)
+                let x = form.find('[name="x"]').val(); // записуем в переменную значение элемента с name = x
+                let y = form.find('[name="y"]').val();
+                $.ajax({ // отправляем запрос на сервер через ф-ю jq (ф-я принимает в себе объект)
+                    url: 'Sending_requests_to_the_server.php',
+                    type: 'POST',
+                    data: ({x: x, y: y}), // отправляем в виде json строки
+                    dataType: 'text',
+                    beforeSend: before, // ф-я которая будет выполненна перед отправкой запроса (не обязательная ф-я)
+                    success: success, // ф-я которая выполнется если запрос был успешно отправлен (обязательная ф-я)
+                    error: error // ф-я которая выполнется если возникла ошибка при отправке запроса (не обязательная ф-я)
+                });
+            });
         });
     </script>
 </head>
 <body>
-
+    <form action="#" name="form" method="post">
+        <label>X:</label> <input type="text" name="x"><br>
+        <label>Y:</label> <input type="text" name="y"><br><br>
+        <input type="submit" name="form" value="Посчитать сумму">
+    </form>
+    <div id="result"></div>
 </body>
 </html>
