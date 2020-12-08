@@ -31,11 +31,11 @@ class Dropdown { // создаем класс
     }
 
     open() {
-        this.$el.classList.add('open');
+        this.$el.classList.add('open'); // добавляем класс в атрибут элемента
     }
 
     close() {
-        this.$el.classList.remove('open');
+        this.$el.classList.remove('open'); // удаляем класс из атрибута элемента
     }
 
 }
