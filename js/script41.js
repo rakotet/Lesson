@@ -68,7 +68,7 @@ class MyPromise {
 }
 
 
-
+// Используем наш класс
 const promise = new MyPromise((resolve, reject) => {
     setTimeout(() => {
         reject('Some error')
