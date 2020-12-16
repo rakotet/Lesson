@@ -1,0 +1,24 @@
+{
+  "name": "nojs",
+  "version": "0.0.1",
+  "description": "this is node js basics course",
+  "main": "nojs3.js",
+  "scripts": {
+    "start": "nodemon nojs3.js",
+    "prod": "node nojs3.js"
+  },
+  "keywords": [
+    "node",
+    "node.js",
+    "js",
+    "javascript"
+  ],
+  "author": "Alex",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
