@@ -3,7 +3,7 @@
 // В node.js есть встроенные модули которые можно импортировать сразу в наш скрипт
 
 
-const now = new Date().toLocaleString()
+const now = new Date().toLocaleString() // записуем в переменную локальную дату клиента
 
 console.log(now)
 console.log(Math.random())
