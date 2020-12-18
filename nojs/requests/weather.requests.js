@@ -12,11 +12,26 @@ module.exports = async function(city = '') { // Экспортируем мет�
         uri, // равносильно uri: uri т.к. в пакете request-promise как раз uri
         qs: {
             appid: KEY,
-            q: city
+            q: city,
+            units: 'imperial'
         },
         json: true
     }
 
-    const response = await rp(options) // ожидание асинхронного запроса и запись результата в переменную response
-    console.log(response)
+    try {
+        const data = await rp(options) // ожидание асинхронного запроса и запись результата в переменную response
+        const celsius = (data.main.temp - 32) * 5/9 // переводим Кельвины в градусы Цельсия
+
+        return {
+            weather: `${data.name}: ${celsius.toFixed(0)}`,
+            error: null
+        }
+    } catch(error) {
+        
+        return {
+            weather: null,
+            error: error.error.message
+        }
+    }
+    
 }   
