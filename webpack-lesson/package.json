@@ -1,21 +1,21 @@
 {
-  "name": "js-native-blog",
+  "name": "webpack-lesson",
   "version": "1.0.0",
-  "description": "js native blog",
+  "description": "webpack project",
   "main": "index.js",
   "scripts": {
-    "compile": "webpack --config webpack.config.js"
+    "dev": "webpack --mode development", 
+    "build": "webpack --mode production"
   },
   "keywords": [
+    "webpack",
     "js",
-    "blog",
     "javascript"
   ],
   "author": "Alex",
   "license": "ISC",
   "devDependencies": {
     "webpack": "^5.11.0",
-    "webpack-cli": "^4.2.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-cli": "^4.2.0"
   }
 }
