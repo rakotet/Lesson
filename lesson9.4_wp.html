@@ -1,0 +1,49 @@
+<!DOCUMENT html>
+<html>
+
+<head>
+    <title>Работа с библиотеками</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Описание форм" />
+    <meta name="keywords" content="ссылка, картинка, html" />
+    <link href="ico/social_html5_html_71.ico" rel="shortcut icon" type="image/x-icon" />
+    <style>
+        a:visited  {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <ol>
+        <li>
+            Смотреть настроенный webpack с комментариями в папке webpack-lesson
+        </li>
+        <br>
+        <li>
+            Что бы начать работать в библиотеками в webpack, их надо локально установить (в папку проэкта использую npm)
+        </li>
+        <br>
+        <li>
+            В нашем случае установим как зависимость к нашему проэкту библиотеку jQuery, команда npm install --save jquery
+        </li>
+        <br>
+        <li>
+            Что бы импортировать в файл js библиотеку: import $(имя переменной-объекта с которым мы будем работать) from 'jquery(имя библиотеки)'
+        </li>
+        <br>
+        <li>
+            Что бы применить какие либо изменения стилей css в проэкте, необходимо заново пересобрать проэкт. <br>
+            Но это не очень удобно, поэтому создадим команду в package.json "dev:watch": "webpack --mode development --watch" <br>
+            Флаг --watch это включение режима при котором webpack автоматически пересобирает проэкт после каких либо изменений
+        </li>
+        <br>
+        <li>
+            Что бы выйти из watch режима CTR + C
+        </li>
+    </ol>
+
+</body>
+
+</html>

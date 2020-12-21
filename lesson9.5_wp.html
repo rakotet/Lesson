@@ -1,0 +1,59 @@
+<!DOCUMENT html>
+<html>
+
+<head>
+    <title>Работа со стилями</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Описание форм" />
+    <meta name="keywords" content="ссылка, картинка, html" />
+    <link href="ico/social_html5_html_71.ico" rel="shortcut icon" type="image/x-icon" />
+    <style>
+        a:visited  {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <ol>
+        <li>
+            Смотреть настроенный webpack с комментариями в папке webpack-lesson
+        </li>
+        <br>
+        <li>
+            Для работы с препроцессорами css и другими технологиями в webpack существуют Loaders(это отдельные пакеты которые надо установить) <br>
+            офф сайт <a target="_blank" href="https://webpack.js.org/loaders/">https://webpack.js.org/loaders/</a>
+        </li>
+        <br>
+        <li>
+            Создадим в папке src папку css в ней index.css
+        </li>
+        <br>
+        <li>
+            Установим css-loader команда: npm install --save-dev css-loader <br>
+            Loaders не нужно импортировать, а нужно сразу описывать в webpack.config.js в module.exports (описание свойств <a href="https://webpack.js.org/loaders/css-loader/">https://webpack.js.org/loaders/css-loader/</a> )
+        </li>
+        <br>
+        <li>
+            Далее в главном файле js index.js нужно подключить css импортом import './css/index.css'
+        </li>
+        <br>
+        <li>
+            Но после этого стили не применились т.к. css-loader только загружает стили css, <br> 
+            а что бы приметить стили нужно установить пакет style-loader команда npm install --save-dev style-loader
+            и в webpack.config.js в module.exports в module: use: ['style-loader', 'css-loader']
+        </li>
+        <br>
+        <li>
+            Создадим в папке css файл header.css и импортируем его в файл index.css так подключаются другие css файлы в главный css файл
+        </li>
+        <br>
+        <li>
+            Но все наши стили при этом вставляются в тег head в html и это плохо выглядит.
+        </li>
+    </ol>
+
+</body>
+
+</html>

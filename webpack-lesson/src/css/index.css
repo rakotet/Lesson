@@ -1,0 +1,14 @@
+ @import "header.css"; /* импортируем другой файл css в наш */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.box {
+    width: 600px;
+    margin: auto;
+    min-height: 200px;
+    border: 1px solid rgb(170, 16, 16);
+}
