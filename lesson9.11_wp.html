@@ -1,0 +1,53 @@
+<!DOCUMENT html>
+<html>
+
+<head>
+    <title>Компиляция React JSX</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Описание форм" />
+    <meta name="keywords" content="ссылка, картинка, html" />
+    <link href="ico/social_html5_html_71.ico" rel="shortcut icon" type="image/x-icon" />
+    <style>
+        a:visited  {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <ol>
+        <li>
+            Смотреть настроенный webpack с комментариями в папке webpack-lesson
+        </li>
+        <br>
+        <li>
+            Существует очень популярная FrontEnd библиотека для JavaScript она называется React.js и она использует особый синтаксис JSX, <br>
+            JSX позволяет писать различные HTML теги прямо в коде JS, но нативный js этого не понимает, <br>
+            Но webpack позваляет преобразовать JSX в обычный js используя различные loaders
+        </li>
+        <br>
+        <li>
+            Сначала установим React команда npm i -S react react-dom
+        </li>
+        <br>
+        <li>
+            Подключаем react в index.js, import React from 'react' import {render} from 'react-dom'
+        </li>
+        <br>
+        <li>
+            Создадим файл App.js и напишем в нем класический React компонент
+        </li>
+        <br>
+        <li>
+            Что бы компилировать в webpack файлы React необходимо установить npm install --save-dev @babel/preset-react <br>
+            И настроить его по офф документации <a href="https://babeljs.io/docs/en/babel-preset-react#docsNav">https://babeljs.io/docs/en/babel-preset-react#docsNav</a>
+        </li>
+        <br>
+        <li>
+            Удаляем header.component.js и весь его код переносим в App.js с использованием синтаксиса JSX
+        </li>
+    </ol>
+</body>
+
+</html>

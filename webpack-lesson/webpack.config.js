@@ -32,21 +32,27 @@ module.exports = { // экспортируем модуль наружу
             filename: 'style.css' // выходной файл css
         })
     ],
-    module: { // подключаем css-loader и mini-css-extract-plugin (свойства и их описание смотреть на офф сайте)
+    resolve: { // сдесь мы указываем разрешение файлов которые мы можем не прописывать когда указываем import
+        extensions: ['.js', '.ts']
+    },
+    module: { // подключаем css-loader и mini-css-extract-plugin и less-loader (свойства и их описание смотреть на офф сайте)
         rules: [
             {
                 test: /\.css$/, // регулярное выражение которым мы определяем расширение файла (в нашем случае .css)
                 use: [MiniCssExtractPlugin.loader, 'css-loader'] // чем обрабатывать, 1 приминять наши файлы css к проэкту, 2 загружать css файлы
             },
             {
-                test: /\.m?js$/,
+                test: /\.less$/, // регулярное выражение которым мы определяем расширение файла (в нашем случае .less)
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] // чем обрабатывать, 1 приминять наши файлы css к проэкту, 2 и 3 загружать less и css файлы
+            },
+            {
+                test: /\.scss$/, //Подключаем scss
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'] 
+            },
+            {
+                test: /\.(js|ts)$/, // установка свойств для babel
                 exclude: /node_modules/,
-                use: {
-                  loader: "babel-loader",
-                  options: {
-                    presets: ['@babel/preset-env']
-                  }
-                }
+                loader: "babel-loader"
               }
         ]
     }
