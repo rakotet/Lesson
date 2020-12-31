@@ -4,7 +4,7 @@ import {CreateComponent} from './components/create.component'
 import {PostsComponent} from './components/posts.component'
 import {FavoriteComponent} from './components/favorite.component'
 
-new HeaderComponent('header') // создаём объект для команента header
+new HeaderComponent('header') // создаём объект для компанента header
 
 const navigation = new NavigationComponent('navigation')
 
