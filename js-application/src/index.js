@@ -12,7 +12,7 @@ const loader = new LoaderComponent('loader')
 
 const posts = new PostsComponent('posts', {loader})
 const create = new CreateComponent('create')
-const favorite = new FavoriteComponent('favorite')
+const favorite = new FavoriteComponent('favorite', {loader})
 
 navigation.registerTabs([ // записуем в массив объекты с доступами к элементам табов
     {name: 'create', component: create},
