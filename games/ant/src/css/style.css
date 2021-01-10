@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playing-field {
+    height: 300px;
+    width: 500px;
+    border: 1px solid #000;
+    background-color: chartreuse;
+}
+
+.ant {
+    height: 20px;
+    width: 20px;
+    background-color: black;
+    position: relative;
+}
+
+.mov {
+    animation: antMov 500ms linear;
+}
+@keyframes antMov {
+    0% {
+        left: 0px;
+    }
+    100% {
+        left: 40px;
+    }
+}
