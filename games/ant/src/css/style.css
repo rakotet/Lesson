@@ -19,13 +19,9 @@
 }
 
 .mov {
-    animation: antMov 500ms linear;
+    animation: antMov 1s linear;
 }
 @keyframes antMov {
-    0% {
-        left: 0px;
-    }
-    100% {
-        left: 40px;
-    }
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(40px); }
 }

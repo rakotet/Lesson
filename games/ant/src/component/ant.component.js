@@ -8,43 +8,38 @@ export class Ant extends Block {
     }
 
     init() {
-        console.log('До', this.left, this.topAnt)
-        this.$el.addEventListener('keydown', antMov.bind(this))
+        document.addEventListener('keydown', antMov.bind(this))
     }
 }
 
 function antMov(event) {
-    if(event.key == 'd') {
-        //mov()
-        this.left += 20
-        this.left <= 480
-        ? ant.style.left = this.left + 'px'
-        : this.left = 480
-        console.log('После', this.left, this.topAnt)
+    if(event.key == 'd' || event.key == 'в') {
+        // this.left += 20
+        // this.left <= 480
+        // ? this.$el.style.left = this.left + 'px'
+        // : this.left = 480
+
+        this.$el.classList.add('mov')
     }
 
-    if(event.key == 'a') {
+    if(event.key == 'a' || event.key == 'ф') {
         this.left -= 20
         this.left >= 0 
-        ? ant.style.left = this.left + 'px'
+        ? this.$el.style.left = this.left + 'px'
         : this.left = 0
-        console.log('После', this.left, this.topAnt)
-        
     }
 
-    if(event.key == 'w') {
+    if(event.key == 'w' || event.key == 'ц') {
         this.topAnt -= 20
         this.topAnt >= 0
-        ? ant.style.top = this.topAnt + 'px'
+        ? this.$el.style.top = this.topAnt + 'px'
         : this.topAnt = 0
-        console.log('После', this.left, this.topAnt)
     }
 
-    if(event.key == 's') {
+    if(event.key == 's' || event.key == 'ы') {
         this.topAnt += 20
         this.topAnt <= 280
-        ? ant.style.top = this.topAnt + 'px'
+        ? this.$el.style.top = this.topAnt + 'px'
         : this.topAnt = 280
-        console.log('После', this.left, this.topAnt)
     }
 }

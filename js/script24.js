@@ -22,10 +22,10 @@ var createCounter = function(counterName) {
 var counterA = createCounter('Counter A')
 var counterB = createCounter('Counter B')
 
-counterA.increment()
-counterA.increment()
-counterA.increment()
-
-counterB.decrement()
-counterB.decrement()
+console.log(counterA.increment())
+console.log(counterA.increment())
+console.log(counterA.increment())
+console.log('-------------------------')
+console.log(counterB.decrement())
+console.log(counterB.decrement())
 
