@@ -14,12 +14,10 @@ export class Ant extends Block {
 
 function antMov(event) {
     if(event.key == 'd' || event.key == 'в') {
-        // this.left += 20
-        // this.left <= 480
-        // ? this.$el.style.left = this.left + 'px'
-        // : this.left = 480
-
-        this.$el.classList.add('mov')
+        this.left += 20
+        this.left <= 480
+        ? this.$el.style.left = this.left + 'px'
+        : this.left = 480
     }
 
     if(event.key == 'a' || event.key == 'ф') {
