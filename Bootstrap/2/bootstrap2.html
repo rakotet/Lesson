@@ -19,12 +19,116 @@
     
     <div class="bs">
         <div class="container">
-            <h3>Колонки одинаковой ширины</h3>
+            <h5>Колонки одинаковой ширины используем класс col</h5>
             <div class="row">
                 <div class="col">col</div>
                 <div class="col">col</div>
                 <div class="col">col</div>
                 <div class="col">col</div>
+            </div>
+            <h5>Что бы в одном ряду было именно 12 колонок используем класс col-1</h5>
+            <div class="row">
+              <div class="col-1">1</div>
+              <div class="col-1">2</div>
+              <div class="col-1">3</div>
+              <div class="col-1">4</div>
+              <div class="col-1">5</div>
+              <div class="col-1">6</div>
+              <div class="col-1">7</div>
+              <div class="col-1">8</div>
+              <div class="col-1">9</div>
+              <div class="col-1">10</div>
+              <div class="col-1">11</div>
+              <div class="col-1">12</div>
+              <div class="col-1">13</div>
+              <div class="col-1">14</div>
+              <div class="col-1">15</div>
+              <div class="col-1">16</div>
+              <div class="col-1">17</div>
+              <div class="col-1">18</div>
+              <div class="col-1">19</div>
+              <div class="col-1">20</div>
+              <div class="col-1">21</div>
+              <div class="col-1">22</div>
+              <div class="col-1">23</div>
+              <div class="col-1">24</div>
+              <div class="col-1">25</div>
+            </div>
+            <h5 class="mt-5">Установка ширины одного столпца, указываем класс col-количество занимаемых столбцов сетки</h5>
+            <div class="row">
+              <div class="col">Sidebar 1</div>
+              <div class="col-6">Content</div>
+              <div class="col">Sidebar 2</div>
+            </div>
+            <h5 class="mt-5">Содержание переменной ширины, col-auto будет занимать ровно столько ширины сколько нужно для показа контента</h5>
+            <div class="row">
+              <div class="col">Sidebar 1</div>
+              <div class="col-6">Content</div>
+              <div class="col-auto">Sidebar 2</div>
+            </div>
+            <h5 class="mt-5">Колонки одинаковой ширины в несколько строк class="w-100" разбивает строку в месте своего вызова</h5>
+            <div class="row">
+              <div class="col">col-1</div>
+              <div class="col">col-2</div>
+              <div class="w-100"></div>
+              <div class="col">col-3</div>
+              <div class="col">col-4</div>
+            </div>
+            <h5>Далее сетка классов для разных устройств с разными размерами экрана .col-	.col-sm-	.col-md-	.col-lg-	.col-xl-</h5>
+            <h5>Breakpoints</h5>
+            <h5>Складывание колонок по горизонтали col-lg при ширине меньше 992px складывает колонки одну под другую по горизонтали</h5>
+            <div class="row">
+              <div class="col-lg">col</div>
+              <div class="col-lg">col</div>
+              <div class="col-lg">col</div>
+            </div>
+
+            <br>
+
+            <h5>Двух колоночный сайт</h5>
+            <div class="row">
+              <div class="col-md-4">Sidebar</div>
+              <div class="col-md-8">Content</div>
+            </div>
+
+            <br>
+
+            <h5>Трех колоночный сайт</h5>
+            <div class="row">
+              <div class="col-md-3">Sidebar 1</div>
+              <div class="col-md-6">Content</div>
+              <div class="col-md-3">Sidebar 2</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Комбинирование классов. <br> Можно добавлять несколько разных классов для изменения поведения
+              блоков, в данном примере на малених устройствах Sidebar 2 будет складываться в низ под Sidebar 1 и Content
+            </h5>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">Sidebar 1</div>
+              <div class="col-md-6 col-sm-8">Content</div>
+              <div class="col-md-3">Sidebar 2</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Переполнение ряда. <br>
+              Если в одном ряду будет больше 12 колонок, то лишние колонки перенесутся на следующий ряд
+            </h5>
+            <div class="row">
+              <div class="col-md-3 col-sm-4">Sidebar 1</div>
+              <div class="col-md-6 col-sm-8">Content</div>
+              <div class="col-md-4">Sidebar 2</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Сброс отступов. Класс no-gutters убирает все отступы в строке</h5>
+            <div class="row no-gutters">
+              <div class="col-md-3 col-sm-4">Sidebar 1</div>
+              <div class="col-md-6 col-sm-8">Content</div>
+              <div class="col-md-3">Sidebar 2</div>
             </div>
         </div>
     </div>
