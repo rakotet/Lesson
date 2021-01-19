@@ -13,6 +13,15 @@
             border: 1px solid #000;
             color: #fff;
         }
+
+        .flex-cols {
+          min-height: 10rem;
+          background-color: #ccc;
+        }
+
+        body {
+          margin-bottom: 100px;
+        }
     </style>
   </head>
   <body>
@@ -129,6 +138,114 @@
               <div class="col-md-3 col-sm-4">Sidebar 1</div>
               <div class="col-md-6 col-sm-8">Content</div>
               <div class="col-md-3">Sidebar 2</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Выравнивание. <br>
+            Выравнивание ряда по вертикали (flex-cols просто класс для подсцветки блоком, для наглядности) <br>
+          В Bootstrap все колонки-блоки имеют одинаковою высоту <br>
+          align-item-start выравнивает колонки по вертикали и прижимает их к верху блока родителя</h5>
+            <div class="row flex-cols align-items-start">
+              <div class="col">col 1</div>
+              <div class="col">col 2</div>
+              <div class="col">col 3</div>
+            </div>
+
+            <br>
+            <h5>align-items-center выравнивает колонки по вертикали и прижимает их к центру блока родителя</h5>
+            <div class="row flex-cols align-items-center">
+              <div class="col">col 1</div>
+              <div class="col">col 2</div>
+              <div class="col">col 3</div>
+            </div>
+
+            <br>
+            <h5>align-items-end выравнивает колонки по вертикали и прижимает их к низу блока родителя</h5>
+            <div class="row flex-cols align-items-end">
+              <div class="col">col 1</div>
+              <div class="col">col 2</div>
+              <div class="col">col 3</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Выравнивание по вертикали для отдельной колонки <br>
+              align-self-start - колонка прилипает к верху <br> 
+              align-self-center - колонка прилипает к центру <br>
+              align-self-end - колонка прилипает к низу <br> 
+              задаётся не для всей строки а для отдельных колонок</h5>
+            <div class="row flex-cols">
+              <div class="col align-self-start">col 1</div>
+              <div class="col align-self-center">col 2</div>
+              <div class="col align-self-end">col 3</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Выравнивание колонок по горизонтале <br>
+              justify-content-start - полонки прижимаются к левой стороне, <br>
+              justify-content-center - колонки прижимаются к центру <br>
+              justify-content-end - колонки прижимаются к правой стороне <br>
+              justify-content-around - все блоки равномерно распределенны вдоль главной оси <br>
+              justify-content-between - первый блок прижат к началу главной оси, последний к концу, <br>
+              а остальные блоки делят оставшееся пространство поровну</h5>
+            <div class="row justify-content-start">
+              <div class="col-4">col 1</div>
+              <div class="col-4">col 2</div>
+            </div>
+
+            <br>
+
+            <div class="row justify-content-center">
+              <div class="col-4">col 1</div>
+              <div class="col-4">col 2</div>
+            </div>
+
+            <br>
+
+            <div class="row justify-content-end">
+              <div class="col-4">col 1</div>
+              <div class="col-4">col 2</div>
+            </div>
+
+            <br>
+
+            <div class="row justify-content-around">
+              <div class="col-1">col 1</div>
+              <div class="col-1">col 2</div>
+              <div class="col-1">col 3</div>
+              <div class="col-1">col 4</div>
+            </div>
+
+            <br>
+
+            <div class="row justify-content-between">
+              <div class="col-1">col 1</div>
+              <div class="col-1">col 2</div>
+              <div class="col-1">col 3</div>
+              <div class="col-1">col 4</div>
+            </div>
+
+            <br>
+
+            <h5 class="mt-5">Изменение порядка <br>
+            Классы сортировки <br>
+            order-ширина экрана-№ нумерация с левого края, 1 - блок левее всех и так далее</h5>
+            <div class="row">
+              <div class="col-md-6 order-md-2">Content</div>
+              <div class="col-md-3 order-md-1">Sidebar 1</div>
+              <div class="col-md-3 order-md-3">Sidebar 2</div>
+            </div>
+
+            <br>
+
+            <h5>order-first - блок всегда идет первым <br>
+              order-last - блок всегда идет последним</h5>
+            <div class="row">
+              <div class="col-md-6 order">Content</div>
+              <div class="col-md-3 order-md-first">Sidebar 1</div>
+              <div class="col-md-3 order">Sidebar 2</div>
             </div>
         </div>
     </div>
