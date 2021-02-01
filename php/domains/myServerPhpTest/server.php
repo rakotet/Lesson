@@ -14,13 +14,13 @@ $worker->onConnect = function($connection) use (&$connections) {
     $connection->onWebSocketConnect = function($connection) use (&$connections) {
         echo "Hello World!\n";
         echo $connection->id."\n";
-        //print_r($_GET);
-        $userName = $_GET['str'];
         $userId = $connection->id;
-        $connection->useName = $userName;
         $connection->useId = $userId;
         $connections[$connection->id] = $connection;
-        $connection->send(json_encode($connections));
+        
+        foreach ($connections as $c) {
+            $c->send($c->id);
+        }
     };
 };
 

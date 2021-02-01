@@ -1,0 +1,30 @@
+2021-02-01 22:39:20 pid:1 Exception: You can't send(array) to client, you need to convert it to a string.  in C:\Lesson\php\domains\myServerPhpTest\Workerman\Protocols\Websocket.php:236
+Stack trace:
+#0 C:\Lesson\php\domains\myServerPhpTest\Workerman\Connection\TcpConnection.php(321): Workerman\Protocols\Websocket::encode(Array, Object(Workerman\Connection\TcpConnection))
+#1 C:\Lesson\php\domains\myServerPhpTest\server.php(22): Workerman\Connection\TcpConnection->send(Array)
+#2 C:\Lesson\php\domains\myServerPhpTest\Workerman\Protocols\Websocket.php(392): {closure}(Object(Workerman\Connection\TcpConnection), 'GET / HTTP/1.1\r...')
+#3 C:\Lesson\php\domains\myServerPhpTest\Workerman\Protocols\Websocket.php(57): Workerman\Protocols\Websocket::dealHandshake('GET / HTTP/1.1\r...', Object(Workerman\Connection\TcpConnection))
+#4 C:\Lesson\php\domains\myServerPhpTest\Workerman\Connection\TcpConnection.php(600): Workerman\Protocols\Websocket::input('GET / HTTP/1.1\r...', Object(Workerman\Connection\TcpConnection))
+#5 C:\Lesson\php\domains\myServerPhpTest\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #16)
+#6 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#7 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(1417): Workerman\Worker->run()
+#8 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#9 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#10 C:\Lesson\php\domains\myServerPhpTest\server.php(28): Workerman\Worker::runAll()
+#11 {main}
+2021-02-01 22:39:20 pid:1 Worker process terminated
+2021-02-01 22:41:41 pid:1 Exception: You can't send(object) to client, you need to convert it to a string.  in C:\Lesson\php\domains\myServerPhpTest\Workerman\Protocols\Websocket.php:236
+Stack trace:
+#0 C:\Lesson\php\domains\myServerPhpTest\Workerman\Connection\TcpConnection.php(321): Workerman\Protocols\Websocket::encode(Object(Workerman\Connection\TcpConnection), Object(Workerman\Connection\TcpConnection))
+#1 C:\Lesson\php\domains\myServerPhpTest\server.php(22): Workerman\Connection\TcpConnection->send(Object(Workerman\Connection\TcpConnection))
+#2 C:\Lesson\php\domains\myServerPhpTest\Workerman\Protocols\Websocket.php(392): {closure}(Object(Workerman\Connection\TcpConnection), 'GET / HTTP/1.1\r...')
+#3 C:\Lesson\php\domains\myServerPhpTest\Workerman\Protocols\Websocket.php(57): Workerman\Protocols\Websocket::dealHandshake('GET / HTTP/1.1\r...', Object(Workerman\Connection\TcpConnection))
+#4 C:\Lesson\php\domains\myServerPhpTest\Workerman\Connection\TcpConnection.php(600): Workerman\Protocols\Websocket::input('GET / HTTP/1.1\r...', Object(Workerman\Connection\TcpConnection))
+#5 C:\Lesson\php\domains\myServerPhpTest\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #16)
+#6 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#7 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(1417): Workerman\Worker->run()
+#8 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#9 C:\Lesson\php\domains\myServerPhpTest\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#10 C:\Lesson\php\domains\myServerPhpTest\server.php(28): Workerman\Worker::runAll()
+#11 {main}
+2021-02-01 22:41:41 pid:1 Worker process terminated
