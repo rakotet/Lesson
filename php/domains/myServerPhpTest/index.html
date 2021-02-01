@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form action="" method="POST">
+        <input type="text" name="str">
+        <input type="submit" value="Отправить">
+    </form>
+    <script>
+        let ws = new WebSocket('ws://localhost:8001')
+
+        ws.onopen = function() {
+            console.log('Соединение установленно')
+        }
+
+        ws.onerror = function(error) {
+            console.log("Ошибка при соединении: " + error.message)
+        }
+
+        ws.onclose = function() {
+            console.log('Соединение закрыто')
+        }
+
+        // ws.addEventListener('message', (event) => {
+        //     console.log('Message from server:' + event.data)
+        // })
+
+        ws.onmessage = function(event) {
+            let data = event.data
+            // for(let key in data){
+            //     console.log('с сервера: ' + key + '->' + data[key])
+            // }
+            console.log(data)
+        }
+
+        
+    </script>
+</body>
+</html>
