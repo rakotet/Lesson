@@ -5,23 +5,40 @@ require_once './Workerman/Autoloader.php';
 use Workerman\Lib\Timer;
 use Workerman\Worker;
 
-$connections = [];
 
-$worker = new Worker("websocket://0.0.0.0:8001");
+$worker = new Worker("websocket://192.168.0.12:8001");
 
-$worker->onConnect = function($connection) use (&$connections) {
+$worker->onConnect = function($connection) use ($worker) {
+    echo "Hello World!\n";
+    echo $connection->id."\n";
     
-    $connection->onWebSocketConnect = function($connection) use (&$connections) {
-        echo "Hello World!\n";
-        echo $connection->id."\n";
-        $userId = $connection->id;
-        $connection->useId = $userId;
-        $connections[$connection->id] = $connection;
-        
-        foreach ($connections as $c) {
-            $c->send($c->id);
+    
+    // foreach ($worker->connections as $c) {
+    //     $c->send($c->id);
+    // }
+    
+};
+
+$worker->onMessage = function($connection, $data) use ($worker) {
+    $messageData = json_decode($data, true);
+    print_r($messageData);
+
+    if($messageData['action'] == 'authorized') {
+        $connection->userName = $messageData['name'];
+        foreach($worker->connections as $c) {
+            $c->send($c->userName.': '.$messageData['text']);
         }
-    };
+    } elseif ($messageData['action'] == 'massage') {
+        foreach($worker->connections as $c) {
+            if(!isset($c->userName)) $c->userName = 'anonim';
+            $c->send($c->userName.': '.$messageData['text']);
+        }
+    }
+    
+};
+
+$worker->onClose = function($connection) {
+    echo $connection->userName.' -> '.$connection->id.': '.'соединение закрыто'."\n";
 };
 
 

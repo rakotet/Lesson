@@ -4,24 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-
-    <form id="form">
-        <input type="text" name="str" id="input">
-        <input type="submit" value="Отправить" id="submit">
-    </form>
+    <div class="container">
+        <form id="form">
+            <input type="text" name="name" id="name"> <br>
+            <input type="text" name="input" id="input"> <br>
+            <input type="submit" value="Отправить" id="submit">
+        </form>
+        <br>
+        <div class="chat"></div>
+    </div>
 
 
     <script>
-        let ws = new WebSocket('ws://localhost:8001')
+        let ws = new WebSocket('ws://192.168.0.12:8001')
 
         ws.onopen = function() {
             console.log('Соединение установленно')
         }
 
         ws.onerror = function(error) {
-            console.log("Ошибка при соединении: " + error.message)
+            console.log("Ошибка при соединении: " + error.massage)
         }
 
         ws.onclose = function() {
@@ -42,10 +55,28 @@
 
         const form = document.getElementById('form')
         form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const input = document.getElementById('input')
-            ws.send(input)
+            event.preventDefault()
+            let input = document.getElementById('input')
+            let name = document.getElementById('name')
+
+            if(name.value !== '') {
+                let user = {
+                    action: 'authorized',
+                    name: name.value,
+                    text: input.value
+                }
+                ws.send(JSON.stringify(user))
+            }else {
+                let massage = {
+                    action: 'massage',
+                    text: input.value
+                }
+                ws.send(JSON.stringify(massage))
+            }
+
             input.value = ''
+            name.value = ''
+            name.classList.add('hide')
             
         })
     </script>
