@@ -35,21 +35,17 @@
     <script>
         let ws = new WebSocket('ws://192.168.0.12:8001')
 
-        ws.onopen = function() {
+        ws.onopen = function(event) {
             console.log('Соединение установленно')
         }
 
         ws.onerror = function(error) {
-            console.log("Ошибка при соединении: " + error.massage)
+            console.log("Ошибка при соединении: " + error)
         }
 
-        ws.onclose = function() {
-            console.log('Соединение закрыто')
+        ws.onclose = function(event) {
+            console.log('Соединение закрыто: ' + event.code)
         }
-
-        // ws.addEventListener('message', (event) => {
-        //     console.log('Message from server:' + event.data)
-        // })
 
         ws.onmessage = function(event) {
             let data = event.data
@@ -85,6 +81,8 @@
             name.classList.add('hide')
             
         })
+
+        
     </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ $worker = new Worker("websocket://192.168.0.12:8001");
 $worker->onConnect = function($connection) use ($worker) {
     echo "Hello World!\n";
     echo $connection->id."\n";
+    $connection->userName = 'anonim';
     
     
     // foreach ($worker->connections as $c) {
@@ -30,10 +31,12 @@ $worker->onMessage = function($connection, $data) use ($worker) {
         }
     } elseif ($messageData['action'] == 'massage') {
         foreach($worker->connections as $c) {
-            if(!isset($c->userName)) $c->userName = 'anonim';
             $c->send($c->userName.': '.$messageData['text']);
         }
-    }
+        if ($messageData['text'] == 'as') {
+            $connection->destroy();
+        }
+    } 
     
 };
 
