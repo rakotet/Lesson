@@ -7,6 +7,7 @@
     <style>
         .container {
             display: flex;
+            flex-direction: column;
         }
 
         .hide {
@@ -47,32 +48,12 @@
             console.log('Соединение закрыто: ' + event.code)
         }
 
-        ws.onmessage = function(event) {
-            let data = JSON.parse(event.data)
+        ws.onmessage = async function(event) {
+            let data = await JSON.parse(event.data)
             // for(let key in data){
             //     console.log('с сервера: ' + key + '->' + data[key])
             // }
             
-            let result1 = data[0]
-            let result2 = data[1]
-            let result3 = ''
-
-            for (let i = 0; i < result1.length; i++) {
-    
-                for (let ii = 0; ii < result2.length; ii++) {
-                    
-                    if(result1[i][0].trim() == result2[ii][0].trim()) {
-                        result3 += result1[i][0].trim()
-                        if(result1[i][1].trim() == result2[ii][1].trim()) {
-                            result3 = result3 + ' - ' + 'yes' + "\n" + "\n"
-                        } else {
-                            result3 = result3 + "\n" + result1[i][1] + ' ' + result2[ii][1] + "\n"
-                        }
-                    }
-                }
-    
-            }
-            console.log(result3)
         
         }
 
