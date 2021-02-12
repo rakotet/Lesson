@@ -1,15 +1,30 @@
-const login = document.getElementById('input-login')
-const password = document.getElementById('input-password')
-const button = document.getElementById('button-input')
+const elLogin = document.querySelector('.login')
 
-button.addEventListener('click', async function(event) {
-    console.log(login.value + '; ' + password.value)
+let ws = new WebSocket('ws://localhost:8001')
 
-    let response = await fetch('corephp/authorization.php');
-            let data = await response.json()
-            if(response.ok) {
-                console.log(data['a'])
-            }
+ws.onopen = function(event) {
+    console.log('Соединение установленно')
+  
+    const login = {
+        action: 'login',
+        login: elLogin.innerHTML
+    }
+    ws.send(JSON.stringify(login))
+}
 
-    password.value = ''
-})
+ws.onerror = function(error) {
+    console.log("Ошибка при соединении: " + error)
+}
+
+ws.onclose = function(event) {
+    console.log('Соединение закрыто: ' + event.code)
+}
+
+ws.onmessage = async function(event) {
+    let data = await JSON.parse(event.data)
+    // for(let key in data){
+    //     console.log('с сервера: ' + key + '->' + data[key])
+    // }
+    
+
+}

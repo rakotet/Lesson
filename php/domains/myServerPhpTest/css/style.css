@@ -31,7 +31,24 @@
     margin-top: 20px;
 }
 
+.white {
+    color: white;
+}
 
+.a {
+    padding-left: 10vw;
+}
+
+.exit:hover {
+    color: thistle;
+}
+
+.chat {
+    height: 50vh;
+    width: 50vw;
+    border: 1px solid #565968;
+    padding: 50px;
+}
 
 
 @media only screen and (max-width : 768px) {
