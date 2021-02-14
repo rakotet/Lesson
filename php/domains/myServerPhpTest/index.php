@@ -7,6 +7,7 @@ require_once 'corephp/route_class.php';
 <head>
     <title>Главная страница</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link type="text/css" rel="stylesheet" media="all" href="css/index.css" />
 </head>
 <body>
