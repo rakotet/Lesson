@@ -1,4 +1,4 @@
-# hello-world
+# cripto
 
 ## Project setup
 ```
