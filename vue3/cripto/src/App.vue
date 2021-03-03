@@ -1,16 +1,15 @@
 <template>
   <div class="container mx-auto flex flex-col items-center bg-gray-100 p-4">
-    
     <div class="container">
       <section>
         <div class="flex">
           <div class="max-w-xs">
             <label for="wallet" class="block text-sm font-medium text-gray-700"
-              >Тикер </label
-            >
+              >Тикер
+            </label>
             <div class="mt-1 relative rounded-md shadow-md">
               <input
-                v-model="ticker" 
+                v-model="ticker"
                 v-on:keydown.enter="add"
                 type="text"
                 name="wallet"
@@ -43,7 +42,7 @@
         </button>
       </section>
 
-      <template v-if="tickers.length" >
+      <template v-if="tickers.length">
         <hr class="w-full border-t border-gray-600 my-4" />
         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           <div
@@ -86,25 +85,23 @@
         </dl>
         <hr class="w-full border-t border-gray-600 my-4" />
       </template>
-      <section 
-        v-if="sel" 
-        class="relative">
+      <section v-if="sel" class="relative">
         <h3 class="text-lg leading-6 font-medium text-gray-900 my-8">
-          {{sel.name}} - USD
+          {{ sel.name }} - USD
         </h3>
         <div class="flex items-end border-gray-600 border-b border-l h-64">
-          <div 
+          <div
             v-for="(bar, idx) in normalizeGraph()"
             v-bind:key="idx"
-            :style="{height: `${bar}%`}"
-            class="bg-purple-800 border w-10">
-          </div>
-          
+            :style="{ height: `${bar}%` }"
+            class="bg-purple-800 border w-10"
+          ></div>
         </div>
         <button
           v-on:click="sel = null"
-          type="button" 
-          class="absolute top-0 right-0">
+          type="button"
+          class="absolute top-0 right-0"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -136,7 +133,8 @@
 export default {
   name: "App",
 
-  data() { // описываем все компаненты вернее их состояние которые могут быть в приложении (как я понял это переменные в которые мы что то записываем (массивы, объекты, значения....))
+  data() {
+    // описываем все компаненты вернее их состояние которые могут быть в приложении (как я понял это переменные в которые мы что то записываем (массивы, объекты, значения....))
     return {
       ticker: "",
       tickers: [],
@@ -148,26 +146,28 @@ export default {
   methods: {
     add() {
       const currentTicker = {
-        name: this.ticker, 
+        name: this.ticker,
         price: "-"
       };
 
       this.tickers.push(currentTicker);
       setInterval(async () => {
-        const f = await fetch(`https://min-api.cryptocompare.com/data/price?fsym=${currentTicker.name}&tsyms=USD&api_key=c643ecd68f907b999e0a9bea82dfe8afbfc38ceb28478cf1d44d6adeccb52b31`)
-        const data = await f.json()
+        const f = await fetch(
+          `https://min-api.cryptocompare.com/data/price?fsym=${currentTicker.name}&tsyms=USD&api_key=c643ecd68f907b999e0a9bea82dfe8afbfc38ceb28478cf1d44d6adeccb52b31`
+        );
+        const data = await f.json();
         this.tickers.find(t => t.name === currentTicker.name).price = data.USD > 1 ? data.USD.toFixed(2) : data.USD.toPrecision(2);
 
-        if(this.sel?.name === currentTicker.name) {
-          this.graph.push(data.USD)
+        if (this.sel?.name === currentTicker.name) {
+          this.graph.push(data.USD);
         }
-      }, 3000)
+      }, 3000);
       this.ticker = "";
     },
 
     select(ticker) {
-      this.sel = ticker
-      this.graph = []
+      this.sel = ticker;
+      this.graph = [];
     },
 
     handleDelete(tickerToRemove) {
@@ -175,14 +175,13 @@ export default {
     },
 
     normalizeGraph() {
-      const maxValue = Math.max(...this.graph)
-      const minValue = Math.min(...this.graph)
+      const maxValue = Math.max(...this.graph);
+      const minValue = Math.min(...this.graph);
       return this.graph.map(
         price => 5 + ((price - minValue) * 95) / (maxValue - minValue)
-      )
+      );
     }
   }
 };
 </script>
 
-<style src="./app.css"></style>

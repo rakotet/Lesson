@@ -1,0 +1,55 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.wrapper {
+    min-height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.content {
+    height: 90vh;
+    
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    background-color: darkgray;
+    justify-content: space-between;
+    height: 50px;
+    
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.menu {
+    background-color: darkorange;
+    width: 150px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    background-color: darkslateblue;
+    width: 1200px;
+    justify-content: center;
+    align-items: center;
+}
+
+.field__textarea {
+    width: 500px;
+    height: 200px;
+}
+
+.footer {
+    background-color: darkviolet;
+    height: 50px;
+    position: absolute;
+    bottom: 0px;
+}
