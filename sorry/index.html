@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Forgive me</title>
+    <style>
+        body {
+            background-color: seashell;
+        }
+
+        h1 {
+            color: brown;
+        }
+
+        td:hover {
+            color: rgb(96, 212, 49);
+            cursor: pointer;
+            -webkit-transform: scale(1.5);
+            -ms-transform: scale(1.5);
+            transform: scale(1.5);
+        }
+
+        .grin {
+            color: rgb(96, 212, 49);
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="text">
+            <h1>Значение в календаре подтверждают, <br/> Что если Алексей Александрович справится со своей зависимостью, <br/> То он справится с чем угодно.</h1>
+            <h2>Счетчик дней без косяков А А - <span id="score">0</span> </h2>
+        </div>
+        <div class="kalendar">
+            <div class="month"><span>Март</span></div>
+            <div class="days">
+                <table> 
+                    <tr>
+                        <th>Пн</th> 
+                        <th>Вт</th>
+                        <th>Ср</th>
+                        <th>Чт</th>
+                        <th>Пт</th>
+                        <th>Сб</th>
+                        <th>Вс</th>
+                    </tr>
+                    <tr> 
+                        <td class="td">1</td> 
+                        <td class="td">2</td>
+                        <td class="td">3</td>
+                        <td class="td">4</td>
+                        <td class="td">5</td>
+                        <td class="td">6</td>
+                        <td class="td">7</td>
+                    </tr>
+                    <tr>
+                        <td class="td">8</td>
+                        <td class="td">9</td>
+                        <td class="td">10</td>
+                        <td class="td">11</td>
+                        <td class="td">12</td>
+                        <td class="td">13</td>
+                        <td class="td">14</td>
+                    </tr>
+                    <tr>
+                        <td class="td">15</td>
+                        <td class="td">16</td>
+                        <td class="td">17</td>
+                        <td class="td">18</td>
+                        <td class="td">19</td>
+                        <td class="td">20</td>
+                        <td class="td">21</td>
+                    </tr>
+                    <tr>
+                        <td class="td">22</td>
+                        <td class="td">23</td>
+                        <td class="td">24</td>
+                        <td class="td">25</td>
+                        <td class="td">26</td>
+                        <td class="td">27</td>
+                        <td class="td">28</td>
+                    </tr>
+                    <tr>
+                        <td class="td">29</td>
+                        <td class="td">30</td>
+                        <td class="td">31</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let kosiak;
+
+        kosiak = JSON.parse(localStorage.getItem('kosiak'))
+        
+        if(kosiak === null) {
+            kosiak = {
+                score: 0,
+                td: []
+            }
+        }
+
+        console.log(kosiak)
+        document.getElementById('score').innerText = kosiak.score
+
+        tableTd = document.querySelectorAll('table td')
+
+        for(let i = 0; i < tableTd.length; i++) {
+            for(let ii = 0; ii < kosiak.td.length; ii++) {
+                if(tableTd[i].innerText == kosiak.td[ii]) {
+                    tableTd[i].classList.add('grin')
+                }
+            }
+        }
+
+
+        let score = parseInt(document.getElementById('score').innerText)
+        
+        const kalendar = document.querySelector('.kalendar')
+
+        kalendar.addEventListener('click', function (event) {
+            if(event.target.tagName.toLowerCase() === 'td' ) {
+                if(!event.target.classList.contains('grin')) {
+                    event.target.classList.add('grin')
+
+                    let td = parseInt(event.target.innerHTML)
+                    document.getElementById('score').innerText = score + 1
+                    score = parseInt(document.getElementById('score').innerText)
+                    
+                    kosiak.score = score
+                    kosiak.td.push(td)
+
+                    localStorage.setItem('kosiak', JSON.stringify(kosiak))
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>
