@@ -1,0 +1,1 @@
+export let ws = new WebSocket('ws://localhost:8001')

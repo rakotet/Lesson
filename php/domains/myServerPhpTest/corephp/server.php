@@ -26,6 +26,32 @@ $worker->onMessage = function($connection, $data) use ($worker) {
     } elseif($messageData['action'] == 'login') {
         $connection->userName = $messageData['login'];
         echo $connection->userName;
+
+    } elseif($messageData['action'] == 'authorized') {
+        if($messageData['password'] == 123) {
+            $connection->userName = $messageData['login'];
+            echo $connection->userName.' -> '.$connection->id.': '.'Авторизация успешна'."\n";
+
+            $messageData = [
+                'action' => 'authorized',
+                'logon' => true,
+                'userId' => $connection->id,
+                'userName' => $connection->userName
+            ];
+            $message = json_encode($messageData);
+
+            $connection->send($message);
+        } else {
+            echo $messageData['login'].' -> '.$connection->id.': '.'Не верный пароль'."\n";
+
+            $messageData = [
+                'action' => 'authorized',
+                'logon' => false
+            ];
+            $message = json_encode($messageData);
+
+            $connection->send($message);
+        }
     }
     
 };
