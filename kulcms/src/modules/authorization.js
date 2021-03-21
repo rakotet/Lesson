@@ -1,10 +1,12 @@
 import {Component} from '../core/component'
 import {ws} from '../core/websocket'
 import {Main} from './main'
+import {Chat} from './chat'
 
 export class Authorization extends Component {
     constructor(id) {
         super(id)
+        this.init()
     }
 
     init() {
@@ -33,7 +35,8 @@ function authorization(event) {
             let data = await JSON.parse(event.data)
                 if(data['action'] == 'authorized') {
                     if(data['logon'] == true) {
-                        new Main('main')
+                       new Main('main', data['userName'])
+                       new Chat('chat')
                     } else {
                         alert('Не верный логин или пароль')
                     }

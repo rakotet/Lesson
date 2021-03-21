@@ -1,19 +1,19 @@
 import {Component} from '../core/component'
 
 export class Main extends Component {
-    constructor(id) {
+    constructor(id, user) {
         super(id)
-
+        this.user = user
+        this.init()
     }
 
     init() {
-        // this.$el.addEventListener('click', tabClickHandler.bind(this))
         this.$el.innerHTML = `
             <div class="wrapper">
-            <div class="content">
+            <div class="content" id="content">
                 <header class="header">
                     <div class="header__img">Картинка</div>
-                    <div class="header__text">Текст</div>
+                    <div class="header__text">${this.user}</div>
                 </header>
                 <div class="container">
                     <div class="menu">
@@ -24,7 +24,7 @@ export class Main extends Component {
                             <li class="menu__item">4</li>
                         </ul>
                     </div>
-                    <div class="field">
+                    <div class="field" id="chat">
                         <div class="field__content">
                             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus, deleniti est. Delectus possimus dolor voluptatibus quibusdam debitis cum repudiandae provident.</p>
                             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloribus, deleniti est. Delectus possimus dolor voluptatibus quibusdam debitis cum repudiandae provident.</p>
@@ -46,7 +46,4 @@ export class Main extends Component {
             </div>
         `
     }
-
-   
-
 }

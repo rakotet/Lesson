@@ -6,7 +6,7 @@ use Workerman\Lib\Timer;
 use Workerman\Worker;
 
 
-$worker = new Worker("websocket://localhost:8001");
+$worker = new Worker("websocket://192.168.199.103:8001");
 
 $worker->onConnect = function($connection) use ($worker) {
     echo "Hello World!\n";
@@ -18,14 +18,18 @@ $worker->onMessage = function($connection, $data) use ($worker) {
     $messageData = json_decode($data, true);
     print_r($messageData);
 
-    if ($messageData['action'] == 'massage') {
+    if ($messageData['action'] == 'massageChatClient') {
+
+        $messageData = [
+            'action' => 'massageChatServer',
+            'userName' => $connection->userName,
+            'text' => $messageData['text']
+        ];
+        $message = json_encode($messageData);
+
         foreach($worker->connections as $c) {
-            $c->send($c->userName.': '.$messageData['text']);
+            $c->send($message);
         }
-        
-    } elseif($messageData['action'] == 'login') {
-        $connection->userName = $messageData['login'];
-        echo $connection->userName;
 
     } elseif($messageData['action'] == 'authorized') {
         if($messageData['password'] == 123) {
@@ -42,6 +46,7 @@ $worker->onMessage = function($connection, $data) use ($worker) {
 
             $connection->send($message);
         } else {
+            $connection->userName = $messageData['login'];
             echo $messageData['login'].' -> '.$connection->id.': '.'Не верный пароль'."\n";
 
             $messageData = [
@@ -57,6 +62,7 @@ $worker->onMessage = function($connection, $data) use ($worker) {
 };
 
 $worker->onClose = function($connection) {
+    if(empty($connection->userName)) $connection->userName = 'anonim';
     echo $connection->userName.' -> '.$connection->id.': '.'соединение закрыто'."\n";
 };
 

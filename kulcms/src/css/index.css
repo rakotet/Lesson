@@ -27,6 +27,11 @@
     width: 100%;
 }
 
+.header__text {
+    color: white;
+    margin-right: 10%;
+}
+
 .container {
     display: flex;
     flex-direction: row;
@@ -59,11 +64,14 @@
 }
 
 .field__content {
-   width: 50%;
-   height: 50%;
-   background-color: coral;
-   margin-top: 20px;
-   margin-bottom: 20px;
+    display: block;
+    overflow: auto;
+    word-wrap: break-word;
+    width: 50%;
+    height: 50%;
+    background-color: coral;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .field__textarea {
