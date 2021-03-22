@@ -3,12 +3,19 @@
     padding: 0;
 }
 
+.mainStart {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(233, 229, 229);
+}
+
 .wrapper {
     height: 100%;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-    
 }
 
 .content {
@@ -21,15 +28,32 @@
 .header {
     display: flex;
     flex-direction: row;
-    background-color: #292961;
+    background-color: #bebedd;
     justify-content: space-between;
     height: 50px;
     width: 100%;
 }
 
+.header__img {
+    margin-left: 5%;
+}
+
+.header__img img {
+    height: 40px;
+    width: auto;
+}
+
 .header__text {
-    color: white;
+    color: rgb(26, 25, 25);
     margin-right: 10%;
+    height: 20px;
+    width: auto;
+    background-color: white;
+    margin-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
 }
 
 .container {
@@ -39,22 +63,41 @@
 }
 
 .menu {
-    background-color: rgb(231, 228, 225);
-    border-right: black;
-    width: 10%;
+    background-color: rgb(240, 235, 231);
+    min-width: 10%;
     height: 100vh;
+    border-right: 5px solid #bebedd;
     /* min-height: 100%; */
 }
 
 .menu__list {
-    /* margin-left: 35px; */
+    padding-top: 20px;
     padding-left: 40px;
+}
+
+@media only screen and (max-width : 1152px) {
+    .menu__list {
+        padding-left: 5px;
+    }
+}
+
+.menu__list li {
+    margin-bottom: 10px;
+    list-style-type: none;
+    cursor: pointer;
+    /* width: 100%; */
+}
+
+.menu__list li span:hover {
+    background-color: #bebedd;
+    border-radius: 5px;
+    /* border: 1px solid black; */
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    background-color: darkslateblue;
+    background-color: rgb(233, 229, 229);
     width: 100%;
     height: 100vh;
     /* justify-content: center; */
@@ -68,10 +111,11 @@
     overflow: auto;
     word-wrap: break-word;
     width: 50%;
-    height: 50%;
-    background-color: coral;
+    height: 70%;
+    background-color: white;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    border: 2px solid #bebedd;
 }
 
 .field__textarea {
@@ -80,12 +124,16 @@
 
 .field__textarea_input {
     resize: none;
-    /* width: 500px; */
+    border: 2px solid #bebedd;
     
 }
 
+.field__textarea_button button {
+    cursor: pointer;
+}
+
 .footer {
-    background-color: darkviolet;
+    background-color: #bebedd;
     height: 50px;
     width: 100%;
 }

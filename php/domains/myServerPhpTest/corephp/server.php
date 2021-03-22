@@ -6,7 +6,7 @@ use Workerman\Lib\Timer;
 use Workerman\Worker;
 
 
-$worker = new Worker("websocket://192.168.199.103:8001");
+$worker = new Worker("websocket://192.168.0.12:8001");
 
 $worker->onConnect = function($connection) use ($worker) {
     echo "Hello World!\n";

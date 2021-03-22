@@ -24,7 +24,7 @@ function authorization(event) {
         let user = {
             action: 'authorized',
             login: login.value,
-            password: Number(password.value)
+            password: password.value
         }
         ws.send(JSON.stringify(user))
 

@@ -1,4 +1,5 @@
 import {Component} from '../core/component'
+import logo from '../image/logo.svg'
 
 export class Main extends Component {
     constructor(id, user) {
@@ -8,20 +9,24 @@ export class Main extends Component {
     }
 
     init() {
+        this.$el.classList.remove('mainStart')
+
         this.$el.innerHTML = `
             <div class="wrapper">
             <div class="content" id="content">
                 <header class="header">
-                    <div class="header__img">Картинка</div>
+                    <div class="header__img">
+                        <img src="${logo}" alt="Сетка">
+                    </div>
                     <div class="header__text">${this.user}</div>
                 </header>
                 <div class="container">
                     <div class="menu">
                         <ul class="menu__list">
-                            <li class="menu__item">1</li>
-                            <li class="menu__item">2</li>
-                            <li class="menu__item">3</li>
-                            <li class="menu__item">4</li>
+                            <li class="menu__item"><span>Чат</span></li>
+                            <li class="menu__item"><span>Задачи</span></li>
+                            <li class="menu__item"><span>Служебки</span></li>
+                            <li class="menu__item"><span>Прочее</span></li>
                         </ul>
                     </div>
                     <div class="field" id="chat">
@@ -41,7 +46,7 @@ export class Main extends Component {
                 </div>
             </div>
             <footer class="footer">
-                <div class="footer__area">Подвал</div>
+                <div class="footer__area"></div>
             </footer>
             </div>
         `

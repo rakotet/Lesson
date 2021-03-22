@@ -26,15 +26,19 @@ export class Chat extends Component {
 }
 
 function send(event) {
-    event.preventDefault()
+    // event.preventDefault()
 
     const input = this.$el.querySelector('.field__textarea textarea')
 
-    let massage = {
-        action: 'massageChatClient',
-        text: input.value
+    if(input.value == '') {
+        alert('Сообщение пустое')
+    } else {
+        let massage = {
+            action: 'massageChatClient',
+            text: input.value
+        }
+        ws.send(JSON.stringify(massage))
     }
-    ws.send(JSON.stringify(massage))
 
     input.value = ''
 }
