@@ -11,6 +11,13 @@
     background-color: rgb(233, 229, 229);
 }
 
+.mainStart form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .wrapper {
     height: 100%;
 	overflow: hidden;
@@ -19,7 +26,7 @@
 }
 
 .content {
-    background-color: chartreuse;
+    /* background-color: chartreuse; */
     height: 95vh;
     overflow: hidden;
     
@@ -130,6 +137,8 @@
 
 .field__textarea_button button {
     cursor: pointer;
+    border: 2px solid #bebedd;
+    border-radius: 5px;
 }
 
 .footer {
