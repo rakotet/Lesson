@@ -18,7 +18,8 @@ export class Chat extends Component {
         ws.onmessage = async function(event) {
             let data = await JSON.parse(event.data)
                 if(data['action'] == 'massageChatServer') {
-                    chat.innerHTML += `<p>${data['userName']}: ${data['text']}</p>`
+                    const date = new Date()
+                    chat.innerHTML += `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`
                 }
         }
     }

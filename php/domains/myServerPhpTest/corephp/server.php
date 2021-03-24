@@ -11,7 +11,7 @@ $worker = new Worker("websocket://192.168.0.12:8001");
 
 // Создаем объект для работы с базой данных
 $pdo = new DataBase();
-$pdo->connect();
+// $pdo->connect();
 
 $worker->onConnect = function($connection) use ($worker) {
     echo "Hello World!\n";
@@ -19,13 +19,16 @@ $worker->onConnect = function($connection) use ($worker) {
     
 };
 
-$worker->onMessage = function($connection, $data) use ($worker) {
+$worker->onMessage = function($connection, $data) use ($worker, $pdo) {
     //Декодируем сообщение приходящее с клиента
     $messageData = json_decode($data, true);
     print_r($messageData);
 
     //Сообщение с клиента в чат 
     if ($messageData['action'] == 'massageChatClient') {
+
+        $pdo->connect();
+        $pdo->chatMessageCreate($connection->userName, $messageData['text']); // сохраняем сообщение в БД
 
         $messageData = [
             'action' => 'massageChatServer',
@@ -40,7 +43,12 @@ $worker->onMessage = function($connection, $data) use ($worker) {
 
         // Сообщение с клиента при авторизации пользователя
     } elseif($messageData['action'] == 'authorized') {
-        if($messageData['password'] == 123) {
+
+        $pdo->connect();
+        $login = $pdo->searchLogin($messageData['login']);
+        $password = $pdo->searchPassword(md5($messageData['password']));
+
+        if($messageData['login'] == $login['login'] && md5($messageData['password']) == $password['password']) {
             $connection->userName = $messageData['login'];
             echo $connection->userName.' -> '.$connection->id.': '.'Авторизация успешна'."\n";
 
@@ -53,7 +61,7 @@ $worker->onMessage = function($connection, $data) use ($worker) {
             $message = json_encode($messageData);
 
             $connection->send($message);
-
+            
             // Ошибка при авторизации
         } else {
             $connection->userName = $messageData['login'];

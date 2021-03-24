@@ -15,10 +15,10 @@ class DataBase  {
 
     public function searchLogin($login) {
         try {
-            $query = 'SELECT `login`, `search` FROM `secret_user` WHERE `login` = ?';
+            $query = 'SELECT `login` FROM `kul_users` WHERE `login` = ?';
             $query = $this->bd->prepare($query);
             $query->execute([$login]);
-            $row = $query->fetch();
+            $row = $query->fetch(PDO::FETCH_ASSOC);
             return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
@@ -27,15 +27,32 @@ class DataBase  {
 
     public function searchPassword($password) {
         try {
-            $query = 'SELECT `password` FROM `secret_user` WHERE `password` = ?';
+            $query = 'SELECT `password` FROM `kul_users` WHERE `password` = ?';
             $query = $this->bd->prepare($query);
             $query->execute([$password]);
-            $row = $query->fetch();
+            $row = $query->fetch(PDO::FETCH_ASSOC);
             return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }
     }
+
+    public function chatMessageCreate($user, $text) {
+        try {
+            $query = "INSERT INTO `kul_chat` (`user`, `text`, `data`) 
+                    VALUES ('$user', '$text', CURRENT_DATE())";
+            $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+
+
+
+
+
+
 
     public function users() {
         try {
