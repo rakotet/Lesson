@@ -115,7 +115,7 @@
 
 .field__content {
     display: block;
-    overflow: auto;
+    overflow: scroll;
     word-wrap: break-word;
     width: 50%;
     height: 70%;

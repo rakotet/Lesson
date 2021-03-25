@@ -8,18 +8,23 @@ export class Chat extends Component {
     }
 
     init() {
-        const chat = this.$el.querySelector('.field__content')
-        const button = this.$el.querySelector('.field__textarea_button button')
+        let chat = this.$el.querySelector('.field__content')
+        this.chat = this.$el.querySelector('.field__content')
+        this.button = this.$el.querySelector('.field__textarea_button button')
+        this.fieldTextarea = this.$el.querySelector('.field__textarea')
+        this.textarea = this.$el.querySelector('.field__textarea textarea')
 
-        button.addEventListener('click', send.bind(this))
+        this.button.addEventListener('click', send.bind(this))
+        this.fieldTextarea.addEventListener('keyup', send.bind(this))
+        this.chat.addEventListener('DOMNodeInserted', mutationEvent.bind(this))
 
-        chat.innerHTML = ''
+        this.chat.innerHTML = ''
 
         ws.onmessage = async function(event) {
             let data = await JSON.parse(event.data)
                 if(data['action'] == 'massageChatServer') {
                     const date = new Date()
-                    chat.innerHTML += `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`
+                    chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
                 }
         }
     }
@@ -27,19 +32,25 @@ export class Chat extends Component {
 }
 
 function send(event) {
-    // event.preventDefault()
+    if(event.key == 'Enter' || event.type == 'click') {
 
-    const input = this.$el.querySelector('.field__textarea textarea')
-
-    if(input.value == '') {
-        alert('Сообщение пустое')
-    } else {
-        let massage = {
-            action: 'massageChatClient',
-            text: input.value
+        if(this.textarea == '') {
+            alert('Сообщение пустое')
+        } else {
+            let massage = {
+                action: 'massageChatClient',
+                text: this.textarea.value
+            }
+            ws.send(JSON.stringify(massage))
         }
-        ws.send(JSON.stringify(massage))
-    }
 
-    input.value = ''
+        this.textarea.value = ''
+
+    }
 }
+
+
+function mutationEvent(event) {
+    this.chat.scrollTop = this.chat.scrollHeight
+}
+
