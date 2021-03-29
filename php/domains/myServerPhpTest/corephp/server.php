@@ -22,6 +22,7 @@ $worker->onConnect = function($connection) use ($worker) {
 $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
     //Декодируем сообщение приходящее с клиента
     $messageData = json_decode($data, true);
+
     print_r($messageData);
 
     //Сообщение с клиента в чат 

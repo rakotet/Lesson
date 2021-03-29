@@ -10,11 +10,12 @@ export class Chat extends Component {
     init() {
         let chat = this.$el.querySelector('.field__content')
         this.chat = this.$el.querySelector('.field__content')
-        this.button = this.$el.querySelector('.field__textarea_button button')
+        // this.button = this.$el.querySelector('.field__textarea_button button')
+        let button = this.$el.querySelector('.field__textarea_button button')
         this.fieldTextarea = this.$el.querySelector('.field__textarea')
         this.textarea = this.$el.querySelector('.field__textarea textarea')
 
-        this.button.addEventListener('click', send.bind(this))
+        button.addEventListener('click', send.bind(this))
         this.fieldTextarea.addEventListener('keyup', send.bind(this))
         this.chat.addEventListener('DOMNodeInserted', mutationEvent.bind(this))
 
@@ -34,7 +35,7 @@ export class Chat extends Component {
 function send(event) {
     if(event.key == 'Enter' || event.type == 'click') {
 
-        if(this.textarea == '') {
+        if(this.textarea.value == '' || this.textarea.value == ' ') {
             alert('Сообщение пустое')
         } else {
             let massage = {

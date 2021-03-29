@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+.hide {
+    display: none !important;
+}
+
 .mainStart {
     display: flex;
     height: 100vh;
@@ -19,15 +23,15 @@
 }
 
 .wrapper {
-    height: 100%;
-	overflow: hidden;
+    height: 100vh;
+	overflow: auto;
 	display: flex;
 	flex-direction: column;
 }
 
 .content {
     /* background-color: chartreuse; */
-    height: 95vh;
+    height: 100%;
     overflow: hidden;
     
 }
@@ -66,7 +70,7 @@
 .container {
     display: flex;
     flex-direction: row;
-    max-height: 100%;
+    height: 100%;
 }
 
 .menu {
@@ -106,19 +110,55 @@
     flex-direction: column;
     background-color: rgb(233, 229, 229);
     width: 100%;
-    height: 100vh;
+    height: 100%;
     /* justify-content: center; */
     align-items: center;
     /* padding: 20px 20px;
     margin: 20px 20px; */
 }
 
+.field__chat {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(233, 229, 229);
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
 .field__content {
     display: block;
-    overflow: scroll;
+    overflow: auto;
     word-wrap: break-word;
     width: 50%;
-    height: 70%;
+    height: 60%;
+    background-color: white;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border: 2px solid #bebedd;
+}
+
+.field__messages {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(233, 229, 229);
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.field__messages textarea {
+    resize: none;
+    border: 2px solid #bebedd;
+    margin: 10px;
+}
+
+.field__messages_container {
+    display: block;
+    overflow: auto;
+    word-wrap: break-word;
+    width: 50%;
+    height: 60%;
     background-color: white;
     margin-top: 20px;
     margin-bottom: 10px;
