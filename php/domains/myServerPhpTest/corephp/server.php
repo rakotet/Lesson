@@ -48,6 +48,7 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
         $pdo->connect();
         $login = $pdo->searchLogin($messageData['login']);
         $password = $pdo->searchPassword(md5($messageData['password']));
+        $userList = $pdo->usersList();
 
         if($messageData['login'] == $login['login'] && md5($messageData['password']) == $password['password']) {
             $connection->userName = $messageData['login'];
@@ -57,7 +58,8 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
                 'action' => 'authorized',
                 'logon' => true,
                 'userId' => $connection->id,
-                'userName' => $connection->userName
+                'userName' => $connection->userName,
+                'userList' => $userList
             ];
             $message = json_encode($messageData);
 
@@ -76,7 +78,7 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
 
             $connection->send($message);
         }
-    }
+    } 
     
 };
 

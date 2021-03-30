@@ -47,6 +47,22 @@ class DataBase  {
         }
     }
 
+    public function usersList() {
+        try {
+            $query = 'SELECT `login` FROM `kul_users`';
+            $query = $this->bd->query($query);
+            $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+
+
+
+
+
 
 
 

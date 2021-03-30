@@ -7,6 +7,7 @@ export class Chat extends Component {
         this.init()
     }
 
+
     init() {
         let chat = this.$el.querySelector('.field__content')
         this.chat = this.$el.querySelector('.field__content')
