@@ -27,10 +27,11 @@ export class Main extends Component {
                             <li class="menu__item"><span data-tab="message">Сообщения</span></li>
                             <li class="menu__item"><span data-tab="service">Служебки</span></li>
                             <li class="menu__item"><span data-tab="tasks">Задачи</span></li>
+                            <li class="menu__item"><span data-tab="instructions">Инструкция</span></li>
                         </ul>
                     </div>
                     <div class="field">
-                        <div class="instructions" data-tab="instructions">Инструкция</div>
+                        <div class="instructions">Инструкция</div>
                         <div class="field__messages hide" id="field__messages">
                             <div class="field__messages_container"></div>
                             <select>

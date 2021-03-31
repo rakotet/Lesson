@@ -1,6 +1,7 @@
 import {Component} from '../core/component'
 import {Navigation} from './navigation'
 import {ws} from '../core/websocket'
+import {WsOnMessage} from '../core/wsonmessage'
 import {Main} from './main'
 import {Chat} from './chat'
 import {Message} from './message'
@@ -35,14 +36,16 @@ function authorization(event) {
         password.value = ''
 
         ws.onmessage = async function(event) {
+            console.log('a')
             let data = await JSON.parse(event.data)
                 if(data['action'] == 'authorized') {
                     if(data['logon'] == true) {
-                      new Main('main', data['userName'])
-                      new Navigation('container')
-                      const select = new Select(data['userList'])
-                      new Chat('field__chat')
-                      new Message('field__messages', select)
+                        new WsOnMessage()
+                        new Main('main', data['userName'])
+                        new Navigation('container')
+                        const select = new Select(data['userList'])
+                        new Chat('field__chat')
+                        new Message('field__messages', select)
                       
                     } else {
                         alert('Не верный логин или пароль')

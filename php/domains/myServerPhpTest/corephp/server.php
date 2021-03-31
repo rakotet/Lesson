@@ -78,7 +78,15 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
 
             $connection->send($message);
         }
-    } 
+    } elseif($messageData['action'] == 'privateMessageLoadingClient') {
+        $messageData = [
+            'action' => 'privateMessageLoadingServer',
+            'logon' => false
+        ];
+        $message = json_encode($messageData);
+
+        $connection->send($message);
+    }
     
 };
 

@@ -22,13 +22,15 @@ export class Chat extends Component {
 
         this.chat.innerHTML = ''
 
-        ws.onmessage = async function(event) {
-            let data = await JSON.parse(event.data)
-                if(data['action'] == 'massageChatServer') {
-                    const date = new Date()
-                    chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
-                }
-        }
+        // ws.onmessage = async function(event) {
+        //     console.log('chat111')
+        //     let data = await JSON.parse(event.data)
+        //         if(data['action'] == 'massageChatServer') {
+        //             const date = new Date()
+        //             chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
+        //         }
+        // }
+
     }
 
 }
