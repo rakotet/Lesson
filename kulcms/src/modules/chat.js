@@ -9,27 +9,15 @@ export class Chat extends Component {
 
 
     init() {
-        let chat = this.$el.querySelector('.field__content')
         this.chat = this.$el.querySelector('.field__content')
-        // this.button = this.$el.querySelector('.field__textarea_button button')
         let button = this.$el.querySelector('.field__textarea_button button')
         this.fieldTextarea = this.$el.querySelector('.field__textarea')
         this.textarea = this.$el.querySelector('.field__textarea textarea')
-
         button.addEventListener('click', send.bind(this))
         this.fieldTextarea.addEventListener('keyup', send.bind(this))
         this.chat.addEventListener('DOMNodeInserted', mutationEvent.bind(this))
 
         this.chat.innerHTML = ''
-
-        // ws.onmessage = async function(event) {
-        //     console.log('chat111')
-        //     let data = await JSON.parse(event.data)
-        //         if(data['action'] == 'massageChatServer') {
-        //             const date = new Date()
-        //             chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
-        //         }
-        // }
 
     }
 

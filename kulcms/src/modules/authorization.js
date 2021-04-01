@@ -3,9 +3,6 @@ import {Navigation} from './navigation'
 import {ws} from '../core/websocket'
 import {WsOnMessage} from '../core/wsonmessage'
 import {Main} from './main'
-import {Chat} from './chat'
-import {Message} from './message'
-import {Select} from './select'
 
 export class Authorization extends Component {
     constructor(id) {
@@ -40,12 +37,9 @@ function authorization(event) {
             let data = await JSON.parse(event.data)
                 if(data['action'] == 'authorized') {
                     if(data['logon'] == true) {
-                        new WsOnMessage()
                         new Main('main', data['userName'])
                         new Navigation('container')
-                        const select = new Select(data['userList'])
-                        new Chat('field__chat')
-                        new Message('field__messages', select)
+                        new WsOnMessage(data['userList'])
                       
                     } else {
                         alert('Не верный логин или пароль')
