@@ -1,22 +1,45 @@
+import {ws} from './websocket'
 export class Component {
     constructor(id) {
-        this.$el = document.getElementById(id) // с $ принято называть переменные которые содержат в себе DOM элемент
-         // при создании объекта, вызывается метод init который будет переопределён в каждом классе наследнике
+        this.$el = document.getElementById(id) 
     }
 
     init() {}
 
-    onShow() {}
-
-    onHide() {}
-
-    hide() {
-        this.$el.classList.add('hide')
-        this.onHide()
+    sendChatMessageTextarea(event, textarea) {
+        if(event.key == 'Enter' || event.type == 'click') {
+            if(textarea.value == '' || textarea.value == ' ') {
+                alert('Сообщение пустое')
+            } else {
+                let massage = {
+                    action: 'massageChatClient',
+                    text: textarea.value.trim()
+                }
+                ws.send(JSON.stringify(massage))
+            }
+    
+            textarea.value = ''
+        }
     }
 
-    show() {
-        this.$el.classList.remove('hide')
-        this.onShow()
+    sendPrivateMessageTextarea(event, select, textarea) {
+        if(event.key == 'Enter' || event.type == 'click') {
+            if(textarea.value == '' || textarea.value == ' ') {
+                alert('Сообщение пустое')
+            } else {
+                let massage = {
+                    action: 'massagePrivateClient',
+                    text: textarea.value.trim(),
+                    select: select.value
+                }
+                ws.send(JSON.stringify(massage))
+            }
+    
+            textarea.value = ''
+        }
+    }
+
+    mutationEventScrollDown(element) {
+        element.scrollTop = element.scrollHeight
     }
 }

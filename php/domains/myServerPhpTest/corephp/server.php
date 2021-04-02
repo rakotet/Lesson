@@ -86,8 +86,12 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
         $message = json_encode($messageData);
 
         $connection->send($message);
+
+    } elseif($messageData['action'] == 'massagePrivateClient') {
+        $pdo->connect();
+        $pdo->privateMessage($connection->userName, $messageData['select'], $messageData['text']);
+        
     }
-    
 };
 
 $worker->onClose = function($connection) {

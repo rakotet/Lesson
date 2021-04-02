@@ -14,7 +14,6 @@ export class WsOnMessage {
         const chat = new Chat('field__chat')
         const message = new Message('field__messages', select)
 
-
         ws.onmessage = async function(event) {
             let data = await JSON.parse(event.data)
 

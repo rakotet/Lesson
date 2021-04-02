@@ -11,7 +11,18 @@ export class Message extends Component {
     init() {
         this.select.selectCreate('.field__messages select') // заполнили select пользователями
 
+        this.messageFild = this.$el.querySelector('.field__messages_container')
+        let selectUsers = this.$el.querySelector('.field__messages select')
+        let textAreaMessage = this.$el.querySelector('.field__messages textarea')
+        let buttonSentMessage = this.$el.querySelector('.field__messages button')
+
         ws.send(JSON.stringify({action: 'privateMessageLoadingClient'}))
+
+        buttonSentMessage.addEventListener('click', (event) => this.sendPrivateMessageTextarea(event, selectUsers, textAreaMessage))
+        textAreaMessage.addEventListener('keyup', (event) => this.sendPrivateMessageTextarea(event, selectUsers, textAreaMessage))
+        
+
+        
 
     }
 

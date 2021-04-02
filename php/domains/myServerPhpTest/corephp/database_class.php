@@ -58,7 +58,29 @@ class DataBase  {
         }
     }
 
-
+    public function privateMessage($fromUser, $toUser, $text) {
+        try {
+            $user = $fromUser.' '.$toUser;
+            $user2 = $toUser.' '.$fromUser;
+            $query = "SELECT `message`, `last_message`, `from_whom`, `to_whom`, `id` FROM `kul_private_message` WHERE `users` = '$user' OR `users` = '$user2'";
+            $query = $this->bd->query($query);
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            if($row) {
+                $id = $row['id'];
+                $message = $row['message']."\n"."\n".$fromUser."\n".$text;
+                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text' WHERE `id` = '$id'";
+                $this->bd->query($query);
+            } else {
+                $firstMessage = $fromUser."\n".$text;
+                $users = $fromUser.' '.$toUser;
+                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`) 
+                VALUES ('$users', '$firstMessage', '$text')";
+                $this->bd->query($query);
+            }
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
 
 
 
