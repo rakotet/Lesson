@@ -79,9 +79,13 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
             $connection->send($message);
         }
     } elseif($messageData['action'] == 'privateMessageLoadingClient') {
+        $pdo->connect();
+        $privateMessageData = $pdo->loadingPrivateMessages($connection->userName);
+        
+
         $messageData = [
             'action' => 'privateMessageLoadingServer',
-            'logon' => false
+            'listPrivateMessage' => $privateMessageData
         ];
         $message = json_encode($messageData);
 
@@ -89,7 +93,7 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
 
     } elseif($messageData['action'] == 'massagePrivateClient') {
         $pdo->connect();
-        $pdo->privateMessage($connection->userName, $messageData['select'], $messageData['text']);
+        $pdo->privateMessage($connection->userName, $messageData['select'], $messageData['text'], $messageData['date']);
         
     }
 };

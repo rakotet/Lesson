@@ -39,7 +39,7 @@ function authorization(event) {
                     if(data['logon'] == true) {
                         new Main('main', data['userName'])
                         new Navigation('container')
-                        new WsOnMessage(data['userList'])
+                        new WsOnMessage(data['userList'], data['userName'])
                       
                     } else {
                         alert('Не верный логин или пароль')

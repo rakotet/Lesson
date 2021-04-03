@@ -27,10 +27,13 @@ export class Component {
             if(textarea.value == '' || textarea.value == ' ') {
                 alert('Сообщение пустое')
             } else {
+                const date = new Date()
+
                 let massage = {
                     action: 'massagePrivateClient',
                     text: textarea.value.trim(),
-                    select: select.value
+                    select: select.value,
+                    date: `${date.getDate()}:${date.getMonth() + 1}:${date.getFullYear()}`
                 }
                 ws.send(JSON.stringify(massage))
             }
