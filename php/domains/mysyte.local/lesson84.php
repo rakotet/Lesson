@@ -92,7 +92,7 @@ print_r($table);
 echo '<br/>---------------------------------------------------------<br/>';
 
 //Сортировка в результируещей выборке (ORDER BY - сортировать по)
-$result_set = $mysqli->query("SELECT `name`, `email`, `date_reg` FROM `secret_user` WHERE `email` LIKE 'v%' ORDER BY `date_reg`"); // sql запрос на выборку из таблицы, и потом сортировка по времени регистрации по убыванию
+$result_set = $mysqli->query("SELECT `name`, `email`, `date_reg` FROM `secret_user` WHERE `email` LIKE 'v%' ORDER BY `date_reg`"); // sql запрос на выборку из таблицы, и потом сортировка по времени регистрации по возрастанию
 $table = [];
 while (($row = $result_set->fetch_assoc()) != false)
 {

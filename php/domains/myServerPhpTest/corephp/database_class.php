@@ -68,13 +68,13 @@ class DataBase  {
             if($row) {
                 $id = $row['id'];
                 $message = $row['message']."\n"."\n".$fromUser.' '.$date."\n".$text;
-                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text' WHERE `id` = '$id'";
+                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text', `last_time` = UNIX_TIMESTAMP() WHERE `id` = '$id'";
                 $this->bd->query($query);
             } else {
                 $firstMessage = $fromUser.' '.$date."\n".$text;
                 $users = $fromUser.','.$toUser;
-                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`) 
-                VALUES ('$users', '$firstMessage', '$text')";
+                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`, `last_time`) 
+                VALUES ('$users', '$firstMessage', '$text', UNIX_TIMESTAMP())";
                 $this->bd->query($query);
             }
         }catch (PDOException $e) {
@@ -84,9 +84,20 @@ class DataBase  {
 
     public function loadingPrivateMessages($user) {
         try {
-            $query = "SELECT `users`, `id`, `last_message` FROM `kul_private_message` WHERE `users` LIKE '%$user%'";
+            $query = "SELECT `users`, `id`, `last_message`, `last_time` FROM `kul_private_message` WHERE `users` LIKE '%$user%' ORDER BY `last_time` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function userPrivateMessageLoadingClient($id) {
+        try {
+            $query = "SELECT `message` FROM `kul_private_message` WHERE `id` = '$id'";
+            $query = $this->bd->query($query);
+            $row = $query->fetch(PDO::FETCH_ASSOC);
             return $row;
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';

@@ -25,15 +25,32 @@ export class WsOnMessage {
                 chat.chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
 
             } else if(data['action'] == 'privateMessageLoadingServer') {
-                console.log(data['listPrivateMessage'])
-                // message.messageFild.insertAdjacentHTML()
+                message.messageFild.innerHTML = ''
+
                 for(let i = 0; i < data['listPrivateMessage'].length; i++) {
                     let twoUser = data['listPrivateMessage'][i].users.split(',')
                     let userOne = user == twoUser[0] ? userOne = twoUser[1] : userOne = twoUser[0]
 
-                    message.messageFild.insertAdjacentHTML('beforeend', `<p>${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
+                    message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
                 }
+
+            } else if(data['action'] == 'userPrivateMessageLoadingServer') {
+                message.messageFild.innerHTML = ''
+                message.messageFild.insertAdjacentHTML('beforeend', `<plaintext>${data['data'].message}`)
             }
+        }
+
+        ws.onopen = function(event) {
+            console.log('Соединение установленно')
+        }
+
+        ws.onerror = function(error) {
+            console.log("Ошибка при соединении: " + error)
+        }
+
+        ws.onclose = function(event) {
+            console.log('Соединение закрыто: ' + event.code)
+            window.location.reload()
         }
     }
 }

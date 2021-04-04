@@ -147,6 +147,25 @@
     align-items: center;
 }
 
+.field__messages_p {
+    border: 2px solid #bebedd;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px;
+}
+
+.field__messages select {
+    cursor: pointer;
+    border: 2px solid #bebedd;
+    border-radius: 5px;
+}
+
+.field__messages button {
+    cursor: pointer;
+    border: 2px solid #bebedd;
+    border-radius: 5px;
+}
+
 .field__messages textarea {
     resize: none;
     border: 2px solid #bebedd;

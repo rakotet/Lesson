@@ -20,9 +20,12 @@ export class Message extends Component {
 
         buttonSentMessage.addEventListener('click', (event) => this.sendPrivateMessageTextarea(event, selectUsers, textAreaMessage))
         textAreaMessage.addEventListener('keyup', (event) => this.sendPrivateMessageTextarea(event, selectUsers, textAreaMessage))
-        
 
-        
+        this.messageFild.addEventListener('click', function(event) {
+            if(event.target.hasAttribute('data-message')) {
+                ws.send(JSON.stringify({action: 'userPrivateMessageLoadingClient', id: event.target.getAttribute('data-message')}))
+            }
+        })
 
     }
 

@@ -82,7 +82,6 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
         $pdo->connect();
         $privateMessageData = $pdo->loadingPrivateMessages($connection->userName);
         
-
         $messageData = [
             'action' => 'privateMessageLoadingServer',
             'listPrivateMessage' => $privateMessageData
@@ -94,7 +93,42 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
     } elseif($messageData['action'] == 'massagePrivateClient') {
         $pdo->connect();
         $pdo->privateMessage($connection->userName, $messageData['select'], $messageData['text'], $messageData['date']);
+
+        $privateMessageData = $pdo->loadingPrivateMessages($connection->userName);
+        $privateMessageDataSelect = $pdo->loadingPrivateMessages($messageData['select']);
         
+        $messageData = [
+            'action' => 'privateMessageLoadingServer',
+            'listPrivateMessage' => $privateMessageData
+        ];
+        $message = json_encode($messageData);
+
+        $messageDataSelect = [
+            'action' => 'privateMessageLoadingServer',
+            'listPrivateMessage' => $privateMessageDataSelect
+        ];
+        $messageSelect = json_encode($messageDataSelect);
+
+        foreach($worker->connections as $c) {
+            echo '1111111111111111'.$messageData['select'];
+            if($c->userName == $messageData['select']) {
+                $c->send($messageSelect);
+            }
+        }
+
+        $connection->send($message);
+
+    } elseif($messageData['action'] == 'userPrivateMessageLoadingClient') {
+        $pdo->connect();
+        $userPrivateMessageLoadingServer = $pdo->userPrivateMessageLoadingClient($messageData['id']);
+
+        $messageData = [
+            'action' => 'userPrivateMessageLoadingServer',
+            'data' => $userPrivateMessageLoadingServer
+        ];
+        $message = json_encode($messageData);
+
+        $connection->send($message);
     }
 };
 
