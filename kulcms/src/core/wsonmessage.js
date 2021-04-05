@@ -20,7 +20,6 @@ export class WsOnMessage {
             let data = await JSON.parse(event.data)
 
             if(data['action'] == 'massageChatServer') {
-                console.log('chat')
                 const date = new Date()
                 chat.chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
 
@@ -31,26 +30,18 @@ export class WsOnMessage {
                     let twoUser = data['listPrivateMessage'][i].users.split(',')
                     let userOne = user == twoUser[0] ? userOne = twoUser[1] : userOne = twoUser[0]
 
-                    message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
+                    message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
                 }
 
             } else if(data['action'] == 'userPrivateMessageLoadingServer') {
-                message.messageFild.innerHTML = ''
-                message.messageFild.insertAdjacentHTML('beforeend', `<plaintext>${data['data'].message}`)
+                message.messageFildPrivat.innerHTML = ''
+                message.messageFildPrivat.insertAdjacentHTML('beforeend', `${data['data'].message}</br>`)
+
+            } else if(data['action'] == 'privateMessageUserServer') {
+                message.messageFildPrivat.insertAdjacentHTML('beforeend', `${data.privateMessage}`)
             }
         }
 
-        ws.onopen = function(event) {
-            console.log('Соединение установленно')
-        }
-
-        ws.onerror = function(error) {
-            console.log("Ошибка при соединении: " + error)
-        }
-
-        ws.onclose = function(event) {
-            console.log('Соединение закрыто: ' + event.code)
-            window.location.reload()
-        }
+        
     }
 }

@@ -67,11 +67,12 @@ class DataBase  {
             $row = $query->fetch(PDO::FETCH_ASSOC);
             if($row) {
                 $id = $row['id'];
-                $message = $row['message']."\n"."\n".$fromUser.' '.$date."\n".$text;
+                $roww = $row['message'];
+                $message = "$roww</br><p>$fromUser $date</p><p>$text</p>";
                 $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text', `last_time` = UNIX_TIMESTAMP() WHERE `id` = '$id'";
                 $this->bd->query($query);
             } else {
-                $firstMessage = $fromUser.' '.$date."\n".$text;
+                $firstMessage = "<p>$fromUser $date</p><p>$text</p>";
                 $users = $fromUser.','.$toUser;
                 $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`, `last_time`) 
                 VALUES ('$users', '$firstMessage', '$text', UNIX_TIMESTAMP())";
@@ -103,6 +104,10 @@ class DataBase  {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }
     }
+
+
+
+
 
 
 

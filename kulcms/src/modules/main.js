@@ -34,12 +34,14 @@ export class Main extends Component {
                         <div class="instructions">Инструкция</div>
                         <div class="field__messages hide" id="field__messages">
                             <div class="field__messages_container"></div>
+                            <div class="field__messages_userPrivatMessage hide">1234567</div>
                             <select>
                                 <option>Пункт 1</option>
                                 <option>Пункт 2</option>
                             </select>
+                            <button class="field__messages_buttonBack hide">Назад</button>
                             <textarea rows="5" cols="60"></textarea>
-                            <button>Отправить</button>
+                            <button class="field__messages_button">Отправить</button>
                         </div>
                         <div class="field__service hide">Служебки</div>
                         <div class="field__tasks hide">Задачи</div>

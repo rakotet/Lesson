@@ -12,6 +12,19 @@ export class Authorization extends Component {
 
     init() {
         this.$el.addEventListener('submit', authorization.bind(this))
+
+        ws.onopen = function(event) {
+            console.log('Соединение установленно')
+        }
+
+        ws.onerror = function(error) {
+            console.log("Ошибка при соединении: " + error)
+        }
+
+        ws.onclose = function(event) {
+            console.log('Соединение закрыто: ' + event.code)
+            window.location.reload()
+        }
     }
 }
 
@@ -33,7 +46,6 @@ function authorization(event) {
         password.value = ''
 
         ws.onmessage = async function(event) {
-            console.log('a')
             let data = await JSON.parse(event.data)
                 if(data['action'] == 'authorized') {
                     if(data['logon'] == true) {
