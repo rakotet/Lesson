@@ -2,6 +2,7 @@ import {ws} from './websocket'
 import {Chat} from '../modules/chat'
 import {Select} from '../modules/select'
 import {Message} from '../modules/message'
+import {Navigation} from '../modules/navigation'
 
 export class WsOnMessage {
     constructor(list, user) {
@@ -13,8 +14,9 @@ export class WsOnMessage {
     init() {
         const user = this.user
         const select = new Select(this.list)
+        const navigation = new Navigation('container')
         const chat = new Chat('field__chat')
-        const message = new Message('field__messages', select)
+        const message = new Message('field__messages', select, user)
 
         ws.onmessage = async function(event) {
             let data = await JSON.parse(event.data)
@@ -30,7 +32,11 @@ export class WsOnMessage {
                     let twoUser = data['listPrivateMessage'][i].users.split(',')
                     let userOne = user == twoUser[0] ? userOne = twoUser[1] : userOne = twoUser[0]
 
-                    message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
+                    if(user == data['listPrivateMessage'][i].last_user) {
+                        message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
+                    } else {
+                        message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_pnew" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne} (Есть новое сообщение)</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
+                    }
                 }
 
             } else if(data['action'] == 'userPrivateMessageLoadingServer') {

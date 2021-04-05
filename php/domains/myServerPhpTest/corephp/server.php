@@ -16,7 +16,8 @@ $pdo = new DataBase();
 $worker->onConnect = function($connection) use ($worker) {
     echo "Hello World!\n";
     echo $connection->id."\n";
-    
+
+    $connection->userName = 'anonim';
 };
 
 $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
@@ -121,7 +122,7 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
 
     } elseif($messageData['action'] == 'userPrivateMessageLoadingClient') {
         $pdo->connect();
-        $userPrivateMessageLoadingServer = $pdo->userPrivateMessageLoadingClient($messageData['id']);
+        $userPrivateMessageLoadingServer = $pdo->userPrivateMessageLoadingClient($messageData['id'], $messageData['user']);
 
         $messageData = [
             'action' => 'userPrivateMessageLoadingServer',

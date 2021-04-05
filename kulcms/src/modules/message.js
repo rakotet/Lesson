@@ -2,13 +2,15 @@ import {Component} from '../core/component'
 import {ws} from '../core/websocket'
 
 export class Message extends Component {
-    constructor(id, select) {
+    constructor(id, select, user) {
         super(id)
         this.select = select
+        this.user = user
         this.init()
     }
 
     init() {
+        const user = this.user
         this.select.selectCreate('.field__messages select') // заполнили select пользователями
 
         this.messageFild = this.$el.querySelector('.field__messages_container')
@@ -27,7 +29,7 @@ export class Message extends Component {
 
         this.messageFild.addEventListener('click', (event) => {
             if(event.target.hasAttribute('data-message')) {
-                ws.send(JSON.stringify({action: 'userPrivateMessageLoadingClient', id: event.target.getAttribute('data-message')}))
+                ws.send(JSON.stringify({action: 'userPrivateMessageLoadingClient', id: event.target.getAttribute('data-message'), user: user}))
 
                 this.messageFild.classList.add('hide')
                 selectUsers.classList.add('hide')
@@ -38,6 +40,8 @@ export class Message extends Component {
         })
 
         buttonBack.addEventListener('click', (event) => {
+            ws.send(JSON.stringify({action: 'privateMessageLoadingClient'}))
+            
             this.messageFild.classList.remove('hide')
             selectUsers.classList.remove('hide')
             this.messageFildPrivat.classList.add('hide')

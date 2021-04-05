@@ -1,5 +1,4 @@
 import {Component} from '../core/component'
-import {Navigation} from './navigation'
 import {ws} from '../core/websocket'
 import {WsOnMessage} from '../core/wsonmessage'
 import {Main} from './main'
@@ -50,7 +49,6 @@ function authorization(event) {
                 if(data['action'] == 'authorized') {
                     if(data['logon'] == true) {
                         new Main('main', data['userName'])
-                        new Navigation('container')
                         new WsOnMessage(data['userList'], data['userName'])
                       
                     } else {

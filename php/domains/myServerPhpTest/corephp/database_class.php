@@ -62,20 +62,20 @@ class DataBase  {
         try {
             $user = $fromUser.','.$toUser;
             $user2 = $toUser.','.$fromUser;
-            $query = "SELECT `message`, `last_message`, `from_whom`, `to_whom`, `id` FROM `kul_private_message` WHERE `users` = '$user' OR `users` = '$user2'";
+            $query = "SELECT `message`, `last_message`, `id` FROM `kul_private_message` WHERE `users` = '$user' OR `users` = '$user2'";
             $query = $this->bd->query($query);
             $row = $query->fetch(PDO::FETCH_ASSOC);
             if($row) {
                 $id = $row['id'];
                 $roww = $row['message'];
                 $message = "$roww</br><p>$fromUser $date</p><p>$text</p>";
-                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text', `last_time` = UNIX_TIMESTAMP() WHERE `id` = '$id'";
+                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text', `last_time` = UNIX_TIMESTAMP(), `last_user` = '$fromUser' WHERE `id` = '$id'";
                 $this->bd->query($query);
             } else {
                 $firstMessage = "<p>$fromUser $date</p><p>$text</p>";
                 $users = $fromUser.','.$toUser;
-                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`, `last_time`) 
-                VALUES ('$users', '$firstMessage', '$text', UNIX_TIMESTAMP())";
+                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`, `last_time`, `last_user`) 
+                VALUES ('$users', '$firstMessage', '$text', UNIX_TIMESTAMP(), '$fromUser')";
                 $this->bd->query($query);
             }
         }catch (PDOException $e) {
@@ -85,7 +85,7 @@ class DataBase  {
 
     public function loadingPrivateMessages($user) {
         try {
-            $query = "SELECT `users`, `id`, `last_message`, `last_time` FROM `kul_private_message` WHERE `users` LIKE '%$user%' ORDER BY `last_time` DESC";
+            $query = "SELECT `users`, `id`, `last_message`, `last_time`, `last_user` FROM `kul_private_message` WHERE `users` LIKE '%$user%' ORDER BY `last_time` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;
@@ -94,8 +94,10 @@ class DataBase  {
         }
     }
 
-    public function userPrivateMessageLoadingClient($id) {
+    public function userPrivateMessageLoadingClient($id, $user) {
         try {
+            $query = "UPDATE `kul_private_message` SET `last_user` = '$user' WHERE `id` = '$id'";
+            $this->bd->query($query);
             $query = "SELECT `message` FROM `kul_private_message` WHERE `id` = '$id'";
             $query = $this->bd->query($query);
             $row = $query->fetch(PDO::FETCH_ASSOC);
