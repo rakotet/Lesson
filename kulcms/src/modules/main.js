@@ -24,7 +24,7 @@ export class Main extends Component {
                     <div class="menu">
                         <ul class="menu__list">
                             <li class="menu__item"><span data-tab="chat">Чат</span></li>
-                            <li class="menu__item"><span data-tab="message">Сообщения</span></li>
+                            <li class="menu__item"><span data-tab="message">Сообщения</span><strong class="menu__item_strong hide">(new)</strong></li>
                             <li class="menu__item"><span data-tab="service">Служебки</span></li>
                             <li class="menu__item"><span data-tab="tasks">Задачи</span></li>
                             <li class="menu__item"><span data-tab="instructions">Инструкция</span></li>

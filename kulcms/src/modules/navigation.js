@@ -7,7 +7,8 @@ export class Navigation extends Component {
     }
 
     init() {
-
+        this.strongNew = this.$el.querySelector('.menu__item_strong')
+        let menu = this.$el.querySelector('.menu')
         let instructions = this.$el.querySelector('.instructions')
         let chat = this.$el.querySelector('.field__chat')
         let messages = this.$el.querySelector('.field__messages')
@@ -16,7 +17,7 @@ export class Navigation extends Component {
 
         let tabs = [{data: 'instructions', tab: instructions}, {data: 'chat', tab: chat}, {data: 'message', tab: messages}, {data: 'service', tab: service}, {data: 'tasks', tab: tasks}]
 
-        this.$el.addEventListener('click', function(event) {
+        menu.addEventListener('click', function(event) {
 
         if(event.target.hasAttribute('data-tab')) {
             for(let i = 0; i < tabs.length; i++) {

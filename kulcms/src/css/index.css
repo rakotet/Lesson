@@ -162,10 +162,11 @@
     background-color: cadetblue;
 }
 
-.field__messages select, .field__messages_button {
+.field__messages select, .field__messages_button, .field__textarea_button button, .field__messages_buttonBack {
     cursor: pointer;
     border: 2px solid #bebedd;
     border-radius: 5px;
+    padding: 3px;
 }
 
 .field__messages textarea {
@@ -196,11 +197,11 @@
     
 }
 
-.field__textarea_button button {
+/* .field__textarea_button button {
     cursor: pointer;
     border: 2px solid #bebedd;
     border-radius: 5px;
-}
+} */
 
 .footer {
     background-color: #bebedd;

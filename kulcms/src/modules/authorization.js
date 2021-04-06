@@ -22,7 +22,7 @@ export class Authorization extends Component {
 
         ws.onclose = function(event) {
             console.log('Соединение закрыто: ' + event.code)
-            window.location.reload()
+            setTimeout(() => {window.location.reload()}, 5000)
         }
     }
 }
