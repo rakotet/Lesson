@@ -122,7 +122,7 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
 
     } elseif($messageData['action'] == 'userPrivateMessageLoadingClient') {
         $pdo->connect();
-        $userPrivateMessageLoadingServer = $pdo->userPrivateMessageLoadingClient($messageData['id'], $messageData['user']);
+        $userPrivateMessageLoadingServer = $pdo->userPrivateMessageLoadingClient($messageData['id'], $messageData['user'], $messageData['userTo']);
 
         $messageData = [
             'action' => 'userPrivateMessageLoadingServer',
@@ -131,6 +131,19 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
         $message = json_encode($messageData);
 
         $connection->send($message);
+
+    } elseif($messageData['action'] == 'backPrivateMessageLoadingClient') {
+        $pdo->connect();
+        $pdo->updataUserTo($messageData['id'], $messageData['user']);
+        // $privateMessageData = $pdo->loadingPrivateMessages($connection->userName);
+        
+        // $messageData = [
+        //     'action' => 'privateMessageLoadingServer',
+        //     'listPrivateMessage' => $privateMessageData
+        // ];
+        // $message = json_encode($messageData);
+
+        // $connection->send($message);
     }
 };
 

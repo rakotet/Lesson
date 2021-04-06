@@ -69,13 +69,13 @@ class DataBase  {
                 $id = $row['id'];
                 $roww = $row['message'];
                 $message = "$roww</br><p>$fromUser $date</p><p>$text</p>";
-                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text', `last_time` = UNIX_TIMESTAMP(), `last_user` = '$fromUser' WHERE `id` = '$id'";
+                $query = "UPDATE `kul_private_message` SET `message` = '$message', `last_message` = '$text', `last_time` = UNIX_TIMESTAMP(), `last_user` = '$fromUser', `last_create` = '1' WHERE `id` = '$id'";
                 $this->bd->query($query);
             } else {
                 $firstMessage = "<p>$fromUser $date</p><p>$text</p>";
                 $users = $fromUser.','.$toUser;
-                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`, `last_time`, `last_user`) 
-                VALUES ('$users', '$firstMessage', '$text', UNIX_TIMESTAMP(), '$fromUser')";
+                $query = "INSERT INTO `kul_private_message` (`users`, `message`, `last_message`, `last_time`, `last_user`, `last_create`) 
+                VALUES ('$users', '$firstMessage', '$text', UNIX_TIMESTAMP(), '$fromUser', '1')";
                 $this->bd->query($query);
             }
         }catch (PDOException $e) {
@@ -85,7 +85,7 @@ class DataBase  {
 
     public function loadingPrivateMessages($user) {
         try {
-            $query = "SELECT `users`, `id`, `last_message`, `last_time`, `last_user` FROM `kul_private_message` WHERE `users` LIKE '%$user%' ORDER BY `last_time` DESC";
+            $query = "SELECT `users`, `id`, `last_message`, `last_time`, `last_user`, `last_create`, `userTo`, `userTo2` FROM `kul_private_message` WHERE `users` LIKE '%$user%' ORDER BY `last_time` DESC";
             $query = $this->bd->query($query);
             $row = $query->fetchAll(PDO::FETCH_ASSOC);
             return $row;
@@ -94,9 +94,16 @@ class DataBase  {
         }
     }
 
-    public function userPrivateMessageLoadingClient($id, $user) {
+    public function userPrivateMessageLoadingClient($id, $user, $userTo) {
         try {
-            $query = "UPDATE `kul_private_message` SET `last_user` = '$user' WHERE `id` = '$id'";
+            $query = "SELECT `userTo`, `userTo2` FROM `kul_private_message` WHERE `id` = '$id'";
+            $query = $this->bd->query($query);
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            if($row['userTo'] == $userTo){
+                $query = "UPDATE `kul_private_message` SET `last_user` = '$user', `last_create` = '0', `userTo2` = '$user' WHERE `id` = '$id'";
+            } else {
+                $query = "UPDATE `kul_private_message` SET `last_user` = '$user', `last_create` = '0', `userTo` = '$user' WHERE `id` = '$id'";
+            }
             $this->bd->query($query);
             $query = "SELECT `message` FROM `kul_private_message` WHERE `id` = '$id'";
             $query = $this->bd->query($query);
@@ -105,6 +112,18 @@ class DataBase  {
         }catch (PDOException $e) {
             echo 'ошибка: '.$e->getMessage().'<br/>';
         }
+    }
+
+    public function updataUserTo($id, $user) {
+        $query = "SELECT `userTo`, `userTo2` FROM `kul_private_message` WHERE `id` = '$id'";
+            $query = $this->bd->query($query);
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            if($row['userTo'] == $user){
+                $query = "UPDATE `kul_private_message` SET `userTo` = 'user'";
+            } else {
+                $query = "UPDATE `kul_private_message` SET `userTo2` = 'user'";
+            }
+            $this->bd->query($query);
     }
 
 

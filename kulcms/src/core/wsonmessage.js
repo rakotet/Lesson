@@ -26,16 +26,17 @@ export class WsOnMessage {
                 chat.chat.insertAdjacentHTML('beforeend', `<p>${data['userName']} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} </br> ${data['text']}</p></br>`)
 
             } else if(data['action'] == 'privateMessageLoadingServer') {
+                console.log(data)
                 message.messageFild.innerHTML = ''
 
                 for(let i = 0; i < data['listPrivateMessage'].length; i++) {
                     let twoUser = data['listPrivateMessage'][i].users.split(',')
                     let userOne = user == twoUser[0] ? userOne = twoUser[1] : userOne = twoUser[0]
 
-                    if(user == data['listPrivateMessage'][i].last_user) {
-                        message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
-                    } else {
+                    if(user !== data['listPrivateMessage'][i].last_user && data['listPrivateMessage'][i].last_create == '1' && data['listPrivateMessage'][i].userTo !== user && data['listPrivateMessage'][i].userTo2 !== user) {
                         message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_pnew" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne} (Есть новое сообщение)</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
+                    } else {
+                        message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_p" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne}</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
                     }
                 }
 

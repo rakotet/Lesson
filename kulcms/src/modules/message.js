@@ -11,6 +11,7 @@ export class Message extends Component {
 
     init() {
         const user = this.user
+        let idMessage
         this.select.selectCreate('.field__messages select') // заполнили select пользователями
 
         this.messageFild = this.$el.querySelector('.field__messages_container')
@@ -29,18 +30,21 @@ export class Message extends Component {
 
         this.messageFild.addEventListener('click', (event) => {
             if(event.target.hasAttribute('data-message')) {
-                ws.send(JSON.stringify({action: 'userPrivateMessageLoadingClient', id: event.target.getAttribute('data-message'), user: user}))
+                idMessage = event.target.getAttribute('data-message')
+                ws.send(JSON.stringify({action: 'userPrivateMessageLoadingClient', id: event.target.getAttribute('data-message'), userTo: event.target.getAttribute('data-user'), user: user}))
 
                 this.messageFild.classList.add('hide')
                 selectUsers.classList.add('hide')
                 selectUsers.value = event.target.getAttribute('data-user')
                 this.messageFildPrivat.classList.remove('hide')
                 buttonBack.classList.remove('hide')
+
+                ws.send(JSON.stringify({action: 'privateMessageLoadingClient'}))
             }
         })
 
         buttonBack.addEventListener('click', (event) => {
-            ws.send(JSON.stringify({action: 'privateMessageLoadingClient'}))
+            ws.send(JSON.stringify({action: 'backPrivateMessageLoadingClient', id: idMessage, user: user}))
             
             this.messageFild.classList.remove('hide')
             selectUsers.classList.remove('hide')
