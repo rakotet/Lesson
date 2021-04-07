@@ -115,15 +115,41 @@ class DataBase  {
     }
 
     public function updataUserTo($id, $user) {
-        $query = "SELECT `userTo`, `userTo2` FROM `kul_private_message` WHERE `id` = '$id'";
+        try {
+            $query = "SELECT `userTo`, `userTo2` FROM `kul_private_message` WHERE `id` = '$id'";
             $query = $this->bd->query($query);
             $row = $query->fetch(PDO::FETCH_ASSOC);
             if($row['userTo'] == $user){
-                $query = "UPDATE `kul_private_message` SET `userTo` = 'user'";
+                $query = "UPDATE `kul_private_message` SET `userTo` = 'user' WHERE `id` = '$id'";
             } else {
-                $query = "UPDATE `kul_private_message` SET `userTo2` = 'user'";
+                $query = "UPDATE `kul_private_message` SET `userTo2` = 'user' WHERE `id` = '$id'";
             }
             $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function closePrivateMessage($user) {
+        try {
+            $query = "UPDATE `kul_private_message` SET `userTo` = 'user' WHERE `userTo` = '$user'";
+            $this->bd->query($query);
+            $query = "UPDATE `kul_private_message` SET `userTo2` = 'user' WHERE `userTo2` = '$user'";
+            $this->bd->query($query);
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
+    }
+
+    public function correspondsWithMe($user, $select) {
+        try {
+            $query = "SELECT `id` FROM `kul_private_message` WHERE (`userTo` = '$user' OR `userTo2` = '$user') AND (`userTo` = '$select' OR `userTo2` = '$select')";
+            $query = $this->bd->query($query);
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        }catch (PDOException $e) {
+            echo 'ошибка: '.$e->getMessage().'<br/>';
+        }
     }
 
 

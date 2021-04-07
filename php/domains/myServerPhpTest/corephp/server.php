@@ -113,7 +113,9 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
         foreach($worker->connections as $c) {
             if($c->userName == $messageData['select']) {
                 $c->send($messageSelect);
-                $c->send(json_encode(['action' => 'privateMessageUserServer', 'privateMessage' => '<p>'.$connection->userName.' '.$messageData['date'].'</p>'.'<p>'.$messageData['text'].'</p>'.'</br>']));
+                if($pdo->correspondsWithMe($connection->userName, $messageData['select'])) {
+                    $c->send(json_encode(['action' => 'privateMessageUserServer', 'privateMessage' => '<p>'.$connection->userName.' '.$messageData['date'].'</p>'.'<p>'.$messageData['text'].'</p>'.'</br>']));
+                }
             }
         }
 
@@ -135,21 +137,14 @@ $worker->onMessage = function($connection, $data) use ($worker, $pdo) {
     } elseif($messageData['action'] == 'backPrivateMessageLoadingClient') {
         $pdo->connect();
         $pdo->updataUserTo($messageData['id'], $messageData['user']);
-        // $privateMessageData = $pdo->loadingPrivateMessages($connection->userName);
-        
-        // $messageData = [
-        //     'action' => 'privateMessageLoadingServer',
-        //     'listPrivateMessage' => $privateMessageData
-        // ];
-        // $message = json_encode($messageData);
-
-        // $connection->send($message);
     }
 };
 
-$worker->onClose = function($connection) {
-    if(empty($connection->userName)) $connection->userName = 'anonim';
+$worker->onClose = function($connection) use ($pdo) {
     echo $connection->userName.' -> '.$connection->id.': '.'соединение закрыто'."\n";
+    
+    $pdo->connect();
+    $pdo->closePrivateMessage($connection->userName);
 };
 
 
