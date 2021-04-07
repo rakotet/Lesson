@@ -30,7 +30,6 @@
 }
 
 .content {
-    /* background-color: chartreuse; */
     height: 100%;
     overflow: hidden;
     
@@ -78,7 +77,6 @@
     min-width: 10%;
     height: 100vh;
     border-right: 5px solid #bebedd;
-    /* min-height: 100%; */
 }
 
 .menu__list {
@@ -96,13 +94,11 @@
     margin-bottom: 10px;
     list-style-type: none;
     cursor: pointer;
-    /* width: 100%; */
 }
 
 .menu__list li span:hover {
     background-color: #bebedd;
     border-radius: 5px;
-    /* border: 1px solid black; */
 }
 
 .field {
@@ -111,10 +107,7 @@
     background-color: rgb(233, 229, 229);
     width: 100%;
     height: 100%;
-    /* justify-content: center; */
     align-items: center;
-    /* padding: 20px 20px;
-    margin: 20px 20px; */
 }
 
 .field__chat {
@@ -138,7 +131,7 @@
     border: 2px solid #bebedd;
 }
 
-.field__messages {
+.field__messages, .field__service {
     display: flex;
     flex-direction: column;
     background-color: rgb(233, 229, 229);
@@ -162,7 +155,7 @@
     background-color: cadetblue;
 }
 
-.field__messages select, .field__messages_button, .field__textarea_button button, .field__messages_buttonBack {
+.field__messages select, .field__messages_button, .field__textarea_button button, .field__messages_buttonBack, .field__service_button {
     cursor: pointer;
     border: 2px solid #bebedd;
     border-radius: 5px;
@@ -175,7 +168,7 @@
     margin: 10px;
 }
 
-.field__messages_container, .field__messages_userPrivatMessage {
+.field__messages_container, .field__messages_userPrivatMessage, .field__service_container {
     display: block;
     overflow: auto;
     word-wrap: break-word;
@@ -187,21 +180,11 @@
     border: 2px solid #bebedd;
 }
 
-.field__textarea {
-    /* max-width: 500px; */
-}
-
 .field__textarea_input {
     resize: none;
     border: 2px solid #bebedd;
     
 }
-
-/* .field__textarea_button button {
-    cursor: pointer;
-    border: 2px solid #bebedd;
-    border-radius: 5px;
-} */
 
 .footer {
     background-color: #bebedd;

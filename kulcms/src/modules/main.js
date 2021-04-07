@@ -31,8 +31,11 @@ export class Main extends Component {
                         </ul>
                     </div>
                     <div class="field">
-                        <div class="instructions">Инструкция</div>
+                        <div class="instructions">
+                            <div>Инструкция</div>
+                        </div>
                         <div class="field__messages hide" id="field__messages">
+                            <div>Сообщения</div>
                             <div class="field__messages_container"></div>
                             <div class="field__messages_userPrivatMessage hide">1234567</div>
                             <select>
@@ -43,9 +46,19 @@ export class Main extends Component {
                             <textarea rows="5" cols="60"></textarea>
                             <button class="field__messages_button">Отправить</button>
                         </div>
-                        <div class="field__service hide">Служебки</div>
-                        <div class="field__tasks hide">Задачи</div>
+                        <div class="field__service hide" id="field__service">
+                            <div>Служебки</div>
+                            <div class="field__service_container"></div>
+                            <div class="field__service_createMemo hide">
+                                <div>Тут пишут служебку</div>
+                            </div>
+                            <button class="field__service_button">Написать служебную записку</button>
+                        </div>
+                        <div class="field__tasks hide">
+                            <div>Задачи</div>
+                        </div>
                         <div class="field__chat hide" id="field__chat">
+                            <div>Чат</div>
                             <div class="field__content"></div>
                             <div class="field__textarea">
                                 <textarea class="field__textarea_input" rows="5" cols="60"></textarea> 

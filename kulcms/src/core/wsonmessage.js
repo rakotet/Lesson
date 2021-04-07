@@ -3,6 +3,7 @@ import {Chat} from '../modules/chat'
 import {Select} from '../modules/select'
 import {Message} from '../modules/message'
 import {Navigation} from '../modules/navigation'
+import {Memo} from '../modules/memo'
 
 export class WsOnMessage {
     constructor(list, user) {
@@ -14,9 +15,10 @@ export class WsOnMessage {
     init() {
         const user = this.user
         const select = new Select(this.list)
-        const navigation = new Navigation('container')
         const chat = new Chat('field__chat')
         const message = new Message('field__messages', select, user)
+        const navigation = new Navigation('container', message)
+        const memo = new Memo('field__service', select)
 
         ws.onmessage = async function(event) {
             let data = await JSON.parse(event.data)

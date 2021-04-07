@@ -1,12 +1,14 @@
 import {Component} from '../core/component'
 
 export class Navigation extends Component {
-    constructor(id) {
+    constructor(id, message) {
         super(id)
+        this.message = message
         this.init()
     }
 
     init() {
+        const message = this.message
         this.strongNew = this.$el.querySelector('.menu__item_strong')
         let menu = this.$el.querySelector('.menu')
         let instructions = this.$el.querySelector('.instructions')
@@ -18,19 +20,19 @@ export class Navigation extends Component {
         let tabs = [{data: 'instructions', tab: instructions}, {data: 'chat', tab: chat}, {data: 'message', tab: messages}, {data: 'service', tab: service}, {data: 'tasks', tab: tasks}]
 
         menu.addEventListener('click', function(event) {
+            if(event.target.hasAttribute('data-tab')) {
+                message.back()
+                for(let i = 0; i < tabs.length; i++) {
+                    if(tabs[i].data == event.target.getAttribute('data-tab')) {
+                        if(tabs[i].tab.classList.contains('hide')) {
+                            tabs[i].tab.classList.remove('hide')
+                        } 
 
-        if(event.target.hasAttribute('data-tab')) {
-            for(let i = 0; i < tabs.length; i++) {
-                if(tabs[i].data == event.target.getAttribute('data-tab')) {
-                    if(tabs[i].tab.classList.contains('hide')) {
-                        tabs[i].tab.classList.remove('hide')
-                    } 
-
-                } else {
-                    tabs[i].tab.classList.add('hide')
+                    } else {
+                        tabs[i].tab.classList.add('hide')
+                    }
                 }
             }
-        }
         
         })
     }

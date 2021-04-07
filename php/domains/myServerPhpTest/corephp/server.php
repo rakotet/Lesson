@@ -11,7 +11,6 @@ $worker = new Worker("websocket://192.168.0.12:8001");
 
 // Создаем объект для работы с базой данных
 $pdo = new DataBase();
-// $pdo->connect();
 
 $worker->onConnect = function($connection) use ($worker) {
     echo "Hello World!\n";
