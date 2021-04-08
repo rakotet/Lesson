@@ -34,7 +34,7 @@ export class WsOnMessage {
                     let twoUser = data['listPrivateMessage'][i].users.split(',')
                     let userOne = user == twoUser[0] ? userOne = twoUser[1] : userOne = twoUser[0]
 
-                    if(user !== data['listPrivateMessage'][i].last_user && data['listPrivateMessage'][i].last_create == '1' && data['listPrivateMessage'][i].userTo !== user && data['listPrivateMessage'][i].userTo2 !== user) {
+                    if(user !== data['listPrivateMessage'][i].last_user && data['listPrivateMessage'][i].last_create == '1' && data['listPrivateMessage'][i].no_message !== '1' && data['listPrivateMessage'][i].userTo !== user && data['listPrivateMessage'][i].userTo2 !== user) {
                         count++
                         message.messageFild.insertAdjacentHTML('beforeend', `<p class="field__messages_pnew" data-user="${userOne}" data-message="${data['listPrivateMessage'][i].id}">${userOne} (Есть новое сообщение)</br>${data['listPrivateMessage'][i].last_message}</br></br></p>`)
                     } else {
