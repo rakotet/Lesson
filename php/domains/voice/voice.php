@@ -7,12 +7,11 @@
 
 $uploadDir = 'voice/';
 $typeFile = explode('/', $_FILES['voice']['type']);
-$uploadFile = $uploadDir . basename($_FILES['voice']['tmp_name'].time().'.'.$typeFile[1]);
+$uploadFile = $uploadDir.'motor'.'.'.time().'.'.$typeFile[1];
 if (move_uploaded_file($_FILES['voice']['tmp_name'], $uploadFile)) {
-    $response = ['result'=>'OK', 'data'=>'../'.$uploadFile];
+    $response = ['result'=>'ok'];
 } else {
-    $response = ['result'=>'ERROR', 'data'=>''];
+    $response = ['result'=>'error'];
 }
-echo json_encode(['action'=>'OK', 'data'=>'nahui']);
-// echo json_encode($response);
-?>
+// echo json_encode(['action'=>'OK', 'data'=>'nahui']);
+echo json_encode($response);

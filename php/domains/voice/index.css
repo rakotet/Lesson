@@ -1,0 +1,21 @@
+.activ {
+    background-color: chartreuse;
+    border-radius: 25px;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        display: flex;
+        /* height: 100vh; */
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #start, #stop {
+        width: 100%;
+        height: 50px;
+        margin: 50px;
+
+    }
+}

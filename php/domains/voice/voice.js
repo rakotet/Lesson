@@ -1,7 +1,6 @@
 const URL = 'voice.php';
 let div = document.createElement('div');
 div.id = 'messages';
-div.innerText = '111';
 let start = document.createElement('button');
 start.id = 'start';
 start.innerHTML = 'Start';
@@ -16,6 +15,8 @@ navigator.mediaDevices.getUserMedia({ audio: true})
         const mediaRecorder = new MediaRecorder(stream);
 
         document.querySelector('#start').addEventListener('click', function(){
+            div.innerText = '';
+            start.classList.add('activ')
             mediaRecorder.start();
         });
         let audioChunks = [];
@@ -24,6 +25,7 @@ navigator.mediaDevices.getUserMedia({ audio: true})
         });
 
         document.querySelector('#stop').addEventListener('click', function(){
+            start.classList.remove('activ')
             mediaRecorder.stop();
         });
 
@@ -43,16 +45,20 @@ async function sendVoice(form) {
     let promise = await fetch(URL, {
         method: 'POST',
         body: form});
+
     if (promise.ok) {
         let response =  await promise.json();
-        console.log(response.action);
-        console.log('11');
 
-        let audio = document.createElement('audio');
-        audio.src = response.data;
-        audio.controls = true;
-        audio.autoplay = true;
-        document.querySelector('#messages').appendChild(audio);
+        if(response.result == 'ok') {
+            let ok = document.createElement('div');
+            ok.innerText = 'Файл загружен';
+            document.querySelector('#messages').appendChild(ok);
+            
+        } else {
+            let no = document.createElement('div');
+            ok.innerText = 'Ошибка загрузки файла';
+            document.querySelector('#messages').appendChild(no);
+        }
     } else {
         let no = document.createElement('p');
         no.innerText = 'Нет соединения с сервером';
