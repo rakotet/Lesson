@@ -5,7 +5,7 @@
  * Возвращает JSON бъект в зависимоти от результата обработки
  */
 
-$uploadDir = 'voice/';
+$uploadDir = '../voicedownload/voice/';
 $typeFile = explode('/', $_FILES['voice']['type']);
 $uploadFile = $uploadDir.'motor'.'.'.time().'.'.$typeFile[1];
 if (move_uploaded_file($_FILES['voice']['tmp_name'], $uploadFile)) {

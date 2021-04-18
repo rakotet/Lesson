@@ -1,32 +1,32 @@
-const URL = 'voice.php';
-let div = document.createElement('div');
-div.id = 'messages';
-let start = document.createElement('button');
-start.id = 'start';
-start.innerHTML = 'Start';
-let stop = document.createElement('button');
-stop.id = 'stop';
-stop.innerHTML = 'Stop';
-document.body.appendChild(div);
-document.body.appendChild(start);
-document.body.appendChild(stop);
+let div = document.querySelector('#messages')
+let startButton = document.querySelector('#start')
+let stopButton = document.querySelector('#stop')
+let interval
+let audioChunks = []
 navigator.mediaDevices.getUserMedia({ audio: true})
     .then(stream => {
         const mediaRecorder = new MediaRecorder(stream);
 
-        document.querySelector('#start').addEventListener('click', function(){
+        startButton.addEventListener('click', function(){
             div.innerText = '';
-            start.classList.add('activ')
+            startButton.classList.add('activ')
             mediaRecorder.start();
+
+            interval = setInterval(() => {
+                mediaRecorder.stop()
+                mediaRecorder.start()
+            }, 10000);
         });
-        let audioChunks = [];
+        
         mediaRecorder.addEventListener("dataavailable",function(event) {
             audioChunks.push(event.data);
+            
         });
 
-        document.querySelector('#stop').addEventListener('click', function(){
-            start.classList.remove('activ')
+        stopButton.addEventListener('click', function(){
+            startButton.classList.remove('activ')
             mediaRecorder.stop();
+            clearInterval(interval)
         });
 
         mediaRecorder.addEventListener("stop", function() {
@@ -41,8 +41,9 @@ navigator.mediaDevices.getUserMedia({ audio: true})
         });
     });
 
+
 async function sendVoice(form) {
-    let promise = await fetch(URL, {
+    let promise = await fetch('voice.php', {
         method: 'POST',
         body: form});
 
@@ -56,7 +57,7 @@ async function sendVoice(form) {
             
         } else {
             let no = document.createElement('div');
-            ok.innerText = 'Ошибка загрузки файла';
+            no.innerText = 'Ошибка загрузки файла';
             document.querySelector('#messages').appendChild(no);
         }
     } else {
