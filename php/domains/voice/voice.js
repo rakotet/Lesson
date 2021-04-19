@@ -3,6 +3,7 @@ let startButton = document.querySelector('#start')
 let stopButton = document.querySelector('#stop')
 let interval
 let audioChunks = []
+let count = 1
 navigator.mediaDevices.getUserMedia({ audio: true})
     .then(stream => {
         const mediaRecorder = new MediaRecorder(stream);
@@ -52,17 +53,19 @@ async function sendVoice(form) {
 
         if(response.result == 'ok') {
             let ok = document.createElement('div');
-            ok.innerText = 'Файл загружен';
-            document.querySelector('#messages').appendChild(ok);
+            div.innerHTML = '';
+            ok.innerText = `Файлов загруженно: ${count}`;
+            count++
+            div.appendChild(ok);
             
         } else {
             let no = document.createElement('div');
             no.innerText = 'Ошибка загрузки файла';
-            document.querySelector('#messages').appendChild(no);
+            div.appendChild(no);
         }
     } else {
         let no = document.createElement('p');
         no.innerText = 'Нет соединения с сервером';
-        document.querySelector('#messages').appendChild(no);
+        div.appendChild(no);
     }
 }

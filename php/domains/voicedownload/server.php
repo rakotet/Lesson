@@ -5,15 +5,14 @@
     $date = $data['date'];
 
     function printDir($folder) { 
-        $f = '';
         $files = scandir($folder); 
         foreach($files as $file) {
             if($file == '.' || $file == '..') continue; 
-            $f = $folder.$file.';'.$f; 
+            echo $folder.$file.';'; 
         }
-        return $f;
+    
     }
 
-    echo printDir('voice/');
+    printDir('voice/');
 
 
