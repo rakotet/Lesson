@@ -12,7 +12,6 @@ buttonVoice.addEventListener('click', function(event) {
     downloadAudio(calendar.value)
 })
 
-
 async function downloadAudio(date) {
     let promise = await fetch(URL, {
         method: 'POST',
