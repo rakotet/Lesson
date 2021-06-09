@@ -55,3 +55,63 @@ Stack trace:
 #8 C:\Lesson\php\domains\myServerPhpTest\corephp\server.php(142): Workerman\Worker::runAll()
 #9 {main}
 2021-04-05 15:22:07 pid:1 Worker process terminated
+2021-06-09 13:01:14 pid:1 Error: Call to a member function prepare() on null in D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\database_class.php:19
+Stack trace:
+#0 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(49): DataBase->searchLogin('\xD0\x9C\xD0\xB0\xD1\x82\xD0\xBB\xD0\xB0\xD1\x88\xD0\xB5\xD0...')
+#1 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Connection\TcpConnection.php(637): {closure}(Object(Workerman\Connection\TcpConnection), '{"action":"auth...')
+#2 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #18)
+#3 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#4 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1417): Workerman\Worker->run()
+#5 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#6 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#7 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(150): Workerman\Worker::runAll()
+#8 {main}
+2021-06-09 13:01:14 pid:1 Worker process terminated
+2021-06-09 13:03:58 pid:1 Error: Call to a member function prepare() on null in D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\database_class.php:19
+Stack trace:
+#0 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(49): DataBase->searchLogin('\xD0\x9C\xD0\xB0\xD1\x82\xD0\xBB\xD0\xB0\xD1\x88\xD0\xB5\xD0...')
+#1 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Connection\TcpConnection.php(637): {closure}(Object(Workerman\Connection\TcpConnection), '{"action":"auth...')
+#2 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #18)
+#3 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#4 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1417): Workerman\Worker->run()
+#5 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#6 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#7 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(150): Workerman\Worker::runAll()
+#8 {main}
+2021-06-09 13:03:58 pid:1 Worker process terminated
+2021-06-09 13:08:13 pid:1 Error: Call to a member function prepare() on null in D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\database_class.php:19
+Stack trace:
+#0 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(49): DataBase->searchLogin('\xD0\x9C\xD0\xB0\xD1\x82\xD0\xBB\xD0\xB0\xD1\x88\xD0\xB5\xD0...')
+#1 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Connection\TcpConnection.php(637): {closure}(Object(Workerman\Connection\TcpConnection), '{"action":"auth...')
+#2 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #18)
+#3 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#4 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1417): Workerman\Worker->run()
+#5 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#6 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#7 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(150): Workerman\Worker::runAll()
+#8 {main}
+2021-06-09 13:08:13 pid:1 Worker process terminated
+2021-06-09 13:13:33 pid:1 Error: Call to a member function prepare() on null in D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\database_class.php:19
+Stack trace:
+#0 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(49): DataBase->searchLogin('sds')
+#1 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Connection\TcpConnection.php(637): {closure}(Object(Workerman\Connection\TcpConnection), '{"action":"auth...')
+#2 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #18)
+#3 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#4 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1417): Workerman\Worker->run()
+#5 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#6 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#7 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(150): Workerman\Worker::runAll()
+#8 {main}
+2021-06-09 13:13:33 pid:1 Worker process terminated
+2021-06-09 13:13:52 pid:1 Error: Call to a member function prepare() on null in D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\database_class.php:19
+Stack trace:
+#0 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(49): DataBase->searchLogin('sds')
+#1 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Connection\TcpConnection.php(637): {closure}(Object(Workerman\Connection\TcpConnection), '{"action":"auth...')
+#2 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Events\Select.php(293): Workerman\Connection\TcpConnection->baseRead(Resource id #18)
+#3 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(2430): Workerman\Events\Select->loop()
+#4 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1417): Workerman\Worker->run()
+#5 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(1360): Workerman\Worker::forkWorkersForWindows()
+#6 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\Workerman\Worker.php(542): Workerman\Worker::forkWorkers()
+#7 D:\lesson\Lesson\php\domains\myServerPhpTest\corephp\server.php(150): Workerman\Worker::runAll()
+#8 {main}
+2021-06-09 13:13:52 pid:1 Worker process terminated
