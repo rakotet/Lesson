@@ -1,0 +1,2 @@
+npm i electron-packager -g // необходимо установить для сборки electron в отдельный экзешник
+electron-packager . // команда для сборки проэкта в папку

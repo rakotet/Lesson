@@ -25,7 +25,7 @@ const setting = {
 };
 
 function getQuantityElements(heightElement) {
-    return document.documentElement.clientHeight / heightElement + 1;
+    return gameArea.offsetHeight / heightElement + 1;
 }
 
 function playGame() {
@@ -112,7 +112,7 @@ function moveRoad() {
         line.y += setting.speed;
         line.style.top = line.y + 'px';
 
-        if(line.y >= document.documentElement.clientHeight) {
+        if(line.y >= gameArea.offsetHeight) {
             line.y = -100;
         }
     });
@@ -150,7 +150,7 @@ function moveEnemy() {
         item.y += setting.speed / 2;
         item.style.top = item.y + 'px';
 
-        if(item.y >= document.documentElement.clientHeight) {
+        if(item.y >= gameArea.offsetHeight) {
             item.y = -100 * setting.traffic;
             item.style.left = Math.floor((Math.random() * (gameArea.offsetWidth - 50))) + 'px';
         }
