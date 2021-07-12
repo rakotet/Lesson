@@ -5,6 +5,13 @@ import React from 'react';
 // <Car name={'Ford'} year={2018}/> передаём параметры в компонент
 // <Car> <p style={{color: 'red'}}>COLOR</p> </Car> // ёще один способ передавать пареметры в компонент
 // для передачи параметров в ф-ю нужно использовать bind где первый аргумент это контекст, а второй параметры ф-и
+// Для прослушивания события input используется onChange={ф-я}
+// В JSX комментарии пишутся {/* коммент */}
+// В React списки выводятся через {перебираем методом, например map и возвращаем jsx} но при этом у каждого элемента списка должен быть свой особый key
+// Особенности логических операторов в JSX (запрещен if, цикл for и другие блочные конструкции, но при этом можно пользоваться тернарным оператором)
+// Так же всеми условными операторами можно пользоваться до JSX например в методе render()
+// CSS стили в React пишут только в камелкейсе (каждое слово с большой буквы, без дефисов)
+
 class App extends React.Component {
   state = { // в React параметры принято передавать в объекте state (а не прям с самом компаненте писать новые значения) (Это объект состояния)
     cars: [
@@ -12,7 +19,8 @@ class App extends React.Component {
       {name: 'Audi', year: 2016},
       {name: 'Mazda', year: 2010}
     ], 
-    pageTitle: 'React components'
+    pageTitle: 'React components',
+    showCars: false
   }
 
   changeTitleHandler = (newTitle) => {
@@ -21,15 +29,76 @@ class App extends React.Component {
     })
   }
 
+  toggleCarsHandler = () => {
+    this.setState({
+      showCars: !this.state.showCars
+    })
+  }
+
+  onChangeName(name, index) { // что бы изменять динамически списки, нужно создавать клон state, его менять а потом менять состояние через setState
+    const car = this.state.cars[index]
+    car.name = name
+    const cars = [...this.state.cars] // разворачиваем массив из state.cars в новый массив (клонируем массив изпользуя spread (...))
+    cars[index] = car
+    this.setState({cars})
+  }
+
+  deleteHandler(index) { // если использовать обычные ф-и а не стрелочные, то при вызове функции обязательно нужно использовать bind(this)
+    const cars = this.state.cars.concat() // клонируем массив в нашу переменную
+    cars.splice(index, 1) // удаляем элемент из массива
+    this.setState({cars})
+  }
+
+  // handleInput = (event) => {
+  //   this.setState({
+  //     pageTitle: event.target.value
+  //   })
+  // }
+
   render() {
 
-    const cars = this.state.cars
+    const divStyle = { // объект для передачи CSS стиля прямо в JSX
+      textAlign: 'center'
+    }
+
+    let cars = null
+
+    if(this.state.showCars) {
+      cars = this.state.cars.map((car, index) => { // Выводим список компанентов с параметрами, количество зависит от state, при этом используем тернарный оператор
+        return (
+          <Car 
+            key={index} // ключ котрый нужен React для работы со списками (должен быть обязательно!)
+            name={car.name}
+            year={car.year}
+            onDelete={this.deleteHandler.bind(this, index)}
+            onChangeName={(event) => {this.onChangeName(event.target.value, index)}}
+            // onChangeTitle={this.changeTitleHandler.bind(this, car.name)}
+          />
+        )
+      })
+    }
+
+    // const cars = this.state.cars
 
   return (
-    <div className="App">
+    <div style={divStyle} className="App"> {/* Добавляем стиль прямо в тег в JSX */}
       <h1>{this.state.pageTitle}</h1>
 
+      {/* <input type="text" onChange={this.handleInput}/> Прослушиваем input и обрататываем его значение ф-й */}
+
       <button onClick={this.changeTitleHandler.bind(this, 'Changed!')}>Change title</button> 
+      <button onClick={this.toggleCarsHandler}>Toogl Cars</button> 
+
+      <div style={{
+        width: '400px',
+        margin: 'auto',
+        paddingTop: '20px'
+      }}>
+        { cars }
+      </div>
+
+      {/*
+      // Не правильный способ работы со списками
 
       <Car 
         name={cars[0].name} 
@@ -49,7 +118,7 @@ class App extends React.Component {
         name={cars[2].name} 
         year={cars[2].year}
         onChangeTitle={() => this.changeTitleHandler(cars[2].name)}
-      />
+      /> */}
     </div>
     );
   }
