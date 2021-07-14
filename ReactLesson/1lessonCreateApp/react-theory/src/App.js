@@ -1,5 +1,6 @@
 import './App.css';
 import Car from './Car/Car'
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary' // компанент для отлавливания ошибок, оборачивает в себя не компаненты которые будет отрабатывать
 import React from 'react';
 
 // <Car name={'Ford'} year={2018}/> передаём параметры в компонент
@@ -11,17 +12,35 @@ import React from 'react';
 // Особенности логических операторов в JSX (запрещен if, цикл for и другие блочные конструкции, но при этом можно пользоваться тернарным оператором)
 // Так же всеми условными операторами можно пользоваться до JSX например в методе render()
 // CSS стили в React пишут только в камелкейсе (каждое слово с большой буквы, без дефисов)
+// Жизненный цикл доступен только в тех компанентах, которые наследуются от React.Component
+// Первая ф-я которая вызывается в React компаненте это constructor а потом уже все остальные ф-и жизненного цикла компанента
+// 
 
 class App extends React.Component {
-  state = { // в React параметры принято передавать в объекте state (а не прям с самом компаненте писать новые значения) (Это объект состояния)
-    cars: [
-      {name: 'Ford', year: 2018},
-      {name: 'Audi', year: 2016},
-      {name: 'Mazda', year: 2010}
-    ], 
-    pageTitle: 'React components',
-    showCars: false
+
+  constructor(props) {
+    super(props)
+    this.state = { // в React параметры принято передавать в объекте state (а не прям с самом компаненте писать новые значения) (Это объект состояния)
+      cars: [
+        {name: 'Ford', year: 2018},
+        {name: 'Audi', year: 2016},
+        {name: 'Mazda', year: 2010}
+      ], 
+      pageTitle: 'React components',
+      showCars: false
+    }
   }
+
+  // Способ определения state без конструктора класса (но документация говорит использовать именно конструктор)
+  // state = { // в React параметры принято передавать в объекте state (а не прям с самом компаненте писать новые значения) (Это объект состояния)
+  //   cars: [
+  //     {name: 'Ford', year: 2018},
+  //     {name: 'Audi', year: 2016},
+  //     {name: 'Mazda', year: 2010}
+  //   ], 
+  //   pageTitle: 'React components',
+  //   showCars: false
+  // }
 
   changeTitleHandler = (newTitle) => {
     this.setState({ // В React менять состояния компанента можно только через метод setState
@@ -55,7 +74,17 @@ class App extends React.Component {
   //   })
   // }
 
+
+  componentWillMount() { // Методы жизненного цикла компонента (этот инициализирует компанент) (Уже устаревшие, новые смотреть в документации)
+    console.log('App componentWillMount');
+  }
+
+  componentDidMount() { // этот запускается после render и говорит что компанент готов к изменениям 
+    console.log('App componentDidMount');
+  }
+
   render() {
+    console.log('App render');
 
     const divStyle = { // объект для передачи CSS стиля прямо в JSX
       textAlign: 'center'
@@ -66,14 +95,15 @@ class App extends React.Component {
     if(this.state.showCars) {
       cars = this.state.cars.map((car, index) => { // Выводим список компанентов с параметрами, количество зависит от state, при этом используем тернарный оператор
         return (
-          <Car 
-            key={index} // ключ котрый нужен React для работы со списками (должен быть обязательно!)
-            name={car.name}
-            year={car.year}
-            onDelete={this.deleteHandler.bind(this, index)}
-            onChangeName={(event) => {this.onChangeName(event.target.value, index)}}
-            // onChangeTitle={this.changeTitleHandler.bind(this, car.name)}
-          />
+          <ErrorBoundary key={index} /* ключ котрый нужен React для работы со списками (должен быть обязательно в корневом элементе!)*/> 
+            <Car 
+              name={car.name}
+              year={car.year}
+              onDelete={this.deleteHandler.bind(this, index)}
+              onChangeName={(event) => {this.onChangeName(event.target.value, index)}}
+              // onChangeTitle={this.changeTitleHandler.bind(this, car.name)}
+            />
+          </ErrorBoundary>
         )
       })
     }
@@ -82,7 +112,9 @@ class App extends React.Component {
 
   return (
     <div style={divStyle} className="App"> {/* Добавляем стиль прямо в тег в JSX */}
-      <h1>{this.state.pageTitle}</h1>
+
+      {/* <h1>{this.state.pageTitle}</h1> */}
+      <h1>{this.props.title}</h1> {/** Можно обращаться к пропсам и в классах React если они были переданны в компонент */}
 
       {/* <input type="text" onChange={this.handleInput}/> Прослушиваем input и обрататываем его значение ф-й */}
 
