@@ -1,5 +1,6 @@
 import './App.css';
 import Car from './Car/Car'
+import Counter from './Counter/Counter'
 import ErrorBoundary from './ErrorBoundary/ErrorBoundary' // компанент для отлавливания ошибок, оборачивает в себя не компаненты которые будет отрабатывать
 import React from 'react';
 
@@ -23,8 +24,8 @@ class App extends React.Component {
     this.state = { // в React параметры принято передавать в объекте state (а не прям с самом компаненте писать новые значения) (Это объект состояния)
       cars: [
         {name: 'Ford', year: 2018},
-        {name: 'Audi', year: 2016},
-        {name: 'Mazda', year: 2010}
+        // {name: 'Audi', year: 2016},
+        // {name: 'Mazda', year: 2010}
       ], 
       pageTitle: 'React components',
       showCars: false
@@ -75,13 +76,13 @@ class App extends React.Component {
   // }
 
 
-  componentWillMount() { // Методы жизненного цикла компонента (этот инициализирует компанент) (Уже устаревшие, новые смотреть в документации)
-    console.log('App componentWillMount');
-  }
+  // componentWillMount() { // Методы жизненного цикла компонента (этот инициализирует компанент) (Уже устаревшие, новые смотреть в документации)
+  //   console.log('App componentWillMount');
+  // }
 
-  componentDidMount() { // этот запускается после render и говорит что компанент готов к изменениям 
-    console.log('App componentDidMount');
-  }
+  // componentDidMount() { // этот запускается после render и говорит что компанент готов к изменениям 
+  //   console.log('App componentDidMount');
+  // }
 
   render() {
     console.log('App render');
@@ -115,6 +116,10 @@ class App extends React.Component {
 
       {/* <h1>{this.state.pageTitle}</h1> */}
       <h1>{this.props.title}</h1> {/** Можно обращаться к пропсам и в классах React если они были переданны в компонент */}
+
+      <Counter />
+
+      <hr/>
 
       {/* <input type="text" onChange={this.handleInput}/> Прослушиваем input и обрататываем его значение ф-й */}
 

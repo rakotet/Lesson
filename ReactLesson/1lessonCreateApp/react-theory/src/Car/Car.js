@@ -21,22 +21,24 @@
 // <button onClick={props.onChangeTitle}>Click</button>  // так обрабатываются события в компаненте при его использовании в других компанентах (передаём ссылку на ф-ю, которая потом вызывает ф-ю компанента в который мы передаём наш компанент)
 // Что бы превратить функциональный компанент в классовый, надо отнаследоваться от React.Component, перенести всё в ф-ю render() {}, добавить this. ко всем props 
 // Класовые компаненты жрут больше ресурсов чем функциональные, поэтому нужно стараться делать только один компанент классовый, а все остальные функциональные, но это в идеале
+//Высокие или высшее компаненты, это компаненты которые оборачивают в себя другие компаненты при этом добавляя дополнительный функционал
 
 import './Car.css';
 import Radium from 'radium' // Radium это библтотека для работы с псевдоклассами CSS в React
 import React from 'react';
+import withClass from '../hoc/withClass';
 
 class Car extends React.Component {
 
     // Новые современные методы состояния 
-    static getDerivedStateFromProps(props, state) { // заменил собой методы componentWillReceiveProps и shouldComponentUpdate
-        console.log('Car getDerivedStateFromProps', props, state);
-        return state
-      }
+    // static getDerivedStateFromProps(props, state) { // заменил собой методы componentWillReceiveProps и shouldComponentUpdate
+    //     console.log('Car getDerivedStateFromProps', props, state);
+    //     return state
+    //   }
 
-      getSnapshotBeforeUpdate() { // получает DOM дерево до изменения (например нужен для запоминания скрола до перерисовки компанента, что бы его передать на перерисованный компанент)
-        console.log('Car getSnapshotBeforeUpdate');
-      }
+    //   getSnapshotBeforeUpdate() { // получает DOM дерево до изменения (например нужен для запоминания скрола до перерисовки компанента, что бы его передать на перерисованный компанент)
+    //     console.log('Car getSnapshotBeforeUpdate');
+    //   }
 
       // Старые уже не используемые (componentWillReceiveProps, componentWillUpdate, componentWillMount) (вызывают warning) методы состояния
     // componentWillReceiveProps(nextProps) { // служит для подготовки компанента
@@ -48,24 +50,25 @@ class Car extends React.Component {
     //     return nextProps.name.trim() !== this.props.name.trim()
     // }
 
-    componentWillUpdate(nextProps, nextState) {
-        console.log('Car componentWillUpdate', nextProps, nextState);
-    }
+    // componentWillUpdate(nextProps, nextState) {
+    //     console.log('Car componentWillUpdate', nextProps, nextState);
+    // }
 
-    componentDidMountUpdate() {
-        console.log('Car componentDidMountUpdate');
-    }
+    // componentDidMountUpdate() {
+    //     console.log('Car componentDidMountUpdate');
+    // }
 
-    componentWillUnmount() { // вызывается когда компанент удаляется из DOM-дерева
-        console.log('Car componentWillUnmount');
-    }
+    // componentWillUnmount() { // вызывается когда компанент удаляется из DOM-дерева
+    //     console.log('Car componentWillUnmount');
+    // }
 
     render() {
         console.log('Car render');
 
-        if(Math.random() > 0.7) {
-            throw new Error('Car random failed')
-        }
+        // Генерация рамдомной ошибки для примера отлавливания ошибок компанентом ErrorBoundary
+        // if(Math.random() > 0.7) {
+        //     throw new Error('Car random failed')
+        // }
 
         const inpetClasses = ['input']
 
@@ -90,7 +93,8 @@ class Car extends React.Component {
         }
 
         return (
-            <div className="Car" style={style}>
+            // <div className="Car" style={style}> // Вместо оборачивающего div используем React.Fragment
+            <React.Fragment>
                 <h3>Car name: {this.props.name}</h3>
                 <p><strong>Year: {this.props.year}</strong></p> 
                 <input 
@@ -102,7 +106,8 @@ class Car extends React.Component {
                 <button onClick={this.props.onDelete}>Delete</button>
                 {/* <button onClick={props.onChangeTitle}>Click</button>  */}
                 {this.props.children}
-            </div>
+            </React.Fragment>
+            // </div>
         )
     }
 }
@@ -150,4 +155,6 @@ class Car extends React.Component {
 //     )
 // }
 
-export default Car // что бы библиотека Radium работала нужно в её компанент передать наш компанент гдя мы используем эту библиотеку
+
+
+export default withClass(Radium(Car), 'Car') // что бы библиотека Radium работала нужно в её компанент передать наш компанент гдя мы используем эту библиотеку
