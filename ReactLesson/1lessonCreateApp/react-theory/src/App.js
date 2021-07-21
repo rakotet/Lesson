@@ -15,17 +15,21 @@ import React from 'react';
 // CSS стили в React пишут только в камелкейсе (каждое слово с большой буквы, без дефисов)
 // Жизненный цикл доступен только в тех компанентах, которые наследуются от React.Component
 // Первая ф-я которая вызывается в React компаненте это constructor а потом уже все остальные ф-и жизненного цикла компанента
-// 
+// Можно передавать контекст (пропсы и состояния) не от элемента к элементу спускаясь вниз по иерархии элементов, а сразу в нужный компанент используя React.createContext()
+//
+
+export const ClickedContext = React.createContext() // создаём переменную для передачи контекста в элементы которые находятся где то глубоко по иерархии компанентов, и задаём ему дефолтное значение
 
 class App extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = { // в React параметры принято передавать в объекте state (а не прям с самом компаненте писать новые значения) (Это объект состояния)
+      clicked: false,
       cars: [
         {name: 'Ford', year: 2018},
-        // {name: 'Audi', year: 2016},
-        // {name: 'Mazda', year: 2010}
+        {name: 'Audi', year: 2016},
+        {name: 'Mazda', year: 2010}
       ], 
       pageTitle: 'React components',
       showCars: false
@@ -100,6 +104,7 @@ class App extends React.Component {
             <Car 
               name={car.name}
               year={car.year}
+              index={index}
               onDelete={this.deleteHandler.bind(this, index)}
               onChangeName={(event) => {this.onChangeName(event.target.value, index)}}
               // onChangeTitle={this.changeTitleHandler.bind(this, car.name)}
@@ -117,7 +122,10 @@ class App extends React.Component {
       {/* <h1>{this.state.pageTitle}</h1> */}
       <h1>{this.props.title}</h1> {/** Можно обращаться к пропсам и в классах React если они были переданны в компонент */}
 
-      <Counter />
+      <ClickedContext.Provider value={this.state.clicked}> {/* указываем что тут мы передаём контекст, через .Provider , указываем в value что именно передаём, и оборачиваем в него ток компанент внутрь которого мы передаём контекст, который потом смогут использовать конпаненты внутри него*/}
+        <Counter /> 
+      </ClickedContext.Provider>
+      
 
       <hr/>
 
@@ -125,6 +133,8 @@ class App extends React.Component {
 
       <button onClick={this.changeTitleHandler.bind(this, 'Changed!')}>Change title</button> 
       <button onClick={this.toggleCarsHandler}>Toogl Cars</button> 
+
+      <button onClick={() => {this.setState({clicked: true})}}>Change clicked</button>
 
       <div style={{
         width: '400px',

@@ -1,6 +1,6 @@
 import React from 'react';
 import Auxiliary from '../hoc/Auxiliary';
-
+import Counter2 from '../Counter2/Counter2';
 
 // Фрагменты нужны что бы избавиться от корневого div при return jsx кода
 // Есть два способа, первый это возвращать в рендере масив из элементов с ключами, а второй это обернуть элементы в <React.Fragment> вместо корневого div, или создать свой компанент обертку (мы для примера создали его в папке hoc)
@@ -34,6 +34,7 @@ class Counter extends React.Component {
         return (
             <Auxiliary>
                 <h2>Counter {this.state.counter}</h2>
+                <Counter2 />
                 <button onClick={this.addCounter}>+</button>
                 <button onClick={this.minusCounter}>-</button>
             </Auxiliary>

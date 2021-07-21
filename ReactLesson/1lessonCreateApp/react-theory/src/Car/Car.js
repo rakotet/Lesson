@@ -22,13 +22,23 @@
 // Что бы превратить функциональный компанент в классовый, надо отнаследоваться от React.Component, перенести всё в ф-ю render() {}, добавить this. ко всем props 
 // Класовые компаненты жрут больше ресурсов чем функциональные, поэтому нужно стараться делать только один компанент классовый, а все остальные функциональные, но это в идеале
 //Высокие или высшее компаненты, это компаненты которые оборачивают в себя другие компаненты при этом добавляя дополнительный функционал
+// У функфиональных компанентов нету render() усть только return
+// Референция это еще один способ получать доступ к нативным DOM элементам, нужна что бы трегирить фокус на элементах, какие то клики и всё в этом духе, а также для работы с Canvas, svg и т.д
+//
 
 import './Car.css';
 import Radium from 'radium' // Radium это библтотека для работы с псевдоклассами CSS в React
 import React from 'react';
+import PropTypes from 'prop-types' // Библиотека отвечающая за валидацию параметров (устанавливается через npm), работает только в классовый компанентах
 import withClass from '../hoc/withClass';
 
 class Car extends React.Component {
+
+    constructor(props) {
+        super(props)
+
+        this.inputRef = React.createRef() // более новый способ создания референций
+    }
 
     // Новые современные методы состояния 
     // static getDerivedStateFromProps(props, state) { // заменил собой методы componentWillReceiveProps и shouldComponentUpdate
@@ -61,6 +71,12 @@ class Car extends React.Component {
     // componentWillUnmount() { // вызывается когда компанент удаляется из DOM-дерева
     //     console.log('Car componentWillUnmount');
     // }
+
+    componentDidMount() { // стандартная ф-я React которая отрабатывает при монтировании элемента в DOM дерево
+        if(this.props.index === 1) { // index это номер элемента в массиве компанентов когда мы в App выводим Car
+            this.inputRef.current.focus() // используем референцию
+        }
+    }
 
     render() {
         console.log('Car render');
@@ -98,6 +114,7 @@ class Car extends React.Component {
                 <h3>Car name: {this.props.name}</h3>
                 <p><strong>Year: {this.props.year}</strong></p> 
                 <input 
+                    ref={this.inputRef} // атрибут отвечающий за референцию и её доступ именно в этот элемент 
                     type="text" 
                     onChange={this.props.onChangeName} 
                     value={this.props.name}
@@ -155,6 +172,12 @@ class Car extends React.Component {
 //     )
 // }
 
-
+Car.propTypes = { // указываем библиотеки prop-types за какими свойствами нужно следить (те которые мы передаем в компанент Car), если придет не тот тип который мы указали ниже, то будет ошибка в консоле, про другие возможности биб-ки можно узнать в документации 
+    name: PropTypes.string.isRequired, // isRequired будет вызывать ошибку, если компанент не получит это свойство
+    year: PropTypes.number,
+    index: PropTypes.number,
+    onChangeName: PropTypes.func,
+    onDelete: PropTypes.func
+}
 
 export default withClass(Radium(Car), 'Car') // что бы библиотека Radium работала нужно в её компанент передать наш компанент гдя мы используем эту библиотеку
