@@ -4,7 +4,7 @@ import './Layout.css'
 class Layout extends React.Component {
     render() {
         return (
-            <div className={'Layout Layout main'}>
+            <div className={'Layout'}>
 
 
                 <main className={'Main'}>
