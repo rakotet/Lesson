@@ -1,0 +1,10 @@
+.Backdrop {
+    z-index: 50;
+    background: rgba(0, 0, 0, .7);
+    position: fixed;
+    top: 0; /*при позиции фиксед и 0px со всех сторон элемент занимает всё пространство собой*/
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+}
