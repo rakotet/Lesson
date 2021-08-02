@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom' // тоже что и Navlink только не содержит в себе параметров (более простая версия только с параметром "to")
 import './FinishedQuiz.css'
 import Button from '../UI/Button/Button'
 
@@ -37,7 +38,9 @@ const FinishedQuiz = (props) => {
             <p>Правильно {successCount} из {props.quiz.length}</p>
             <div>
                 <Button onClick={props.onRetry} type={'primary'}>Повторить</Button>
-                <Button onClick={props.onRetry} type={'successSS'}>Перейти в список тестов</Button>
+                <Link to="/">
+                    <Button type={'successSS'}>Перейти в список тестов</Button>
+                </Link>
             </div>
         </div>
     )

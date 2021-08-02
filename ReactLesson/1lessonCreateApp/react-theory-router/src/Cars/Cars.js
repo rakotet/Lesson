@@ -10,19 +10,28 @@ export default class Cars extends Component {
     ]
   }
 
+  toHomePage = () => {
+    this.props.history.push({pathname: '/'}) // переходим на страницу home (через пропсы роутинга, которые передаются автоматически)
+  }
+
   render() {
+    // console.log(this.props);
     return (
       <div style={{
         width: 400,
         margin: 'auto',
-        paddingTop: '20px'
+        paddingTop: '20px',
+        textAlign: 'center'
       }}>
+        <button onClick={this.toHomePage}>Go to home page</button>
+        <hr/>
         {this.state.cars.map((car, index) => {
           return (
             <Car
               key={index}
               name={car.name}
               year={car.year}
+              // {...this.props} // передаем все пропсы классового компанента в функциональный компанент что бы использовать возможности роутинга, но это не совсем правильынй подход
             />
           )
         })}
