@@ -100,7 +100,7 @@ class App extends React.Component {
     if(this.state.showCars) {
       cars = this.state.cars.map((car, index) => { // Выводим список компанентов с параметрами, количество зависит от state, при этом используем тернарный оператор
         return (
-          <ErrorBoundary key={index} /* ключ котрый нужен React для работы со списками (должен быть обязательно в корневом элементе!)*/> 
+          <ErrorBoundary key={index} /* ключ котрый нужен React для работы со списками (должен быть обязательно в корневом элементе!)*/ > 
             <Car 
               name={car.name}
               year={car.year}
