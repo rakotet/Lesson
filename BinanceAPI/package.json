@@ -1,0 +1,19 @@
+{
+  "name": "binanceapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "dependencies": {
+    "node-binance-api": "^0.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon nojs3.js",
+    "prod": "node nojs3.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

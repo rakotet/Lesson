@@ -1,0 +1,15 @@
+undefinedsymbol: ALGOUSDT
+positionAmt: 5.0
+entryPrice: 2.065
+markPrice: 2.06140000
+unRealizedProfit: -0.01800000
+liquidationPrice: 1.78738076
+leverage: 7
+maxNotionalValue: 250000
+marginType: isolated
+isolatedMargin: 1.45946522
+isAutoAddMargin: false
+positionSide: BOTH
+notional: 10.30700000
+isolatedWallet: 1.47746522
+updateTime: 1631691250673
