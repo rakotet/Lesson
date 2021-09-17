@@ -5,12 +5,12 @@ const binance = new Binance().options({
 });
 const fs = require('fs')
 
-async function priceCoin() { // получение цены всех монет
-    data = await binance.futuresPrices() 
-    console.info( data );
-}
+// async function priceCoin() { // получение цены всех монет
+//     data = await binance.futuresPrices() 
+//     console.info( data );
+// }
 
-priceCoin()
+// priceCoin()
 
 
 //----------------------------------------------------
@@ -40,3 +40,62 @@ priceCoin()
 // priceCoin()
 
 //----------------------------------------------------
+
+// async function buyCoin(coin, number) { // купить монетку по рынку
+//     try{
+//         let data = await binance.futuresMarketBuy(coin, Number(number)) 
+//         if(data.code) {
+//           console.log(data.code + ' - ' + data.msg);
+//         }
+//         console.log(data['orderId']);
+//     } catch(e) {
+//         console.log(e);
+//     }
+    
+//   }
+
+//   buyCoin('ALICEUSDT', 0.03)
+
+  //----------------------------------------------------
+
+//   async function sellCoin(coin, number) { // продать монетку по рынку
+//     let data = await binance.futuresMarketSell(coin, Number(number)) 
+//     // if(data.code) {
+//     //   console.log(data.code + ' - ' + data.msg);
+//     // }
+//     console.log(data);
+//   }
+
+//   sellCoin('ALICEUSDT', 1)
+  //----------------------------------------------------
+
+//   async function statusOrder(coin, id) { // информация по ордеру
+//     let data = await binance.futuresOrderStatus(coin, {orderId: id}) 
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
+//     console.log(data);
+//   }
+
+//   statusOrder('ALICEUSDT', '1740924338')
+
+//----------------------------------------------------
+
+async function balanceFiat(currency) { // Баланс деняк
+    let data = await binance.futuresBalance() 
+    try {
+        if(data.code) {
+            console.log(data.code + ' - ' + data.msg);
+        } 
+    
+        data = data.filter(obj => obj.asset === currency)
+        let balance = data[0]['crossWalletBalance']
+        return balance
+    } catch(e) {
+        console.log(e);
+    }
+      
+  }
+
+  balanceFiat('USDT').then(data=>console.log(data))
+
