@@ -5,13 +5,13 @@ const binance = new Binance().options({
 });
 const fs = require('fs')
 
-const ALICEUSDT = 'ALICEUSDT'
-const TIMEONEREQUEST = 2000
-const MINBALANCE = 110
-const STEPCHANGES = 0.01
-const NUMBERBUYCOIN = 10 // колицество монет в позицию
-const LESION = 0.02 // убыток закрытия
-const PROFIT = 0.03 // прибыль закрытия
+const ALICEUSDT = 'BTCUSDT'
+const TIMEONEREQUEST = 1000
+const MINBALANCE = 45
+const STEPCHANGES = 5
+const NUMBERBUYCOIN = 0.001 // колицество монет в позицию
+const LESION = 30 // убыток закрытия
+const PROFIT = 30 // прибыль закрытия
 
 let coinPriceArray = [] // массив цен
 let counterPrice = 0 // счетчик цены в массиве
@@ -27,8 +27,11 @@ let currentProfitTwo // текущий профит позиции
 let profitCounter = 0 // счетчик разницы позицый
 let counterPlus = 0 // счетчик положительных сделок
 let counterMinus = 0 // счетчик отрицательных сделок
+let fall = 0 // счетчик попыток продать в плюс при падении цены
+let counterUnRealizedProfit = 0 // профит всех сделок
 
 async function traide(coin) { // получение цены конкретной монеты
+  try {
     let data = await binance.futuresPrices({symbol: coin}) 
 
     if(data.code) {
@@ -36,6 +39,7 @@ async function traide(coin) { // получение цены конкретно�
     }
 
     coinPriceArray[counterPrice] = Number(await data['price'])
+    counterPrice++
 
     if(position != 'none') {
       openPosition(ALICEUSDT)
@@ -43,100 +47,101 @@ async function traide(coin) { // получение цены конкретно�
       setTimeout(() => {
         
         if(position === 'long') {
-          if((entryPrice >= coinPriceArray[counterPrice]) && ((entryPrice - coinPriceArray[counterPrice]) >= LESION)) {
+          if((entryPrice >= coinPriceArray[0]) && ((entryPrice - coinPriceArray[0]) >= LESION)) {
             sellCoin(ALICEUSDT, NUMBERBUYCOIN)
             setTimeout(()=>{statusOrder(ALICEUSDT, orderId)}, 500)
             position = 'none'
             coinPriceArray = []
             counterPrice = 0
-            balanceFiat('USDT')
+            setTimeout(()=>{balanceFiat('USDT')}, 500)
             setTimeout(() => {
               counterMinus++
-              console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Long в минус; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Счетчик отрицательных : ' + counterMinus);
+              counterUnRealizedProfit += Number(unRealizedProfit)
+              console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Long в минус; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Профит: ' + counterUnRealizedProfit + ' Счетчик отрицательных : ' + counterMinus);
             }, 1500)
           } else {
 
-            // if(profitCounter === 0) {
-            //   currentProfitOne = coinPriceArray[counterPrice] - entryPrice
-            //   profitCounter++
-            // } else if (profitCounter === 1) {
-            //   currentProfitTwo = coinPriceArray[counterPrice] - entryPrice
-            //   profitCounter = 0
-            // }
+            if(profitCounter === 0) {
+              currentProfitOne = coinPriceArray[0]
+              profitCounter++
+            } else if (profitCounter === 1) {
+              currentProfitTwo = coinPriceArray[0]
+              profitCounter = 0
 
-            if(/*(currentProfitOne > currentProfitTwo) && */(/*currentProfitTwo*/ (coinPriceArray[counterPrice] - entryPrice) >= PROFIT)) {
-              sellCoin(ALICEUSDT, NUMBERBUYCOIN)
-              setTimeout(()=>{statusOrder(ALICEUSDT, orderId)}, 500)
-              position = 'none'
-              coinPriceArray = []
-              counterPrice = 0
-              balanceFiat('USDT')
-              setTimeout(() => {
-                counterPlus++ 
-                console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Long в плюс; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Счетчик положительных : ' + counterPlus);
-              }, 1500)
+              // console.log(new Date().toLocaleTimeString() + ` - One ${currentProfitOne} Two ${currentProfitTwo}`)
+              if((currentProfitOne > currentProfitTwo) && ((coinPriceArray[0] - entryPrice) >= PROFIT)) {
+                sellCoin(ALICEUSDT, NUMBERBUYCOIN)
+                setTimeout(()=>{statusOrder(ALICEUSDT, orderId)}, 500)
+                position = 'none'
+                coinPriceArray = []
+                counterPrice = 0
+                setTimeout(()=>{balanceFiat('USDT')}, 500)
+                setTimeout(() => {
+                  counterPlus++ 
+                  counterUnRealizedProfit += Number(unRealizedProfit)
+                  console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Long в плюс; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Профит: ' + counterUnRealizedProfit + ' Счетчик положительных : ' + counterPlus);
+                }, 1500)
+              }
             }
           }
 
         } else {
-          if((entryPrice <= coinPriceArray[counterPrice]) && ((coinPriceArray[counterPrice] - entryPrice) >= LESION)) {
+          if((entryPrice <= coinPriceArray[0]) && ((coinPriceArray[0] - entryPrice) >= LESION)) {
             buyCoin(ALICEUSDT, NUMBERBUYCOIN)
             setTimeout(()=>{statusOrder(ALICEUSDT, orderId)}, 500)
             position = 'none'
             coinPriceArray = []
             counterPrice = 0
-            balanceFiat('USDT')
+            setTimeout(()=>{balanceFiat('USDT')}, 500)
             setTimeout(() => {
               counterMinus++
-              console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Shorts в минус; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Счетчик отрицательных : ' + counterMinus);
+              counterUnRealizedProfit += Number(unRealizedProfit)
+              console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Shorts в минус; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Профит: ' + counterUnRealizedProfit + ' Счетчик отрицательных : ' + counterMinus);
             }, 1500)
           } else {
 
-            // if(profitCounter === 0) {
-            //   currentProfitOne = entryPrice - coinPriceArray[counterPrice]
-            //   profitCounter++
-            // } else if (profitCounter === 1) {
-            //   currentProfitTwo = entryPrice - coinPriceArray[counterPrice]
-            //   profitCounter = 0
-            // }
+            if(profitCounter === 0) {
+              currentProfitOne = coinPriceArray[0]
+              profitCounter++
+            } else if (profitCounter === 1) {
+              currentProfitTwo = coinPriceArray[0]
+              profitCounter = 0
 
-            if(/*(currentProfitOne > currentProfitTwo) && */(/*currentProfitTwo*/ (entryPrice - coinPriceArray[counterPrice]) >= PROFIT)) {
-              buyCoin(ALICEUSDT, NUMBERBUYCOIN)
-              setTimeout(()=>{statusOrder(ALICEUSDT, orderId)}, 500)
-              position = 'none'
-              coinPriceArray = []
-              counterPrice = 0
-              balanceFiat('USDT')
-              setTimeout(() => {
-                counterPlus++
-                console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Shorts в плюс; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Счетчик положительных : ' + counterPlus);
-              }, 1500)
+            // console.log(new Date().toLocaleTimeString() + ` -  One ${currentProfitOne} Two ${currentProfitTwo}`)
+              if((currentProfitOne < currentProfitTwo) && ((entryPrice - coinPriceArray[0]) >= PROFIT)) {
+                buyCoin(ALICEUSDT, NUMBERBUYCOIN)
+                setTimeout(()=>{statusOrder(ALICEUSDT, orderId)}, 500)
+                position = 'none'
+                coinPriceArray = []
+                counterPrice = 0
+                setTimeout(()=>{balanceFiat('USDT')}, 500)
+                setTimeout(() => {
+                  counterPlus++
+                  counterUnRealizedProfit += Number(unRealizedProfit)
+                  console.log(new Date().toLocaleTimeString() + ' - ' + 'Закрыть Shorts в плюс; Цена входа: ' + entryPrice + ' Цена выхода: ' + avgPrice + ' Профит: ' + counterUnRealizedProfit + ' Счетчик положительных : ' + counterPlus);
+                }, 1500)
+              }
             }
           }
         }
       }, 1000)
     }
 
-    counterPrice++
-
     if(counterPrice >= 3) {
-
       counterPrice = 0
       lastPrice = coinPriceArray[1]
-  
+      // console.log(new Date().toLocaleTimeString() + ` - [${coinPriceArray}] - ${position} - ${balance}`)
       if(((coinPriceArray[0] <= coinPriceArray[1]) && (coinPriceArray[1] <= coinPriceArray[2])) && ((coinPriceArray[2] - coinPriceArray[0]) > STEPCHANGES)) {
-        // console.log(balance, position);
-        if((position === 'none') && (balance > MINBALANCE) && (coinPriceArray.length >= 3)) {
-          console.log(new Date().toLocaleTimeString() + ' - ' + 'Открыть Long');
+        if((position === 'none') && (balance > MINBALANCE)) {
+          console.log(new Date().toLocaleTimeString() + ' - ' + 'Открыть long');
           buyCoin(ALICEUSDT, NUMBERBUYCOIN)
           position = 'long'
         }
       }
 
       if(((coinPriceArray[0] >= coinPriceArray[1]) && (coinPriceArray[1] >= coinPriceArray[2])) && ((coinPriceArray[0] - coinPriceArray[2]) > STEPCHANGES)) {
-        // console.log(balance, position);
-        if((position === 'none') && (balance > MINBALANCE) && (coinPriceArray.length >= 3)) {
-          console.log(new Date().toLocaleTimeString() + ' - ' + 'Открыть Shorts');
+        if((position === 'none') && (balance > MINBALANCE)) {
+          console.log(new Date().toLocaleTimeString() + ' - ' + 'Открыть shorts');
           sellCoin(ALICEUSDT, NUMBERBUYCOIN)
           position = 'shorts'
         }
@@ -148,6 +153,11 @@ async function traide(coin) { // получение цены конкретно�
     setTimeout(() => {
       traide(ALICEUSDT)
     }, TIMEONEREQUEST);
+
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'traide');
+  }
 }
 
 balanceFiat('USDT')
@@ -156,61 +166,83 @@ traide(ALICEUSDT)
 //----------------------------------------------------
 
 async function buyCoin(coin, number) { // купить монетку по рынку
-  let data = await binance.futuresMarketBuy(coin, Number(number)) 
-  if(data.code) {
-    console.log(data.code + ' - ' + data.msg);
+  try {
+    let data = await binance.futuresMarketBuy(coin, Number(number)) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    orderId = data['orderId']
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'buyCoin');
   }
-
-  orderId = await data['orderId']
 }
 
 //----------------------------------------------------
 
 async function sellCoin(coin, number) { // продать монетку по рынку
-  let data = await binance.futuresMarketSell(coin, Number(number)) 
-  if(data.code) {
-    console.log(data.code + ' - ' + data.msg);
+  try {
+    let data = await binance.futuresMarketSell(coin, Number(number)) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    orderId = data['orderId']
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
   }
-
-  orderId = await data['orderId']
 }
 
 //----------------------------------------------------
 
 async function openPosition(coin) { // Получение открытой позиции по конкретной монете
-  let data = await binance.futuresPositionRisk({symbol: coin}) 
+  try {
+    let data = await binance.futuresPositionRisk({symbol: coin}) 
 
-  if(data.code) {
-    console.log(data.code + ' - ' + data.msg);
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+
+    entryPrice = Number(data[0]['entryPrice'])
+    unRealizedProfit = data[0]['unRealizedProfit']
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
   }
-
-  entryPrice = await data[0]['entryPrice']
-  unRealizedProfit = await data[0]['unRealizedProfit']
 }
 
 //----------------------------------------------------
 
 async function balanceFiat(currency) { // Баланс деняк
-  let data = await binance.futuresBalance() 
+  try {
+    let data = await binance.futuresBalance() 
 
-  if(data.code) {
-    console.log(data.code + ' - ' + data.msg);
-  } 
-
-  setTimeout(()=>{
-    let data2 = data.filter(obj => obj.asset === currency)
-    balance = data2[0]['crossWalletBalance']
-  }, 1000)
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    } 
+      data = data.filter(obj => obj.asset === currency)
+      balance = Number(data[0]['crossWalletBalance'])
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'balanceFiat');
+  }
 }
 
 //----------------------------------------------------
 
 async function statusOrder(coin, id) { // информация по ордеру
-  let data = await binance.futuresOrderStatus(coin, {orderId: id}) 
-  if(data.code) {
-    console.log(data.code + ' - ' + data.msg);
+  try {
+    let data = await binance.futuresOrderStatus(coin, {orderId: id}) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+    avgPrice = data['avgPrice']
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'statusOrder');
   }
-  avgPrice = await data['avgPrice']
 }
 
 //----------------------------------------------------

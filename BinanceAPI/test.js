@@ -54,7 +54,7 @@ const fs = require('fs')
     
 //   }
 
-//   buyCoin('ALICEUSDT', 0.03)
+//   buyCoin('BTCUSDT', 0.001)
 
   //----------------------------------------------------
 
@@ -81,21 +81,23 @@ const fs = require('fs')
 
 //----------------------------------------------------
 
-async function balanceFiat(currency) { // Баланс деняк
-    let data = await binance.futuresBalance() 
-    try {
-        if(data.code) {
-            console.log(data.code + ' - ' + data.msg);
-        } 
+// async function balanceFiat(currency) { // Баланс деняк
+//     let data = await binance.futuresBalance() 
+//     try {
+//         if(data.code) {
+//             console.log(data.code + ' - ' + data.msg);
+//         } 
     
-        data = data.filter(obj => obj.asset === currency)
-        let balance = data[0]['crossWalletBalance']
-        return balance
-    } catch(e) {
-        console.log(e);
-    }
+//         data = data.filter(obj => obj.asset === currency)
+//         let balance = data[0]['crossWalletBalance']
+//         return balance
+//     } catch(e) {
+//         console.log(e);
+//     }
       
-  }
+//   }
 
-  balanceFiat('USDT').then(data=>console.log(data))
+//   balanceFiat('USDT').then(data=>console.log(data))
+
+
 
