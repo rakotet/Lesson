@@ -15,13 +15,13 @@ const fs = require('fs')
 
 //----------------------------------------------------
 
-// async function priceCoin(coin, number) { // изменить плечо
-//   let data = await binance.futuresLeverage(coin, Number(number)) 
+// async function priceCoin() { // изменить плечо
+//   let data = await binance.futuresCandles('BTCUSDT', '1m', {limit: 3}) 
   
 //   console.log(data);
 // }
 
-// priceCoin('ALGOUSDT', 7)
+// priceCoin()
 
 //----------------------------------------------------
 
@@ -47,14 +47,14 @@ const fs = require('fs')
 //         if(data.code) {
 //           console.log(data.code + ' - ' + data.msg);
 //         }
-//         console.log(data['orderId']);
+//         return data['orderId']
 //     } catch(e) {
 //         console.log(e);
 //     }
     
 //   }
 
-//   buyCoin('BTCUSDT', 0.001)
+//   buyCoin('BTCUSDT', 0.001).then(data => console.log(data))
 
   //----------------------------------------------------
 
@@ -101,3 +101,62 @@ const fs = require('fs')
 
 
 
+// async function openPosition(coin) { // Получение открытой позиции по конкретной монете
+//   try {
+//     let data = await binance.futuresPositionRisk({symbol: coin}) 
+
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
+
+//     let entryPrice = Number(data[0]['entryPrice'])
+//     let unRealizedProfit = Number(data[0]['unRealizedProfit'])
+//     return [entryPrice, unRealizedProfit]
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
+//   }
+// }
+
+// openPosition('BTCUSDT').then(data => {
+//   // console.log(entryPrice + ' - entryPrice ' + '; ' + unRealizedProfit + ' - unRealizedProfit');
+//   console.log(data[0] + ' - ' + data[1]);
+// })
+
+async function buyCoin(coin, quantity, price) { // купить монетку по рынку
+  try{
+      // let data = await binance.futuresBuy(coin, Number(quantity), Number(price)) 
+      console.log( await binance.futuresBuy(coin, Number(quantity), Number(price)) );
+      if(data.code) {
+        console.log(data.code + ' - ' + data.msg);
+        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка buyCoin')
+      }
+      return data
+  } catch(e) {
+      console.log(e);
+  }
+  
+}
+
+buyCoin('BTCUSDT', 0.001, 44100)
+
+// async function traide(coin) { 
+//   try {
+//     let data = await binance.futuresPrices({symbol: coin}) 
+
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//       throw new Error('Моя собственная ошибка, сервер не ответил по таймауту')
+//     }
+
+//     return data['price']
+
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'traide');
+//   }
+// }
+
+// traide('BTCUSDT').then(prise => {
+
+// })
