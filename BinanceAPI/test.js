@@ -1,9 +1,9 @@
-const Binance = require('node-binance-api');
-const binance = new Binance().options({
-  APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
-  APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
-});
-const fs = require('fs')
+// const Binance = require('node-binance-api');
+// const binance = new Binance().options({
+//   APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
+//   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
+// });
+// const fs = require('fs')
 
 // async function priceCoin() { // получение цены всех монет
 //     data = await binance.futuresPrices() 
@@ -123,22 +123,22 @@ const fs = require('fs')
 //   console.log(data[0] + ' - ' + data[1]);
 // })
 
-async function buyCoin(coin, quantity, price) { // купить монетку по рынку
-  try{
-      // let data = await binance.futuresBuy(coin, Number(quantity), Number(price)) 
-      console.log( await binance.futuresBuy(coin, Number(quantity), Number(price)) );
-      if(data.code) {
-        console.log(data.code + ' - ' + data.msg);
-        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка buyCoin')
-      }
-      return data
-  } catch(e) {
-      console.log(e);
-  }
+// async function buyCoin(coin, quantity, price) { // купить монетку по рынку
+//   try{
+//       let data = await binance.futuresSell(coin, Number(quantity), Number(price)) 
+      
+//       if(data.code) {
+//         console.log(data.code + ' - ' + data.msg);
+//         throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка buyCoin')
+//       }
+//       console.log(data);
+//   } catch(e) {
+//       console.log(e);
+//   }
   
-}
+// }
 
-buyCoin('BTCUSDT', 0.001, 44100)
+// buyCoin('BTCUSDT', 0.001, 43100)
 
 // async function traide(coin) { 
 //   try {
@@ -160,3 +160,7 @@ buyCoin('BTCUSDT', 0.001, 44100)
 // traide('BTCUSDT').then(prise => {
 
 // })
+
+setTimeout(() => {
+  window.open('https://www.binance.com/ru/futures/BTCUSDT')
+}, 5000)
