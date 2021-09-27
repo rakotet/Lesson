@@ -4,6 +4,9 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 const fs = require('fs')
+const opn = require('opn')
+
+const percent = 0.8
 
 let arrayPrice = {}
 let counter = 0
@@ -25,16 +28,14 @@ async function futuresPrices() {
   }
 
   if(counter === 0) {
-    console.log('1 - ' + new Date().toLocaleTimeString());
     for(let key in data) {
       arrayPrice[key] = [Number(data[key])]
       
     }
     counter++
-    timeout = 180000
+    timeout = 120000
 
   } else if(counter === 1) {
-    console.log('2 - ' + new Date().toLocaleTimeString());
     for(let key in data) {
       arrayPrice[key][1] = Number(data[key])
       
@@ -47,15 +48,17 @@ async function futuresPrices() {
         let difference = arrayPrice[key][0] - arrayPrice[key][1]
         difference = difference * (-1)
         // console.log('Памп ' + key + ' - ' + ((difference / arrayPrice[key][1]) * 100) + ' - ' + new Date().toLocaleTimeString());
-        if(((difference / arrayPrice[key][1]) * 100) >= 1) {
+        if(((difference / arrayPrice[key][1]) * 100) >= percent) {
           console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
+          opn('https://www.binance.com/ru/futures/' + key)
         }
 
       } else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
         let difference = arrayPrice[key][0] - arrayPrice[key][1]
         // console.log('Дамп ' + key + ' - ' + ((difference / arrayPrice[key][1]) * 100) + ' - ' + new Date().toLocaleTimeString());
-        if(((difference / arrayPrice[key][1]) * 100) >= 1) {
+        if(((difference / arrayPrice[key][1]) * 100) >= percent) {
           console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+          opn('https://www.binance.com/ru/futures/' + key)
         }
       }
     }

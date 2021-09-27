@@ -4,15 +4,17 @@
   "description": "",
   "main": "script.js",
   "dependencies": {
-    "node-binance-api": "^0.13.0"
+    "express": "^4.17.1",
+    "node-binance-api": "^0.13.0",
+    "opn": "^6.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon nojs3.js",
-    "prod": "node nojs3.js"
+    "start": "nodemon Candles.js",
+    "prod": "node Candles.js"
   },
   "author": "",
   "license": "ISC"

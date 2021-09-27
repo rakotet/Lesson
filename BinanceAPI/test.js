@@ -161,6 +161,30 @@
 
 // })
 
-setTimeout(() => {
-  window.open('https://www.binance.com/ru/futures/BTCUSDT')
-}, 5000)
+// setTimeout(() => {
+//   window.open('https://www.binance.com/ru/futures/BTCUSDT')
+// }, 5000)
+
+// async function openBinanceCoin() {
+//   let response = await fetch("http://localhost:3002/user"); // соединяемся с сервером
+//     if (response.ok) {
+//       let data = await response.text()
+//       console.log(data);
+//       console.log('Все ок');
+//       console.log(response.status);
+//       console.log(response.headers);
+//       console.log(response);
+      
+//     } else {
+//       console.log('Нет ответа сервера');
+//     }
+
+//     // setTimeout(() => {
+//     //   openBinanceCoin()
+//     // }, 1000)
+// }
+
+
+// setTimeout(() => {
+//   openBinanceCoin()
+// }, 2000)
