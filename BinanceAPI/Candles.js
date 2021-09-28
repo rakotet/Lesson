@@ -31,7 +31,7 @@ async function buyCoin(coin, number, price) { // купить монетку п�
     }
   
     // let orderId = data['orderId']
-    // return orderId
+    return Number(data['price'])
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'buyCoin');
@@ -85,9 +85,11 @@ async function futuresMarginType(coin) { // выставление маржы
   }
 }
 
+const numberOfSigns = x => ( (x.toString().includes('.')) ? (x.toString().split('.').pop().length) : (0) );
+
 //------------------------------------------------------------------------------------------
 
-const percent = 0.7
+const percent = 0.8
 
 let arrayPrice = {}
 let counter = 0
@@ -114,7 +116,7 @@ async function futuresPrices() {
       
     }
     counter++
-    timeout = 90000
+    timeout = 120000
 
   } else if(counter === 1) {
     for(let key in data) {
@@ -130,27 +132,29 @@ async function futuresPrices() {
         difference = difference * (-1)
         if(((difference / arrayPrice[key][1]) * 100) >= percent) {
           console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
-          futuressHoulder(key, 10).then(data => {
-            futuresMarginType(key).then(data => {
-              opn('https://www.binance.com/ru/futures/' + key)
-            })
-          })
-          // balanceFiat('USDT').then(balance => {
-          //   // console.log('Монетка: ' + key + ' Баланс: ' + balance + " Баланс 10%: " + (balance * 0.1) + ' Количество на покупку: ' + (balance / arrayPrice[key][1]).toFixed());
-          //   futuressHoulder(key, 10).then(data => {
-          //     futuresMarginType(key).then(data => {
-          //       console.log(arrayPrice[key][1]);
-          //       buyCoin(key, (balance / arrayPrice[key][1]).toFixed(), arrayPrice[key][1])
-          //       opn('https://www.binance.com/ru/futures/' + key)
-          //     })
+          // futuressHoulder(key, 10).then(data => {
+          //   futuresMarginType(key).then(data => {
+          //     opn('https://www.binance.com/ru/futures/' + key)
           //   })
           // })
+          balanceFiat('USDT').then(balance => {
+            // console.log('Монетка: ' + key + ' Баланс: ' + balance + " Баланс 10%: " + (balance * 0.1) + ' Количество на покупку: ' + (balance / arrayPrice[key][1]).toFixed());
+            futuressHoulder(key, 10).then(data => {
+              futuresMarginType(key).then(data => {
+                buyCoin(key, (balance / arrayPrice[key][1]).toFixed(), (arrayPrice[key][1] - (arrayPrice[key][1] * 0.001)).toFixed(numberOfSigns(arrayPrice[key][1]))).then(data => {
+                  console.log('Текущая цена: ' + arrayPrice[key][1] + ' Цена попытки: ' + (arrayPrice[key][1] - (arrayPrice[key][1] * 0.0008)).toFixed(numberOfSigns(arrayPrice[key][1])) + ' Количество на покупку: ' + (balance / arrayPrice[key][1]).toFixed());
+                  console.log('Цена в позиции: ' + data);
+                  opn('https://www.binance.com/ru/futures/' + key)
+                })
+              })
+            })
+          })
         }
 
       } else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
         let difference = arrayPrice[key][0] - arrayPrice[key][1]
         if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-          console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+          // console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
           // balanceFiat('USDT').then(balance => {
           //   futuressHoulder(key, 10).then(data => {
           //     futuresMarginType(key).then(data => {
