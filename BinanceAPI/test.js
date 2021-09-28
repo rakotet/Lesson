@@ -1,17 +1,49 @@
-// const Binance = require('node-binance-api');
-// const binance = new Binance().options({
-//   APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
-//   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
-// });
-// const fs = require('fs')
+const Binance = require('node-binance-api');
+const binance = new Binance().options({
+  APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
+  APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
+});
+const fs = require('fs')
 
-// async function priceCoin() { // получение цены всех монет
-//     data = await binance.futuresPrices() 
-//     console.info( data );
+// async function futuressHoulder(coin, houlder) { // выставление плеча
+//     try {
+//       data = await binance.futuresLeverage(coin, houlder) 
+
+//       if(data.code) {
+//         console.log(data.code + ' - ' + data.msg);
+//       }
+
+//       return data['leverage']
+
+//     } catch(e) {
+//       console.log(e);
+//       console.log(new Date().toLocaleTimeString() + ' - ' + 'futuressHoulder');
+//     }
 // }
 
-// priceCoin()
+// futuressHoulder('ETHUSDT', 20).then(data => {
+//   console.log(data);
+// })
 
+// async function futuresMarginType(coin) { // какая маржа
+//   try {
+//     data = await binance.futuresMarginType(coin, 'ISOLATED') 
+
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
+
+//     return 1
+
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuressHoulder');
+//   }
+// }
+
+// futuresMarginType('ETHUSDT').then(data => {
+//   console.log(data);
+// })
 
 //----------------------------------------------------
 
