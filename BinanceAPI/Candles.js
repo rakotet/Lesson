@@ -23,9 +23,9 @@ async function balanceFiat(currency) { // Баланс деняк
   }
 }
 
-async function buyCoin(coin, number, price) { // купить монетку по рынку
+async function buyCoin(coin, number, price, obj) { // купить монетку лимит
   try {
-    let data = await binance.futuresBuy(coin, Number(number), Number(price)) 
+    let data = await binance.futuresBuy(coin, Number(number), Number(price), obj) 
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
     }
@@ -38,18 +38,18 @@ async function buyCoin(coin, number, price) { // купить монетку п�
   }
 }
 
-async function sellMarketCoin(coin, number) { // продать монетку по рынку
+async function sellCoin(coin, number) { // продать монетку лимит
   try {
-    let data = await binance.futuresMarketSell(coin, Number(number)) 
+    let data = await binance.futuresSell(coin, Number(number)) 
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
     }
   
     // let orderId = data['orderId']
-    // return orderId
+    return Number(data['price'])
   } catch(e) {
     console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'sellMarketCoin');
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
   }
 }
 
@@ -85,11 +85,64 @@ async function futuresMarginType(coin) { // выставление маржы
   }
 }
 
-const numberOfSigns = x => ( (x.toString().includes('.')) ? (x.toString().split('.').pop().length) : (0) );
+async function sellMarketCoin(coin, number) { // продать монетку по рынку
+  try {
+    let data = await binance.futuresMarketSell(coin, Number(number)) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    let price = data['price']
+    return Number(price)
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
+  }
+}
+
+async function futuresPositionRisk() { // авто продажа
+  try {
+    let data = await binance.futuresPositionRisk() 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+      throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - futuresPositionRisk')
+    }
+  
+    let markets = Object.keys( data );
+    for ( let market of markets ) {
+      let obj = data[market], size = Number( obj.positionAmt );
+      if ( size != 0 ) {
+        let entryPrice = Number(obj['entryPrice'])
+        let markPrice = Number(obj['markPrice'])
+        let positionAmt = Number(obj['positionAmt'])
+        let pricePlus = entryPrice + (entryPrice * 0.004) // +4% PNL
+        let priceMinus = entryPrice - (entryPrice * 0.002) // -4% PNL
+      
+        // console.log('markPrice >= pricePlus: ' + markPrice + ' | ' + pricePlus);
+
+        if((markPrice >= pricePlus) || (markPrice <= priceMinus)) {
+          positionAmt < 0 ? (positionAmt * (-1)) : positionAmt
+          sellMarketCoin(obj['symbol'], positionAmt).then(price => {
+            console.log(new Date().toLocaleTimeString() + ' Продали: ' + obj['symbol'] + ' По цене: ' + price)
+          })
+        }
+      }
+    }
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresPositionRisk');
+  }
+
+  setTimeout(() => {
+    futuresPositionRisk()
+  }, 2000)
+}
+
+const numberOfSigns = x => ( (x.toString().includes('.')) ? (x.toString().split('.').pop().length) : (0) ); // находим количество цифр после запятой
 
 //------------------------------------------------------------------------------------------
 
-const percent = 0.8
+const percent = 0.7
 
 let arrayPrice = {}
 let counter = 0
@@ -116,7 +169,7 @@ async function futuresPrices() {
       
     }
     counter++
-    timeout = 120000
+    timeout = 90000
 
   } else if(counter === 1) {
     for(let key in data) {
@@ -138,33 +191,40 @@ async function futuresPrices() {
           //   })
           // })
           balanceFiat('USDT').then(balance => {
-            // console.log('Монетка: ' + key + ' Баланс: ' + balance + " Баланс 10%: " + (balance * 0.1) + ' Количество на покупку: ' + (balance / arrayPrice[key][1]).toFixed());
-            futuressHoulder(key, 10).then(data => {
-              futuresMarginType(key).then(data => {
-                buyCoin(key, (balance / arrayPrice[key][1]).toFixed(), (arrayPrice[key][1] - (arrayPrice[key][1] * 0.001)).toFixed(numberOfSigns(arrayPrice[key][1]))).then(data => {
-                  console.log('Текущая цена: ' + arrayPrice[key][1] + ' Цена попытки: ' + (arrayPrice[key][1] - (arrayPrice[key][1] * 0.0008)).toFixed(numberOfSigns(arrayPrice[key][1])) + ' Количество на покупку: ' + (balance / arrayPrice[key][1]).toFixed());
-                  console.log('Цена в позиции: ' + data);
-                  opn('https://www.binance.com/ru/futures/' + key)
+            if(balance > 30) {
+              futuressHoulder(key, 10).then(data => {
+                futuresMarginType(key).then(data => {
+                  let numberCoinKey = ((balance / arrayPrice[key][1]) / 2).toFixed(); // количество монеты в покупку
+                  let priceCoinKey = (arrayPrice[key][1] - (arrayPrice[key][1] * 0.001)).toFixed(numberOfSigns(arrayPrice[key][1])); // планируемая цена входа в позицию
+      
+                  buyCoin(key, numberCoinKey, priceCoinKey).then(dataBuyCoin => {
+                    console.log('Текущая цена: ' + arrayPrice[key][1] + ' Цена попытки: ' + priceCoinKey + ' Количество на покупку: ' + numberCoinKey);
+                    console.log('Цена в позиции: ' + dataBuyCoin);
+                    // sellCoin(key, numberCoinKey, (dataBuyCoin + (dataBuyCoin * 0.005))).then(dataSellCoin => {
+                    //   console.log('цена в позиции на продажу: ' + dataSellCoin);
+                    // })
+                    // opn('https://www.binance.com/ru/futures/' + key)
+                  })
                 })
               })
-            })
+            }
           })
         }
 
-      } else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
-        let difference = arrayPrice[key][0] - arrayPrice[key][1]
-        if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-          // console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
-          // balanceFiat('USDT').then(balance => {
-          //   futuressHoulder(key, 10).then(data => {
-          //     futuresMarginType(key).then(data => {
-          //       sellMarketCoin(key, (balance / arrayPrice[key][1]).toFixed())
-          //       opn('https://www.binance.com/ru/futures/' + key)
-          //     })
-          //   })
-          // })
-        }
-      }
+      } //else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
+      //   let difference = arrayPrice[key][0] - arrayPrice[key][1]
+      //   if(((difference / arrayPrice[key][1]) * 100) >= percent) {
+      //     // console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+      //     // balanceFiat('USDT').then(balance => {
+      //     //   futuressHoulder(key, 10).then(data => {
+      //     //     futuresMarginType(key).then(data => {
+      //     //       sellMarketCoin(key, (balance / arrayPrice[key][1]).toFixed())
+      //     //       opn('https://www.binance.com/ru/futures/' + key)
+      //     //     })
+      //     //   })
+      //     // })
+      //   }
+      // }
     }
     console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
   }
@@ -177,7 +237,7 @@ async function futuresPrices() {
 }
 
 futuresPrices()
-
+futuresPositionRisk()
 
 
 
