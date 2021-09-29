@@ -85,6 +85,21 @@ async function futuresMarginType(coin) { // выставление маржы
   }
 }
 
+async function statusOrder(coin, id) { // информация по ордеру
+  try {
+    let data = await binance.futuresOrderStatus(coin, {orderId: id}) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+
+    let avgPrice = data['avgPrice']
+    return Number(avgPrice)
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'statusOrder');
+  }
+}
+
 async function sellMarketCoin(coin, number) { // продать монетку по рынку
   try {
     let data = await binance.futuresMarketSell(coin, Number(number)) 
@@ -92,11 +107,26 @@ async function sellMarketCoin(coin, number) { // продать монетку �
       console.log(data.code + ' - ' + data.msg);
     }
   
-    let price = data['price']
-    return Number(price)
+    let orderId = data['orderId']
+    return orderId
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
+  }
+}
+
+async function buyMarketCoin(coin, number) { // купить монетку по рынку
+  try {
+    let data = await binance.futuresMarketBuy(coin, Number(number)) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    let orderId = data['orderId']
+    return orderId
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'buyMarketCoin');
   }
 }
 
@@ -112,18 +142,21 @@ async function futuresPositionRisk() { // авто продажа
     for ( let market of markets ) {
       let obj = data[market], size = Number( obj.positionAmt );
       if ( size != 0 ) {
-        let entryPrice = Number(obj['entryPrice'])
-        let markPrice = Number(obj['markPrice'])
-        let positionAmt = Number(obj['positionAmt'])
-        let pricePlus = entryPrice + (entryPrice * 0.004) // +4% PNL
-        let priceMinus = entryPrice - (entryPrice * 0.002) // -4% PNL
+        let entryPrice = Number(obj['entryPrice']) // цена входа в позицию
+        let markPrice = Number(obj['markPrice']) // текущая цена маркировки
+        let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
+        let symbol = obj['symbol']
+        let pricePlus = entryPrice + (entryPrice * 0.005) // +% PNL
+        let priceMinus = entryPrice - (entryPrice * 0.003) // -3% PNL
       
         // console.log('markPrice >= pricePlus: ' + markPrice + ' | ' + pricePlus);
 
         if((markPrice >= pricePlus) || (markPrice <= priceMinus)) {
           positionAmt < 0 ? (positionAmt * (-1)) : positionAmt
-          sellMarketCoin(obj['symbol'], positionAmt).then(price => {
-            console.log(new Date().toLocaleTimeString() + ' Продали: ' + obj['symbol'] + ' По цене: ' + price)
+          sellMarketCoin(symbol, positionAmt).then(orderId => {
+            statusOrder(symbol, orderId).then(avgPrice => {
+              console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - ' + (markPrice >= pricePlus ? 'Плюс' : 'Минус'))
+            })
           })
         }
       }
@@ -135,14 +168,14 @@ async function futuresPositionRisk() { // авто продажа
 
   setTimeout(() => {
     futuresPositionRisk()
-  }, 2000)
+  }, 1000)
 }
 
 const numberOfSigns = x => ( (x.toString().includes('.')) ? (x.toString().split('.').pop().length) : (0) ); // находим количество цифр после запятой
 
 //------------------------------------------------------------------------------------------
 
-const percent = 0.7
+const percent = 0.6
 
 let arrayPrice = {}
 let counter = 0
@@ -183,27 +216,23 @@ async function futuresPrices() {
       if((arrayPrice[key][0] - arrayPrice[key][1]) < 0) {
         let difference = arrayPrice[key][0] - arrayPrice[key][1]
         difference = difference * (-1)
+
         if(((difference / arrayPrice[key][1]) * 100) >= percent) {
           console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
-          // futuressHoulder(key, 10).then(data => {
-          //   futuresMarginType(key).then(data => {
-          //     opn('https://www.binance.com/ru/futures/' + key)
-          //   })
-          // })
+        
           balanceFiat('USDT').then(balance => {
+            let priceNow = arrayPrice[key][1]
             if(balance > 30) {
               futuressHoulder(key, 10).then(data => {
                 futuresMarginType(key).then(data => {
-                  let numberCoinKey = ((balance / arrayPrice[key][1]) / 2).toFixed(); // количество монеты в покупку
-                  let priceCoinKey = (arrayPrice[key][1] - (arrayPrice[key][1] * 0.001)).toFixed(numberOfSigns(arrayPrice[key][1])); // планируемая цена входа в позицию
-      
-                  buyCoin(key, numberCoinKey, priceCoinKey).then(dataBuyCoin => {
-                    console.log('Текущая цена: ' + arrayPrice[key][1] + ' Цена попытки: ' + priceCoinKey + ' Количество на покупку: ' + numberCoinKey);
-                    console.log('Цена в позиции: ' + dataBuyCoin);
-                    // sellCoin(key, numberCoinKey, (dataBuyCoin + (dataBuyCoin * 0.005))).then(dataSellCoin => {
-                    //   console.log('цена в позиции на продажу: ' + dataSellCoin);
+                  let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
+                  let priceCoinKey = (priceNow - (priceNow * 0.001)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
+
+                  buyMarketCoin(key, numberCoinKey).then(orderId => {
+                    // statusOrder(key, orderId).then(avgPrice => {
+                    //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
+                    //   // opn('https://www.binance.com/ru/futures/' + key)
                     // })
-                    // opn('https://www.binance.com/ru/futures/' + key)
                   })
                 })
               })
