@@ -5,61 +5,61 @@ const binance = new Binance().options({
 });
 const fs = require('fs')
 
-async function sellMarketCoin(coin, number) { // продать монетку по рынку
-  try {
-    let data = await binance.futuresMarketSell(coin, Number(number)) 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
+// async function sellMarketCoin(coin, number) { // продать монетку по рынку
+//   try {
+//     let data = await binance.futuresMarketSell(coin, Number(number)) 
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
   
-    let price = data['price']
-    console.log(price);
-    return Number(price)
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
-  }
-}
+//     let price = data['price']
+//     console.log(price);
+//     return Number(price)
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
+//   }
+// }
 
-async function futuresPositionRisk() { // авто продажа
-  try {
-    let data = await binance.futuresPositionRisk() 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-      throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - futuresPositionRisk')
-    }
+// async function futuresPositionRisk() { // авто продажа
+//   try {
+//     let data = await binance.futuresPositionRisk() 
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//       throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - futuresPositionRisk')
+//     }
   
-    let markets = Object.keys( data );
-    for ( let market of markets ) {
-      let obj = data[market], size = Number( obj.positionAmt );
-      if ( size != 0 ) {
-        let entryPrice = Number(obj['entryPrice'])
-        let markPrice = Number(obj['markPrice'])
-        let positionAmt = Number(obj['positionAmt'])
-        let pricePlus = entryPrice + (entryPrice * 0.005) // +5% PNL
-        let priceMinus = entryPrice - (entryPrice * 0.005) // -5% PNL
+//     let markets = Object.keys( data );
+//     for ( let market of markets ) {
+//       let obj = data[market], size = Number( obj.positionAmt );
+//       if ( size != 0 ) {
+//         let entryPrice = Number(obj['entryPrice'])
+//         let markPrice = Number(obj['markPrice'])
+//         let positionAmt = Number(obj['positionAmt'])
+//         let pricePlus = entryPrice + (entryPrice * 0.005) // +5% PNL
+//         let priceMinus = entryPrice - (entryPrice * 0.005) // -5% PNL
       
-        // console.log('markPrice >= pricePlus: ' + markPrice + ' | ' + pricePlus);
+//         // console.log('markPrice >= pricePlus: ' + markPrice + ' | ' + pricePlus);
 
-        if((markPrice >= pricePlus) || (markPrice <= priceMinus)) {
-          positionAmt < 0 ? (positionAmt * (-1)) : positionAmt
-          sellMarketCoin(obj['symbol'], positionAmt).then(price => {
-            console.log(new Date().toLocaleTimeString() + ' Продали: ' + obj['symbol'] + ' По цене: ' + price)
-          })
-        }
-      }
-    }
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresPositionRisk');
-  }
+//         if((markPrice >= pricePlus) || (markPrice <= priceMinus)) {
+//           positionAmt < 0 ? (positionAmt * (-1)) : positionAmt
+//           sellMarketCoin(obj['symbol'], positionAmt).then(price => {
+//             console.log(new Date().toLocaleTimeString() + ' Продали: ' + obj['symbol'] + ' По цене: ' + price)
+//           })
+//         }
+//       }
+//     }
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresPositionRisk');
+//   }
 
-  setTimeout(() => {
-    futuresPositionRisk()
-  }, 3000)
-}
+//   setTimeout(() => {
+//     futuresPositionRisk()
+//   }, 3000)
+// }
 
-futuresPositionRisk()
+// futuresPositionRisk()
 
 
 
@@ -304,3 +304,5 @@ futuresPositionRisk()
 // setTimeout(() => {
 //   openBinanceCoin()
 // }, 2000)
+// let data = new Date().getSeconds()
+// console.log(data);
