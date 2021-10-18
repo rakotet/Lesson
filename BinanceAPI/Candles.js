@@ -23,15 +23,15 @@ async function balanceFiat(currency) { // Баланс деняк
   }
 }
 
-async function buyCoin(coin, number, price, obj) { // купить монетку лимит
+async function buyCoin(coin, number, price) { // купить монетку лимит
   try {
-    let data = await binance.futuresBuy(coin, Number(number), Number(price), obj) 
+    let data = await binance.futuresBuy(coin, Number(number), Number(price)) 
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
     }
   
     // let orderId = data['orderId']
-    return Number(data['price'])
+    return Number(data['orderId'])
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'buyCoin');
@@ -150,8 +150,8 @@ async function futuresPositionRisk() { // авто продажа
         let markPrice = Number(obj['markPrice']) // текущая цена маркировки
         let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
         let symbol = obj['symbol']
-        let pricePlus = entryPrice + (entryPrice * 0.01) // +% PNL
-        let priceMinus = entryPrice - (entryPrice * 0.01) // -10% PNL
+        let pricePlus = entryPrice + (entryPrice * 0.004) // +% PNL
+        let priceMinus = entryPrice - (entryPrice * 0.004) // -5% PNL
         // positionAmt < 0 ? (positionAmt * (-1)) : positionAmt
 
         if(!profitCounter[symbol]) profitCounter[symbol] = 0
@@ -264,33 +264,34 @@ async function futuresPrices() {
           })
         }
 
-      } else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
-        let difference = arrayPrice[key][0] - arrayPrice[key][1]
+      } //else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
+      //   let difference = arrayPrice[key][0] - arrayPrice[key][1]
 
-        if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-          console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+      //   if(((difference / arrayPrice[key][1]) * 100) >= percent) {
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + key + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
           
-          balanceFiat('USDT').then(balance => {
-            let priceNow = arrayPrice[key][1]
-            if(balance > 0) {
-              futuressHoulder(key, 1).then(data => {
-                futuresMarginType(key).then(data => {
-                  opn('https://www.binance.com/ru/futures/' + key)
-                  let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
-                  let priceCoinKey = (priceNow - (priceNow * 0.001)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
+      //     balanceFiat('USDT').then(balance => {
+      //       let priceNow = arrayPrice[key][1]
+      //       if(balance > 5) {
+      //         futuressHoulder(key, 20).then(data => {
+      //           futuresMarginType(key).then(data => {
+      //             opn('https://www.binance.com/ru/futures/' + key)
+      //             let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
+      //             let priceCoinKey = (priceNow - (priceNow * 0.001)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
 
-                  // sellMarketCoin(key, numberCoinKey).then(orderId => {
-                  //   // statusOrder(key, orderId).then(avgPrice => {
-                  //   //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
-                  //     //  opn('https://www.binance.com/ru/futures/' + key)
-                  //   // })
-                  // })
-                })
-              })
-            }
-          })
-        }
-      }
+      //             // buyMarketCoin(key, numberCoinKey).then(orderId => {
+      //             //   opn('https://www.binance.com/ru/futures/' + key)
+      //             //   // statusOrder(key, orderId).then(avgPrice => {
+      //             //   //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
+      //             //   //   //  opn('https://www.binance.com/ru/futures/' + key)
+      //             //   // })
+      //             // })
+      //           })
+      //         })
+      //       }
+      //     })
+      //   }
+      // }
     }
     console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
   }
