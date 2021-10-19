@@ -151,33 +151,42 @@ async function futuresPositionRisk() { // авто продажа
         let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
         let symbol = obj['symbol']
         let pricePlus = entryPrice + (entryPrice * 0.004) // +% PNL
-        let priceMinus = entryPrice - (entryPrice * 0.004) // -5% PNL
-        // positionAmt < 0 ? (positionAmt * (-1)) : positionAmt
+        let priceMinus = entryPrice - (entryPrice * 0.004) // -0.6% PNL с плечом х1 (0,05 USDT)
+        positionAmt = positionAmt * (-1)
 
-        if(!profitCounter[symbol]) profitCounter[symbol] = 0
+        // if(!profitCounter[symbol]) profitCounter[symbol] = 0
+
+        // if(markPrice >= pricePlus) {
+        //   if(profitCounter[symbol] === 0) {
+        //     currentProfitOne[symbol] = markPrice
+        //     profitCounter[symbol] = 1
+        //   } else if (profitCounter[symbol] === 1) {
+        //       profitCounter[symbol] = 0
+        //       if(currentProfitOne[symbol] > markPrice) {
+        //         sellMarketCoin(symbol, positionAmt).then(orderId => {
+        //           statusOrder(symbol, orderId).then(avgPrice => {
+        //             counterPosition++
+        //             console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+        //           })
+        //         })
+        //       }
+        //     }
+        //   }
 
         if(markPrice >= pricePlus) {
-          if(profitCounter[symbol] === 0) {
-            currentProfitOne[symbol] = markPrice
-            profitCounter[symbol] = 1
-          } else if (profitCounter[symbol] === 1) {
-              profitCounter[symbol] = 0
-              if(currentProfitOne[symbol] > markPrice) {
-                sellMarketCoin(symbol, positionAmt).then(orderId => {
-                  statusOrder(symbol, orderId).then(avgPrice => {
-                    counterPosition++
-                    console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
-                  })
-                })
-              }
-            }
-          }
-        
-        if(markPrice <= priceMinus) {
-          sellMarketCoin(symbol, positionAmt).then(orderId => {
+          buyMarketCoin(symbol, positionAmt).then(orderId => {
             statusOrder(symbol, orderId).then(avgPrice => {
               counterPosition--
               console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition)
+            })
+          })
+        }
+        
+        if(markPrice <= priceMinus) {
+          buyMarketCoin(symbol, positionAmt).then(orderId => {
+            statusOrder(symbol, orderId).then(avgPrice => {
+              counterPosition++
+              console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
             })
           })
         }
@@ -197,7 +206,7 @@ const numberOfSigns = x => ( (x.toString().includes('.')) ? (x.toString().split(
 
 //------------------------------------------------------------------------------------------
 
-const percent = 1
+const percent = 0.5
 
 let arrayPrice = {}
 let counter = 0
@@ -225,7 +234,7 @@ async function futuresPrices() {
       
     }
     counter++
-    timeout = 90000
+    timeout = 60000
 
   } else if(counter === 1) {
     for(let key in data) {
@@ -248,16 +257,17 @@ async function futuresPrices() {
             if(balance > 0) {
               futuressHoulder(key, 1).then(data => {
                 futuresMarginType(key).then(data => {
-                  opn('https://www.binance.com/ru/futures/' + key)
-                  // let numberCoinKey = ((balance / priceNow) /*/ 2*/).toFixed(); // количество монеты в покупку
+                  // opn('https://www.binance.com/ru/futures/' + key)
+                  let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
                   // let priceCoinKey = (priceNow + (priceNow * 0.002)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
 
-                  // sellCoin(key, numberCoinKey, priceCoinKey).then(orderId => {
-                  //   statusOrder(key, orderId).then(avgPrice => {
-                  //     // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
-                  //      opn('https://www.binance.com/ru/futures/' + key)
-                  //   })
-                  // })
+                  sellMarketCoin(key, numberCoinKey).then(orderId => {
+                    if(orderId) opn('https://www.binance.com/ru/futures/' + key)
+                    // statusOrder(key, orderId).then(avgPrice => {
+                    //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
+                    //    opn('https://www.binance.com/ru/futures/' + key)
+                    // })
+                  })
                 })
               })
             }
@@ -304,7 +314,7 @@ async function futuresPrices() {
 }
 
 futuresPrices()
-// futuresPositionRisk()
+futuresPositionRisk()
 
 
 
