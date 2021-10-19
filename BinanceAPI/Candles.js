@@ -151,7 +151,7 @@ async function futuresPositionRisk() { // авто продажа
         let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
         let symbol = obj['symbol']
         let pricePlus = entryPrice + (entryPrice * 0.004) // +% PNL
-        let priceMinus = entryPrice - (entryPrice * 0.004) // -0.6% PNL с плечом х1 (0,05 USDT)
+        let priceMinus = entryPrice - (entryPrice * 0.004) // -0.4% PNL с плечом х1 (0,025 USDT)
         positionAmt = positionAmt * (-1)
 
         // if(!profitCounter[symbol]) profitCounter[symbol] = 0
@@ -206,7 +206,7 @@ const numberOfSigns = x => ( (x.toString().includes('.')) ? (x.toString().split(
 
 //------------------------------------------------------------------------------------------
 
-const percent = 0.5
+const percent = 0.6
 
 let arrayPrice = {}
 let counter = 0
@@ -234,7 +234,7 @@ async function futuresPrices() {
       
     }
     counter++
-    timeout = 60000
+    timeout = 50000
 
   } else if(counter === 1) {
     for(let key in data) {
