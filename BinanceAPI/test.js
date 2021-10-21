@@ -5,11 +5,28 @@ const binance = new Binance().options({
   APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
+
+
+function s() {
+  if((new Date().getSeconds()) === 2) {
+    console.log(new Date().toLocaleTimeString());
+  } else if ((new Date().getSeconds()) === 58) {
+    console.log(new Date().toLocaleTimeString());
+  }
+
+  setTimeout(()=> {
+    s()
+  }, 1000)
+}
+
+s()
+
+
 // const fs = require('fs')
 
-balanceFiat('USDT', binance).then(balance => {
-  console.log(balance);
-})
+// balanceFiat('USDT', binance).then(balance => {
+//   console.log(balance);
+// })
 
 // async function sellMarketCoin(coin, number) { // продать монетку по рынку
 //   try {

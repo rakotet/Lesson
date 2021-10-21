@@ -6,9 +6,11 @@ const futuresMarginType = require('./function/futuresMarginType')
 const statusOrder = require('./function/statusOrder')
 const sellMarketCoin = require('./function/sellMarketCoin')
 const buyMarketCoin = require('./function/buyMarketCoin')
-const futuresPositionRisk = require('./function/futuresPositionRisk')
+const futuresPositionRiskPampSell = require('./function/futuresPositionRiskPampSell')
+const futuresPositionRiskPampBuy = require('./function/futuresPositionRiskPampBuy')
 const numberOfSigns = require('./function/numberOfSigns')
-const futuresPrices = require('./function/futuresPrices')
+const traideOpenPampBuy = require('./function/traideOpenPampBuy')
+const traideOpenPampSell = require('./function/traideOpenPampSell')
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -18,22 +20,23 @@ const binance = new Binance().options({
 const fs = require('fs')
 const opn = require('opn')
 
-
 const profitCounter = {}
 const currentProfitOne = {}
+const timeoutFuturesPositionRisk = 1000
+const timeoutTraideOpenPamp = 1000
 let counterPosition = 0
-
-const percent = 0.7
 let arrayPrice = {}
 let counter = 0
 let data
 let timeout
 
+const pnlPlus = 0.004
+const pnlMinus = 0.003
+const percent = 1
+const timeoutSearch = 120000
 
-futuresPrices(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin)
-futuresPositionRisk(counterPosition, binance, buyMarketCoin, statusOrder)
+// traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp)
+// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
 
-
-
-
-
+traideOpenPampSell(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp)
+futuresPositionRiskPampBuy(counterPosition, binance, buyMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
