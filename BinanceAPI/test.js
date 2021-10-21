@@ -1,9 +1,15 @@
+const balanceFiat = require('./function/balanceFiat')
+
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
   APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
-const fs = require('fs')
+// const fs = require('fs')
+
+balanceFiat('USDT', binance).then(balance => {
+  console.log(balance);
+})
 
 // async function sellMarketCoin(coin, number) { // продать монетку по рынку
 //   try {
