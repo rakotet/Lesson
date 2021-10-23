@@ -11,6 +11,8 @@ const futuresPositionRiskPampBuy = require('./function/futuresPositionRiskPampBu
 const numberOfSigns = require('./function/numberOfSigns')
 const traideOpenPampBuy = require('./function/traideOpenPampBuy')
 const traideOpenPampSell = require('./function/traideOpenPampSell')
+const traideOpenSymbol = require('./function/traideOpenSymbol')
+const openTraide = require('./function/openTraide')
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -25,18 +27,27 @@ const currentProfitOne = {}
 const timeoutFuturesPositionRisk = 1000
 const timeoutTraideOpenPamp = 1000
 let counterPosition = 0
-let arrayPrice = {}
+let arrayPrice = {} // объект цен из которых расщитывается памп
+let symbolPamp = {} // объект с памп монетами и % их пампа
 let counter = 0
 let data
 let timeout
+let max = ''
 
-const pnlPlus = 0.004
+const pnlPlus = 0.005
 const pnlMinus = 0.003
+const wrapping = 0.001 // + или - к цене входа лимитного ордера
 const percent = 1
 const timeoutSearch = 120000
 
-// traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp)
-// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
+traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs)
+openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
 
-traideOpenPampSell(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp)
+
+// traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, 
+//   futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping)
+
+//futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
+
+// traideOpenPampSell(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp, sellCoin, numberOfSigns, wrapping)
 futuresPositionRiskPampBuy(counterPosition, binance, buyMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)

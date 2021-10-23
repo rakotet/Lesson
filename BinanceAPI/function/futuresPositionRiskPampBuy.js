@@ -29,7 +29,7 @@ module.exports = async function futuresPositionRiskPampBuy(counterPosition, bina
               profitCounter[symbol] = 1
             } else if (profitCounter[symbol] === 1) {
                 profitCounter[symbol] = 0
-                if(currentProfitOne[symbol] > markPrice) {
+                if(currentProfitOne[symbol] < markPrice) {
                     buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                     statusOrder(symbol, orderId, binance).then(avgPrice => {
                       counterPosition++

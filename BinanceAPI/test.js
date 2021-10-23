@@ -1,4 +1,5 @@
 const balanceFiat = require('./function/balanceFiat')
+const numberOfSigns = require('./function/numberOfSigns')
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -7,19 +8,22 @@ const binance = new Binance().options({
 });
 
 
-function s() {
-  if((new Date().getSeconds()) === 2) {
-    console.log(new Date().toLocaleTimeString());
-  } else if ((new Date().getSeconds()) === 58) {
-    console.log(new Date().toLocaleTimeString());
-  }
+let a = 1, b = 4, c = 3
+console.log(a<b && b<c);
 
-  setTimeout(()=> {
-    s()
-  }, 1000)
-}
+// function s() {
+//   if((new Date().getSeconds()) === 2) {
+//     console.log(new Date().toLocaleTimeString());
+//   } else if ((new Date().getSeconds()) === 58) {
+//     console.log(new Date().toLocaleTimeString());
+//   }
 
-s()
+//   setTimeout(()=> {
+//     s()
+//   }, 1000)
+// }
+
+// s()
 
 
 // const fs = require('fs')

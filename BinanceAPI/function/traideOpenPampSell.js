@@ -1,4 +1,4 @@
-module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp) { 
+module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp, sellCoin, numberOfSigns, wrapping) { 
     try {
   
       data = await binance.futuresPrices() 
@@ -43,11 +43,10 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
                 futuressHoulder(key, 1, binance).then(data => {
                   futuresMarginType(key, binance).then(data => {
                     // opn('https://www.binance.com/ru/futures/' + key)
-                    let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
-                    
-                    // let priceCoinKey = (priceNow + (priceNow * 0.002)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
+                    let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку                   
+                    let priceCoinKey = (priceNow + (priceNow * wrapping)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
   
-                    sellMarketCoin(key, numberCoinKey, binance).then(orderId => {
+                    sellCoin(key, numberCoinKey, priceCoinKey, binance).then(orderId => {
                       if(orderId) opn('https://www.binance.com/ru/futures/' + key)
                       // statusOrder(key, orderId).then(avgPrice => {
                       //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
@@ -96,7 +95,7 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
     
   
     setTimeout(() => {
-      traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp)
+      traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp, sellCoin, numberOfSigns, wrapping)
     }, timeout)
   }
   
