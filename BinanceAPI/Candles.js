@@ -13,6 +13,7 @@ const traideOpenPampBuy = require('./function/traideOpenPampBuy')
 const traideOpenPampSell = require('./function/traideOpenPampSell')
 const traideOpenSymbol = require('./function/traideOpenSymbol')
 const openTraide = require('./function/openTraide')
+const candlesOpenPamp = require('./function/candlesOpenPamp')
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -34,20 +35,23 @@ let data
 let timeout
 let max = ''
 
-const pnlPlus = 0.005
-const pnlMinus = 0.003
+const pnlPlus = 0.003
+const pnlMinus = 0.004
 const wrapping = 0.001 // + или - к цене входа лимитного ордера
 const percent = 1
 const timeoutSearch = 120000
 
-traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs)
-openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
+setInterval(() => {
+  if((new Date().getSeconds()) === 2) {
+    candlesOpenPamp(binance, opn)
+  }
+  //candlesOpenPamp(binance, opn)
+}, 1000)
+
+// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn)
+// openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
+// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
+// futuresPositionRiskPampBuy(counterPosition, binance, buyMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
 
 
-// traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, 
-//   futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping)
-
-//futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
-
-// traideOpenPampSell(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, timeoutSearch, timeoutTraideOpenPamp, sellCoin, numberOfSigns, wrapping)
-futuresPositionRiskPampBuy(counterPosition, binance, buyMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
+//traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping)

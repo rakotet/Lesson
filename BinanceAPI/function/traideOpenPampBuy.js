@@ -36,28 +36,28 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
   
           if(((difference / arrayPrice[key][1]) * 100) >= percent) {
             console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
-            
-            balanceFiat('USDT', binance).then(balance => {
-              let priceNow = arrayPrice[key][1]
-              if(balance > 7) {
-                futuressHoulder(key, 1, binance).then(data => {
-                  futuresMarginType(key, binance).then(data => {
-                    // opn('https://www.binance.com/ru/futures/' + key)
-                    let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
+            opn('https://www.binance.com/ru/futures/' + key)
+            // balanceFiat('USDT', binance).then(balance => {
+            //   let priceNow = arrayPrice[key][1]
+            //   if(balance > 7) {
+            //     futuressHoulder(key, 1, binance).then(data => {
+            //       futuresMarginType(key, binance).then(data => {
+            //         // opn('https://www.binance.com/ru/futures/' + key)
+            //         let numberCoinKey = ((balance / priceNow) / 2).toFixed(); // количество монеты в покупку
                     
-                    let priceCoinKey = (priceNow - (priceNow * wrapping)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
+            //         let priceCoinKey = (priceNow - (priceNow * wrapping)).toFixed(numberOfSigns(priceNow)); // планируемая цена входа в позицию для лимитного ордера
   
-                    buyCoin(key, numberCoinKey, priceCoinKey, binance).then(orderId => {
-                      if(orderId) opn('https://www.binance.com/ru/futures/' + key)
-                      // statusOrder(key, orderId).then(avgPrice => {
-                      //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
-                      //    opn('https://www.binance.com/ru/futures/' + key)
-                      // })
-                    })
-                  })
-                })
-              }
-            })
+            //         buyCoin(key, numberCoinKey, priceCoinKey, binance).then(orderId => {
+            //           if(orderId) opn('https://www.binance.com/ru/futures/' + key)
+            //           // statusOrder(key, orderId).then(avgPrice => {
+            //           //   // console.log(new Date().toLocaleTimeString() + ' ' + key + ' Текущая цена: ' + priceNow + ' Цена в позиции: ' + avgPrice);
+            //           //    opn('https://www.binance.com/ru/futures/' + key)
+            //           // })
+            //         })
+            //       })
+            //     })
+            //   }
+            // })
           }
   
         } //else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {

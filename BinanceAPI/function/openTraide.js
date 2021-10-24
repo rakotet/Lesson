@@ -35,7 +35,7 @@ async function openPositionSymbol(binance, coin, fs, balanceFiat, futuressHoulde
         priceCoin[1] = Number(data['price'])
         counterPrice = 0
 
-        if(priceCoin[0] > priceCoin[1]) {
+        if(priceCoin[0] < priceCoin[1]) {
             let price = priceCoin[1]
             balanceFiat('USDT', binance).then(balance => {
                 if(balance > 7) {
@@ -43,7 +43,7 @@ async function openPositionSymbol(binance, coin, fs, balanceFiat, futuressHoulde
                     futuresMarginType(coin, binance).then(data => {
                       let numberCoinKey = ((balance / price) / 2).toFixed(); // количество монеты в покупку                
                                        
-                      sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
+                      buyMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {
                             console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
                             opn('https://www.binance.com/ru/futures/' + coin)

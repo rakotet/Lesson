@@ -1,4 +1,4 @@
-module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs) { 
+module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn) { 
     try {
   
       data = await binance.futuresPrices() 
@@ -41,7 +41,14 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
                 symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
             }
           }
-        }    
+        } 
+        // else if ((arrayPrice[key][0] - arrayPrice[key][1]) > 0) {
+        //   let difference = arrayPrice[key][0] - arrayPrice[key][1]
+        //   if(((difference / arrayPrice[key][1]) * 100) >= percent) {
+        //     console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+        //     opn('https://www.binance.com/ru/futures/' + key)
+        //   }
+        // }
       }
 
       let counterObjLength = 0
@@ -80,7 +87,7 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
     
   
     setTimeout(() => {
-      traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs)
+      traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn)
     }, timeout)
   }
   
