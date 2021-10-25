@@ -44,7 +44,7 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
                     let priceCoinKey = (priceNow + (priceNow * wrapping)).toFixed(numberOfSigns(priceNow))
                     sellCoin(key, numberCoinKey, priceCoinKey, binance).then(orderId => {
                       if(orderId) {
-                        console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
+                        console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + priceNow + ' - Памп - ' +  ((difference / priceNow) * 100));
                         opn('https://www.binance.com/ru/futures/' + key)
                       }
                     })

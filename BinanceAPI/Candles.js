@@ -36,8 +36,8 @@ let timeout
 let max = ''
 
 const pnlPlusSell = 0.003 // Long (+ это +)
-const pnlMinusSell = 0.003
-const pnlPlusBuy = 0.003 // Short (всё наоборот + это -)
+const pnlMinusSell = 0.01
+const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
 const pnlMinusBuy = 0.003
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
