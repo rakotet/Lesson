@@ -35,23 +35,24 @@ let data
 let timeout
 let max = ''
 
-const pnlPlus = 0.003
-const pnlMinus = 0.004
-const wrapping = 0.001 // + или - к цене входа лимитного ордера
-const percent = 1
-const timeoutSearch = 120000
+const pnlPlusSell = 0.003 // Long (+ это +)
+const pnlMinusSell = 0.003
+const pnlPlusBuy = 0.003 // Short (всё наоборот + это -)
+const pnlMinusBuy = 0.003
 
-setInterval(() => {
-  if((new Date().getSeconds()) === 2) {
-    candlesOpenPamp(binance, opn)
-  }
-  //candlesOpenPamp(binance, opn)
-}, 1000)
+const wrapping = 0.002 // + или - к цене входа лимитного ордера
+const percent = 0.5
+const timeoutSearch = 180000
+
+// setInterval(() => {
+//   if((new Date().getSeconds()) === 2) {
+//     candlesOpenPamp(binance, opn)
+//   }
+//   //candlesOpenPamp(binance, opn)
+// }, 1000)
 
 // traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn)
 // openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
-// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
-// futuresPositionRiskPampBuy(counterPosition, binance, buyMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
 
-
-//traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping)
+traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping, sellMarketCoin, sellCoin)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)

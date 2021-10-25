@@ -1,4 +1,4 @@
-module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping) { 
+module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping, sellMarketCoin, sellCoin) { 
     try {
   
       data = await binance.futuresPrices() 
@@ -35,8 +35,24 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
           difference = difference * (-1)
   
           if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-            console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
-            opn('https://www.binance.com/ru/futures/' + key)
+            let priceNow = arrayPrice[key][1]
+            getCandles(key, binance).then(data => {
+              if(data) {
+                balanceFiat('USDT', binance).then(balance => {
+                  if(balance > 1) {                   
+                    let numberCoinKey = ((balance / priceNow) / 5).toFixed(); // количество монеты в покупку
+                    let priceCoinKey = (priceNow + (priceNow * wrapping)).toFixed(numberOfSigns(priceNow))
+                    sellCoin(key, numberCoinKey, priceCoinKey, binance).then(orderId => {
+                      if(orderId) {
+                        console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
+                        opn('https://www.binance.com/ru/futures/' + key)
+                      }
+                    })
+                  }
+                })
+              }
+            })
+            
             // balanceFiat('USDT', binance).then(balance => {
             //   let priceNow = arrayPrice[key][1]
             //   if(balance > 7) {
@@ -96,7 +112,37 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
     
   
     setTimeout(() => {
-      traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping)
+      traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping, sellMarketCoin, sellCoin)
     }, timeout)
+  }
+
+
+  async function getCandles(coin, binance) { // получить свечи
+    try{
+      let data = await binance.futuresCandles(coin, '1m', {limit: 30}) 
+      if(data.code) {
+        console.log(data.code + ' - ' + data.msg);
+      }
+      
+      let volumeCandlesAll = 0
+
+      for(let i = 0; i < data.length - 4; i++) {
+        let volume = Number(data[i][5]) // объём 1
+        volumeCandlesAll = volumeCandlesAll + volume
+      }
+
+      let meanVolume = volumeCandlesAll / (data.length - 4)
+
+      if((Number(data[data.length - 1][5]) > (meanVolume * 5)) || (Number(data[data.length - 2][5]) > (meanVolume * 5)) || (Number(data[data.length - 3][5]) > (meanVolume * 5)) || (Number(data[data.length - 4][5]) > (meanVolume * 5))) {
+        return true
+      } else {
+        return false
+      }
+
+    } catch(e) {
+      console.log(e);
+      console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
+    }
+    
   }
   

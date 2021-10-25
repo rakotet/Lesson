@@ -1,4 +1,4 @@
-module.exports = async function futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne) { // авто продажа
+module.exports = async function futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne) { // авто продажа
     try {
       let data = await binance.futuresPositionRisk() 
       if(data.code) {
@@ -14,48 +14,68 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
           let markPrice = Number(obj['markPrice']) // текущая цена маркировки
           let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
           let symbol = obj['symbol']
-          let pricePlus = entryPrice + (entryPrice * pnlPlus) // +% PNL
-          let priceMinus = entryPrice - (entryPrice * pnlMinus) // -0.6% PNL с плечом х1 (0,025 USDT)
+          let pricePlusSell = entryPrice + (entryPrice * pnlPlusSell) // +% PNL
+          let priceMinusSell = entryPrice - (entryPrice * pnlMinusSell) // -0.6% PNL с плечом х1 (0,025 USDT)
+
+          let pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy) // -0.6% PNL с плечом х1 (0,025 USDT)
+          let priceMinusBuy = entryPrice - (entryPrice * pnlMinusBuy) // -0.6% PNL с плечом х1 (0,025 USDT)
+
+          if(!profitCounter[symbol]) profitCounter[symbol] = 0
 
           if(positionAmt < 0) {
             positionAmt = positionAmt * (-1)
-          }
-          
-          if(!profitCounter[symbol]) profitCounter[symbol] = 0
-  
-          if(markPrice >= pricePlus) {
-            if(profitCounter[symbol] === 0) {
-              currentProfitOne[symbol] = markPrice
-              profitCounter[symbol] = 1
-            } else if (profitCounter[symbol] === 1) {
-                profitCounter[symbol] = 0
-                if(currentProfitOne[symbol] > markPrice) {
-                  sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
-                    statusOrder(symbol, orderId, binance).then(avgPrice => {
-                      counterPosition++
-                      console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+
+            if(markPrice <= priceMinusBuy) {
+              if(profitCounter[symbol] === 0) {
+                currentProfitOne[symbol] = markPrice
+                profitCounter[symbol] = 1
+              } else if (profitCounter[symbol] === 1) {
+                  profitCounter[symbol] = 0
+                  if(currentProfitOne[symbol] < markPrice) {
+                      buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                      statusOrder(symbol, orderId, binance).then(avgPrice => {
+                        counterPosition++
+                        console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+                      })
                     })
-                  })
+                  }
                 }
               }
-            }
-  
-          // if(markPrice >= pricePlus) {
-          //   sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
-          //     statusOrder(symbol, orderId, binance).then(avgPrice => {
-          //       counterPosition++
-          //       console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
-          //     })
-          //   })
-          // }
-          
-          if(markPrice <= priceMinus) {
-            sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
-              statusOrder(symbol, orderId, binance).then(avgPrice => {
-                counterPosition--
-                console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition)
+            
+            if(markPrice >= pricePlusBuy) {
+              buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                statusOrder(symbol, orderId, binance).then(avgPrice => {
+                  counterPosition--
+                  console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition)
+                })
               })
-            })
+            }
+          } else {
+            if(markPrice >= pricePlusSell) {
+              if(profitCounter[symbol] === 0) {
+                currentProfitOne[symbol] = markPrice
+                profitCounter[symbol] = 1
+              } else if (profitCounter[symbol] === 1) {
+                  profitCounter[symbol] = 0
+                  if(currentProfitOne[symbol] > markPrice) {
+                    sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                      statusOrder(symbol, orderId, binance).then(avgPrice => {
+                        counterPosition++
+                        console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+                      })
+                    })
+                  }
+                }
+              }
+            
+            if(markPrice <= priceMinusSell) {
+              sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                statusOrder(symbol, orderId, binance).then(avgPrice => {
+                  counterPosition--
+                  console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition)
+                })
+              })
+            }
           }
         }
       }
@@ -65,6 +85,6 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
     }
   
     setTimeout(() => {
-      futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, statusOrder, pnlPlus, pnlMinus, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
+      futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
     }, timeoutFuturesPositionRisk)
   }
