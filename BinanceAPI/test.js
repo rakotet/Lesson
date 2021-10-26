@@ -8,39 +8,41 @@ const binance = new Binance().options({
 });
 
 
-async function getCandles(coin, binance) { // получить свечи
-  try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 20}) 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
+console.log(2 < 2);
 
-      let volumeCandlesAll = 0
+// async function getCandles(coin, binance) { // получить свечи
+//   try{
+//     let data = await binance.futuresCandles(coin, '1m', {limit: 20}) 
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
 
-      for(let i = 0; i < data.length - 2; i++) {
-        let volume = Number(data[i][5]) // объём 1
-        volumeCandlesAll = volumeCandlesAll + volume
-      }
+//       let volumeCandlesAll = 0
 
-      let meanVolume = volumeCandlesAll / (data.length - 2)
-      console.log(Number(data[data.length - 2][5]));
+//       for(let i = 0; i < data.length - 2; i++) {
+//         let volume = Number(data[i][5]) // объём 1
+//         volumeCandlesAll = volumeCandlesAll + volume
+//       }
 
-      if(Number(data[data.length - 2][5]) > (meanVolume * 5)) {
+//       let meanVolume = volumeCandlesAll / (data.length - 2)
+//       console.log(Number(data[data.length - 2][5]));
 
-      }
+//       if(Number(data[data.length - 2][5]) > (meanVolume * 5)) {
 
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
-  }
+//       }
+
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
+//   }
   
-}
+// }
 
-function getDate(date) { // время свечи
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${new Date().getSeconds()}`
-}
+// function getDate(date) { // время свечи
+//     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${new Date().getSeconds()}`
+// }
 
-getCandles('1000SHIBUSDT', binance)
+// getCandles('1000SHIBUSDT', binance)
 
 
 // function s() {

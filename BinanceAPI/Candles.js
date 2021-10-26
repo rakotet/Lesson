@@ -36,13 +36,14 @@ let timeout
 let max = ''
 
 const pnlPlusSell = 0.003 // Long (+ это +)
-const pnlMinusSell = 0.01
-const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
-const pnlMinusBuy = 0.003
+const pnlMinusSell = 0.003
+
+const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
+const pnlMinusBuy = 0.002
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 0.5
-const timeoutSearch = 180000
+const timeoutSearch = 120000
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -51,8 +52,8 @@ const timeoutSearch = 180000
 //   //candlesOpenPamp(binance, opn)
 // }, 1000)
 
-// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn)
+traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType)
 // openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
 
-traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping, sellMarketCoin, sellCoin)
-futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne)
+//traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping, sellMarketCoin, sellCoin)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs)
