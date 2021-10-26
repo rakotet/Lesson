@@ -1,4 +1,4 @@
-module.exports = async function futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs) { // авто продажа
+module.exports = async function futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2) { // авто продажа
     try {
       let data = await binance.futuresPositionRisk() 
       if(data.code) {
@@ -15,10 +15,17 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
           let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
           let symbol = obj['symbol']
           let pricePlusSell = entryPrice + (entryPrice * pnlPlusSell) // +% PNL
-          let priceMinusSell = entryPrice - (entryPrice * pnlMinusSell) // -0.6% PNL с плечом х1 (0,025 USDT)
+          let priceMinusSell = entryPrice - (entryPrice * pnlMinusSell) 
 
           let pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy) // -0.6% PNL с плечом х1 (0,025 USDT)
-          let priceMinusBuy = entryPrice - (entryPrice * pnlMinusBuy) // -0.6% PNL с плечом х1 (0,025 USDT)
+          
+          if(counterProeb == 1) {
+            pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy1)
+          } else if (counterProeb == 2) {
+            pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy2)
+          }
+
+          let priceMinusBuy = entryPrice - (entryPrice * pnlMinusBuy) 
 
           if(!profitCounter[symbol]) profitCounter[symbol] = 0
 
@@ -45,8 +52,8 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               }
             
             if(markPrice >= pricePlusBuy) {
-              if(counterProeb < 2) {
-                sellMarketCoin(symbol, (positionAmt * 4), binance).then(orderId => {
+              if(counterProeb < 3) {
+                sellMarketCoin(symbol, (positionAmt * 3), binance).then(orderId => {
                   counterProeb++
                   statusOrder(symbol, orderId, binance).then(avgPrice => {
                     console.log(new Date().toLocaleTimeString() + ' Докупили: ' + symbol + ' По цене: ' + avgPrice)
@@ -103,7 +110,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
     }
   
     setTimeout(() => {
-      futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs)
+      futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2)
     }, timeoutFuturesPositionRisk)
   }
 

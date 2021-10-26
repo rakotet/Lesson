@@ -39,11 +39,14 @@ const pnlPlusSell = 0.003 // Long (+ это +)
 const pnlMinusSell = 0.003
 
 const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
-const pnlMinusBuy = 0.002
+const pnlPlusBuy1 = 0.01
+const pnlPlusBuy2 = 0.08
+
+const pnlMinusBuy = 0.002 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 0.5
-const timeoutSearch = 120000
+const timeoutSearch = 180000
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -56,4 +59,4 @@ traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSe
 // openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
 
 //traideOpenPampBuy(percent, arrayPrice, counter, data, timeout, opn, binance, balanceFiat, futuressHoulder, futuresMarginType, buyMarketCoin, timeoutSearch, timeoutTraideOpenPamp, buyCoin, numberOfSigns, wrapping, sellMarketCoin, sellCoin)
-futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2)

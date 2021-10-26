@@ -37,7 +37,7 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
           if(((difference / arrayPrice[key][1]) * 100) >= percent) {
             console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
 
-            if((arrayPrice[key][1] < 30) && key.endsWith('USDT')) {
+            if((arrayPrice[key][1] < 10) && key.endsWith('USDT')) {
                 symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
             }
           }
@@ -97,7 +97,7 @@ module.exports = async function traideOpenPampBuy(percent, arrayPrice, counter, 
         throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp')
       }
 
-      let numberCoinKey = (30 / Number(data['price'])).toFixed();
+      let numberCoinKey = (10 / Number(data['price'])).toFixed();
 
       futuressHoulder(coin, 10, binance).then(data => {
         futuresMarginType(coin, binance).then(data => {
