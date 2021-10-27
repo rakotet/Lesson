@@ -46,6 +46,21 @@ async function getCandles(coin, binance, opn) { // получить свечи
         console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЬЁМ');
       }
 
+      let greenRedCandles = 0
+      
+      for(let i = 2; i < 10; i++) {
+        if(Number(data[data.length - i][1]) < Number(data[data.length - i][4])) {
+          greenRedCandles++
+        } else {
+          greenRedCandles--
+        }
+      }
+
+      if(greenRedCandles === 8) {
+        opn('https://www.binance.com/ru/futures/' + coin)
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - 8 ЗЕЛЕНЫХ ПОДРЯТ');
+      }
+
     } catch(e) {
       console.log(e);
       console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');

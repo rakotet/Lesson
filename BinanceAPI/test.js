@@ -8,7 +8,7 @@ const binance = new Binance().options({
 });
 
 
-
+getCandles("BTCUSDT", binance)
 
 async function getCandles(coin, binance) { // получить свечи
   try{
@@ -17,19 +17,17 @@ async function getCandles(coin, binance) { // получить свечи
       console.log(data.code + ' - ' + data.msg);
     }
 
-      let volumeCandlesAll = 0
-
-      for(let i = 0; i < data.length - 2; i++) {
-        let volume = Number(data[i][5]) // объём 1
-        volumeCandlesAll = volumeCandlesAll + volume
+      let greenRedCandles = 0
+      
+      for(let i = 1; i < 9; i++) {
+        if(data[data.length - i][1] < data[data.length - i][4]) {
+          greenRedCandles++
+        } else {
+          greenRedCandles--
+        }
       }
 
-      let meanVolume = volumeCandlesAll / (data.length - 2)
-      console.log(Number(data[data.length - 2][5]));
 
-      if(Number(data[data.length - 2][5]) > (meanVolume * 5)) {
-
-      }
 
   } catch(e) {
     console.log(e);
