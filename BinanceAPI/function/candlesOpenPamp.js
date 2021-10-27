@@ -16,14 +16,18 @@ module.exports = async function candlesOpenPamp(binance, opn) {
         getCandles(coin, binance, opn)
       }
 
-      console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
+      //console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
+
+      setTimeout(() => {
+        candlesOpenPamp(binance, opn)
+      }, 65000)
 }
 
 let candlesSymboldata = {}
 
 async function getCandles(coin, binance, opn) { // получить свечи
     try{
-      let data = await binance.futuresCandles(coin, '1m', {limit: 30}) 
+      let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
       }
@@ -37,9 +41,9 @@ async function getCandles(coin, binance, opn) { // получить свечи
 
       let meanVolume = volumeCandlesAll / (data.length - 2)
 
-      if(Number(data[data.length - 2][5]) > (meanVolume * 10)) {
+      if(Number(data[data.length - 1][5]) > (meanVolume * 35) || Number(data[data.length - 2][5]) > (meanVolume * 35)) {
         opn('https://www.binance.com/ru/futures/' + coin)
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin);
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЬЁМ');
       }
 
     } catch(e) {
