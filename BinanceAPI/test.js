@@ -7,34 +7,69 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
+const fs = require('fs')
+const opn = require('opn')
+let a = false
+let b = false
 
-getCandles("BTCUSDT", binance)
-
-async function getCandles(coin, binance) { // получить свечи
-  try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 20}) 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
-
-      let greenRedCandles = 0
-      
-      for(let i = 1; i < 9; i++) {
-        if(data[data.length - i][1] < data[data.length - i][4]) {
-          greenRedCandles++
-        } else {
-          greenRedCandles--
-        }
-      }
-
-
-
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
-  }
-  
+if(a || b) {
+  console.log('1');
+} else {
+  console.log('2');
 }
+
+// let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
+
+// resultFile = resultFile + 'dddd' + ','
+
+// fs.writeFileSync('./symbolPamp.txt', resultFile)
+
+// let arr = resultFile.split(',')
+// console.log(arr);
+
+// for( let i = 0; i < arr.length; i++) {
+//   if(arr[i] == 'sol') {
+//     arr.splice(i, 1)
+//   }
+// }
+
+// let str = arr.join(',')
+// fs.writeFileSync('./symbolPamp.txt', str)
+
+// console.log(fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'}));
+
+
+// fs.writeFileSync('./symbolPamp.txt', 'SOLUSDT, ')
+
+
+
+// getCandles("BTCUSDT", binance)
+
+// async function getCandles(coin, binance) { // получить свечи
+//   try{
+//     let data = await binance.futuresCandles(coin, '1m', {limit: 20}) 
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
+
+//       let greenRedCandles = 0
+      
+//       for(let i = 1; i < 9; i++) {
+//         if(data[data.length - i][1] < data[data.length - i][4]) {
+//           greenRedCandles++
+//         } else {
+//           greenRedCandles--
+//         }
+//       }
+
+
+
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
+//   }
+  
+// }
 
 // function getDate(date) { // время свечи
 //     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${new Date().getSeconds()}`

@@ -1,15 +1,15 @@
-module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType) { 
+module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType) { 
     try {
   
       data = await binance.futuresPrices() 
   
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
-        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту traideOpenSymbol')
+        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту traideOpenSymbolAll')
       }
     } catch(e) {
       console.log(e);
-      console.log(new Date().toLocaleTimeString() + ' - ' + 'traideOpenSymbol');
+      console.log(new Date().toLocaleTimeString() + ' - ' + 'traideOpenSymbolAll');
       data = await binance.futuresPrices() 
     }
   
@@ -35,55 +35,19 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
           difference = difference * (-1)
   
           if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-            //console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
-
-            if((arrayPrice[key][1] < 20) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
-                symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
+              if((arrayPrice[key][1] < 20) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
+                console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
+                priceSymbolPamp(binance, sellMarketCoin, opn, fs, key, futuressHoulder, futuresMarginType, getCandles)
             }
           }
         } 
-
       }
-
-      let counterObjLength = 0
-
-      for(key in symbolPamp) {
-          counterObjLength++
-      }
-      
-      if(counterObjLength >= 2) {
-        let keys = Object.keys(symbolPamp)
-        max = keys.reduce(function (a, b) {
-            return +symbolPamp[a] > +symbolPamp[b] ? a : b;
-        });
-
-        let result = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
-        if(result == '') {
-          priceSymbolPamp(binance, sellMarketCoin, opn, fs, max, futuressHoulder, futuresMarginType, getCandles)
-          console.log(new Date().toLocaleTimeString() + ' - ' + max + ' - Памп - ' + symbolPamp[max])
-        }
-
-      } else if(counterObjLength === 1) {
-        for(key in symbolPamp) {
-            max = key
-        }
-
-        let result = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
-        if(result == '') {
-          priceSymbolPamp(binance, sellMarketCoin, opn, fs, max, futuressHoulder, futuresMarginType, getCandles)
-          console.log(new Date().toLocaleTimeString() + ' - ' + max + ' - Памп - ' + symbolPamp[max])
-        }
-      }
-      
-      symbolPamp = {}
 
       console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
     }
   
-    
-  
     setTimeout(() => {
-      traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType)
+      traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType)
     }, timeout)
   }
 
@@ -101,20 +65,19 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
 
       let numberCoinKey = (30 / Number(data['price'])).toFixed();
 
-      futuressHoulder(coin, 10, binance).then(data => {
-        futuresMarginType(coin, binance).then(data => {
-          getCandles(coin, binance).then(data => {
-            if(data) {
+      getCandles(coin, binance).then(data => {
+        if(data) {
+          futuressHoulder(coin, 10, binance).then(data => {
+            futuresMarginType(coin, binance).then(data => {
               sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                 if(orderId) {
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
-                  opn('https://www.binance.com/ru/futures/' + coin)
-                  fs.writeFileSync('./symbolPamp.txt', '1')
+                  // opn('https://www.binance.com/ru/futures/' + coin)
                 }
               })
-            }
+            })
           })
-        })
+        }
       })
 
     } catch(e) {

@@ -20,7 +20,7 @@ module.exports = async function candlesOpenPamp(binance, opn) {
 
       setTimeout(() => {
         candlesOpenPamp(binance, opn)
-      }, 65000)
+      }, 60000)
 }
 
 let candlesSymboldata = {}
@@ -57,7 +57,7 @@ async function getCandles(coin, binance, opn) { // получить свечи
       }
 
       if(greenRedCandles === 8) {
-        opn('https://www.binance.com/ru/futures/' + coin)
+        // opn('https://www.binance.com/ru/futures/' + coin)
         console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - 8 ЗЕЛЕНЫХ ПОДРЯТ');
       }
 
