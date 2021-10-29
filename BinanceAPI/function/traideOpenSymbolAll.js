@@ -72,7 +72,7 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
               sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                 if(orderId) {
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
-                  // opn('https://www.binance.com/ru/futures/' + coin)
+                  opn('https://www.binance.com/ru/futures/' + coin)
                 }
               })
             })

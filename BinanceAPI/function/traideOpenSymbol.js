@@ -109,7 +109,7 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
                 if(orderId) {
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
                   opn('https://www.binance.com/ru/futures/' + coin)
-                  fs.writeFileSync('./symbolPamp.txt', '1')
+                  fs.writeFileSync('./symbolPamp.txt', coin)
                 }
               })
             }

@@ -48,7 +48,7 @@ async function getCandles(coin, binance, opn) { // получить свечи
 
       let greenRedCandles = 0
       
-      for(let i = 2; i < 10; i++) {
+      for(let i = 2; i < 12; i++) {
         if(Number(data[data.length - i][1]) < Number(data[data.length - i][4])) {
           greenRedCandles++
         } else {
@@ -56,9 +56,9 @@ async function getCandles(coin, binance, opn) { // получить свечи
         }
       }
 
-      if(greenRedCandles === 8) {
-        //opn('https://www.binance.com/ru/futures/' + coin)
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - 8 ЗЕЛЕНЫХ ПОДРЯТ');
+      if(greenRedCandles === 10) {
+        opn('https://www.binance.com/ru/futures/' + coin)
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - 10 ЗЕЛЕНЫХ ПОДРЯТ');
       }
 
     } catch(e) {

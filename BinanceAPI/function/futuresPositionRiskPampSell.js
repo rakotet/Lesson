@@ -42,6 +42,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
           let priceMinusBuy = entryPrice - (entryPrice * pnlMinusBuy) 
 
           if(!profitCounter[symbol]) profitCounter[symbol] = 0
+          if(!dokupkaCounter[symbol]) dokupkaCounter[symbol] = 0
 
           if(positionAmt < 0) {
             positionAmt = positionAmt * (-1)
@@ -66,22 +67,30 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               }
             
             if(markPrice >= pricePlusBuy) {
-              if(counterProebObj[symbol] < 3) { // количество усреднений
-                counterProebObj[symbol] = (counterProebObj[symbol] + 1)
-                sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
-                  statusOrder(symbol, orderId, binance).then(avgPrice => {
-                    console.log(new Date().toLocaleTimeString() + ' Докупили: ' + symbol + ' По цене: ' + avgPrice)
-                  })
-                })
-              } else {
-                counterProebObj[symbol] = 0
-                buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
-                  counterPosition--
-                  fs.writeFileSync('./symbolPamp.txt', '')
-                  statusOrder(symbol, orderId, binance).then(avgPrice => {
-                    console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
-                  })
-                })
+              if(dokupkaCounter[symbol] === 0) {
+                dokupkaPrice[symbol] = markPrice
+                dokupkaCounter[symbol] = 1
+              } else if (dokupkaCounter[symbol] === 1) {
+                  dokupkaCounter[symbol] = 0
+                  if(dokupkaPrice[symbol] > markPrice || (markPrice - entryPrice) >= (entryPrice * 0.05)) {
+                    if(counterProebObj[symbol] < 3) { // количество усреднений
+                      counterProebObj[symbol] = (counterProebObj[symbol] + 1)
+                      sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
+                        statusOrder(symbol, orderId, binance).then(avgPrice => {
+                          console.log(new Date().toLocaleTimeString() + ' Докупили: ' + symbol + ' По цене: ' + avgPrice)
+                        })
+                      })
+                    } else {
+                      counterProebObj[symbol] = 0
+                      buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                        counterPosition--
+                        fs.writeFileSync('./symbolPamp.txt', '')
+                        statusOrder(symbol, orderId, binance).then(avgPrice => {
+                        console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                      })
+                    })
+                  }
+                }
               }
             }
 
@@ -129,7 +138,8 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
     }, timeoutFuturesPositionRisk)
   }
 
-  let counterProeb = 0
   let purchaseLevel = 2
 
   const counterProebObj = {}
+  const dokupkaCounter = {}
+  const dokupkaPrice = {}
