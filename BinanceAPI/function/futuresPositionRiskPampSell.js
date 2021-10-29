@@ -68,13 +68,27 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               }
             
             if(markPrice >= pricePlusBuy) {
+              if(counterProebObj[symbol] === 2) { // количество усреднений
+                counterProebObj[symbol] = 0
+                buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                  counterPosition--
+                  //fs.writeFileSync('./symbolPamp.txt', '')
+                  statusOrder(symbol, orderId, binance).then(avgPrice => {
+                    console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                  })
+                })
+              }
+
               if(dokupkaCounter[symbol] === 0) {
                 dokupkaPrice[symbol] = markPrice
                 dokupkaCounter[symbol] = 1
               } else if (dokupkaCounter[symbol] === 1) {
+                  dokupkaPrice1[symbol] = markPrice
+                  dokupkaCounter[symbol] = 2
+              } else if (dokupkaCounter[symbol] === 2) {
                   dokupkaCounter[symbol] = 0
-                  if(dokupkaPrice[symbol] > markPrice || (markPrice - entryPrice) >= (entryPrice * 0.05)) {
-                    if(counterProebObj[symbol] < 3) { // количество усреднений
+                  if(((dokupkaPrice[symbol] > dokupkaPrice1[symbol]) &&  (dokupkaPrice1[symbol] > markPrice)) || (markPrice - entryPrice) >= (entryPrice * 0.05)) {
+                    if(counterProebObj[symbol] < 2) { // количество усреднений
                       counterProebObj[symbol] = (counterProebObj[symbol] + 1)
                       sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
@@ -143,9 +157,10 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
     }, timeoutFuturesPositionRisk)
   }
 
-  let purchaseLevel = 2
+  let purchaseLevel = 2 // множитель докупки
   let positionCounter = 0
 
   const counterProebObj = {}
   const dokupkaCounter = {}
   const dokupkaPrice = {}
+  const dokupkaPrice1 = {}

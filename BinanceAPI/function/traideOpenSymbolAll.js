@@ -40,7 +40,6 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
               if((arrayPrice[key][1] < 20) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
                 console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
                 if(counterOpenPosition < 3) {
-                  console.log(counterOpenPosition);
                   priceSymbolPamp(binance, sellMarketCoin, opn, fs, key, futuressHoulder, futuresMarginType, getCandles)
                 }
                 counterOpenPosition++
@@ -90,9 +89,9 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
                     })
                   })
                 })
-              } else console.log('Не вошли в позицию getCandles');
+              } else console.log('Не вошли в позицию getCandles ' + coin);
             })
-          } else console.log('Не вошли в позицию openPosition');
+          } else console.log('Не вошли в позицию openPosition ' + coin);
         })
       }
 

@@ -38,8 +38,8 @@ let max = ''
 const pnlPlusSell = 0.003 // Long (+ это +)
 const pnlMinusSell = 0.003
 
-const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
-const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
+const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
+const pnlPlusBuy1 = 0.015 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.01
 const pnlPlusBuy3 = 0.01
 const pnlPlusBuy4 = 0.07
