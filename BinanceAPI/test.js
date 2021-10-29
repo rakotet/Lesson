@@ -7,16 +7,23 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
-const fs = require('fs')
-const opn = require('opn')
-let a = false
-let b = false
+async function openPosition(coin) { // Получение открытой позиции по конкретной монете
+  try {
+    let data = await binance.futuresPositionRisk({symbol: coin}) 
 
-if(a || b) {
-  console.log('1');
-} else {
-  console.log('2');
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+
+    console.log(Number(data[0]['positionAmt']));
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
+  }
 }
+
+openPosition('BTCUSDT')
+
 
 // let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
 

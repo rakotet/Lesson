@@ -10,6 +10,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       for ( let market of markets ) {
         let obj = data[market], size = Number( obj.positionAmt );
         if ( size != 0 ) {
+          positionCounter++
           let entryPrice = Number(obj['entryPrice']) // цена входа в позицию
           let markPrice = Number(obj['markPrice']) // текущая цена маркировки
           let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
@@ -57,7 +58,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                       buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                         counterProebObj[symbol] = 0
                         counterPosition++
-                        fs.writeFileSync('./symbolPamp.txt', '')
+                        //fs.writeFileSync('./symbolPamp.txt', '')
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
                         console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
                       })
@@ -84,7 +85,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                       counterProebObj[symbol] = 0
                       buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                         counterPosition--
-                        fs.writeFileSync('./symbolPamp.txt', '')
+                        //fs.writeFileSync('./symbolPamp.txt', '')
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
                         console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
                       })
@@ -128,6 +129,10 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
           }
         }
       }
+
+      fs.writeFileSync('./symbolPamp.txt', String(positionCounter))
+      positionCounter = 0
+
     } catch(e) {
       console.log(e);
       console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresPositionRiskPampSell');
@@ -139,6 +144,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
   }
 
   let purchaseLevel = 2
+  let positionCounter = 0
 
   const counterProebObj = {}
   const dokupkaCounter = {}

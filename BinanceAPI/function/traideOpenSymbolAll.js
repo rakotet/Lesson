@@ -29,6 +29,8 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
       counter = 0
       timeout = timeoutTraideOpenPamp
       
+      let counterOpenPosition = 0 // счетчик, сколько уже открыли сделок в этом цикле
+
       for(let key in arrayPrice) {
         if((arrayPrice[key][0] - arrayPrice[key][1]) < 0) {
           let difference = arrayPrice[key][0] - arrayPrice[key][1]
@@ -37,11 +39,17 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
           if(((difference / arrayPrice[key][1]) * 100) >= percent) {
               if((arrayPrice[key][1] < 20) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
                 console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
-                priceSymbolPamp(binance, sellMarketCoin, opn, fs, key, futuressHoulder, futuresMarginType, getCandles)
+                if(counterOpenPosition < 3) {
+                  console.log(counterOpenPosition);
+                  priceSymbolPamp(binance, sellMarketCoin, opn, fs, key, futuressHoulder, futuresMarginType, getCandles)
+                }
+                counterOpenPosition++
             }
           }
         } 
       }
+
+      counterOpenPosition = 0
 
       console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
     }
@@ -51,7 +59,7 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
     }, timeout)
   }
 
-
+  
 
 
   async function priceSymbolPamp(binance, sellMarketCoin, opn, fs, coin, futuressHoulder, futuresMarginType, getCandles) {
@@ -65,20 +73,28 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
 
       let numberCoinKey = (30 / Number(data['price'])).toFixed();
 
-      getCandles(coin, binance).then(data => {
-        if(data) {
-          futuressHoulder(coin, 10, binance).then(data => {
-            futuresMarginType(coin, binance).then(data => {
-              sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
-                if(orderId) {
-                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
-                  opn('https://www.binance.com/ru/futures/' + coin)
-                }
-              })
+      let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
+
+      if(Number(resultFile) < 3) { // проверка на количество открытых сделок
+        openPosition(coin, binance).then(data => {
+          if(data) {
+            getCandles(coin, binance).then(data => {
+              if(data) {
+                futuressHoulder(coin, 10, binance).then(data => {
+                  futuresMarginType(coin, binance).then(data => {
+                    sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
+                      if(orderId) {
+                        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
+                        opn('https://www.binance.com/ru/futures/' + coin)
+                      }
+                    })
+                  })
+                })
+              } else console.log('Не вошли в позицию getCandles');
             })
-          })
-        }
-      })
+          } else console.log('Не вошли в позицию openPosition');
+        })
+      }
 
     } catch(e) {
       console.log(e);
@@ -132,4 +148,24 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
       console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
     }
     
+  }
+
+  async function openPosition(coin, binance) { // Получение открытой позиции по конкретной монете
+    try {
+      let data = await binance.futuresPositionRisk({symbol: coin}) 
+  
+      if(data.code) {
+        console.log(data.code + ' - ' + data.msg);
+      }
+  
+      if(Number(data[0]['positionAmt']) === 0) {
+        return true
+      } else {
+        return false
+      }
+
+    } catch(e) {
+      console.log(e);
+      console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
+    }
   }
