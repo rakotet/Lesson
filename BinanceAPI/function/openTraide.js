@@ -6,7 +6,7 @@ module.exports = async function openTraide(fs, binance, balanceFiat, futuressHou
 
     setTimeout(()=> {
         openTraide(fs, binance, balanceFiat, futuressHoulder, futuresMarginType, sellMarketCoin, opn, buyMarketCoin)
-    }, 3000)
+    }, 1000)
 }
 
 let data
@@ -35,7 +35,7 @@ async function openPositionSymbol(binance, coin, fs, balanceFiat, futuressHoulde
         priceCoin[1] = Number(data['price'])
         counterPrice = 0
 
-        if(priceCoin[0] < priceCoin[1]) {
+        if(priceCoin[0] > priceCoin[1]) {
             let price = priceCoin[1]
             balanceFiat('USDT', binance).then(balance => {
                 if(balance > 7) {

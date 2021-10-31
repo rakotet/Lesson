@@ -57,8 +57,22 @@ async function getCandles(coin, binance, opn) { // получить свечи
       }
 
       if(greenRedCandles === 10) {
-        opn('https://www.binance.com/ru/futures/' + coin)
+        //opn('https://www.binance.com/ru/futures/' + coin)
         console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - 10 ЗЕЛЕНЫХ ПОДРЯТ');
+      }
+
+      if((Number(data[data.length - 2][4]) - Number(data[data.length - 6][1])) > 0) {
+        if((((Number(data[data.length - 2][4]) - Number(data[data.length - 6][1])) / Number(data[data.length - 2][4])) * 100) >= 3) {
+          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 3% или больше за 5 мин');
+          //opn('https://www.binance.com/ru/futures/' + coin)
+        }
+      }
+
+      if((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) > 0) {
+        if((((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) / Number(data[data.length - 2][4])) * 100) >= 5) {
+          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 5% или больше за 20 мин');
+          //opn('https://www.binance.com/ru/futures/' + coin)
+        }
       }
 
     } catch(e) {

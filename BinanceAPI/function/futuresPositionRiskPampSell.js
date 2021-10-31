@@ -57,6 +57,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                   if(currentProfitOne[symbol] < markPrice) {
                       buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                         counterProebObj[symbol] = 0
+                        dokupkaCounter[symbol] = 0
                         counterPosition++
                         //fs.writeFileSync('./symbolPamp.txt', '')
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
@@ -68,9 +69,10 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               }
             
             if(markPrice >= pricePlusBuy) {
-              if(counterProebObj[symbol] === 2) { // количество усреднений
+              if(counterProebObj[symbol] === 1) { // количество усреднений
                 counterProebObj[symbol] = 0
                 buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                  dokupkaCounter[symbol] = 0
                   counterPosition--
                   //fs.writeFileSync('./symbolPamp.txt', '')
                   statusOrder(symbol, orderId, binance).then(avgPrice => {
@@ -82,32 +84,24 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               if(dokupkaCounter[symbol] === 0) {
                 dokupkaPrice[symbol] = markPrice
                 dokupkaCounter[symbol] = 1
+                getCandles(symbol, binance).then(data => {
+                  candlesRed[symbol] = data
+                })
               } else if (dokupkaCounter[symbol] === 1) {
-                  dokupkaPrice1[symbol] = markPrice
-                  dokupkaCounter[symbol] = 2
-              } else if (dokupkaCounter[symbol] === 2) {
                   dokupkaCounter[symbol] = 0
-                  if(((dokupkaPrice[symbol] > dokupkaPrice1[symbol]) &&  (dokupkaPrice1[symbol] > markPrice)) || (markPrice - entryPrice) >= (entryPrice * 0.05)) {
-                    if(counterProebObj[symbol] < 2) { // количество усреднений
+                  //console.log(symbol + ' - ' + candlesRed[symbol]);///////////////
+                  if(((dokupkaPrice[symbol]  > markPrice) && ((dokupkaPrice[symbol]  - markPrice) >= (markPrice * 0.001))) || (markPrice - entryPrice) >= (entryPrice * 0.012)) {
+                    if(counterProebObj[symbol] < 1) { // количество усреднений
                       counterProebObj[symbol] = (counterProebObj[symbol] + 1)
                       sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
                           console.log(new Date().toLocaleTimeString() + ' Докупили: ' + symbol + ' По цене: ' + avgPrice)
                         })
                       })
-                    } else {
-                      counterProebObj[symbol] = 0
-                      buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
-                        counterPosition--
-                        //fs.writeFileSync('./symbolPamp.txt', '')
-                        statusOrder(symbol, orderId, binance).then(avgPrice => {
-                        console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
-                      })
-                    })
+                    } 
                   }
-                }
+                } 
               }
-            }
 
           } else {
             // if(markPrice >= pricePlusSell) {
@@ -163,4 +157,26 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
   const counterProebObj = {}
   const dokupkaCounter = {}
   const dokupkaPrice = {}
-  const dokupkaPrice1 = {}
+  const candlesRed = {}
+
+
+
+  async function getCandles(coin, binance) { // получить свечи
+    try{
+      let data = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+      if(data.code) {
+        console.log(data.code + ' - ' + data.msg);
+      }
+      
+      if(Number(data[data.length - 1][1]) > Number(data[data.length - 1][4])) {
+        return true
+      } else {
+        return false
+      }
+
+    } catch(e) {
+      console.log(e);
+      console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
+    }
+    
+  }
