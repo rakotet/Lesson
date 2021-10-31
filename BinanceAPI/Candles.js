@@ -37,10 +37,10 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.01 // Long (+ это +)
-const pnlMinusSell = 0.006
+const pnlPlusSell = 0.003 // Long (+ это +)
+const pnlMinusSell = 0.003
 
-const pnlPlusBuy = 0.006 // Short (всё наоборот + это -)
+const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
 const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.01
 const pnlPlusBuy3 = 0.01
@@ -62,21 +62,21 @@ const timeoutSearch = 180000
 
 // открывает позиции
 //
-// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
-//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType)
-
-traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
+traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
+
+// traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
+//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
 
 // закрывает позиции
 //
-// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 //faifCandles(binance, opn, futuressHoulder, futuresMarginType, sellMarketCoin)
 
-futuresPositionOneSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+// futuresPositionOneSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 //ищит мега объемы и 10 зеленых свечей
 //candlesOpenPamp(binance, opn)
@@ -95,7 +95,7 @@ async function priceSymbolPamp(symbol) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
-      if(Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) {
+      if((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) {
         cancell = false
 
         let data = await binance.futuresPrices({symbol: coin}) 

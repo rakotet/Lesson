@@ -44,7 +44,7 @@ module.exports = async function futuresPositionOneSell(counterPosition, binance,
               }
             
             if(markPrice >= pricePlusBuy) {
-              buyMarketCoin(symbol, (positionAmt * 2), binance).then(orderId => {
+              buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                 counterPosition--
                 statusOrder(symbol, orderId, binance).then(avgPrice => {
                   console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
