@@ -71,7 +71,7 @@ async function getCandles(coin, binance, opn) { // получить свечи
       if((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) > 0) {
         if((((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) / Number(data[data.length - 2][4])) * 100) >= 5) {
           console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 5% или больше за 20 мин');
-          //opn('https://www.binance.com/ru/futures/' + coin)
+          opn('https://www.binance.com/ru/futures/' + coin)
         }
       }
 
