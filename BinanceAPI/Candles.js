@@ -8,6 +8,7 @@ const sellMarketCoin = require('./function/sellMarketCoin')
 const buyMarketCoin = require('./function/buyMarketCoin')
 const futuresPositionRiskPampSell = require('./function/futuresPositionRiskPampSell')
 const futuresPositionOneSell = require('./function/futuresPositionOneSell')
+const futuresPositionTwo = require('./function/futuresPositionTwo')
 const numberOfSigns = require('./function/numberOfSigns')
 const traideOpenPampBuy = require('./function/traideOpenPampBuy')
 const traideOpenPampSell = require('./function/traideOpenPampSell')
@@ -37,8 +38,8 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.003 // Long (+ это +)
-const pnlMinusSell = 0.003
+const pnlPlusSell = 0.03 // Long (+ это +)
+const pnlMinusSell = 0.03
 
 const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
 const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
@@ -73,6 +74,9 @@ traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSe
 futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
+// futuresPositionTwo(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+
 //faifCandles(binance, opn, futuressHoulder, futuresMarginType, sellMarketCoin)
 
 // futuresPositionOneSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
@@ -105,16 +109,16 @@ async function priceSymbolPamp(symbol) {
           throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp')
         }
 
-        let numberCoinKey = (30 / Number(data['price'])).toFixed();
+        let numberCoinKey = (10 / Number(data['price'])).toFixed();
 
         let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
 
-        if(Number(resultFile) < 10) { // проверка на количество открытых сделок
+        if(Number(resultFile) < 3) { // проверка на количество открытых сделок
           openPosition(coin).then(data => {
             if(data) {
               getCandles(coin).then(data => {
                 if(data) {
-                  futuressHoulder(coin, 10, binance).then(data => {
+                  futuressHoulder(coin, 1, binance).then(data => {
                     futuresMarginType(coin, binance).then(data => {
                       sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {
