@@ -37,9 +37,10 @@ module.exports = async function traideOpenSymbolAll(percent, arrayPrice, counter
           difference = difference * (-1)
   
           if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-              if((arrayPrice[key][1] < 20) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
+              if((arrayPrice[key][1] < 10) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 50) {
+                console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
+                opn('https://www.binance.com/ru/futures/' + key)
                 if(counterOpenPosition < 10) {
-                  console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
                   priceSymbolPamp(key)
                 }
                 counterOpenPosition++

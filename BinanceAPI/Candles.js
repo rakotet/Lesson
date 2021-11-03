@@ -50,8 +50,8 @@ const pnlPlusBuy4 = 0.07
 const pnlMinusBuy = 0.005 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
-const percent = 1
-const timeoutSearch = 180000
+const percent = 2
+const timeoutSearch = 900000
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -63,8 +63,8 @@ const timeoutSearch = 180000
 
 // открывает позиции
 //
-// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
-//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
+traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
+  symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
 
 // traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
 //   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
@@ -83,7 +83,7 @@ const timeoutSearch = 180000
 //   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 //ищит мега объемы и 10 зеленых свечей
-candlesOpenPamp(binance, opn)
+//candlesOpenPamp(binance, opn)
 
 
 
@@ -123,7 +123,7 @@ async function priceSymbolPamp(symbol) {
                       sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {
                           console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
-                          //opn('https://www.binance.com/ru/futures/' + coin)
+                          opn('https://www.binance.com/ru/futures/' + coin)
                         }
                       })
                     })
@@ -143,7 +143,7 @@ async function priceSymbolPamp(symbol) {
   if(cancell) {
     setTimeout(() => {
       priceSymbolPamp(coin)
-    }, 2000)
+    }, 1000)
   }
 
 }
