@@ -38,10 +38,10 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.003 // Long (+ это +)
-const pnlMinusSell = 0.003
+const pnlPlusSell = 0.01 // Long (+ это +)
+const pnlMinusSell = 0.01
 
-const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
+const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
 const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.01
 const pnlPlusBuy3 = 0.01
@@ -50,8 +50,8 @@ const pnlPlusBuy4 = 0.07
 const pnlMinusBuy = 0.005 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
-const percent = 2
-const timeoutSearch = 900000
+const percent = 1
+const timeoutSearch = 180000
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -99,7 +99,11 @@ async function priceSymbolPamp(symbol) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
-      if((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) {
+      if(/*(Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])*/
+      /*(Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4]))*/
+      ((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
+      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
+      || ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003))) {
         cancell = false
 
         let data = await binance.futuresPrices({symbol: coin}) 
