@@ -39,7 +39,7 @@ let timeout
 let max = ''
 
 const pnlPlusSell = 0.01 // Long (+ это +)
-const pnlMinusSell = 0.01
+const pnlMinusSell = 0.02
 
 const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
 const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
@@ -47,7 +47,7 @@ const pnlPlusBuy2 = 0.01
 const pnlPlusBuy3 = 0.01
 const pnlPlusBuy4 = 0.07
 
-const pnlMinusBuy = 0.005 // +
+const pnlMinusBuy = 0.003 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 1
@@ -71,8 +71,8 @@ traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSe
 
 // закрывает позиции
 //
-// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 // futuresPositionTwo(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
 //   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
@@ -94,16 +94,20 @@ async function priceSymbolPamp(symbol) {
 
   try {
 
-    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 2}) 
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 4}) 
       if(candlesSymbol.code) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
       if(/*(Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])*/
       /*(Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4]))*/
-      ((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
+      /*((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
       && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
-      || ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003))) {
+      || ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003))*/
+      (Number(candlesSymbol[candlesSymbol.length - 4][1]) > Number(candlesSymbol[candlesSymbol.length - 4][4])) &&
+      (Number(candlesSymbol[candlesSymbol.length - 3][1]) > Number(candlesSymbol[candlesSymbol.length - 3][4])) &&
+      ((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][4]) - Number(candlesSymbol[candlesSymbol.length - 2][1]))) > (Number(candlesSymbol[candlesSymbol.length - 2][4]) * 0.0015)) &&
+      ((Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][4]) - Number(candlesSymbol[candlesSymbol.length - 1][1]))) > (Number(candlesSymbol[candlesSymbol.length - 1][4]) * 0.0015))) {
         cancell = false
 
         let data = await binance.futuresPrices({symbol: coin}) 
@@ -117,14 +121,14 @@ async function priceSymbolPamp(symbol) {
 
         let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
 
-        if(Number(resultFile) < 10) { // проверка на количество открытых сделок
+        if(Number(resultFile) < 3) { // проверка на количество открытых сделок
           openPosition(coin).then(data => {
             if(data) {
               getCandles(coin).then(data => {
                 if(data) {
                   futuressHoulder(coin, 1, binance).then(data => {
                     futuresMarginType(coin, binance).then(data => {
-                      sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
+                      buyMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {
                           console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
                           opn('https://www.binance.com/ru/futures/' + coin)

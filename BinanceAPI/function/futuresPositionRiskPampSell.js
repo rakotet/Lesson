@@ -92,7 +92,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               // } else if (dokupkaCounter[symbol] === 1) {
               //     dokupkaCounter[symbol] = 0
               //     if(/*(dokupkaPrice[symbol]  > markPrice) && ((dokupkaPrice[symbol]  - markPrice) >= (markPrice * 0.001))) && */ candlesRed[symbol]) {
-              //       if(counterProebObj[symbol] < 0) { // количество усреднений
+              //       if(counterProebObj[symbol] < 1) { // количество усреднений
               //         counterProebObj[symbol] = (counterProebObj[symbol] + 1)
               //         sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
               //           statusOrder(symbol, orderId, binance).then(avgPrice => {
@@ -174,7 +174,8 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       }
       
       if(((Number(data[data.length - 2][1]) > Number(data[data.length - 2][4])) && ((Number(data[data.length - 2][1]) - Number(data[data.length - 2][4])) >= (Number(data[data.length - 2][1]) * 0.0015))) 
-      && ((Number(data[data.length - 1][1]) > Number(data[data.length - 1][4])) && ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.0015)))) {
+      && ((Number(data[data.length - 1][1]) > Number(data[data.length - 1][4])) && ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.0015)))
+      || ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.003))) {
         return true
       } else {
         return false
