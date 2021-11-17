@@ -38,10 +38,10 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.01 // Long (+ это +)
-const pnlMinusSell = 0.02
+const pnlPlusSell = 0.003 // Long (+ это +)
+const pnlMinusSell = 0.003
 
-const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
+const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
 const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.01
 const pnlPlusBuy3 = 0.01
@@ -94,20 +94,15 @@ async function priceSymbolPamp(symbol) {
 
   try {
 
-    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 4}) 
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 2}) 
       if(candlesSymbol.code) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
-      if(/*(Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])*/
-      /*(Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4]))*/
-      /*((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
+      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0010))) 
       && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
-      || ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003))*/
-      (Number(candlesSymbol[candlesSymbol.length - 4][1]) > Number(candlesSymbol[candlesSymbol.length - 4][4])) &&
-      (Number(candlesSymbol[candlesSymbol.length - 3][1]) > Number(candlesSymbol[candlesSymbol.length - 3][4])) &&
-      ((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][4]) - Number(candlesSymbol[candlesSymbol.length - 2][1]))) > (Number(candlesSymbol[candlesSymbol.length - 2][4]) * 0.0015)) &&
-      ((Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][4]) - Number(candlesSymbol[candlesSymbol.length - 1][1]))) > (Number(candlesSymbol[candlesSymbol.length - 1][4]) * 0.0015))) {
+      /*|| (((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
+      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))*/) {
         cancell = false
 
         let data = await binance.futuresPrices({symbol: coin}) 
@@ -128,7 +123,7 @@ async function priceSymbolPamp(symbol) {
                 if(data) {
                   futuressHoulder(coin, 1, binance).then(data => {
                     futuresMarginType(coin, binance).then(data => {
-                      buyMarketCoin(coin, numberCoinKey, binance).then(orderId => {
+                      sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {
                           console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
                           opn('https://www.binance.com/ru/futures/' + coin)
@@ -191,7 +186,7 @@ async function getCandles(coin) { // получить свечи
       }
     }
 
-    if(truAndFalse === false || greenRedCandles === 8) {
+    if(truAndFalse === false /*|| greenRedCandles === 8*/) {
       return false
     } else {
       return true

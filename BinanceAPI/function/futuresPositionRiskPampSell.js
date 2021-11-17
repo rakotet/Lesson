@@ -10,7 +10,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       for ( let market of markets ) {
         let obj = data[market], size = Number( obj.positionAmt );
         if ( size != 0 ) {
-          let purchaseLevel = 2 // множитель докупки
+          let purchaseLevel = 4 // множитель докупки
 
           positionCounter++
 
@@ -51,12 +51,12 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
             positionAmt = positionAmt * (-1)
 
             if(markPrice <= priceMinusBuy) {
-              if(profitCounter[symbol] === 0) {
-                currentProfitOne[symbol] = markPrice
-                profitCounter[symbol] = 1
-              } else if (profitCounter[symbol] === 1) {
-                  profitCounter[symbol] = 0
-                  if(currentProfitOne[symbol] < markPrice) {
+              // if(profitCounter[symbol] === 0) {
+              //   currentProfitOne[symbol] = markPrice
+              //   profitCounter[symbol] = 1
+              // } else if (profitCounter[symbol] === 1) {
+              //     profitCounter[symbol] = 0
+              //     if(currentProfitOne[symbol] < markPrice) {
                       buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                         counterProebObj[symbol] = 0
                         dokupkaCounter[symbol] = 0
@@ -66,13 +66,13 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                         console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
                       })
                     })
-                  }
-                }
+                  //}
+                //}
               }
             
             if(markPrice >= pricePlusBuy) {
-              if(counterProebObj[symbol] === 0) { // количество усреднений
-                counterProebObj[symbol] = 0
+              // if(counterProebObj[symbol] === 0) { // количество усреднений
+              //   counterProebObj[symbol] = 0
                 buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                   dokupkaCounter[symbol] = 0
                   counterPosition--
@@ -81,7 +81,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                     console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
                   })
                 })
-              }
+              //}
 
               // if(dokupkaCounter[symbol] === 0) {
               //   dokupkaPrice[symbol] = markPrice
@@ -92,7 +92,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               // } else if (dokupkaCounter[symbol] === 1) {
               //     dokupkaCounter[symbol] = 0
               //     if(/*(dokupkaPrice[symbol]  > markPrice) && ((dokupkaPrice[symbol]  - markPrice) >= (markPrice * 0.001))) && */ candlesRed[symbol]) {
-              //       if(counterProebObj[symbol] < 1) { // количество усреднений
+              //       if(counterProebObj[symbol] < 0) { // количество усреднений
               //         counterProebObj[symbol] = (counterProebObj[symbol] + 1)
               //         sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
               //           statusOrder(symbol, orderId, binance).then(avgPrice => {
@@ -175,7 +175,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       
       if(((Number(data[data.length - 2][1]) > Number(data[data.length - 2][4])) && ((Number(data[data.length - 2][1]) - Number(data[data.length - 2][4])) >= (Number(data[data.length - 2][1]) * 0.0015))) 
       && ((Number(data[data.length - 1][1]) > Number(data[data.length - 1][4])) && ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.0015)))
-      || ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.003))) {
+      /*|| ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.0015))*/) {
         return true
       } else {
         return false
