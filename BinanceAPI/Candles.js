@@ -99,10 +99,10 @@ async function priceSymbolPamp(symbol) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
-      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0010))) 
+      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0005))) 
       && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
-      /*|| (((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
-      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))*/) {
+      || (((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
+      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))) {
         cancell = false
 
         let data = await binance.futuresPrices({symbol: coin}) 
