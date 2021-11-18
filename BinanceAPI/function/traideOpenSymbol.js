@@ -38,23 +38,24 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
             //console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
 
             if((arrayPrice[key][1] < 10) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
-                if(key !== 'GALAUSDT') {
-                  priceSymbolPamp(key)
+                if(true) {
+                  //priceSymbolPamp(key)
                   //opn('https://www.binance.com/ru/futures/' + key)
-                  console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100))
-                  symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
+                  //console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100))
+                  //symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
                 }
             }
           }
         } else {
-          // let difference = arrayPrice[key][0] - arrayPrice[key][1]
-          // if(((difference / arrayPrice[key][1]) * 100) >= percent) {
-          //   console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
-          //   opn('https://www.binance.com/ru/futures/' + key)
-          //   // if((arrayPrice[key][1] < 10) && key.endsWith('USDT')) {
-          //   //     symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
-          //   // }
-          // }
+          let difference = arrayPrice[key][0] - arrayPrice[key][1]
+          if(((difference / arrayPrice[key][1]) * 100) >= percent) {
+            // console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+            //opn('https://www.binance.com/ru/futures/' + key)
+            if((arrayPrice[key][1] < 10) && key.endsWith('USDT')) {
+              console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+              //symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
+            }
+          }
         }
 
       }

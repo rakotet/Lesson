@@ -17,6 +17,7 @@ const traideOpenSymbolAll = require('./function/traideOpenSymbolAll')
 const openTraide = require('./function/openTraide')
 const candlesOpenPamp = require('./function/candlesOpenPamp')
 const faifCandles = require('./function/faifCandles')
+const setkaLimitOrders = require('./function/setkaLimitOrders')
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -63,16 +64,16 @@ const timeoutSearch = 180000
 
 // открывает позиции
 //
-traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
-  symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
+// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
+//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
 
 // traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
 //   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
 
 // закрывает позиции
 //
-futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 // futuresPositionTwo(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
 //   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
@@ -84,6 +85,9 @@ futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketC
 
 //ищит мега объемы и 10 зеленых свечей
 //candlesOpenPamp(binance, opn)
+
+// Выставляет ведра
+setkaLimitOrders('SANDUSDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
 
 
 
