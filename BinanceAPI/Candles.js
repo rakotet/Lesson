@@ -29,7 +29,7 @@ const opn = require('opn')
 
 const profitCounter = {}
 const currentProfitOne = {}
-const timeoutFuturesPositionRisk = 1000
+const timeoutFuturesPositionRisk = 10000
 const timeoutTraideOpenPamp = 1000
 let counterPosition = 0
 let arrayPrice = {} // объект цен из которых расщитывается памп
@@ -39,8 +39,8 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.003 // Long (+ это +)
-const pnlMinusSell = 0.003
+const pnlPlusSell = 0.05 // Long (+ это +)
+const pnlMinusSell = 0.5
 
 const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
 const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
@@ -72,8 +72,8 @@ const timeoutSearch = 180000
 
 // закрывает позиции
 //
-// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 // futuresPositionTwo(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
 //   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
@@ -87,7 +87,7 @@ const timeoutSearch = 180000
 //candlesOpenPamp(binance, opn)
 
 // Выставляет ведра
-setkaLimitOrders('SANDUSDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
+//setkaLimitOrders('MANAUSDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
 
 
 

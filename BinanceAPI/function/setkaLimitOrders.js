@@ -9,9 +9,9 @@ module.exports = async function setkaLimitOrders(coin, binance, buyCoin, futures
     let priceTo = 0
     let percent = 0
     let price = Number(data['price'])
-    let n = 0.04
+    let n = 0.03
     
-    //percent = percent + n
+    percent = percent + n
     priceTo = price - (price * percent)
     priceTo = priceTo.toFixed(numberOfSigns(price))
 
@@ -21,7 +21,7 @@ module.exports = async function setkaLimitOrders(coin, binance, buyCoin, futures
           if(orderId) {
             console.log(new Date().toLocaleTimeString() + ' - ' + '1' + ' - ' + ' лимитный ордер');
 
-            //numberCoinKey = numberCoinKey * 2
+            numberCoinKey = numberCoinKey * 2
             percent = percent + n
             priceTo = price - (price * percent)
             priceTo = priceTo.toFixed(numberOfSigns(price))
@@ -62,7 +62,18 @@ module.exports = async function setkaLimitOrders(coin, binance, buyCoin, futures
                             priceTo = price - (price * percent)
                             priceTo = priceTo.toFixed(numberOfSigns(price))
                 
-                            
+                            // buyCoin(coin, numberCoinKey, priceTo, binance).then(orderId => {
+                            //   if(orderId) {
+                            //     console.log(new Date().toLocaleTimeString() + ' - ' + '6' + ' - ' + ' лимитный ордер');
+                    
+                            //     numberCoinKey = numberCoinKey * 2
+                            //     percent = percent + n
+                            //     priceTo = price - (price * percent)
+                            //     priceTo = priceTo.toFixed(numberOfSigns(price))
+                    
+                                
+                            //   }
+                            // })
                           }
                         })
                       }
