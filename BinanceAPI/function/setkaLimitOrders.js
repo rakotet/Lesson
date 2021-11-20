@@ -9,7 +9,7 @@ module.exports = async function setkaLimitOrders(coin, binance, buyCoin, futures
     let priceTo = 0
     let percent = 0
     let price = Number(data['price'])
-    let n = 0.03
+    let n = 0.02
     
     percent = percent + n
     priceTo = price - (price * percent)

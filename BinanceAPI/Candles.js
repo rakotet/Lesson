@@ -52,7 +52,7 @@ const pnlMinusBuy = 0.003 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 1
-const timeoutSearch = 180000
+const timeoutSearch = 300000
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -64,8 +64,8 @@ const timeoutSearch = 180000
 
 // открывает позиции
 //
-// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
-//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
+traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
+  symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
 
 // traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
 //   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
@@ -87,7 +87,7 @@ futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketC
 //candlesOpenPamp(binance, opn)
 
 // Выставляет ведра
-//setkaLimitOrders('MANAUSDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
+setkaLimitOrders('CHRUSDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
 
 
 
