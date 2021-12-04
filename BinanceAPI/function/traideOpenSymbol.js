@@ -1,4 +1,4 @@
-module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp) { 
+module.exports = async function traideOpenSymbol(percent2, arrayPrice, counter, data, timeout, binance, timeoutSearch2, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp) { 
     try {
   
       data = await binance.futuresPrices() 
@@ -19,7 +19,7 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
         
       }
       counter++
-      timeout = timeoutSearch
+      timeout = timeoutSearch2
       
     } else if(counter === 1) {
       for(let key in data) {
@@ -34,10 +34,10 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
           let difference = arrayPrice[key][0] - arrayPrice[key][1]
           difference = difference * (-1)
   
-          if(((difference / arrayPrice[key][1]) * 100) >= percent) {
+          if(((difference / arrayPrice[key][1]) * 100) >= percent2) {
             //console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Памп - ' +  ((difference / arrayPrice[key][1]) * 100));
 
-            if((arrayPrice[key][1] < 10) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 5) {
+            if((arrayPrice[key][1] < 10) && key.endsWith('USDT') && ((difference / arrayPrice[key][1]) * 100) < 50) {
                 if(true) {
                   //priceSymbolPamp(key)
                   //opn('https://www.binance.com/ru/futures/' + key)
@@ -48,12 +48,13 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
           }
         } else {
           let difference = arrayPrice[key][0] - arrayPrice[key][1]
-          if(((difference / arrayPrice[key][1]) * 100) >= percent) {
+          if(((difference / arrayPrice[key][1]) * 100) >= percent2) {
             // console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
             //opn('https://www.binance.com/ru/futures/' + key)
             if((arrayPrice[key][1] < 10) && key.endsWith('USDT')) {
-              console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
-              //symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
+              //opn('https://www.binance.com/ru/futures/' + key)
+              //console.log(new Date().toLocaleTimeString() + ' - ' + key + ' Текущая цена: ' + arrayPrice[key][1] + ' - Дамп - ' +  ((difference / arrayPrice[key][1]) * 100));
+              symbolPamp[key] = (difference / arrayPrice[key][1]) * 100
             }
           }
         }
@@ -75,8 +76,8 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
         let result = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
         if(Number(result) < 10) {
           //fs.writeFileSync('./symbolPamp.txt', max)
-          //console.log(new Date().toLocaleTimeString() + ' - ' + max + ' - Памп - ' + symbolPamp[max])
-          //opn('https://www.binance.com/ru/futures/' + max)
+          console.log(new Date().toLocaleTimeString() + ' - ' + max + ' - Дамп - ' + symbolPamp[max])
+          opn('https://www.binance.com/ru/futures/' + max)
           //priceSymbolPamp(max)
         }
 
@@ -88,8 +89,8 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
         let result = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
         if(Number(result) < 10) {
           //fs.writeFileSync('./symbolPamp.txt', max)
-          //console.log(new Date().toLocaleTimeString() + ' - ' + max + ' - Памп - ' + symbolPamp[max])
-          //opn('https://www.binance.com/ru/futures/' + max)
+          console.log(new Date().toLocaleTimeString() + ' - ' + max + ' - Дамп - ' + symbolPamp[max])
+          opn('https://www.binance.com/ru/futures/' + max)
           //priceSymbolPamp(max)
         }
       }
@@ -102,7 +103,7 @@ module.exports = async function traideOpenSymbol(percent, arrayPrice, counter, d
     
   
     setTimeout(() => {
-      traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
+      traideOpenSymbol(percent2, arrayPrice, counter, data, timeout, binance, timeoutSearch2, timeoutTraideOpenPamp, symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
     }, timeout)
   }
 

@@ -39,20 +39,22 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.05 // Long (+ это +)
-const pnlMinusSell = 0.5
+const pnlPlusSell = 0.005 // Long (+ это +)
+const pnlMinusSell = 0.005
 
 const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
-const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
+const pnlPlusBuy1 = 0.005 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.01
-const pnlPlusBuy3 = 0.01
+const pnlPlusBuy3 = 0.05
 const pnlPlusBuy4 = 0.07
 
-const pnlMinusBuy = 0.003 // +
+const pnlMinusBuy = 0.004 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 1
-const timeoutSearch = 300000
+const percent2 = 1.5
+const timeoutSearch = 120000
+const timeoutSearch2 = 300000
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -66,6 +68,9 @@ const timeoutSearch = 300000
 //
 traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
+
+// traideOpenSymbol(percent2, arrayPrice, counter, data, timeout, binance, timeoutSearch2, timeoutTraideOpenPamp, 
+//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
 
 // traideOpenSymbolAll(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
 //   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
@@ -87,7 +92,7 @@ futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketC
 //candlesOpenPamp(binance, opn)
 
 // Выставляет ведра
-setkaLimitOrders('CHRUSDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
+//setkaLimitOrders('C98USDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
 
 
 
@@ -103,10 +108,11 @@ async function priceSymbolPamp(symbol) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
-      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0005))) 
+      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.001))) 
       && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
       || (((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
-      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))) {
+      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))
+      /*((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4]))) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4])))*/) {
         cancell = false
 
         let data = await binance.futuresPrices({symbol: coin}) 
@@ -120,12 +126,13 @@ async function priceSymbolPamp(symbol) {
 
         let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
 
-        if(Number(resultFile) < 3) { // проверка на количество открытых сделок
+        if(Number(resultFile) < 1) { // проверка на количество открытых сделок
+          //opn('https://www.binance.com/ru/futures/' + coin)
           openPosition(coin).then(data => {
             if(data) {
               getCandles(coin).then(data => {
                 if(data) {
-                  futuressHoulder(coin, 1, binance).then(data => {
+                  futuressHoulder(coin, 10, binance).then(data => {
                     futuresMarginType(coin, binance).then(data => {
                       sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {

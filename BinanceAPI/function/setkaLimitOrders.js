@@ -9,13 +9,13 @@ module.exports = async function setkaLimitOrders(coin, binance, buyCoin, futures
     let priceTo = 0
     let percent = 0
     let price = Number(data['price'])
-    let n = 0.02
+    let n = 0.03
     
     percent = percent + n
     priceTo = price - (price * percent)
     priceTo = priceTo.toFixed(numberOfSigns(price))
 
-    futuressHoulder(coin, 7, binance).then(data => {
+    futuressHoulder(coin, 10, binance).then(data => {
       futuresMarginType(coin, binance).then(data => {
         buyCoin(coin, numberCoinKey, priceTo, binance).then(orderId => {
           if(orderId) {
@@ -62,18 +62,18 @@ module.exports = async function setkaLimitOrders(coin, binance, buyCoin, futures
                             priceTo = price - (price * percent)
                             priceTo = priceTo.toFixed(numberOfSigns(price))
                 
-                            // buyCoin(coin, numberCoinKey, priceTo, binance).then(orderId => {
-                            //   if(orderId) {
-                            //     console.log(new Date().toLocaleTimeString() + ' - ' + '6' + ' - ' + ' лимитный ордер');
+                            buyCoin(coin, numberCoinKey, priceTo, binance).then(orderId => {
+                              if(orderId) {
+                                console.log(new Date().toLocaleTimeString() + ' - ' + '6' + ' - ' + ' лимитный ордер');
                     
-                            //     numberCoinKey = numberCoinKey * 2
-                            //     percent = percent + n
-                            //     priceTo = price - (price * percent)
-                            //     priceTo = priceTo.toFixed(numberOfSigns(price))
+                                numberCoinKey = numberCoinKey * 2
+                                percent = percent + n
+                                priceTo = price - (price * percent)
+                                priceTo = priceTo.toFixed(numberOfSigns(price))
                     
                                 
-                            //   }
-                            // })
+                              }
+                            })
                           }
                         })
                       }

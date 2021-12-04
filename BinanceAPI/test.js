@@ -7,22 +7,24 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
-async function openPosition(coin) { // Получение открытой позиции по конкретной монете
+async function futuresCancelAll(coin) { // закрыть все открытые ордера по монете (не позиции)
   try {
-    let data = await binance.futuresPositionRisk({symbol: coin}) 
+    let data = await binance.futuresCancelAll(coin) 
 
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
     }
 
-    console.log(Number(data[0]['positionAmt']));
+    return 'ok'
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
   }
 }
 
-openPosition('BTCUSDT')
+futuresCancelAll('RSRUSDT').then(data => {
+  console.log(data);
+})
 
 
 // let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})

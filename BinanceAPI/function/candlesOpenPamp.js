@@ -16,18 +16,18 @@ module.exports = async function candlesOpenPamp(binance, opn) {
         getCandles(coin, binance, opn)
       }
 
-      //console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
+      console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
 
       setTimeout(() => {
         candlesOpenPamp(binance, opn)
-      }, 60000)
+      }, 300000)
 }
 
 let candlesSymboldata = {}
 
 async function getCandles(coin, binance, opn) { // получить свечи
     try{
-      let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
+      let data = await binance.futuresCandles(coin, '1h', {limit: 12}) 
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
       }
@@ -41,39 +41,49 @@ async function getCandles(coin, binance, opn) { // получить свечи
 
       let meanVolume = volumeCandlesAll / (data.length - 2)
 
-      if(Number(data[data.length - 1][5]) > (meanVolume * 35) || Number(data[data.length - 2][5]) > (meanVolume * 35)) {
+      if(Number(data[data.length - 1][5]) > (meanVolume * 5) /*|| Number(data[data.length - 2][5]) > (meanVolume * 10)*/) {
         opn('https://www.binance.com/ru/futures/' + coin)
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЬЁМ');
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЬЁМ в 5 раз больше среднего');
       }
 
-      let greenRedCandles = 0
+      // if((Number(data[data.length - 1][1]) < Number(data[data.length - 1][4])) 
+      // && (Number(data[data.length - 2][1]) < Number(data[data.length - 2][4]))
+      // && (Number(data[data.length - 3][1]) < Number(data[data.length - 3][4]))
+      // && (Number(data[data.length - 4][1]) > Number(data[data.length - 4][4])) 
+      // && (Number(data[data.length - 5][1]) > Number(data[data.length - 5][4]))) 
+      // {
+      //   opn('https://www.binance.com/ru/futures/' + coin)
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Три красных 1h 2 зеленых');
+      // }
+
+      // let greenRedCandles = 0
       
-      for(let i = 2; i < 12; i++) {
-        if(Number(data[data.length - i][1]) < Number(data[data.length - i][4])) {
-          greenRedCandles++
-        } else {
-          greenRedCandles--
-        }
-      }
+      // for(let i = 2; i < 12; i++) {
+      //   if(Number(data[data.length - i][1]) < Number(data[data.length - i][4])) {
+      //     greenRedCandles++
+      //   } else {
+      //     greenRedCandles--
+      //   }
+      // }
 
-      if(greenRedCandles === 10) {
-        //opn('https://www.binance.com/ru/futures/' + coin)
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - 10 ЗЕЛЕНЫХ ПОДРЯТ');
-      }
+      // if(greenRedCandles >= 3) {
+      //   //opn('https://www.binance.com/ru/futures/' + coin)
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ' + greenRedCandles + ' ЗЕЛЕНЫХ ПОДРЯТ');
+      // }
 
-      if((Number(data[data.length - 2][4]) - Number(data[data.length - 6][1])) > 0) {
-        if((((Number(data[data.length - 2][4]) - Number(data[data.length - 6][1])) / Number(data[data.length - 2][4])) * 100) >= 3) {
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 3% или больше за 5 мин');
-          //opn('https://www.binance.com/ru/futures/' + coin)
-        }
-      }
+      // if((Number(data[data.length - 2][4]) - Number(data[data.length - 6][1])) > 0) {
+      //   if((((Number(data[data.length - 2][4]) - Number(data[data.length - 6][1])) / Number(data[data.length - 2][4])) * 100) >= 3) {
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 3% или больше за 5 мин');
+      //     opn('https://www.binance.com/ru/futures/' + coin)
+      //   }
+      // }
 
-      if((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) > 0) {
-        if((((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) / Number(data[data.length - 2][4])) * 100) >= 5) {
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 5% или больше за 20 мин');
-          opn('https://www.binance.com/ru/futures/' + coin)
-        }
-      }
+      // if((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) > 0) {
+      //   if((((Number(data[data.length - 2][4]) - Number(data[data.length - 21][1])) / Number(data[data.length - 2][4])) * 100) >= 5) {
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Рост 5% или больше за 20 мин');
+      //     opn('https://www.binance.com/ru/futures/' + coin)
+      //   }
+      // }
 
     } catch(e) {
       console.log(e);
