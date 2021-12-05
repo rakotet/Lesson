@@ -1,4 +1,4 @@
-module.exports = async function futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4) { // авто продажа
+module.exports = async function futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll) { // авто продажа
     try {
       let data = await binance.futuresPositionRisk() 
       if(data.code) {
@@ -53,23 +53,23 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
             positionAmt = positionAmt * (-1)
 
             if(markPrice <= priceMinusBuy) {
-              // if(profitCounter[symbol] === 0) {
-              //   currentProfitOne[symbol] = markPrice
-              //   profitCounter[symbol] = 1
-              // } else if (profitCounter[symbol] === 1) {
-              //     profitCounter[symbol] = 0
-              //     if(currentProfitOne[symbol] < markPrice) {
+              if(profitCounter[symbol] === 0) {
+                currentProfitOne[symbol] = markPrice
+                profitCounter[symbol] = 1
+              } else if (profitCounter[symbol] === 1) {
+                  profitCounter[symbol] = 0
+                  if(currentProfitOne[symbol] < markPrice) {
                       buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                         counterProebObj[symbol] = 0
                         dokupkaCounter[symbol] = 0
                         counterPosition++
                         //fs.writeFileSync('./symbolPamp.txt', '')
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
-                        console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+                        console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
                       })
                     })
-                  //}
-                //}
+                  }
+                }
               }
             
             if(markPrice >= pricePlusBuy) {
@@ -80,7 +80,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                   counterPosition--
                   //fs.writeFileSync('./symbolPamp.txt', '')
                   statusOrder(symbol, orderId, binance).then(avgPrice => {
-                    console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                    console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
                   })
                 })
               //}
@@ -117,23 +117,23 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
 
           } else {
             if(markPrice >= pricePlusSell) {
-              // if(profitCounter[symbol] === 0) {
-              //   currentProfitOne[symbol] = markPrice
-              //   profitCounter[symbol] = 1
-              // } else if (profitCounter[symbol] === 1) {
-              //     profitCounter[symbol] = 0
-              //     if(currentProfitOne[symbol] < markPrice) {
+              if(profitCounter[symbol] === 0) {
+                currentProfitOne[symbol] = markPrice
+                profitCounter[symbol] = 1
+              } else if (profitCounter[symbol] === 1) {
+                  profitCounter[symbol] = 0
+                  if(currentProfitOne[symbol] < markPrice) {
                     sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
                       counterProebObj[symbol] = 0
                       dokupkaCounter[symbol] = 0
                       counterPosition++
-                      futuresCancelAll(symbol)
+                      //futuresCancelAll(symbol, binance)
                       statusOrder(symbol, orderId, binance).then(avgPrice => {
-                      console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+                      console.log(new Date().toLocaleTimeString() + ' Продали Дамп: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
                     })
                   })
-                //}
-              //}
+                }
+              }
             }
             
             if(markPrice <= priceMinusSell) {
@@ -142,7 +142,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                 dokupkaCounter[symbol] = 0
                 counterPosition--
                 statusOrder(symbol, orderId, binance).then(avgPrice => {
-                  console.log(new Date().toLocaleTimeString() + ' Продали: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                  console.log(new Date().toLocaleTimeString() + ' Продали Дамп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
                 })
               })
             }
@@ -161,7 +161,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
     }
   
     setTimeout(() => {
-      futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
+      futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
     }, timeoutFuturesPositionRisk)
   }
 
@@ -196,17 +196,4 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
     
   }
 
-  async function futuresCancelAll(coin) { // закрыть все открытые ордера по монете (не позиции)
-    try {
-      let data = await binance.futuresCancelAll(coin) 
   
-      if(data.code) {
-        console.log(data.code + ' - ' + data.msg);
-      }
-  
-      return 'ok'
-    } catch(e) {
-      console.log(e);
-      console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresCancelAll');
-    }
-  }
