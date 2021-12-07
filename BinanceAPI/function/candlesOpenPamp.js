@@ -16,18 +16,18 @@ module.exports = async function candlesOpenPamp(binance, opn) {
         getCandles(coin, binance, opn)
       }
 
-      console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
+      //console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
 
       setTimeout(() => {
         candlesOpenPamp(binance, opn)
-      }, 300000)
+      }, 15000)
 }
 
 let candlesSymboldata = {}
 
 async function getCandles(coin, binance, opn) { // получить свечи
     try{
-      let data = await binance.futuresCandles(coin, '1h', {limit: 12}) 
+      let data = await binance.futuresCandles(coin, '1m', {limit: 10}) 
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
       }
@@ -41,19 +41,45 @@ async function getCandles(coin, binance, opn) { // получить свечи
 
       let meanVolume = volumeCandlesAll / (data.length - 2)
 
-      if(Number(data[data.length - 1][5]) > (meanVolume * 5) /*|| Number(data[data.length - 2][5]) > (meanVolume * 10)*/) {
-        opn('https://www.binance.com/ru/futures/' + coin)
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЬЁМ в 5 раз больше среднего');
+      let openPrice = Number(data[data.length - 1][1])
+      let closePrice = Number(data[data.length - 1][4])
+
+      if(Number(data[data.length - 1][5]) > (meanVolume * 3) /*|| Number(data[data.length - 2][5]) > (meanVolume * 10)*/) {
+        if((closePrice < 10) && coin.endsWith('USDT')) {
+          if(openPrice > closePrice) {
+            let differenceRed = (((openPrice - closePrice) / closePrice) * 100).toFixed(2)
+
+            if(differenceRed >= 0.6) {
+              if(!timeOpenSymbolDamp[coin]) timeOpenSymbolDamp[coin] = 99
+              if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
+                console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Дамп - ' + differenceRed + ' цена - ' + closePrice);
+                opn('https://www.binance.com/ru/futures/' + coin)
+                timeOpenSymbolDamp[coin] = Number(new Date().getMinutes())
+              }
+            }
+
+          } else {
+            let differenceGreen = (((closePrice - openPrice) / closePrice) * 100).toFixed(2)
+
+            if(differenceGreen >= 0.6) {
+              if(!timeOpenSymbolPamp[coin]) timeOpenSymbolPamp[coin] = 99
+              if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
+                console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
+                opn('https://www.binance.com/ru/futures/' + coin)
+                timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
+              }
+            }
+          }
+        }
       }
 
       // if((Number(data[data.length - 1][1]) < Number(data[data.length - 1][4])) 
-      // && (Number(data[data.length - 2][1]) < Number(data[data.length - 2][4]))
-      // && (Number(data[data.length - 3][1]) < Number(data[data.length - 3][4]))
-      // && (Number(data[data.length - 4][1]) > Number(data[data.length - 4][4])) 
-      // && (Number(data[data.length - 5][1]) > Number(data[data.length - 5][4]))) 
+      // && (Number(data[data.length - 2][1]) > Number(data[data.length - 2][4]))
+      // && (Number(data[data.length - 3][1]) > Number(data[data.length - 3][4]))
+      // && (Number(data[data.length - 4][1]) > Number(data[data.length - 4][4]))) 
       // {
       //   opn('https://www.binance.com/ru/futures/' + coin)
-      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Три красных 1h 2 зеленых');
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Три красных 1h 1 зеленых');
       // }
 
       // let greenRedCandles = 0
@@ -95,3 +121,6 @@ async function getCandles(coin, binance, opn) { // получить свечи
   function getDate(date) { // время свечи
       return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} - ${date.getHours()}:${date.getMinutes()}:${new Date().getSeconds()}`
   }
+
+  let timeOpenSymbolDamp = {}
+  let timeOpenSymbolPamp = {}

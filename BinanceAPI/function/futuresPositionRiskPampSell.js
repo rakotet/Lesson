@@ -10,7 +10,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       for ( let market of markets ) {
         let obj = data[market], size = Number( obj.positionAmt );
         if ( size != 0 && obj['symbol'] !== 'btc') {
-          let purchaseLevel = 1 // множитель докупки
+          let purchaseLevel = 4 // множитель докупки
 
           positionCounter++
 
@@ -27,18 +27,16 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
           
           if(counterProebObj[symbol] == 1) {
             pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy1) // вторая докупка
-            purchaseLevel = 2
 
           } else if (counterProebObj[symbol] == 2) {
             pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy2) 
-            purchaseLevel = 2
 
           } else if (counterProebObj[symbol] == 3) {
             pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy3) // дальше уже гонка за ракетами, пока не используем, очкуем
 
           } else if (counterProebObj[symbol] == 4) {
             pricePlusBuy = entryPrice + (entryPrice * pnlPlusBuy4)
-            purchaseLevel = 2 // последняя докупка на всю оставшуюся котлету и молимся
+            //purchaseLevel = 2 // последняя докупка на всю оставшуюся котлету и молимся
 
           }  else if (counterProebObj[symbol] == 5) { // все пиздец будет минус 50% от депо (скорее всего, но может пойти откат)
             pricePlusBuy = entryPrice + (entryPrice * 0.05)
@@ -73,8 +71,8 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
               }
             
             if(markPrice >= pricePlusBuy) {
-              // if(counterProebObj[symbol] === 3) { // количество усреднений
-              //   counterProebObj[symbol] = 0
+              if(counterProebObj[symbol] === 0) { // количество усреднений
+                counterProebObj[symbol] = 0
                 buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                   dokupkaCounter[symbol] = 0
                   counterPosition--
@@ -83,36 +81,36 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                     console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
                   })
                 })
-              //}
+              }
 
-              // if(dokupkaCounter[symbol] === 0) {
-              //   dokupkaPrice[symbol] = markPrice
-              //   dokupkaCounter[symbol] = 1
-              //   getCandles(symbol, binance).then(data => {
-              //     candlesRed[symbol] = data
-              //   })
-              // } else if (dokupkaCounter[symbol] === 1) {
-              //     dokupkaCounter[symbol] = 0
-              //     if(/*(dokupkaPrice[symbol]  > markPrice) && ((dokupkaPrice[symbol]  - markPrice) >= (markPrice * 0.001))) && */ candlesRed[symbol]) {
-              //       if(counterProebObj[symbol] < 3) { // количество усреднений
-              //         counterProebObj[symbol] = (counterProebObj[symbol] + 1)
-              //         sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
-              //           statusOrder(symbol, orderId, binance).then(avgPrice => {
-              //             console.log(new Date().toLocaleTimeString() + ' Докупили: ' + symbol + ' По цене: ' + avgPrice)
-              //           })
-              //         })
-              //       } 
-              //     } else if (((markPrice - entryPrice) >= (entryPrice * 0.03))) {
-              //       buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
-              //         counterProebObj[symbol] = 0
-              //         dokupkaCounter[symbol] = 0
-              //         counterPosition--
-              //         statusOrder(symbol, orderId, binance).then(avgPrice => {
-              //           console.log(new Date().toLocaleTimeString() + 'Продали в минус не дойдя до усреднения ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
-              //         })
-              //       })
-              //     }
-              //   } 
+              if(dokupkaCounter[symbol] === 0) {
+                dokupkaPrice[symbol] = markPrice
+                dokupkaCounter[symbol] = 1
+                getCandles(symbol, binance).then(data => {
+                  candlesRed[symbol] = data
+                })
+              } else if (dokupkaCounter[symbol] === 1) {
+                  dokupkaCounter[symbol] = 0
+                  if(/*(dokupkaPrice[symbol]  > markPrice) && ((dokupkaPrice[symbol]  - markPrice) >= (markPrice * 0.001))) && */ candlesRed[symbol]) {
+                    if(counterProebObj[symbol] < 0) { // количество усреднений
+                      counterProebObj[symbol] = (counterProebObj[symbol] + 1)
+                      sellMarketCoin(symbol, (positionAmt * purchaseLevel), binance).then(orderId => {
+                        statusOrder(symbol, orderId, binance).then(avgPrice => {
+                          console.log(new Date().toLocaleTimeString() + ' Докупили: ' + symbol + ' По цене: ' + avgPrice)
+                        })
+                      })
+                    } 
+                  } else if (((markPrice - entryPrice) >= (entryPrice * 0.05))) {
+                    buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
+                      counterProebObj[symbol] = 0
+                      dokupkaCounter[symbol] = 0
+                      counterPosition--
+                      statusOrder(symbol, orderId, binance).then(avgPrice => {
+                        console.log(new Date().toLocaleTimeString() + 'Продали в минус не дойдя до усреднения ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                      })
+                    })
+                  }
+                } 
               }
 
           } else {

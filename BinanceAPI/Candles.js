@@ -41,21 +41,21 @@ let data
 let timeout
 let max = ''
 
-const pnlPlusSell = 0.005 // Long (+ это +)
-const pnlMinusSell = 0.01
+const pnlPlusSell = 0.003 // Long (+ это +)
+const pnlMinusSell = 0.004
 
-const pnlPlusBuy = 0.01 // Short (всё наоборот + это -)
-const pnlPlusBuy1 = 0.01 // Уровни докупки вызывают сомнения (возможно доработать)
+const pnlPlusBuy = 0.007 // Short (всё наоборот + это -)
+const pnlPlusBuy1 = 0.007 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.01
-const pnlPlusBuy3 = 0.05
+const pnlPlusBuy3 = 0.01
 const pnlPlusBuy4 = 0.07
 
-const pnlMinusBuy = 0.005 // +
+const pnlMinusBuy = 0.004 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 1
 const percent2 = 1.5
-const timeoutSearch = 120000
+const timeoutSearch = 900000
 const timeoutSearch2 = 300000
 
 // setInterval(() => {
@@ -68,8 +68,8 @@ const timeoutSearch2 = 300000
 
 // открывает позиции
 //
-traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
-  symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp, symbolDamp, priceSymbolDamp)
+// traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSearch, timeoutTraideOpenPamp, 
+//   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp, symbolDamp, priceSymbolDamp)
 
 // traideOpenSymbol(percent2, arrayPrice, counter, data, timeout, binance, timeoutSearch2, timeoutTraideOpenPamp, 
 //   symbolPamp, max, fs, opn, sellMarketCoin, buyMarketCoin, futuressHoulder, futuresMarginType, priceSymbolPamp)
@@ -79,8 +79,8 @@ traideOpenSymbol(percent, arrayPrice, counter, data, timeout, binance, timeoutSe
 
 // закрывает позиции
 //
-futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
+// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
 
 // futuresPositionTwo(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
 //   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
@@ -91,7 +91,7 @@ futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketC
 //   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4)
 
 //ищит мега объемы и 10 зеленых свечей
-//candlesOpenPamp(binance, opn)
+candlesOpenPamp(binance, opn)
 
 // Выставляет ведра
 //setkaLimitOrders('C98USDT', binance, buyCoin, futuressHoulder, futuresMarginType, numberOfSigns)
@@ -104,56 +104,67 @@ async function priceSymbolPamp(symbol) {
   let cancell = true
 
   try {
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 10}) 
+    if(candlesSymbol.code) {
+      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    }
 
-    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 2}) 
-      if(candlesSymbol.code) {
-        console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
-      }
+    let data = await binance.futuresPrices({symbol: coin}) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+      throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp')
+    }
 
-      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
-      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
-      || (((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
-      && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))
-      /*((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4]))) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4])))*/) {
-        cancell = false
+    let greenRedCandles = 0
+    let candlesGrin = true
+    
+    for(let i = 2; i < 6; i++) {
+      if(Number(candlesSymbol[candlesSymbol.length - i][1]) < Number(candlesSymbol[candlesSymbol.length - i][4])) {
+        greenRedCandles++
+      } 
+    }
 
-        let data = await binance.futuresPrices({symbol: coin}) 
-     
-        if(data.code) {
-          console.log(data.code + ' - ' + data.msg);
-          throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp')
-        }
+    if(greenRedCandles >= 4) {
+      candlesGrin = false
+    } 
 
-        let numberCoinKey = (10 / Number(data['price'])).toFixed();
-        let price = Number(data['price'])
-        let priceTo = price + (price * 0.001)
-        priceTo = priceTo.toFixed(numberOfSigns(price))
+    if(true/*((Number(candlesSymbol[candlesSymbol.length - 2][1]) > Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) - Number(candlesSymbol[candlesSymbol.length - 2][4])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
+    && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) > Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
+    || (((((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
+    && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) - Number(candlesSymbol[candlesSymbol.length - 1][4])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))) && candlesGrin)
+    /*((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4]))) && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4])))*/) {
+      cancell = false
 
-        let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
+      let numberCoinKey = (10 / Number(data['price'])).toFixed();
+      let price = Number(data['price'])
+      let priceTo = price + (price * 0.002)
+      priceTo = priceTo.toFixed(numberOfSigns(price))
 
-        if(Number(resultFile) < 3) { // проверка на количество открытых сделок
-          //opn('https://www.binance.com/ru/futures/' + coin)
-          openPosition(coin).then(data => {
-            if(data) {
-              getCandles(coin).then(data => {
-                if(data) {
-                  futuressHoulder(coin, 1, binance).then(data => {
-                    futuresMarginType(coin, binance).then(data => {
-                      sellCoin(coin, numberCoinKey, priceTo, binance).then(orderId => {
-                        if(orderId) {
-                          futuresCancelAll(coin, binance)
-                          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
-                          opn('https://www.binance.com/ru/futures/' + coin)
-                        }
-                      })
+      let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
+
+      if(Number(resultFile) < 10) { // проверка на количество открытых сделок
+        //opn('https://www.binance.com/ru/futures/' + coin)
+        openPosition(coin).then(data => {
+          if(data) {
+            // getCandles(coin).then(data => {
+            //   if(data) {
+                futuressHoulder(coin, 10, binance).then(data => {
+                  futuresMarginType(coin, binance).then(data => {
+                    buyMarketCoin(coin, numberCoinKey, binance).then(orderId => {
+                      if(orderId) {
+                        //futuresCancelAll(coin, binance)
+                        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
+                        //opn('https://www.binance.com/ru/futures/' + coin)
+                      }
                     })
                   })
-                } else console.log('Не вошли в позицию getCandles ' + coin);
-              })
-            } else console.log('Не вошли в позицию openPosition ' + coin);
-          })
-        }
+                })
+            //   } else console.log('Не вошли в позицию getCandles ' + coin);
+            // })
+          } else console.log('Не вошли в позицию openPosition ' + coin);
+        })
       }
+    }
 
   } catch(e) {
     console.log(e);
@@ -174,12 +185,14 @@ async function priceSymbolDamp(symbol) {
 
   try {
 
-    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 2}) 
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 4}) 
       if(candlesSymbol.code) {
         console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
       }
 
-      if(((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][4]) - Number(candlesSymbol[candlesSymbol.length - 2][1])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.0015))) 
+      if(/*((Number(candlesSymbol[candlesSymbol.length - 4][1]) < Number(candlesSymbol[candlesSymbol.length - 4][4])) && ((Number(candlesSymbol[candlesSymbol.length - 4][4]) - Number(candlesSymbol[candlesSymbol.length - 4][1])) >= (Number(candlesSymbol[candlesSymbol.length - 4][1]) * 0.001))) 
+      &&*/ ((Number(candlesSymbol[candlesSymbol.length - 3][1]) < Number(candlesSymbol[candlesSymbol.length - 3][4])) && ((Number(candlesSymbol[candlesSymbol.length - 3][4]) - Number(candlesSymbol[candlesSymbol.length - 3][1])) >= (Number(candlesSymbol[candlesSymbol.length - 3][1]) * 0.001)))
+      && ((Number(candlesSymbol[candlesSymbol.length - 2][1]) < Number(candlesSymbol[candlesSymbol.length - 2][4])) && ((Number(candlesSymbol[candlesSymbol.length - 2][4]) - Number(candlesSymbol[candlesSymbol.length - 2][1])) >= (Number(candlesSymbol[candlesSymbol.length - 2][1]) * 0.001)))
       && ((Number(candlesSymbol[candlesSymbol.length - 1][1]) < Number(candlesSymbol[candlesSymbol.length - 1][4])) && ((Number(candlesSymbol[candlesSymbol.length - 1][4]) - Number(candlesSymbol[candlesSymbol.length - 1][1])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015)))
       /*|| (((Number(candlesSymbol[candlesSymbol.length - 1][4]) - Number(candlesSymbol[candlesSymbol.length - 1][1])) >= (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.0015))
       && ((Number(candlesSymbol[candlesSymbol.length - 1][4]) - Number(candlesSymbol[candlesSymbol.length - 1][1])) < (Number(candlesSymbol[candlesSymbol.length - 1][1]) * 0.003)))*/
@@ -195,7 +208,7 @@ async function priceSymbolDamp(symbol) {
 
         let numberCoinKey = (10 / Number(data['price'])).toFixed();
         let price = Number(data['price'])
-        let priceTo = price - (price * 0.001)
+        let priceTo = price - (price * 0.002)
         priceTo = priceTo.toFixed(numberOfSigns(price))
 
         let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
@@ -204,21 +217,21 @@ async function priceSymbolDamp(symbol) {
           //opn('https://www.binance.com/ru/futures/' + coin)
           openPosition(coin).then(data => {
             if(data) {
-              getCandles(coin).then(data => {
-                if(data) {
-                  futuressHoulder(coin, 1, binance).then(data => {
+              // getCandles(coin).then(data => {
+              //   if(data) {
+                  futuressHoulder(coin, 10, binance).then(data => {
                     futuresMarginType(coin, binance).then(data => {
-                      buyCoin(coin, numberCoinKey, priceTo, binance).then(orderId => {
+                      buyMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                         if(orderId) {
-                          futuresCancelAll(coin, binance)
+                          //futuresCancelAll(coin, binance)
                           console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
                           opn('https://www.binance.com/ru/futures/' + coin)
                         }
                       })
                     })
                   })
-                } else console.log('Не вошли в позицию getCandles ' + coin);
-              })
+              //   } else console.log('Не вошли в позицию getCandles ' + coin);
+              // })
             } else console.log('Не вошли в позицию openPosition ' + coin);
           })
         }
@@ -240,7 +253,7 @@ async function priceSymbolDamp(symbol) {
 
 async function getCandles(coin) { // получить свечи
   try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
+    let data = await binance.futuresCandles(coin, '1m', {limit: 10}) 
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
     }
@@ -264,7 +277,7 @@ async function getCandles(coin) { // получить свечи
 
     let greenRedCandles = 0
     
-    for(let i = 2; i < 10; i++) {
+    for(let i = 2; i < 7; i++) {
       if(Number(data[data.length - i][1]) < Number(data[data.length - i][4])) {
         greenRedCandles++
       } else {
@@ -272,7 +285,7 @@ async function getCandles(coin) { // получить свечи
       }
     }
 
-    if(truAndFalse === false /*|| greenRedCandles === 8*/) {
+    if(/*truAndFalse === false || */greenRedCandles === 5) {
       return false
     } else {
       return true
