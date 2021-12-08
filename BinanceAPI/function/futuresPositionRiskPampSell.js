@@ -10,7 +10,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       for ( let market of markets ) {
         let obj = data[market], size = Number( obj.positionAmt );
         if ( size != 0 && obj['symbol'] !== 'btc') {
-          let purchaseLevel = 4 // множитель докупки
+          let purchaseLevel = 6 // множитель докупки
 
           positionCounter++
 
@@ -100,7 +100,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                         })
                       })
                     } 
-                  } else if (((markPrice - entryPrice) >= (entryPrice * 0.05))) {
+                  } else if (((markPrice - entryPrice) >= (entryPrice * 0.08))) {
                     buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
                       counterProebObj[symbol] = 0
                       dokupkaCounter[symbol] = 0
@@ -178,10 +178,14 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
       }
+
+      let oneOpen = Number(data[data.length - 1][1])
+      let oneClose = Number(data[data.length - 1][4])
+      let twoOpen = Number(data[data.length - 2][1])
+      let twoClose = Number(data[data.length - 2][4])
       
-      if(((Number(data[data.length - 2][1]) > Number(data[data.length - 2][4])) && ((Number(data[data.length - 2][1]) - Number(data[data.length - 2][4])) >= (Number(data[data.length - 2][1]) * 0.0015))) 
-      && ((Number(data[data.length - 1][1]) > Number(data[data.length - 1][4])) && ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.0015)))
-      /*|| ((Number(data[data.length - 1][1]) - Number(data[data.length - 1][4])) >= (Number(data[data.length - 1][1]) * 0.0015))*/) {
+      if(((twoOpen - twoClose) >= (twoOpen * 0.0015)) 
+      && (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.003)))) {
         return true
       } else {
         return false
