@@ -24,7 +24,7 @@ module.exports = async function candlesOpenPamp(binance, opn, priceSymbolPamp, p
 
       setTimeout(() => {
         candlesOpenPamp(binance, opn, priceSymbolPamp, priceSymbolDamp)
-      }, 20000)
+      }, 15000)
 }
 
 async function getCandles(coin, binance, opn, priceSymbolPamp, priceSymbolDamp) { // получить свечи
@@ -54,7 +54,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, priceSymbolDamp) 
             if(!timeOpenSymbolDamp[coin]) timeOpenSymbolDamp[coin] = 99
             if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
               console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Дамп - ' + differenceRed + ' цена - ' + closePrice);
-              opn('https://www.binance.com/ru/futures/' + coin)
+              //opn('https://www.binance.com/ru/futures/' + coin)
               timeOpenSymbolDamp[coin] = Number(new Date().getMinutes())
             }
           }

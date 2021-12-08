@@ -108,7 +108,7 @@ async function priceSymbolPamp(symbol) {
     let twoOpen = Number(candlesSymbol[candlesSymbol.length - 2][1])
     let twoClose = Number(candlesSymbol[candlesSymbol.length - 2][4])
 
-    if(((twoOpen - twoClose) >= (twoOpen * 0.001)) && (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.003)))
+    if(((twoOpen - twoClose) >= (twoOpen * 0.001)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.003)))
     || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.003)) /*&& (greenRedCandles < 4)*/)) {
       
       cancell = false
