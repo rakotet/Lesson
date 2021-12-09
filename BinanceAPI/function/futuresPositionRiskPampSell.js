@@ -10,7 +10,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
       for ( let market of markets ) {
         let obj = data[market], size = Number( obj.positionAmt );
         if ( size != 0 && obj['symbol'] !== 'btc') {
-          let purchaseLevel = 6 // множитель докупки
+          let purchaseLevel = 3 // множитель докупки
 
           positionCounter++
 
@@ -101,12 +101,9 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                       })
                     } 
                   } else if (((markPrice - entryPrice) >= (entryPrice * 0.08))) {
-                    buyMarketCoin(symbol, positionAmt, binance).then(orderId => {
-                      counterProebObj[symbol] = 0
-                      dokupkaCounter[symbol] = 0
-                      counterPosition--
+                    sellMarketCoin(symbol, positionAmt, binance).then(orderId => {
                       statusOrder(symbol, orderId, binance).then(avgPrice => {
-                        console.log(new Date().toLocaleTimeString() + 'Продали в минус не дойдя до усреднения ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                        console.log(new Date().toLocaleTimeString() + 'Докупили позицию что бы не ликвиднуло ' + symbol + ' По цене: ' + avgPrice)
                       })
                     })
                   }

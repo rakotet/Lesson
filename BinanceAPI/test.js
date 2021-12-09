@@ -7,24 +7,41 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
-async function futuresCancelAll(coin) { // закрыть все открытые ордера по монете (не позиции)
-  try {
-    let data = await binance.futuresCancelAll(coin) 
 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
+binance.websockets.candlesticks(['OCEANUSDT'], "1m", (candlesticks) => {
+  let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
+  let { o:open, h:high, l:low, c:close, v:volume, n:trades, i:interval, x:isFinal, q:quoteVolume, V:buyVolume, Q:quoteBuyVolume } = ticks;
+  // console.info(symbol+" "+interval+" candlestick update");
+  // console.info("open: "+open.toFixed(5));
+  // console.info("high: "+high.toFixed(5));
+  // console.info("low: "+low.toFixed(5));
+  //let e = (ticks.c).toFixed(5)
+  console.info(candlesticks.k.c);
+  // console.info("volume: "+volume);
+  // console.info("isFinal: "+isFinal);
 
-    return 'ok'
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
-  }
-}
+  //console.log("close: "+close);
+});
 
-futuresCancelAll('RSRUSDT').then(data => {
-  console.log(data);
-})
+
+// async function futuresCancelAll(coin) { // закрыть все открытые ордера по монете (не позиции)
+//   try {
+//     let data = await binance.futuresCancelAll(coin) 
+
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
+
+//     return 'ok'
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
+//   }
+// }
+
+// futuresCancelAll('RSRUSDT').then(data => {
+//   console.log(data);
+// })
 
 
 // let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
