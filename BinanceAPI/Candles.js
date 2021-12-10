@@ -89,7 +89,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
   try {
     let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
 
-    if(Number(resultFile) < 3) { // проверка на количество открытых сделок
+    if(counterWork[0] < 11) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
   
       if(candlesSymboldata.code) {
@@ -119,9 +119,9 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 async function getCandles(coin, binance, opn, priceSymbolPamp) { // получить свечи
   try{
     let data = await binance.futuresCandles(coin, '3m', {limit: 5}) 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
+    // if(data.code) {
+    //   console.log(data.code + ' - ' + data.msg);
+    // }
     
     // let volumeCandlesAll = 0
 
@@ -154,21 +154,24 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
         if(differenceGreen >= 1) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
           if(coinOpenPamp[coin][0] === 0) {
-            console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
-            coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
-            coinOpenPamp[coin][1] = closePrice // флаг текущей цены пампа
-            coinOpenPamp[coin][2] = Number((new Date().getTime() / 1000).toFixed()) // флаг времени пампа в секундах
-            coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после 
-            priceSymbolPamp(coin)
-            opn('https://www.binance.com/ru/futures/' + coin)
+            if(counterWork[0] < 11) { // проверка на количество ф-й в работе
+              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
+              coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
+              coinOpenPamp[coin][1] = closePrice // флаг текущей цены пампа
+              coinOpenPamp[coin][2] = Number((new Date().getTime() / 1000).toFixed()) // флаг времени пампа в секундах
+              coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после 
+              priceSymbolPamp(coin) 
+              counterWork[0] = counterWork[0] + 1
+              opn('https://www.binance.com/ru/futures/' + coin)
+            } 
           }
         }
       }
     }
 
   } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'getCandles');
+    // console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -180,6 +183,7 @@ function getDate(date) { // время свечи
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
+let counterWork = [0, 0]
 
 
 //////////////////////////////////////////////////////////
@@ -222,7 +226,10 @@ async function priceSymbolPamp(symbol) {
     let twoClose = Number(candlesSymbol[candlesSymbol.length - 2][4])
     let twoHigh = Number(candlesSymbol[candlesSymbol.length - 2][2])
 
-    if(oneClose < coinOpenPamp[coin][3]) cancell = false // если цена упала ниже начала импульса, то выходим из ф-и
+    if(oneClose < coinOpenPamp[coin][3]) { // если цена упала ниже начала импульса, то выходим из ф-и
+      cancell = false
+      counterWork[0] = counterWork[0] - 1
+    }  
 
     let impulsPercent = (((oneClose - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
     let minKorrektion = (impulsPercent / 2) - 0.2
@@ -231,6 +238,7 @@ async function priceSymbolPamp(symbol) {
     || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoHigh - twoOpen) >= (twoOpen * 0.018))) && (minKorrektion >= 0.5)) {
       
       cancell = false
+      counterWork[0] = counterWork[0] - 1
 
       coinOpenPamp[coin][0] = 0
 
@@ -243,7 +251,7 @@ async function priceSymbolPamp(symbol) {
       let numberCoinKey = (10 / Number(data['price'])).toFixed();
       let price = Number(data['price'])
       let priceToMinus = price + (price * 0.03)
-      let priceToPlus = price - (price * minKorrektion)
+      let priceToPlus = price - (price * (minKorrektion / 100))
       priceToMinus = priceToMinus.toFixed(numberOfSigns(price))
       priceToPlus = priceToPlus.toFixed(numberOfSigns(price))
 
