@@ -8,20 +8,20 @@ const binance = new Binance().options({
 });
 
 
-binance.websockets.candlesticks(['OCEANUSDT'], "1m", (candlesticks) => {
-  let { e:eventType, E:eventTime, s:symbol, k:ticks } = candlesticks;
-  let { o:open, h:high, l:low, c:close, v:volume, n:trades, i:interval, x:isFinal, q:quoteVolume, V:buyVolume, Q:quoteBuyVolume } = ticks;
-  // console.info(symbol+" "+interval+" candlestick update");
-  // console.info("open: "+open.toFixed(5));
-  // console.info("high: "+high.toFixed(5));
-  // console.info("low: "+low.toFixed(5));
-  //let e = (ticks.c).toFixed(5)
-  console.info(candlesticks.k.c);
-  // console.info("volume: "+volume);
-  // console.info("isFinal: "+isFinal);
+console.log(new Date(1499040000000));
 
-  //console.log("close: "+close);
-});
+// binance.websockets.chart("BNBBTC", "1m", (symbol, interval, chart) => {
+//   let tick = binance.last(chart);
+//   const last = chart[tick].close;
+//   console.info(chart);
+//   // Optionally convert 'chart' object to array:
+//   // let ohlc = binance.ohlc(chart);
+//   // console.info(symbol, ohlc);
+//   console.info(symbol+" last price: "+last)
+//   console.log(new Date().toLocaleTimeString());
+  
+// }, 1);
+
 
 
 // async function futuresCancelAll(coin) { // закрыть все открытые ордера по монете (не позиции)
