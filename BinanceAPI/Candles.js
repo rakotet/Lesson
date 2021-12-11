@@ -19,6 +19,7 @@ const openTraide = require('./function/openTraide')
 const faifCandles = require('./function/faifCandles')
 const setkaLimitOrders = require('./function/setkaLimitOrders')
 const futuresCancelAll = require('./function/futuresCancelAll')
+let fapi = 'https://fapi.binance.com/fapi/';
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -226,13 +227,13 @@ async function priceSymbolPamp(symbol) {
     let twoClose = Number(candlesSymbol[candlesSymbol.length - 2][4])
     let twoHigh = Number(candlesSymbol[candlesSymbol.length - 2][2])
 
-    if(oneClose < coinOpenPamp[coin][3]) { // если цена упала ниже начала импульса, то выходим из ф-и
+    let impulsPercent = (((oneClose - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
+    let minKorrektion = (impulsPercent / 2) - 0.2
+
+    if(oneClose < coinOpenPamp[coin][3] || impulsPercent < 0.5) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
       counterWork[0] = counterWork[0] - 1
     }  
-
-    let impulsPercent = (((oneClose - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2) - 0.2
 
     if((((twoOpen - twoClose) >= (twoOpen * 0.0015)) && (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
     || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoHigh - twoOpen) >= (twoOpen * 0.018))) && (minKorrektion >= 0.5)) {
@@ -265,8 +266,8 @@ async function priceSymbolPamp(symbol) {
                 sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
                   if(orderId) {
                     //futuresCancelAll(coin, binance)
-                    buyCoin(coin, numberCoinKey, priceToPlus, binance)
-                    buyCoin(coin, numberCoinKey, priceToMinus, binance)
+                    takeProfitShort(coin, priceToPlus)
+                    stopShort(coin, priceToMinus)
                     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
                     opn('https://www.binance.com/ru/futures/' + coin)
                   }
@@ -280,7 +281,7 @@ async function priceSymbolPamp(symbol) {
 
   } catch(e) {
     console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'priceSymbolPamp');
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка priceSymbolPamp');
   }
 
   if(cancell) {
@@ -308,5 +309,33 @@ async function openPosition(coin) { // Получение открытой по�
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
+  }
+}
+
+async function takeProfitShort(coin, price) { 
+  try {
+    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'BUY', type: 'TAKE_PROFIT_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    return 1
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
+  }
+}
+
+async function stopShort(coin, price) { 
+  try {
+    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'BUY', type: 'STOP_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    return 1
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
   }
 }
