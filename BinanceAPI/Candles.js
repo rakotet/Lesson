@@ -146,7 +146,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
         if(differenceRed >= 1) {
           if(!timeOpenSymbolDamp[coin]) timeOpenSymbolDamp[coin] = 99
           if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
-            console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice);
+            console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n' + '/////');
             //opn('https://www.binance.com/ru/futures/' + coin)
             timeOpenSymbolDamp[coin] = Number(new Date().getMinutes())
           }
@@ -265,7 +265,7 @@ async function priceSymbolPamp(symbol) {
       coinOpenPamp[coin][5] = 1
     }
     
-    if(oneClose < coinOpenPamp[coin][3] || percentOneCloseTakeProfit < (-1)) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
+    if(oneClose < coinOpenPamp[coin][3] || percentOneCloseTakeProfit < (-0.1)) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
@@ -289,7 +289,7 @@ async function priceSymbolPamp(symbol) {
 
       let numberCoinKey = (10 / oneClose).toFixed();
       let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.02)
-      let priceToPlus = priceTakeProfit
+      let priceToPlus = priceTakeProfit + (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
       priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
       priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
 
@@ -300,7 +300,7 @@ async function priceSymbolPamp(symbol) {
               //futuresCancelAll(coin, binance)
               takeProfitShort(coin, priceToPlus)
               stopShort(coin, priceToMinus)
-              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку');
+              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '----------');
               opn('https://www.binance.com/ru/futures/' + coin)
             }
           })
