@@ -46,6 +46,7 @@ let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
+const numberMaxWork = 5
 
 const pnlPlusSell = 0.004 // Long (+ это +)
 const pnlMinusSell = 0.007
@@ -93,7 +94,7 @@ candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
 async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
   try {
    
-    if(counterWork < 1) { // проверка на количество открытых сделок
+    if(counterWork < numberMaxWork) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
   
       if(candlesSymboldata.code) {
@@ -158,7 +159,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
         if(differenceGreen >= 1) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
           if(coinOpenPamp[coin][0] === 0) {
-            if(counterWork < 1) { // проверка на количество ф-й в работе
+            if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
               openPosition(coin).then(data => {
                 if(data) {
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
@@ -169,7 +170,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                   counterWork++
                   priceSymbolPamp(coin) 
                   console.log(new Date().toLocaleTimeString() + ' - counterWork 1 -  ' + counterWork + ' - ' + coin);
-                  opn('https://www.binance.com/ru/futures/' + coin)
+                  //opn('https://www.binance.com/ru/futures/' + coin)
                 }
               })
             } 
@@ -248,10 +249,7 @@ async function priceSymbolPamp(symbol) {
     }
 
     let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2) 
-
-    // let impulsPercentOneClose = (((oneClose - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    // let minKorrektionOneClose = (impulsPercentOneClose / 2) 
+    let minKorrektion = (impulsPercent / 2) // возможно 2.1 - 2.3
 
     let priceTakeProfit = impulsMaxPrice - (impulsMaxPrice * (minKorrektion / 100))
     let percentOneCloseTakeProfit = (((oneClose - priceTakeProfit) / oneClose) * 100).toFixed(2)
@@ -272,24 +270,17 @@ async function priceSymbolPamp(symbol) {
       console.log(new Date().toLocaleTimeString() + ' - Вышли из ф-и, коррекция завершилась и была не достаточной для нас - ' + coin + ' - counterWork -  ' + counterWork);
     }  
 
-    if((((twoOpen - twoClose) >= (twoOpen * 0.0005)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
-    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoHigh - twoOpen) >= (twoOpen * 0.018))) && (percentOneCloseTakeProfit >= 0.4)) {
+    if((((twoOpen - twoClose) >= (twoOpen * 0.0008)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
+    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.02))) && (percentOneCloseTakeProfit >= 0.4)) {
       
       cancell = false
       counterWork--
+      coinOpenPamp[coin][0] = 0
       console.log(new Date().toLocaleTimeString() + ' - counterWork 2 -  ' + counterWork + ' - ' + coin);
 
-      coinOpenPamp[coin][0] = 0
-
-      // let data = await binance.futuresPrices({symbol: coin}) 
-      // if(data.code) {
-      //   console.log(data.code + ' - ' + data.msg);
-      //   throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp - ' + coin)
-      // }
-
       let numberCoinKey = (10 / oneClose).toFixed();
-      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.02)
-      let priceToPlus = priceTakeProfit + (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
+      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.01)
+      let priceToPlus = priceTakeProfit + (priceTakeProfit * 0.002) // под вопросом стоит ли уменьшать профит
       priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
       priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
 
