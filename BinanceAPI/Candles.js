@@ -203,7 +203,7 @@ async function priceSymbolPamp(symbol) {
       console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
     }
 
-    if(coinOpenPamp[coin][5] === 0) {
+    //if(coinOpenPamp[coin][5] === 0) {
       for(let i = candlesSymbol.length - 2; i > 0; i--) {
 
         if(Number(candlesSymbol[i][4]) <= Number(candlesSymbol[(i - 1)][1])
@@ -221,7 +221,7 @@ async function priceSymbolPamp(symbol) {
         } 
       }
       //coinOpenPamp[coin][5] = 1
-    }
+    //}
 
     let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
     let oneClose = Number(candlesSymbol[candlesSymbol.length - 1][4])
@@ -249,7 +249,7 @@ async function priceSymbolPamp(symbol) {
     }
 
     let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2) // возможно 2.1 - 2.3
+    let minKorrektion = (impulsPercent / 2.5) // возможно 2.1 - 2.3
 
     let priceTakeProfit = impulsMaxPrice - (impulsMaxPrice * (minKorrektion / 100))
     let percentOneCloseTakeProfit = (((oneClose - priceTakeProfit) / oneClose) * 100).toFixed(2)
@@ -280,7 +280,7 @@ async function priceSymbolPamp(symbol) {
 
       let numberCoinKey = (10 / oneClose).toFixed();
       let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.01)
-      let priceToPlus = priceTakeProfit + (priceTakeProfit * 0.002) // под вопросом стоит ли уменьшать профит
+      let priceToPlus = priceTakeProfit //+ (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
       priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
       priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
 
