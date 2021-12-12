@@ -92,9 +92,8 @@ candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
 
 async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
   try {
-    let resultFile = fs.readFileSync('./symbolPamp.txt', {encoding: 'utf-8'})
-
-    if(counterWork < 5) { // проверка на количество открытых сделок
+   
+    if(counterWork < 1) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
   
       if(candlesSymboldata.code) {
@@ -159,14 +158,14 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
         if(differenceGreen >= 1) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
           if(coinOpenPamp[coin][0] === 0) {
-            if(counterWork < 5) { // проверка на количество ф-й в работе
+            if(counterWork < 1) { // проверка на количество ф-й в работе
               openPosition(coin).then(data => {
                 if(data) {
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
                   coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
                   coinOpenPamp[coin][1] = closePrice // флаг текущей цены пампа
                   coinOpenPamp[coin][2] = Number((new Date().getTime() / 1000).toFixed()) // флаг времени пампа в секундах
-                  coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после 
+                  coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
                   counterWork++
                   priceSymbolPamp(coin) 
                   console.log(new Date().toLocaleTimeString() + ' - counterWork 1 -  ' + counterWork + ' - ' + coin);
@@ -203,27 +202,24 @@ async function priceSymbolPamp(symbol) {
       console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
     }
 
-    // let greenRedCandles = 0
-      
-    // for(let i = 2; i < 6; i++) {
-    //   if(Number(candlesSymbol[candlesSymbol.length - i][1]) < Number(candlesSymbol[candlesSymbol.length - i][4])) {
-    //     greenRedCandles++
-    //   }
-    // }
-
     if(coinOpenPamp[coin][5] === 0) {
       for(let i = candlesSymbol.length - 2; i > 0; i--) {
+
         if(Number(candlesSymbol[i][4]) <= Number(candlesSymbol[(i - 1)][1])
         && Number(candlesSymbol[(i - 1)][4]) <= Number(candlesSymbol[(i - 2)][1])) {
-  
-          coinOpenPamp[coin][3] = Number(candlesSymbol[i][1]) // цена начала импульса
+
+          if(Number(candlesSymbol[i][1]) > Number(candlesSymbol[i][4])) {
+            coinOpenPamp[coin][3] = Number(candlesSymbol[i][4]) // цена начала импульса
+          } else {
+            coinOpenPamp[coin][3] = Number(candlesSymbol[i][1]) // цена начала импульса
+          }
+
           coinOpenPamp[coin][4] = Number(candlesSymbol[i][0]) // время начала импульса
           console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
-          console.log('--------------------------------------------------------------------------------------------');
           break;
         } 
       }
-      coinOpenPamp[coin][5] = 1
+      //coinOpenPamp[coin][5] = 1
     }
 
     let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
@@ -232,10 +228,44 @@ async function priceSymbolPamp(symbol) {
     let twoClose = Number(candlesSymbol[candlesSymbol.length - 2][4])
     let twoHigh = Number(candlesSymbol[candlesSymbol.length - 2][2])
 
-    let impulsPercent = (((oneClose - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
+    let impulsMaxPrice = 0
+    let impulsCandlesLength = 0
+
+    for(let i = candlesSymbol.length - 1; i > 0; i--) {
+      if(Number(candlesSymbol[i][1]) === coinOpenPamp[coin][3] || Number(candlesSymbol[i][4]) === coinOpenPamp[coin][3]) {
+        break;
+      } else {
+        impulsCandlesLength++
+      }
+    }
+
+    for(let i = candlesSymbol.length - 1; i > ((candlesSymbol.length - 1) - impulsCandlesLength); i--) {
+      if(Number(candlesSymbol[i][1]) > Number(candlesSymbol[i][4])) {
+        if(Number(candlesSymbol[i][1]) > impulsMaxPrice) impulsMaxPrice = Number(candlesSymbol[i][1])
+      } else {
+        if(Number(candlesSymbol[i][4]) > impulsMaxPrice) impulsMaxPrice = Number(candlesSymbol[i][4])
+      }
+    }
+
+    let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
     let minKorrektion = (impulsPercent / 2) 
 
-    if(oneClose < coinOpenPamp[coin][3] || impulsPercent < 0.5) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
+    // let impulsPercentOneClose = (((oneClose - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
+    // let minKorrektionOneClose = (impulsPercentOneClose / 2) 
+
+    let priceTakeProfit = impulsMaxPrice - (impulsMaxPrice * (minKorrektion / 100))
+    let percentOneCloseTakeProfit = (((oneClose - priceTakeProfit) / oneClose) * 100).toFixed(2)
+
+    if(coinOpenPamp[coin][5] === 0) {
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
+      console.log('--------------------------------------------------------------------------------------------');
+      coinOpenPamp[coin][5] = 1
+    }
+    
+    if(oneClose < coinOpenPamp[coin][3] || percentOneCloseTakeProfit < (-1)) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
@@ -243,7 +273,7 @@ async function priceSymbolPamp(symbol) {
     }  
 
     if((((twoOpen - twoClose) >= (twoOpen * 0.0005)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
-    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoHigh - twoOpen) >= (twoOpen * 0.018))) && (minKorrektion >= 0.4)) {
+    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoHigh - twoOpen) >= (twoOpen * 0.018))) && (percentOneCloseTakeProfit >= 0.4)) {
       
       cancell = false
       counterWork--
@@ -251,18 +281,17 @@ async function priceSymbolPamp(symbol) {
 
       coinOpenPamp[coin][0] = 0
 
-      let data = await binance.futuresPrices({symbol: coin}) 
-      if(data.code) {
-        console.log(data.code + ' - ' + data.msg);
-        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp - ' + coin)
-      }
+      // let data = await binance.futuresPrices({symbol: coin}) 
+      // if(data.code) {
+      //   console.log(data.code + ' - ' + data.msg);
+      //   throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту priceSymbolPamp - ' + coin)
+      // }
 
-      let numberCoinKey = (10 / Number(data['price'])).toFixed();
-      let price = Number(data['price'])
-      let priceToMinus = price + (price * 0.03)
-      let priceToPlus = price - (price * (minKorrektion / 100))
-      priceToMinus = priceToMinus.toFixed(numberOfSigns(price))
-      priceToPlus = priceToPlus.toFixed(numberOfSigns(price))
+      let numberCoinKey = (10 / oneClose).toFixed();
+      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.02)
+      let priceToPlus = priceTakeProfit
+      priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
+      priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
 
       futuressHoulder(coin, 10, binance).then(data => {
         futuresMarginType(coin, binance).then(data => {

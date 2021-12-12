@@ -9,32 +9,8 @@ const binance = new Binance().options({
 });
 
 
-async function takeProfitShort(coin, price) { // купить монетку лимит
-  try {
-    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'BUY', type: 'TAKE_PROFIT_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
-  
-    return 1
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
-  }
-}
-
-async function stopShort(coin, price) { // купить монетку лимит
-  try {
-    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'BUY', type: 'STOP_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
-  
-    return 1
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
-  }
+for (let i = 1; i < 2; i++) {
+  console.log(i);
 }
 
 
