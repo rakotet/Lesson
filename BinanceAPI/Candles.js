@@ -46,7 +46,8 @@ let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
-const numberMaxWork = 5
+const numberMaxWork = 10
+const numberOneTrade = 10
 
 const pnlPlusSell = 0.004 // Long (+ это +)
 const pnlMinusSell = 0.007
@@ -64,6 +65,8 @@ const percent = 1
 const percent2 = 1.5
 const timeoutSearch = 900000
 const timeoutSearch2 = 300000
+
+let i = 0
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -103,8 +106,9 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
       }
 
       for(let coin in candlesSymboldata) {
-        if((candlesSymboldata[coin] < 10) && coin.endsWith('USDT')) {
+        if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandles(coin, binance, opn, priceSymbolPamp)
+          //console.log(i++);
         }
       }
     }
@@ -248,7 +252,9 @@ async function priceSymbolPamp(symbol) {
     }
 
     let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2.5) // возможно 2.1 - 2.3
+    let minKorrektion = (impulsPercent / 2.1) // возможно 2.1 - 2.3
+
+    if(minKorrektion > 1.5) minKorrektion = 1.5
 
     let priceTakeProfit = impulsMaxPrice - (impulsMaxPrice * (minKorrektion / 100))
     let percentOneCloseTakeProfit = (((oneClose - priceTakeProfit) / oneClose) * 100).toFixed(2)
@@ -259,6 +265,7 @@ async function priceSymbolPamp(symbol) {
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
+      console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
       coinOpenPamp[coin][5] = 1
     }
     
@@ -270,13 +277,13 @@ async function priceSymbolPamp(symbol) {
     }  
 
     if((((twoOpen - twoClose) >= (twoOpen * 0.0008)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
-    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.015))) && (percentOneCloseTakeProfit >= 0.4)) {
+    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.012))) && (percentOneCloseTakeProfit >= 0.3)) {
       
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
 
-      let numberCoinKey = (10 / oneClose).toFixed();
+      let numberCoinKey = (numberOneTrade / oneClose).toFixed();
       let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.01)
       let priceToPlus = priceTakeProfit //+ (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
       priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
@@ -286,7 +293,9 @@ async function priceSymbolPamp(symbol) {
         futuresMarginType(coin, binance).then(data => {
           sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
             if(orderId) {
-              takeProfitShort(coin, priceToPlus)
+              takeProfitShort(coin, priceToPlus).then(data => {
+                //console.log(data);
+              })
               //stopShort(coin, priceToMinus)
               console.log('---------------------------------------');
               console.log(coinOpenPamp[coin][6]);
@@ -344,7 +353,7 @@ async function takeProfitShort(coin, price) {
       console.log(data.code + ' - ' + data.msg);
     }
   
-    return 1
+    return data
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
@@ -358,7 +367,7 @@ async function stopShort(coin, price) {
       console.log(data.code + ' - ' + data.msg);
     }
   
-    return 1
+    return data
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');

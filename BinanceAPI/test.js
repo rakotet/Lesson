@@ -1,6 +1,6 @@
 const balanceFiat = require('./function/balanceFiat')
 const numberOfSigns = require('./function/numberOfSigns')
-let fapi = 'https://fapi.binance.com/fapi/';
+let fapi = 'https://www.binance.com/futures/';
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -9,39 +9,106 @@ const binance = new Binance().options({
 });
 
 
-for (let i = 1; i < 2; i++) {
-  console.log(i);
+async function futuresDepth(coin) { // книга заявок
+  try {
+    let book = await binance.futuresDepth(coin, {limit: 1000});
+    if(book.code) {
+      console.log(book.code + ' - ' + book.msg);
+    }
+
+    let price = await binance.futuresPrices({symbol: coin})
+    if(price.code) {
+      console.log(price.code + ' - ' + price.msg);
+    }
+
+    price = Number(price.price)
+
+    let n = 0
+    let counter = 0
+    let arr = []
+    
+    for(let i = 0; i < book.asks.length; i++) {
+      if(Number(book.asks[i][1]) > n) {
+        n = Number(book.asks[i][1])
+        
+      }
+    }
+
+    return 
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresDepth');
+  }
+
+  // setTimeout(() => {
+  //   futuresTrades('BTCUSDT')
+  // }, 1000)
 }
 
-
-// binance.websockets.chart("BNBBTC", "1m", (symbol, interval, chart) => {
-//   let tick = binance.last(chart);
-//   const last = chart[tick].close;
-//   console.info(chart);
-//   // Optionally convert 'chart' object to array:
-//   // let ohlc = binance.ohlc(chart);
-//   // console.info(symbol, ohlc);
-//   console.info(symbol+" last price: "+last)
-//   console.log(new Date().toLocaleTimeString());
-  
-// }, 1);
+futuresDepth('SUSHIUSDT').then(data => {
+  // console.log(data);
+  // console.log(new Date().toLocaleTimeString());
+  // console.log((new Date(data.E)).getHours() + ':' + (new Date(data.E)).getMinutes() + ':' + (new Date(data.E)).getSeconds());
+  // console.log((new Date(data.T)).getHours() + ':' + (new Date(data.T)).getMinutes() + ':' + (new Date(data.T)).getSeconds());
+  // console.log(data.bids[0][0] + ' - цена - ' + data.bids[0][1] + ' - объём; ' + data.bids[999][0] + ' - цена - ' + data.bids[999][1] + ' - объём; ' + ' - покупают');
+  // console.log(data.asks[0][0] + ' - цена - ' + data.asks[0][1] + ' - объём; ' + data.asks[999][0] + ' - цена - ' + data.asks[999][1] + ' - объём; ' + ' - продают');
+})
 
 
-
-// async function futuresCancelAll(coin) { // закрыть все открытые ордера по монете (не позиции)
+// async function futuresTrades(coin) { // последние ордера по рынку 1000шт
 //   try {
-//     let data = await binance.futuresCancelAll(coin) 
+//     let data = await binance.futuresTrades(coin, {limit: 1000});
 
 //     if(data.code) {
 //       console.log(data.code + ' - ' + data.msg);
 //     }
 
-//     return 'ok'
+//     return data
 //   } catch(e) {
 //     console.log(e);
-//     console.log(new Date().toLocaleTimeString() + ' - ' + 'openPosition');
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresTrades');
+//   }
+
+//   // setTimeout(() => {
+//   //   futuresTrades('BTCUSDT')
+//   // }, 1000)
+// }
+
+// futuresTrades('SUSHIUSDT').then(data => {
+//   console.log(data[999]);
+// })
+
+// async function volume(coin) { 
+//   try {
+//     let buySellVolume = await binance.promiseRequest( 'data/takerlongshortRatio', {symbol: coin, limit: 1, period: '5m'}, { base:fapi, type:'MARKET_DATA', method:'GET' } )  
+//     if(buySellVolume.code) {
+//       console.log(buySellVolume.code + ' - ' + buySellVolume.msg);
+//     }
+
+//     let longShortRatio = await binance.promiseRequest( 'data/globalLongShortAccountRatio', {symbol: coin, limit: 1, period: '5m'}, { base:fapi, type:'MARKET_DATA', method:'GET' } )
+//     if(longShortRatio.code) {
+//       console.log(longShortRatio.code + ' - ' + longShortRatio.msg);
+//     }
+
+//     return [buySellVolume, longShortRatio]
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
 //   }
 // }
+
+// volume('SUSHIUSDT').then(data => {
+//   console.log(data);
+//   console.log((new Date(data[0][0].timestamp)).getHours() + ':' + (new Date(data[0][0].timestamp)).getMinutes() + ':' + (new Date(data[0][0].timestamp)).getSeconds());
+//   console.log((new Date(data[1][0].timestamp)).getHours() + ':' + (new Date(data[1][0].timestamp)).getMinutes() + ':' + (new Date(data[1][0].timestamp)).getSeconds());
+// })
+
+
+// function getDate(date) { // время свечи
+//   return (new Date(data[0].timestamp)).getHours() + ':' + (new Date(data[0].timestamp)).getMinutes() + ':' + (new Date(data[0].timestamp)).getSeconds()
+// }
+
+
 
 // futuresCancelAll('RSRUSDT').then(data => {
 //   console.log(data);
