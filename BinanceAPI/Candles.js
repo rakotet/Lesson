@@ -19,6 +19,7 @@ const openTraide = require('./function/openTraide')
 const faifCandles = require('./function/faifCandles')
 const setkaLimitOrders = require('./function/setkaLimitOrders')
 const futuresCancelAll = require('./function/futuresCancelAll')
+//const futuresDepth = require('./test')
 let fapi = 'https://fapi.binance.com/fapi/';
 
 const Binance = require('node-binance-api');
@@ -46,8 +47,8 @@ let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
-const numberMaxWork = 10
-const numberOneTrade = 10
+const numberMaxWork = 3
+const numberOneTrade = 50
 
 const pnlPlusSell = 0.004 // Long (+ это +)
 const pnlMinusSell = 0.007
@@ -66,7 +67,7 @@ const percent2 = 1.5
 const timeoutSearch = 900000
 const timeoutSearch2 = 300000
 
-let i = 0
+//let i = 0
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -174,6 +175,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                   counterWork++
                   priceSymbolPamp(coin) 
                   coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
+                  //futuresDepth(coin)
                   //opn('https://www.binance.com/ru/futures/' + coin)
                 }
               })
@@ -252,7 +254,7 @@ async function priceSymbolPamp(symbol) {
     }
 
     let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2.1) // возможно 2.1 - 2.3
+    let minKorrektion = (impulsPercent / 2.5) // возможно 2.1 - 2.3
 
     if(minKorrektion > 1.5) minKorrektion = 1.5
 

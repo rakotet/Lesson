@@ -1,6 +1,9 @@
 const balanceFiat = require('./function/balanceFiat')
 const numberOfSigns = require('./function/numberOfSigns')
-let fapi = 'https://www.binance.com/futures/';
+const plate = require('./function/plate')
+//let fapi = 'https://www.binance.com/futures/';
+let fapi = 'https://fapi.binance.com/fapi/';
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -9,9 +12,10 @@ const binance = new Binance().options({
 });
 
 
-async function futuresDepth(coin) { // книга заявок
+ async function futuresDepth(symbol) { // книга заявок
+  let coin = symbol
   try {
-    let book = await binance.futuresDepth(coin, {limit: 1000});
+    let book = await binance.futuresDepth(coin, {limit: 500});
     if(book.code) {
       console.log(book.code + ' - ' + book.msg);
     }
@@ -21,39 +25,124 @@ async function futuresDepth(coin) { // книга заявок
       console.log(price.code + ' - ' + price.msg);
     }
 
-    price = Number(price.price)
+    // let trades = await binance.futuresTrades(coin, {limit: 1000})
+    // if(trades.code) {
+    //   console.log(trades.code + ' - ' + trades.msg);
+    // }
 
-    let n = 0
-    let counter = 0
-    let arr = []
-    
+    let asks = 0
+    let bids = 0
+
     for(let i = 0; i < book.asks.length; i++) {
-      if(Number(book.asks[i][1]) > n) {
-        n = Number(book.asks[i][1])
-        
+      if(Number(book.asks[i][0]) === Number(price.price) || Number(book.asks[i][0]) < (Number(price.price) + (Number(price.price) * 0.0003))) {
+        asks = asks + Number(book.asks[i][1])
       }
     }
 
-    return 
+    for(let i = 0; i < book.bids.length; i++) {
+      if(Number(book.bids[i][0]) === Number(price.price) || Number(book.bids[i][0]) > (Number(price.price) - (Number(price.price) * 0.0003))) {
+        bids = bids + Number(book.bids[i][1])
+      }
+    }
+
+    console.log(asks);
+    console.log(bids);
+    console.log(asks > bids);
+    console.log('-------------');
+    
+
+    // for(let i = 0; i < 5; i++) {
+    //   console.log(trades[i].qty + ' - ' + (new Date(trades[i].time)).getHours() + ':' + (new Date(trades[i].time)).getMinutes() + ':' + (new Date(trades[i].time)).getSeconds());
+
+    // }
+    
+    // console.log(trades[0]);
+    // console.log(trades[499]);
+    // console.log((new Date(trades[0].time)).getHours() + ':' + (new Date(trades[0].time)).getMinutes() + ':' + (new Date(trades[0].time)).getSeconds());
+    // console.log((new Date(trades[499].time)).getHours() + ':' + (new Date(trades[499].time)).getMinutes() + ':' + (new Date(trades[499].time)).getSeconds());
+
+    //plate(book, price)
+
+    
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresDepth');
   }
 
-  // setTimeout(() => {
-  //   futuresTrades('BTCUSDT')
-  // }, 1000)
+  setTimeout(() => {
+    futuresDepth(coin)
+  }, 1000)
 }
 
-futuresDepth('SUSHIUSDT').then(data => {
-  // console.log(data);
-  // console.log(new Date().toLocaleTimeString());
-  // console.log((new Date(data.E)).getHours() + ':' + (new Date(data.E)).getMinutes() + ':' + (new Date(data.E)).getSeconds());
-  // console.log((new Date(data.T)).getHours() + ':' + (new Date(data.T)).getMinutes() + ':' + (new Date(data.T)).getSeconds());
-  // console.log(data.bids[0][0] + ' - цена - ' + data.bids[0][1] + ' - объём; ' + data.bids[999][0] + ' - цена - ' + data.bids[999][1] + ' - объём; ' + ' - покупают');
-  // console.log(data.asks[0][0] + ' - цена - ' + data.asks[0][1] + ' - объём; ' + data.asks[999][0] + ' - цена - ' + data.asks[999][1] + ' - объём; ' + ' - продают');
-})
+futuresDepth('CTSIUSDT')
 
+// setInterval(() => {
+//   futuresDepth('DOGEUSDT').then(arr => {
+//     futuresCancelAll('DOGEUSDT').then(data => {
+//       console.log(arr[0]);
+//       console.log(arr[1]);
+//       console.log(new Date().toLocaleTimeString());
+//       stopShort('DOGEUSDT', Number(arr[0][0][0]))
+//       stopShort('DOGEUSDT', Number(arr[0][1][0]))
+//       stopShort('DOGEUSDT', Number(arr[0][2][0]))
+//       stopShort('DOGEUSDT', Number(arr[0][3][0]))
+//       stopShort('DOGEUSDT', Number(arr[0][4][0]))
+//       console.log(new Date().toLocaleTimeString());
+//     })
+    
+//     // console.log(new Date().toLocaleTimeString());
+//     // console.log((new Date(data.E)).getHours() + ':' + (new Date(data.E)).getMinutes() + ':' + (new Date(data.E)).getSeconds());
+//     // console.log((new Date(data.T)).getHours() + ':' + (new Date(data.T)).getMinutes() + ':' + (new Date(data.T)).getSeconds());
+//     // console.log(data.bids[0][0] + ' - цена - ' + data.bids[0][1] + ' - объём; ' + data.bids[999][0] + ' - цена - ' + data.bids[999][1] + ' - объём; ' + ' - покупают');
+//     // console.log(data.asks[0][0] + ' - цена - ' + data.asks[0][1] + ' - объём; ' + data.asks[999][0] + ' - цена - ' + data.asks[999][1] + ' - объём; ' + ' - продают');
+//   })
+// }, 5000)
+
+
+
+async function stopShort(coin, price) { 
+  try {
+    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'BUY', type: 'STOP_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    //console.log('ok');
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'stopShort');
+  }
+}
+
+async function takeProfitShort(coin, price) { 
+  try {
+    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'BUY', type: 'TAKE_PROFIT_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    return data
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOrder');
+  }
+}
+
+async function futuresCancelAll(coin) { 
+  try {
+    let data = await binance.futuresCancelAll(coin);
+
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+
+    return 1
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresCancelAll');
+  }
+
+}
 
 // async function futuresTrades(coin) { // последние ордера по рынку 1000шт
 //   try {
