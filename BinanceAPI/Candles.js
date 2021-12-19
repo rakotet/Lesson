@@ -49,7 +49,7 @@ let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
 const numberMaxWork = 3
-const numberOneTrade = 10
+const numberOneTrade = 100
 
 const pnlPlusSell = 0.004 // Long (+ это +)
 const pnlMinusSell = 0.007
@@ -109,9 +109,11 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
       for(let coin in candlesSymboldata) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandles(coin, binance, opn, priceSymbolPamp)
+          //i++
           await delay(10)
         }
       }
+      //console.log(i);
     }
       
   } catch(e) {
@@ -149,7 +151,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
       if(openPrice > closePrice) {
         let differenceRed = (((openPrice - closePrice) / closePrice) * 100).toFixed(2)
 
-        if(differenceRed >= 1) {
+        if(differenceRed >= 1.5) {
           if(!timeOpenSymbolDamp[coin]) timeOpenSymbolDamp[coin] = 99
           if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
             console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n');
@@ -161,7 +163,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
       } else {
         let differenceGreen = (((closePrice - openPrice) / closePrice) * 100).toFixed(2)
 
-        if(differenceGreen >= 1) {
+        if(differenceGreen >= 1.5) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
           if(coinOpenPamp[coin][0] === 0) {
             if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
@@ -254,7 +256,7 @@ async function priceSymbolPamp(symbol) {
     }
 
     let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2.5) // возможно 2.1 - 2.3
+    let minKorrektion = (impulsPercent / 2.6) // возможно 2.1 - 2.3
 
     if(minKorrektion > 1.5) minKorrektion = 1.5
 
@@ -278,15 +280,15 @@ async function priceSymbolPamp(symbol) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - Вышли из ф-и, коррекция завершилась и была не достаточной для нас - ' + coin + ' - counterWork -  ' + counterWork + '\n');
     }  
 
-    if((((twoOpen - twoClose) >= (twoOpen * 0.0008)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
-    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.012))) && (percentOneCloseTakeProfit >= 0.3)) {
+    if((((twoOpen - twoClose) >= (twoOpen * 0.0004)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
+    || (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.012))) && (percentOneCloseTakeProfit >= 0.3)) {
       
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
 
       let numberCoinKey = (numberOneTrade / oneClose).toFixed();
-      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.005)
+      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.01)
       let priceToPlus = priceTakeProfit //+ (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
       priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
       priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
@@ -308,7 +310,7 @@ async function priceSymbolPamp(symbol) {
               console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
               console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
               console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
-              //opn('https://www.binance.com/ru/futures/' + coin)
+              opn('https://www.binance.com/ru/futures/' + coin)
             }
           })
         })
