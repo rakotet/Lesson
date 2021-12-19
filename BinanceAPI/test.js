@@ -11,70 +11,113 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
-
- async function futuresDepth(symbol) { // книга заявок
-  let coin = symbol
+async function futuresOpenOrders(coin) { 
   try {
-    let book = await binance.futuresDepth(coin, {limit: 500});
-    if(book.code) {
-      console.log(book.code + ' - ' + book.msg);
+    let data = await binance.futuresOpenOrders(coin) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
     }
-
-    let price = await binance.futuresPrices({symbol: coin})
-    if(price.code) {
-      console.log(price.code + ' - ' + price.msg);
-    }
-
-    // let trades = await binance.futuresTrades(coin, {limit: 1000})
-    // if(trades.code) {
-    //   console.log(trades.code + ' - ' + trades.msg);
-    // }
-
-    let asks = 0
-    let bids = 0
-
-    for(let i = 0; i < book.asks.length; i++) {
-      if(Number(book.asks[i][0]) === Number(price.price) || Number(book.asks[i][0]) < (Number(price.price) + (Number(price.price) * 0.0003))) {
-        asks = asks + Number(book.asks[i][1])
-      }
-    }
-
-    for(let i = 0; i < book.bids.length; i++) {
-      if(Number(book.bids[i][0]) === Number(price.price) || Number(book.bids[i][0]) > (Number(price.price) - (Number(price.price) * 0.0003))) {
-        bids = bids + Number(book.bids[i][1])
-      }
-    }
-
-    console.log(asks);
-    console.log(bids);
-    console.log(asks > bids);
-    console.log('-------------');
-    
-
-    // for(let i = 0; i < 5; i++) {
-    //   console.log(trades[i].qty + ' - ' + (new Date(trades[i].time)).getHours() + ':' + (new Date(trades[i].time)).getMinutes() + ':' + (new Date(trades[i].time)).getSeconds());
-
-    // }
-    
-    // console.log(trades[0]);
-    // console.log(trades[499]);
-    // console.log((new Date(trades[0].time)).getHours() + ':' + (new Date(trades[0].time)).getMinutes() + ':' + (new Date(trades[0].time)).getSeconds());
-    // console.log((new Date(trades[499].time)).getHours() + ':' + (new Date(trades[499].time)).getMinutes() + ':' + (new Date(trades[499].time)).getSeconds());
-
-    //plate(book, price)
-
-    
+  
+    console.log(data);
   } catch(e) {
     console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresDepth');
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresOpenOrders');
   }
-
-  setTimeout(() => {
-    futuresDepth(coin)
-  }, 1000)
 }
 
-futuresDepth('CTSIUSDT')
+futuresOpenOrders('CRVUSDT')
+
+// function ss(data) {
+//   if(Number(data.bestBidQty) > Number(data.bestAskQty)) {
+//     console.log('Вверх' + '\n' + '----------');
+//   } else console.log('Низ' + '\n' + '----------');
+//   // console.log(data.bestBidQty);
+//   // console.log(data.bestAskQty);
+//   // console.log('----------');
+//   //console.log(data);
+// }
+
+// binance.futuresBookTickerStream('OMGUSDT', ss );
+
+// async function bookTicker(symbol) { 
+//   let coin = symbol
+//   try {
+//     let data = await binance.promiseRequest( 'v1/ticker/bookTicker', {symbol: coin}, { base:fapi, type:'MARKET_DATA', method:'GET' } ) 
+//     if(data.code) {
+//       console.log(data.code + ' - ' + data.msg);
+//     }
+  
+//     if(Number(data.bidQty) > Number(data.askQty)) {
+//       console.log('Вверх' + '\n' + '----------');
+//     } else console.log('Низ' + '\n' + '----------');
+//     //console.log((new Date(data.time)).getHours() + ':' + (new Date(data.time)).getMinutes() + ':' + (new Date(data.time)).getSeconds());
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'bookTicker');
+//   }
+
+//   setTimeout(() => {
+//     bookTicker(coin)
+//   }, 1000)
+// }
+
+// bookTicker('OMGUSDT')
+
+//  async function futuresDepth(symbol) { // книга заявок
+//   let coin = symbol
+//   try {
+//     let book = await binance.futuresDepth(coin, {limit: 500});
+//     if(book.code) {
+//       console.log(book.code + ' - ' + book.msg);
+//     }
+
+//     let price = await binance.futuresPrices({symbol: coin})
+//     if(price.code) {
+//       console.log(price.code + ' - ' + price.msg);
+//     }
+
+//     // let trades = await binance.futuresTrades(coin, {limit: 1000})
+//     // if(trades.code) {
+//     //   console.log(trades.code + ' - ' + trades.msg);
+//     // }
+
+//     let asks = 0
+//     let bids = 0
+
+//     for(let i = 0; i < book.asks.length; i++) {
+//       if(Number(book.asks[i][1]) > asks && Number(book.asks[i][0]) < (Number(price.price) + (Number(price.price) * 0.0005))) {
+//         asks = Number(book.asks[i][1])
+        
+//       }
+//     }
+
+//     for(let i = 0; i < book.bids.length; i++) {
+//       if(Number(book.bids[i][1]) > bids && Number(book.bids[i][0]) > (Number(price.price) - (Number(price.price) * 0.0005))) {
+//         bids = Number(book.bids[i][1])
+        
+//       }
+//     }
+
+//     console.log(bids);
+//     console.log(asks);
+//     if(bids > asks) console.log('Вверх');
+//     else console.log('Низ');
+//     console.log('-------------');
+
+//     //plate(book, price)
+
+    
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresDepth');
+//   }
+
+//   setTimeout(() => {
+//     futuresDepth(coin)
+//   }, 1000)
+// }
+
+// futuresDepth('OMGUSDT')
 
 // setInterval(() => {
 //   futuresDepth('DOGEUSDT').then(arr => {

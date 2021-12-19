@@ -20,6 +20,7 @@ const faifCandles = require('./function/faifCandles')
 const setkaLimitOrders = require('./function/setkaLimitOrders')
 const futuresCancelAll = require('./function/futuresCancelAll')
 //const futuresDepth = require('./test')
+const delay = ms => new Promise(res => setTimeout(res, ms));
 let fapi = 'https://fapi.binance.com/fapi/';
 
 const Binance = require('node-binance-api');
@@ -48,7 +49,7 @@ let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
 const numberMaxWork = 3
-const numberOneTrade = 50
+const numberOneTrade = 10
 
 const pnlPlusSell = 0.004 // Long (+ это +)
 const pnlMinusSell = 0.007
@@ -67,7 +68,7 @@ const percent2 = 1.5
 const timeoutSearch = 900000
 const timeoutSearch2 = 300000
 
-//let i = 0
+let i = 0
 
 // setInterval(() => {
 //   if((new Date().getSeconds()) === 2) {
@@ -97,7 +98,6 @@ candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
 
 async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
   try {
-   
     if(counterWork < numberMaxWork) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
   
@@ -109,7 +109,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
       for(let coin in candlesSymboldata) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandles(coin, binance, opn, priceSymbolPamp)
-          //console.log(i++);
+          await delay(10)
         }
       }
     }
@@ -123,7 +123,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 
     setTimeout(() => {
       candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
-    }, 15000)
+    }, 10000)
 }
 
 async function getCandles(coin, binance, opn, priceSymbolPamp) { // получить свечи
@@ -286,7 +286,7 @@ async function priceSymbolPamp(symbol) {
       coinOpenPamp[coin][0] = 0
 
       let numberCoinKey = (numberOneTrade / oneClose).toFixed();
-      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.01)
+      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.005)
       let priceToPlus = priceTakeProfit //+ (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
       priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
       priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
@@ -298,7 +298,7 @@ async function priceSymbolPamp(symbol) {
               takeProfitShort(coin, priceToPlus).then(data => {
                 //console.log(data);
               })
-              //stopShort(coin, priceToMinus)
+              stopShort(coin, priceToMinus)
               console.log('---------------------------------------');
               console.log(coinOpenPamp[coin][6]);
               console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
@@ -308,7 +308,7 @@ async function priceSymbolPamp(symbol) {
               console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
               console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
               console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
-              opn('https://www.binance.com/ru/futures/' + coin)
+              //opn('https://www.binance.com/ru/futures/' + coin)
             }
           })
         })
