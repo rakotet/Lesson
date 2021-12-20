@@ -19,6 +19,7 @@ const openTraide = require('./function/openTraide')
 const faifCandles = require('./function/faifCandles')
 const setkaLimitOrders = require('./function/setkaLimitOrders')
 const futuresCancelAll = require('./function/futuresCancelAll')
+const futuresPositionRisk = require('./function/futuresPositionRisk')
 //const futuresDepth = require('./test')
 const delay = ms => new Promise(res => setTimeout(res, ms));
 let fapi = 'https://fapi.binance.com/fapi/';
@@ -33,7 +34,7 @@ const opn = require('opn')
 
 const profitCounter = {}
 const currentProfitOne = {}
-const timeoutFuturesPositionRisk = 2000
+const timeoutFuturesPositionRisk = 1000
 const timeoutTraideOpenPamp = 1000
 let counterPosition = 0
 let arrayPrice = {} // объект цен из которых расщитывается памп
@@ -49,18 +50,18 @@ let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
 const numberMaxWork = 3
-const numberOneTrade = 100
+const numberOneTrade = 10
 
-const pnlPlusSell = 0.004 // Long (+ это +)
-const pnlMinusSell = 0.007
+const pnlPlusSell = 0.005 // Long (+ это +)
+const pnlMinusSell = 0.005
 
-const pnlPlusBuy = 0.095 // Short (всё наоборот + это -)
-const pnlPlusBuy1 = 0.095 // Уровни докупки вызывают сомнения (возможно доработать)
+const pnlPlusBuy = 0.005 // Short (всё наоборот + это -)
+const pnlPlusBuy1 = 0.005 // Уровни докупки вызывают сомнения (возможно доработать)
 const pnlPlusBuy2 = 0.095
 const pnlPlusBuy3 = 0.02
 const pnlPlusBuy4 = 0.07
 
-const pnlMinusBuy = 0.005 // +
+const pnlMinusBuy = 0.004 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 1
@@ -85,8 +86,8 @@ let i = 0
 
 // закрывает позиции
 //
-// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
+futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
 
 //ищит по объемам
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -131,6 +132,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 async function getCandles(coin, binance, opn, priceSymbolPamp) { // получить свечи
   try{
     let data = await binance.futuresCandles(coin, '3m', {limit: 5}) 
+    //console.log(data);
     // if(data.code) {
     //   console.log(data.code + ' - ' + data.msg);
     // }
@@ -280,37 +282,38 @@ async function priceSymbolPamp(symbol) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - Вышли из ф-и, коррекция завершилась и была не достаточной для нас - ' + coin + ' - counterWork -  ' + counterWork + '\n');
     }  
 
-    if((((twoOpen - twoClose) >= (twoOpen * 0.0004)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
-    || (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.012))) && (percentOneCloseTakeProfit >= 0.3)) {
+    if((((twoOpen - twoClose) >= (twoOpen * 0.0015)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
+    || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.015))) && (percentOneCloseTakeProfit >= 0.4)) {
       
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
 
       let numberCoinKey = (numberOneTrade / oneClose).toFixed();
-      let priceToMinus = impulsMaxPrice + (impulsMaxPrice * 0.01)
-      let priceToPlus = priceTakeProfit //+ (priceTakeProfit * 0.001) // под вопросом стоит ли уменьшать профит
-      priceToMinus = priceToMinus.toFixed(numberOfSigns(impulsMaxPrice))
+      let priceToPlus = priceTakeProfit
       priceToPlus = priceToPlus.toFixed(numberOfSigns(impulsMaxPrice))
+
+      console.log('---------------------------------------');
+      console.log(coinOpenPamp[coin][6]);
+      console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
+      console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
+      opn('https://www.binance.com/ru/futures/' + coin)
 
       futuressHoulder(coin, 10, binance).then(data => {
         futuresMarginType(coin, binance).then(data => {
           sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
             if(orderId) {
-              takeProfitShort(coin, priceToPlus).then(data => {
-                //console.log(data);
-              })
-              stopShort(coin, priceToMinus)
-              console.log('---------------------------------------');
-              console.log(coinOpenPamp[coin][6]);
-              console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
-              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
-              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
-              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
-              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
-              console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
-              opn('https://www.binance.com/ru/futures/' + coin)
+              // takeProfitShort(coin, priceToPlus)
+              // futuresPositionRisk(coin, binance).then(data => {
+              //   let priceToMinus = data + (data * 0.005)
+              //   priceToMinus = priceToMinus.toFixed(numberOfSigns(oneClose))
+              //   stopShort(coin, priceToMinus)
+              // })
             }
           })
         })
