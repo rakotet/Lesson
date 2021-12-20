@@ -63,7 +63,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                         counterPosition++
                         //fs.writeFileSync('./symbolPamp.txt', '')
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
-                        console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition + '+++++++++++++++++++++++++++')
+                        console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition + ' +++++++++++++++++++++++++++')
                       })
                     })
                   }
@@ -78,7 +78,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                   counterPosition--
                   //fs.writeFileSync('./symbolPamp.txt', '')
                   statusOrder(symbol, orderId, binance).then(avgPrice => {
-                    console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                    console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + ' ---------------------------------')
                   })
                 })
               //}
