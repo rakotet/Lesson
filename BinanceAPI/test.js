@@ -12,7 +12,7 @@ const binance = new Binance().options({
 });
 
 
-module.exports = async function futuresDepth(symbol) { // книга заявок
+async function futuresDepth(symbol) { // книга заявок
   let coin = symbol
   try {
     let book = await binance.futuresDepth(coin, {limit: 1000});
@@ -35,10 +35,10 @@ module.exports = async function futuresDepth(symbol) { // книга заяво�
 
   setTimeout(() => {
     futuresDepth(coin)
-  }, 5000)
+  }, 1000)
 }
 
-//futuresDepth('BALUSDT')
+futuresDepth('ENSUSDT')
 
 // setInterval(() => {
 //   futuresDepth('DOGEUSDT').then(arr => {

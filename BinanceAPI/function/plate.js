@@ -9,7 +9,7 @@ module.exports = function plate(book, priceString) {
   let counter = 0
   let arr = []
   let nearestMaxShort = 0
-  const percent = 0.05
+  const percent = 0.03
   
   for(let i = 0; i < book.asks.length; i++) {
     if(Number(book.asks[i][1]) > n && Number(book.asks[i][0]) < (price + (price * percent))) {

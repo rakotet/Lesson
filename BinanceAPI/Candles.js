@@ -49,7 +49,7 @@ let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
-const numberMaxWork = 3
+const numberMaxWork = 10
 const numberOneTrade = 100
 
 const pnlPlusSell = 0.005 // Long (+ это +)
@@ -61,7 +61,7 @@ const pnlPlusBuy2 = 0.095
 const pnlPlusBuy3 = 0.02
 const pnlPlusBuy4 = 0.07
 
-const pnlMinusBuy = 0.0035 // +
+const pnlMinusBuy = 0.003 // +
 
 const wrapping = 0.002 // + или - к цене входа лимитного ордера
 const percent = 1
@@ -86,8 +86,8 @@ let i = 0
 
 // закрывает позиции
 //
-futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
-  pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
+// futuresPositionRiskPampSell(counterPosition, binance, sellMarketCoin, buyMarketCoin, statusOrder, pnlPlusSell, 
+//   pnlMinusSell, pnlPlusBuy, pnlMinusBuy, timeoutFuturesPositionRisk, profitCounter, currentProfitOne, fs, pnlPlusBuy1, pnlPlusBuy2, pnlPlusBuy3, pnlPlusBuy4, futuresCancelAll)
 
 //ищит по объемам
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -111,7 +111,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandles(coin, binance, opn, priceSymbolPamp)
           //i++
-          await delay(10)
+          //await delay(50)
         }
       }
       //console.log(i);
@@ -126,38 +126,38 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 
     setTimeout(() => {
       candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
-    }, 10000)
+    }, 6000)
 }
 
 async function getCandles(coin, binance, opn, priceSymbolPamp) { // получить свечи
   try{
-    let data = await binance.futuresCandles(coin, '3m', {limit: 5}) 
+    let data = await binance.futuresCandles(coin, '1m', {limit: 80}) 
     //console.log(data);
     // if(data.code) {
     //   console.log(data.code + ' - ' + data.msg);
     // }
     
-    // let volumeCandlesAll = 0
+    let volumeCandlesAll = 0
 
-    // for(let i = 0; i < data.length - 2; i++) {
-    //   let volume = Number(data[i][5]) // объём 1
-    //   volumeCandlesAll = volumeCandlesAll + volume
-    // }
+    for(let i = 0; i < data.length - 2; i++) {
+      let volume = Number(data[i][5]) // объём 1
+      volumeCandlesAll = volumeCandlesAll + volume
+    }
 
-    // let meanVolume = volumeCandlesAll / (data.length - 2)
+    let meanVolume = volumeCandlesAll / (data.length - 2)
 
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
 
-    if(true/*Number(data[data.length - 1][5]) >= (meanVolume * 1)*/) {
+    if(Number(data[data.length - 1][5]) >= (meanVolume * 10)) {
       if(openPrice > closePrice) {
         let differenceRed = (((openPrice - closePrice) / closePrice) * 100).toFixed(2)
 
-        if(differenceRed >= 1.5) {
+        if(differenceRed >= 1) {
           if(!timeOpenSymbolDamp[coin]) timeOpenSymbolDamp[coin] = 99
           if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
             console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n');
-            //opn('https://www.binance.com/ru/futures/' + coin)
+            opn('https://www.binance.com/ru/futures/' + coin)
             timeOpenSymbolDamp[coin] = Number(new Date().getMinutes())
           }
         }
@@ -165,7 +165,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
       } else {
         let differenceGreen = (((closePrice - openPrice) / closePrice) * 100).toFixed(2)
 
-        if(differenceGreen >= 1.5) {
+        if(differenceGreen >= 1) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
           if(coinOpenPamp[coin][0] === 0) {
             if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
@@ -177,10 +177,10 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                   coinOpenPamp[coin][2] = Number((new Date().getTime() / 1000).toFixed()) // флаг времени пампа в секундах
                   coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
                   counterWork++
-                  priceSymbolPamp(coin) 
+                  //priceSymbolPamp(coin) 
                   coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                   //futuresDepth(coin)
-                  //opn('https://www.binance.com/ru/futures/' + coin)
+                  opn('https://www.binance.com/ru/futures/' + coin)
                 }
               })
             } 
@@ -258,7 +258,7 @@ async function priceSymbolPamp(symbol) {
     }
 
     let impulsPercent = (((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2)
-    let minKorrektion = (impulsPercent / 2.6) // возможно 2.1 - 2.3
+    let minKorrektion = (impulsPercent / 2) // возможно 2.1 - 2.3
 
     if(minKorrektion > 1.5) minKorrektion = 1.5
 
@@ -282,7 +282,7 @@ async function priceSymbolPamp(symbol) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - Вышли из ф-и, коррекция завершилась и была не достаточной для нас - ' + coin + ' - counterWork -  ' + counterWork + '\n');
     }  
 
-    if((((twoOpen - twoClose) >= (twoOpen * 0.0015)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
+    if((((twoOpen - twoClose) >= (twoOpen * 0.001)) && (((oneOpen - oneClose) >= (oneOpen * 0.001)) && ((oneOpen - oneClose) < (oneOpen * 0.004)))
     || (((oneOpen - oneClose) >= (oneOpen * 0.0015)) && ((oneOpen - oneClose) < (oneOpen * 0.004))) && ((twoClose - twoOpen) >= (twoOpen * 0.015))) && (percentOneCloseTakeProfit >= 0.4)) {
       
       cancell = false
@@ -304,20 +304,20 @@ async function priceSymbolPamp(symbol) {
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
       opn('https://www.binance.com/ru/futures/' + coin)
 
-      futuressHoulder(coin, 10, binance).then(data => {
-        futuresMarginType(coin, binance).then(data => {
-          sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
-            if(orderId) {
-              // takeProfitShort(coin, priceToPlus)
-              // futuresPositionRisk(coin, binance).then(data => {
-              //   let priceToMinus = data + (data * 0.005)
-              //   priceToMinus = priceToMinus.toFixed(numberOfSigns(oneClose))
-              //   stopShort(coin, priceToMinus)
-              // })
-            }
-          })
-        })
-      })     
+      // futuressHoulder(coin, 10, binance).then(data => {
+      //   futuresMarginType(coin, binance).then(data => {
+      //     sellMarketCoin(coin, numberCoinKey, binance).then(orderId => {
+      //       if(orderId) {
+      //         // takeProfitShort(coin, priceToPlus)
+      //         // futuresPositionRisk(coin, binance).then(data => {
+      //         //   let priceToMinus = data + (data * 0.005)
+      //         //   priceToMinus = priceToMinus.toFixed(numberOfSigns(oneClose))
+      //         //   stopShort(coin, priceToMinus)
+      //         // })
+      //       }
+      //     })
+      //   })
+      // })     
     }
 
   } catch(e) {

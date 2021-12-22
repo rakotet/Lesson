@@ -14,6 +14,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
 
           positionCounter++
 
+          let unRealizedProfit = Number(obj['unRealizedProfit'])
           let entryPrice = Number(obj['entryPrice']) // цена входа в позицию
           let markPrice = Number(obj['markPrice']) // текущая цена маркировки
           let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
@@ -63,7 +64,9 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                         counterPosition++
                         //fs.writeFileSync('./symbolPamp.txt', '')
                         statusOrder(symbol, orderId, binance).then(avgPrice => {
-                        console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition + ' +++++++++++++++++++++++++++')
+                        console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + '  в плюс: ' + unRealizedProfit + ';  ' + counterPosition + ' +++++++++++++++++++++++++++')
+                        pribl = pribl + unRealizedProfit
+                        console.log('Общая прибыль: ' + pribl + '\n');
                       })
                     })
                   }
@@ -78,7 +81,9 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                   counterPosition--
                   //fs.writeFileSync('./symbolPamp.txt', '')
                   statusOrder(symbol, orderId, binance).then(avgPrice => {
-                    console.log(new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + ' ---------------------------------')
+                    console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп: ' + symbol + ' По цене: ' + avgPrice + '  в минус: ' + unRealizedProfit + ';  ' + counterPosition + ' ---------------------------------')
+                    pribl = pribl + unRealizedProfit
+                    console.log('Общая прибыль: ' + pribl + '\n');
                   })
                 })
               //}
@@ -124,7 +129,9 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                       counterPosition++
                       //futuresCancelAll(symbol, binance)
                       statusOrder(symbol, orderId, binance).then(avgPrice => {
-                      console.log(new Date().toLocaleTimeString() + ' Продали Дамп: ' + symbol + ' По цене: ' + avgPrice + ' - в плюс: ' + counterPosition)
+                      console.log('\n' + new Date().toLocaleTimeString() + ' Продали Дамп: ' + symbol + ' По цене: ' + avgPrice + '  в плюс: ' + unRealizedProfit + ';  ' + counterPosition + ' +++++++++++++++++++++++++++')
+                      pribl = pribl + unRealizedProfit
+                      console.log('Общая прибыль: ' + pribl + '\n');
                     })
                   })
                 }
@@ -137,7 +144,9 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
                 dokupkaCounter[symbol] = 0
                 counterPosition--
                 statusOrder(symbol, orderId, binance).then(avgPrice => {
-                  console.log(new Date().toLocaleTimeString() + ' Продали Дамп: ' + symbol + ' По цене: ' + avgPrice + ' - в минус: ' + counterPosition + '---------------------------------')
+                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Дамп: ' + symbol + ' По цене: ' + avgPrice + '  в минус: ' + unRealizedProfit + ';  ' + counterPosition + '---------------------------------')
+                  pribl = pribl + unRealizedProfit
+                  console.log('Общая прибыль: ' + pribl + '\n');
                 })
               })
             }
@@ -161,6 +170,7 @@ module.exports = async function futuresPositionRiskPampSell(counterPosition, bin
   }
 
   let positionCounter = 0
+  let pribl = 0
 
   const counterProebObj = {}
   const dokupkaCounter = {}
