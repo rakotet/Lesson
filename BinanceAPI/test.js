@@ -1,9 +1,10 @@
 const balanceFiat = require('./function/balanceFiat')
 const numberOfSigns = require('./function/numberOfSigns')
-const plate = require('./function/plate')
+//const plate = require('./function/plate')
 //let fapi = 'https://www.binance.com/futures/';
 let fapi = 'https://fapi.binance.com/fapi/';
 const delay = ms => new Promise(res => setTimeout(res, ms));
+const opn = require('opn')
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
@@ -11,8 +12,50 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
+let arrr = []
+let iii = 0
 
-async function futuresDepth(symbol) { // книга заявок
+candlesOpenPamp()
+
+async function candlesOpenPamp() {
+  try {
+      let candlesSymboldata = await binance.futuresPrices() 
+  
+      if(candlesSymboldata.code) {
+        console.log(candlesSymboldata.code + ' - ' + candlesSymboldata.msg);
+        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - candlesOpenPamp')
+      }
+
+      for(let coin in candlesSymboldata) {
+        if((Number(candlesSymboldata[coin]) < 100) && coin.endsWith('USDT')) {
+          futuresDepth(coin, iii)
+          iii++
+          await delay(400)
+        }
+      }
+
+      await delay(2000)
+      console.log(new Date().toLocaleTimeString() + ' - конец цикла');
+      arrr.sort((a, b) => b[1] - a[1]);
+      console.log(new Date().toLocaleTimeString() + ' - ' + arrr[arrr.length - 1][0] + ' - ' + 'Верх - ' + arrr[arrr.length - 1][1] + ' - цена ' + arrr[arrr.length - 1][3]);
+      opn('https://www.binance.com/ru/futures/' + arrr[arrr.length - 1][0])
+      arrr.sort((a, b) => b[2] - a[2]);
+      console.log(new Date().toLocaleTimeString() + ' - ' + arrr[arrr.length - 1][0] + ' - ' + 'Низ - ' + arrr[arrr.length - 1][2] + ' - цена ' + arrr[arrr.length - 1][4]);
+      opn('https://www.binance.com/ru/futures/' + arrr[arrr.length - 1][0])
+
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'candlesOpenPamp');
+  }
+
+    //console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
+
+    setTimeout(() => {
+      candlesOpenPamp()
+    }, 180000)
+}
+
+async function futuresDepth(symbol, iii) { // книга заявок
   let coin = symbol
   try {
     let book = await binance.futuresDepth(coin, {limit: 1000});
@@ -25,20 +68,60 @@ async function futuresDepth(symbol) { // книга заявок
       console.log(price.code + ' - ' + price.msg);
     }
 
-    plate(book, price)
+    plate(book, price, iii)
 
-    
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresDepth');
   }
 
-  setTimeout(() => {
-    futuresDepth(coin)
-  }, 1000)
 }
 
-futuresDepth('ENSUSDT')
+ //futuresDepth('ENSUSDT')
+
+ function plate(book, priceString, iii) {
+  let price = Number(priceString.price)
+
+  let n = 0
+  let arr = []
+  const percent = 0.10
+  
+  for(let i = 0; i < book.asks.length; i++) {
+    if(Number(book.asks[i][1]) > n && Number(book.asks[i][0]) < (price + (price * percent))) {
+      n = Number(book.asks[i][1])
+      arr[0] = book.asks[i]
+    }
+  }
+
+  
+  ////////////////////////////////////////////
+
+  let m = 0
+  let arr2 = []
+  
+  for(let i = 0; i < book.bids.length; i++) {
+    if(Number(book.bids[i][1]) > m && Number(book.bids[i][0]) > (price - (price * percent))) {
+      m = Number(book.bids[i][1])
+      arr2[0] = book.bids[i]
+    }
+  }
+
+
+  let j = Number((((Number(arr[0][0]) - price) / price) * 100).toFixed(2))
+  let j1 = Number((((price - Number(arr2[0][0])) / price) * 100).toFixed(2))
+
+  arrr[iii] = [priceString.symbol, j, j1, Number(arr[0][0]), Number(arr2[0][0])]
+
+  // if(j <= 0.5) {
+  //   console.log(new Date().toLocaleTimeString() + ' - ' + priceString.symbol + ' - До Верхней плиты - ' + j);
+  // }
+
+  // if(j1 <= 0.5) {
+  //   console.log(new Date().toLocaleTimeString() + ' - ' + priceString.symbol + ' - До Нижней плиты - ' + j1);
+  // }
+
+
+}
 
 // setInterval(() => {
 //   futuresDepth('DOGEUSDT').then(arr => {
