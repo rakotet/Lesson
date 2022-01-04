@@ -49,7 +49,7 @@ let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
-const numberMaxWork = 3
+const numberMaxWork = 10
 const numberOneTrade = 100
 
 const pnlPlusSell = 0.005 // Long (+ это +)
@@ -131,7 +131,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 
 async function getCandles(coin, binance, opn, priceSymbolPamp) { // получить свечи
   try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
+    let data = await binance.futuresCandles(coin, '3m', {limit: 60}) 
     //console.log(data);
     // if(data.code) {
     //   console.log(data.code + ' - ' + data.msg);
@@ -149,7 +149,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
 
-    if(Number(data[data.length - 1][5]) >= (meanVolume * 5)) {
+    if(Number(data[data.length - 1][5]) >= (meanVolume * 2)) {
       if(openPrice > closePrice) {
         let differenceRed = (((openPrice - closePrice) / closePrice) * 100).toFixed(2)
 
@@ -177,7 +177,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                   coinOpenPamp[coin][2] = Number((new Date().getTime() / 1000).toFixed()) // флаг времени пампа в секундах
                   coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
                   counterWork++
-                  priceSymbolPamp(coin) 
+                  //priceSymbolPamp(coin) 
                   coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                   //futuresDepth(coin)
                   opn('https://www.binance.com/ru/futures/' + coin)
@@ -285,19 +285,22 @@ async function priceSymbolPamp(symbol) {
     let redOne = impulsMaxPrice - oneClose
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
 
-    if(((((redOne / impulsPrice) * 100) > 23.6) && (redOne > 0)) && (percentOneCloseTakeProfit >= 0.2)) {
+    if(true/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.001)) && ((oneOpen - oneClose) > (oneOpen * 0.001)))) 
+    && (percentOneCloseTakeProfit >= 0.2)*/) {
       
       cancell = false
       counterWork--
-      coinOpenPamp[coin][0] = 0
+      //coinOpenPamp[coin][0] = 0
 
       let numberCoinKey = (numberOneTrade / oneClose).toFixed();
       let priceStopMarketShort = (impulsMaxPrice - (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose))
       let priceStopMarketLong = (impulsMaxPrice + (impulsMaxPrice * 0.006)).toFixed(numberOfSigns(oneClose))
-      let priceToPlus = (impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose))
-      let priceToMinus = (impulsMaxPrice - (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose))
+      let priceToPlus = (impulsMaxPrice - (impulsPrice * 0.55)).toFixed(numberOfSigns(oneClose))
+      let priceToMinus = (impulsMaxPrice - (impulsMaxPrice * 0.003)).toFixed(numberOfSigns(oneClose))
       let priceToLimitShort = (impulsMaxPrice - (impulsPrice * 0.25)).toFixed(numberOfSigns(oneClose))
-      let longProfit = (impulsMaxPrice + (impulsMaxPrice * 0.008)).toFixed(numberOfSigns(oneClose))
+      let longProfit = (impulsMaxPrice + (impulsMaxPrice * 0.005)).toFixed(numberOfSigns(oneClose))
+      let longStop = (impulsMaxPrice - (impulsPrice * 0.7)).toFixed(numberOfSigns(oneClose))
+      let longPrice = (impulsMaxPrice - (impulsPrice * 0.24)).toFixed(numberOfSigns(oneClose))
       
       console.log('---------------------------------------');
       console.log(coinOpenPamp[coin][6]);
@@ -313,9 +316,12 @@ async function priceSymbolPamp(symbol) {
       futuressHoulder(coin, 10, binance).then(data => {
         futuresMarginType(coin, binance).then(data => {
           // sellCoin(coin, numberCoinKey, priceToLimitShort, binance)
-          sellMarketCoin(coin, numberCoinKey)
-          takeProfitShort(coin, priceToPlus)
-          stopShort(coin, priceToMinus)
+          // sellMarketCoin(coin, numberCoinKey, binance)
+          // takeProfitShort(coin, priceToPlus)
+          // stopShort(coin, priceToMinus)
+          buyCoin(coin, numberCoinKey, longPrice, binance)
+          takeProfitLong(coin, longProfit)
+          stopLong(coin, longStop)
         })
       })     
     }
@@ -422,3 +428,18 @@ async function takeProfitLong(coin, price) {
     console.log(new Date().toLocaleTimeString() + ' - ' + 'takeProfitLong');
   }
 }
+
+async function stopLong(coin, price) { 
+  try {
+    let data = await binance.promiseRequest( 'v1/order', {symbol: coin, side: 'SELL', type: 'STOP_MARKET', timeInForce: 'GTC', stopPrice: price, closePosition: 'true'}, { base:fapi, type:'TRADE', method:'POST' } ) 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
+  
+    return data
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'stopShort');
+  }
+}
+
