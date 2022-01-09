@@ -29,7 +29,7 @@ const binance = new Binance().options({
 async function stopShort() { 
   try {
     for(let i = 1; i > 0; i++) {
-      let data = await binance.promiseRequest( 'detail?productId=171911173293009920&number=1', false, { base:fapi, type:'TRADE', method:'GET' } ) 
+      let data = await binance.promiseRequest( 'detail?productId=173304848325765120&number=1', false, { base:fapi, type:'TRADE', method:'GET' } ) 
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
       }

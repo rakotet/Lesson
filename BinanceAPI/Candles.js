@@ -131,7 +131,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 
 async function getCandles(coin, binance, opn, priceSymbolPamp) { // получить свечи
   try{
-    let data = await binance.futuresCandles(coin, '3m', {limit: 60}) 
+    let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
     //console.log(data);
     // if(data.code) {
     //   console.log(data.code + ' - ' + data.msg);
@@ -165,7 +165,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
       } else {
         let differenceGreen = (((closePrice - openPrice) / closePrice) * 100).toFixed(2)
 
-        if(differenceGreen >= 1.5) {
+        if(differenceGreen >= 1) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
           if(coinOpenPamp[coin][0] === 0) {
             if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
