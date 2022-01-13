@@ -301,7 +301,7 @@ async function priceSymbolPamp(symbol) {
     if(coinOpenPamp[coin][5] === 0) {
       console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
       console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
@@ -340,8 +340,8 @@ async function priceSymbolPamp(symbol) {
       let priceToPlus = (impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose))
       let priceToPlus2 = (impulsMaxPrice - (impulsPrice * 0.45)).toFixed(numberOfSigns(oneClose))
       let priceToPlus3 = (impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose))
-      let priceToMinus = (impulsMaxPrice + (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose))
-      let priceToMinus2 = (impulsMaxPrice + (impulsMaxPrice * 0.06)).toFixed(numberOfSigns(oneClose))
+      let priceToMinus = (impulsMaxPrice + (impulsMaxPrice * 0.002)).toFixed(numberOfSigns(oneClose))
+      let priceToMinus2 = (impulsMaxPrice + (impulsMaxPrice * 0.005)).toFixed(numberOfSigns(oneClose))
       let priceToLimitShort = (impulsMaxPrice - (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose))
       let longProfit = (impulsMaxPrice + (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose))
       let longStop = (impulsMaxPrice - (impulsPrice * 0.40)).toFixed(numberOfSigns(oneClose))
@@ -373,7 +373,7 @@ async function priceSymbolPamp(symbol) {
       console.log(coinOpenPamp[coin][6]);
       console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
       console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
@@ -441,7 +441,9 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
     let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
 
     if(fibaObj[coin][1] === 0) {
-      console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop + '\n');
+      console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f0 - ' + f0);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f100 - ' + f100 + '\n');
       fibaObj[coin][1] = 1
     }
 
