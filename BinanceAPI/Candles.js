@@ -322,12 +322,17 @@ async function priceSymbolPamp(symbol) {
 
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
     && (percentOneCloseTakeProfit >= 0.3)*/
-    ((((redOne / impulsPrice) * 100) >= 7) && (((redOne / impulsPrice) * 100) <= 17) && (redOne > 0)) 
+    ((((redOne / impulsPrice) * 100) >= 10) && (((redOne / impulsPrice) * 100) <= 17) && (redOne > 0)) 
     || (candlesPercentOne >= 1.2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen)) {
       
       cancell = false
       // counterWork--
       // coinOpenPamp[coin][0] = 0
+
+      let flagImpuls = 0
+      if((candlesPercentOne >= 1.2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen)) {
+        flagImpuls = 1
+      }
 
       let numberCoinKey = (numberOneTrade / oneClose).toFixed();
       let priceStopMarketShort = (impulsMaxPrice - (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose))
@@ -336,6 +341,7 @@ async function priceSymbolPamp(symbol) {
       let priceToPlus2 = (impulsMaxPrice - (impulsPrice * 0.45)).toFixed(numberOfSigns(oneClose))
       let priceToPlus3 = (impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose))
       let priceToMinus = (impulsMaxPrice + (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose))
+      let priceToMinus2 = (impulsMaxPrice + (impulsMaxPrice * 0.06)).toFixed(numberOfSigns(oneClose))
       let priceToLimitShort = (impulsMaxPrice - (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose))
       let longProfit = (impulsMaxPrice + (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose))
       let longStop = (impulsMaxPrice - (impulsPrice * 0.40)).toFixed(numberOfSigns(oneClose))
@@ -371,15 +377,18 @@ async function priceSymbolPamp(symbol) {
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
       // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
       console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+      console.log(new Date().toLocaleTimeString() + ' - Вошли в сделку по правилу - ' + flagImpuls);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
       //opn('https://www.binance.com/ru/futures/' + coin)
 
       futuressHoulder(coin, 10, binance).then(data => {
         futuresMarginType(coin, binance).then(data => {
-          sellMarketCoin(coin, numberCoinKey, binance).then(data => {
-            if(data) {
+          sellMarketCoin(coin, numberCoinKey, binance, flagImpuls).then(data => {
+            if(data[0]) {
               fibaObj[coin] = [0, 0, 0, 0]
-              fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus, f78, t1, t2, t3, t4, t5, f100, f161)
+              if(data[1]) {
+                fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus2, f78, t1, t2, t3, t4, t5, f100, f161)
+              } else fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus, f78, t1, t2, t3, t4, t5, f100, f161)
             }
           })
 
