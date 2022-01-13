@@ -15,7 +15,7 @@ const binance = new Binance().options({
 let arrr = []
 let iii = 0
 
-candlesOpenPamp()
+//candlesOpenPamp()
 
 async function candlesOpenPamp() {
   try {
@@ -75,16 +75,19 @@ async function futuresDepth(symbol, iii) { // книга заявок
     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresDepth');
   }
 
+  setTimeout(() => {
+    futuresDepth(coin, iii)
+  }, 2000)
 }
 
- //futuresDepth('ENSUSDT')
+futuresDepth('RSRUSDT', iii)
 
  function plate(book, priceString, iii) {
   let price = Number(priceString.price)
 
   let n = 0
   let arr = []
-  const percent = 0.10
+  const percent = 0.001
   
   for(let i = 0; i < book.asks.length; i++) {
     if(Number(book.asks[i][1]) > n && Number(book.asks[i][0]) < (price + (price * percent))) {
@@ -106,6 +109,9 @@ async function futuresDepth(symbol, iii) { // книга заявок
     }
   }
 
+  console.log(arr[0]);
+  console.log(arr2[0]);
+  console.log('-----------------');
 
   let j = Number((((Number(arr[0][0]) - price) / price) * 100).toFixed(2))
   let j1 = Number((((price - Number(arr2[0][0])) / price) * 100).toFixed(2))
