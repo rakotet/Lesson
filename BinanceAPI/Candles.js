@@ -52,8 +52,8 @@ let coinOpenPamp = {}
 let candlesGreen = {}
 let fibaObj = {}
 let pribl = 0
-const numberMaxWork = 1
-const numberOneTrade = 50
+const numberMaxWork = 3
+const numberOneTrade = 10
 
 const pnlPlusSell = 0.005 // Long (+ это +)
 const pnlMinusSell = 0.005
@@ -323,8 +323,8 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let down = 8
     let down2 = 15
     if(impulsMinus) {
-      down = 31
-      down2 = 35
+      down = 15
+      down2 = 20
     }
 
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
@@ -441,6 +441,8 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
               })
             }
           })
+
+          await delay(10000)
         }
 
         if(markPrice < (entryPrice - (entryPrice * 0.02))) {
