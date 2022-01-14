@@ -204,7 +204,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                     console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
                     coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
                     coinOpenPamp[coin][1] = closePrice // флаг текущей цены пампа
-                    coinOpenPamp[coin][2] = Number((new Date().getTime() / 1000).toFixed()) // флаг времени пампа в секундах
+                    coinOpenPamp[coin][2] = 0 // счетчик входа по большой 1.2 свечи
                     coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
                     counterWork++
                     priceSymbolPamp(coin) 
@@ -322,32 +322,14 @@ async function priceSymbolPamp(symbol) {
 
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
     && (percentOneCloseTakeProfit >= 0.3)*/
-    ((((redOne / impulsPrice) * 100) >= 10) && (((redOne / impulsPrice) * 100) <= 17) && (redOne > 0)) 
-    || (candlesPercentOne >= 1.2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen)) {
+    ((((redOne / impulsPrice) * 100) >= 8) && (((redOne / impulsPrice) * 100) <= 15) && (redOne > 0)) 
+    || (candlesPercentOne >= 1.2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25)) {
       
-      cancell = false
       // counterWork--
       // coinOpenPamp[coin][0] = 0
 
-      let flagImpuls = 0
-      if((candlesPercentOne >= 1.2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen)) {
-        flagImpuls = 1
-      }
-
       let numberCoinKey = (numberOneTrade / oneClose).toFixed();
-      let priceStopMarketShort = (impulsMaxPrice - (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose))
-      let priceStopMarketLong = (impulsMaxPrice + (impulsMaxPrice * 0.006)).toFixed(numberOfSigns(oneClose))
-      let priceToPlus = (impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose))
-      let priceToPlus2 = (impulsMaxPrice - (impulsPrice * 0.45)).toFixed(numberOfSigns(oneClose))
-      let priceToPlus3 = (impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose))
       let priceToMinus = (impulsMaxPrice + (impulsMaxPrice * 0.002)).toFixed(numberOfSigns(oneClose))
-      let priceToMinus2 = (impulsMaxPrice + (impulsMaxPrice * 0.005)).toFixed(numberOfSigns(oneClose))
-      let priceToLimitShort = (impulsMaxPrice - (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose))
-      let longProfit = (impulsMaxPrice + (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose))
-      let longStop = (impulsMaxPrice - (impulsPrice * 0.40)).toFixed(numberOfSigns(oneClose))
-      let longPrice = (impulsMaxPrice - (impulsPrice * 0.15)).toFixed(numberOfSigns(oneClose))
-      let longPrice2 = (impulsMaxPrice - (impulsPrice * 0.44)).toFixed(numberOfSigns(oneClose))
-      let longPrice3 = (impulsMaxPrice - (impulsPrice * 0.64)).toFixed(numberOfSigns(oneClose))
 
       let f0 = impulsMaxPrice
       let f23 = (impulsMaxPrice - (impulsPrice * 0.23)).toFixed(numberOfSigns(oneClose))
@@ -364,52 +346,104 @@ async function priceSymbolPamp(symbol) {
       let t4 = (impulsMaxPrice - (impulsPrice * 0.71)).toFixed(numberOfSigns(oneClose))
       let t5 = (impulsMaxPrice - (impulsPrice * 0.90)).toFixed(numberOfSigns(oneClose))
 
-      // if((candlesPercentOne > 1.2) && (candlesPercentHighToClose > 10) && (oneClose > oneOpen) && (impulsCandlesLength < 4)) {
-      //   console.log('\n' + 'Второе правило' + '\n');
-      //   priceToPlus = (impulsMaxPrice - (impulsPrice * 0.46)).toFixed(numberOfSigns(oneClose))
-      // }
-      
-      console.log('---------------------------------------');
-      console.log(coinOpenPamp[coin][6]);
-      console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
-      console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-      console.log(new Date().toLocaleTimeString() + ' - Вошли в сделку по правилу - ' + flagImpuls);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
-      //opn('https://www.binance.com/ru/futures/' + coin)
+      let flagImpuls = 0
+      if((candlesPercentOne >= 1.2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25)) {
+        flagImpuls = 1
+      } else {
+        cancell = false
+      }
 
-      futuressHoulder(coin, 10, binance).then(data => {
-        futuresMarginType(coin, binance).then(data => {
-          sellMarketCoin(coin, numberCoinKey, binance, flagImpuls).then(data => {
-            if(data[0]) {
-              fibaObj[coin] = [0, 0, 0, 0]
-              if(data[1]) {
-                fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus2, f78, t1, t2, t3, t4, t5, f100, f161)
-              } else fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus, f78, t1, t2, t3, t4, t5, f100, f161)
+      if(flagImpuls) {
+        if(coinOpenPamp[coin][2] === 0) {
+          futuressHoulder(coin, 10, binance).then(data => {
+            futuresMarginType(coin, binance).then(data => {
+              sellMarketCoin(coin, numberCoinKey, binance).then(data => {
+                if(data) {
+                  console.log('---------------------------------------');
+                  console.log(new Date().toLocaleTimeString() + ' - Вошли в сделку по правилу БОЛЬШОЙ свечи - ' + flagImpuls);
+                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
+                }
+              })
+            })
+          })     
+          
+          coinOpenPamp[coin][2] = 1
+        }
+
+      } else {
+        if(coinOpenPamp[coin][2] === 1) {
+          fibaObj[coin] = [0, 0, 0, 0]
+          coinOpenPamp[coin][2] = 0
+          fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus, f78, t1, t2, t3, t4, t5, f100, f161)
+        } else {
+          futuressHoulder(coin, 10, binance).then(data => {
+            futuresMarginType(coin, binance).then(data => {
+              sellMarketCoin(coin, numberCoinKey, binance).then(data => {
+                if(data) {
+                  fibaObj[coin] = [0, 0, 0, 0]
+                  fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus, f78, t1, t2, t3, t4, t5, f100, f161)
+  
+                  console.log('---------------------------------------');
+                  console.log(coinOpenPamp[coin][6]);
+                  console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
+                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
+                  console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                  console.log(new Date().toLocaleTimeString() + ' - Вошли в сделку по правилу - ' + flagImpuls);
+                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
+                  //opn('https://www.binance.com/ru/futures/' + coin)
+                }
+              })
+            })
+          })     
+        }
+      }
+    } else {
+      if(coinOpenPamp[coin][2] === 1) {
+        let data = await binance.futuresPositionRisk({symbol: coin}) 
+  
+        if(data.code) {
+          console.log(data.code + ' - ' + data.msg);
+        }
+  
+        let unRealizedProfit = Number(data[0]['unRealizedProfit']) // профит в $
+        let entryPrice = Number(data[0]['entryPrice']) // цена входа в позицию
+        let markPrice = Number(data[0]['markPrice']) // текущая цена маркировки
+        let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
+        if(positionAmt < 0) {
+          positionAmt = positionAmt * (-1)
+        }
+
+        if(markPrice > (entryPrice + (entryPrice * 0.005))) {
+          buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+            if(orderId) {
+              coinOpenPamp[coin][2] = 0
+              statusOrder(coin, orderId, binance).then(avgPrice => {
+                console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'минус' + ': ' + unRealizedProfit + '; ' + '' + ' ' + '----------------')
+                console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                pribl = pribl + unRealizedProfit
+                console.log('Общая прибыль: ' + pribl + '\n');
+              })
             }
           })
+        }
 
-          // takeProfitShort(coin, priceToPlus)
-
-          // if(((((redOne / impulsPrice) * 100) >= 7) && (((redOne / impulsPrice) * 100) <= 17) && (redOne > 0))) {
-          //   stopShort(coin, priceToMinus)
-          // }
-
-          //stopMarketShort(coin, priceToLimitShort, numberCoinKey)
-          //sellCoin(coin, numberCoinKey, priceToLimitShort, binance)
-          // takeProfitShort(coin, priceToPlus2)
-          // takeProfitShort(coin, priceToPlus3)
-          //buyCoin(coin, numberCoinKey, longPrice, binance)
-          // buyCoin(coin, numberCoinKey, longPrice2, binance)
-          // buyCoin(coin, (numberCoinKey * 2), longPrice3, binance)
-          //buyMarketCoin(coin, numberCoinKey, binance)
-          //takeProfitLong(coin, longProfit)
-          //stopLong(coin, longStop)
-        })
-      })     
+        if(markPrice < (entryPrice - (entryPrice * 0.02))) {
+          buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+            if(orderId) {
+              coinOpenPamp[coin][2] = 0
+              cancell = false
+              counterWork--
+              coinOpenPamp[coin][0] = 0
+              statusOrder(coin, orderId, binance).then(avgPrice => {
+                console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'плюс' + ': ' + unRealizedProfit + '; ' + '' + ' ' + '++++++++++++++++++++')
+                console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                pribl = pribl + unRealizedProfit
+                console.log('Общая прибыль: ' + pribl + '\n');
+              })
+            }
+          })
+        }
+      }
     }
 
   } catch(e) {
@@ -442,8 +476,8 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
 
     if(fibaObj[coin][1] === 0) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f0 - ' + f0);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f100 - ' + f100 + '\n');
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Конец импульса цена - ' + f0);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Начало импульса цена - ' + f100 + '\n');
       fibaObj[coin][1] = 1
     }
 
@@ -455,6 +489,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       if(fibaObj[coin][0] === 0) {
         if(markPrice > stop) {
           buyFiba('МИНУС', '-------------------------')
+          priceSymbolPamp(coin)
         }
 
         if(markPrice < f23) {
@@ -463,8 +498,14 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
       if(fibaObj[coin][0] === 1) {
-        if((markPrice > f23) && (markPrice > (entryPrice - (entryPrice * 0.002)))) {
-          buyFiba('БЕЗУБЫТОК', '///////////////////////')
+        // if((markPrice > f23) && (markPrice > (entryPrice - (entryPrice * 0.002)))) {
+        //   buyFiba('БЕЗУБЫТОК', '///////////////////////')
+        //   priceSymbolPamp(coin, true)
+        // }
+
+        if(markPrice > stop) {
+          buyFiba('МИНУС', '-------------------------')
+          priceSymbolPamp(coin)
         }
 
         if(markPrice < f38) {
@@ -522,7 +563,11 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
         }
       }
 
-    } else {
+    } else if (positionAmt === 0) {
+      cancellFiba = false
+    }
+    
+    else if (positionAmt > 0) {
 
     }
 
@@ -532,8 +577,11 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
       cancellFiba = false
-      counterWork--
-      coinOpenPamp[coin][0] = 0
+
+      if(a === 'ПЛЮС') {
+        counterWork--
+        coinOpenPamp[coin][0] = 0
+      }
 
       buyMarketCoin(coin, positionAmt, binance).then(orderId => {
         if(orderId) {

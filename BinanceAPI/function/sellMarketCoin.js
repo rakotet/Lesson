@@ -1,4 +1,4 @@
-module.exports = async function sellMarketCoin(coin, number, binance, flag = 0) { // продать монетку по рынку
+module.exports = async function sellMarketCoin(coin, number, binance) { // продать монетку по рынку
     try {
       let data = await binance.futuresMarketSell(coin, Number(number)) 
       if(data.code) {
@@ -6,7 +6,7 @@ module.exports = async function sellMarketCoin(coin, number, binance, flag = 0) 
       }
     
       let orderId = data['orderId']
-      return [orderId, flag]
+      return orderId
     } catch(e) {
       console.log(e);
       console.log(new Date().toLocaleTimeString() + ' - ' + 'sellCoin');
