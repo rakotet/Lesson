@@ -323,8 +323,8 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let down = 8
     let down2 = 15
     if(impulsMinus) {
-      down = 10
-      down2 = 15
+      down = 24
+      down2 = 30
     }
 
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
@@ -339,7 +339,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       let priceToMinus = (impulsMaxPrice + (impulsMaxPrice * 0.003)).toFixed(numberOfSigns(oneClose))
 
       if(impulsMinus) {
-        priceToMinus = (impulsMaxPrice + (impulsPrice * 0.05)).toFixed(numberOfSigns(oneClose))
+        priceToMinus = (impulsMaxPrice - (impulsPrice * 0.05)).toFixed(numberOfSigns(oneClose))
       }
 
       let f0 = impulsMaxPrice
@@ -519,7 +519,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
         if((markPrice > f23) && (markPrice > (entryPrice - (entryPrice * 0.002)))) {
           buyFiba('БЕЗУБЫТОК', '///////////////////////')
           console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг - ' + coin + '\n')
-          tracking(coin, f100, f0, (Number(Date.now()) / 1000))
+          tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'БЕЗУБЫТОК')
         }
 
         // if(markPrice > stop) {
@@ -536,7 +536,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
         if((markPrice > f38) && (markPrice > t1)) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T1')
           console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг - ' + coin + '\n')
-          tracking(coin, f100, f0, (Number(Date.now()) / 1000))
+          tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'T1')
         }
 
         if(markPrice < f50) {
@@ -633,7 +633,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
   }
 }
 
-async function tracking(coin, f100, f0, date) { 
+async function tracking(coin, f100, f0, date, indF) { 
   let cancell = true
 
   try {
@@ -652,10 +652,10 @@ async function tracking(coin, f100, f0, date) {
     // let f78 = (f0 - (impulsPrice * 0.786)).toFixed(numberOfSigns(oneClose))
     
     if(oneClose > (f0 + (f0 * 0.003))) {
-      console.log('\n' + new Date().toLocaleTimeString() + 'ТРЕКИНГ: цена ушла ВЫШЕ f0 возможен Long - ' + coin + '\n');
+      console.log('\n' + new Date().toLocaleTimeString() + 'ТРЕКИНГ ' + indF + ': цена ушла ВЫШЕ f0 возможен Long - ' + coin + '\n');
       cancell = false
     } else if (oneClose < f50) {
-      console.log('\n' + new Date().toLocaleTimeString() + 'ТРЕКИНГ: цена ушла НИЖЕ f50 - ' + coin + '\n');
+      console.log('\n' + new Date().toLocaleTimeString() + 'ТРЕКИНГ ' + indF + ': цена ушла НИЖЕ f50 - ' + coin + '\n');
       cancell = false
     }
 
@@ -668,7 +668,7 @@ async function tracking(coin, f100, f0, date) {
     cancell = false
     counterWork--
     coinOpenPamp[coin][0] = 0
-    console.log('\n' + new Date().toLocaleTimeString() + 'ТРЕКИНГ: завершили работу ф-и! - ' + coin + ' - counterWork - ' + counterWork +  '\n');
+    console.log('\n' + new Date().toLocaleTimeString() + 'ТРЕКИНГ ' + indF + ': завершили работу ф-и! - ' + coin + ' - counterWork - ' + counterWork +  '\n');
   }
 
   if(cancell) {
