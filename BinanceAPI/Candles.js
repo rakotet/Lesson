@@ -297,13 +297,14 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
 
     let priceTakeProfit = impulsMaxPrice - (impulsMaxPrice * (minKorrektion / 100))
     let percentOneCloseTakeProfit = (((oneClose - priceTakeProfit) / oneClose) * 100).toFixed(2)
+    let trueMinusPlus = ((((((impulsMaxPrice + (impulsMaxPrice * 0.002)) - oneClose) / oneClose) * 100).toFixed(2)) <= percentOneCloseTakeProfit) && (percentOneCloseTakeProfit >= 0.5)
 
     if(coinOpenPamp[coin][5] === 0) {
       console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
-      // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
       console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
       coinOpenPamp[coin][5] = 1
     }
@@ -329,8 +330,8 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
 
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
     && (percentOneCloseTakeProfit >= 0.3)*/
-    ((((redOne / impulsPrice) * 100) >= down) && (((redOne / impulsPrice) * 100) <= down2) && (redOne > 0)) 
-    || (candlesPercentOne >= 1.5) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25)) {
+    (((((redOne / impulsPrice) * 100) >= down) && (((redOne / impulsPrice) * 100) <= down2) && (redOne > 0)) && trueMinusPlus) 
+    || ((candlesPercentOne >= 1.5) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
       
       // counterWork--
       // coinOpenPamp[coin][0] = 0
@@ -364,7 +365,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       let t5 = (impulsMaxPrice - (impulsPrice * 0.90)).toFixed(numberOfSigns(oneClose))
 
       let flagImpuls = 0
-      if((candlesPercentOne >= 1.5) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25)) {
+      if(((candlesPercentOne >= 1.5) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
         flagImpuls = 1
       } else {
         cancell = false
@@ -403,7 +404,10 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
                   console.log('---------------------------------------');
                   console.log(coinOpenPamp[coin][6]);
                   console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]) + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
+                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
+                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - priceTakeProfit - ' + priceTakeProfit);
+                  console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - percentOneCloseTakeProfit - ' + percentOneCloseTakeProfit);
                   console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
                   console.log(new Date().toLocaleTimeString() + ' - Вошли в сделку по правилу - ' + flagImpuls);
                   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
@@ -514,11 +518,12 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
       if(fibaObj[coin][0] === 1) {
-        if((markPrice > f23) && (markPrice >= f21)) {
-          // buyFiba('БЕЗУБЫТОК', '///////////////////////')
+        if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.002)))) {
+          buyFiba('БЕЗУБЫТОК', '///////////////////////')
           // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг БЕЗУБЫТОК - ' + coin + '\n')
           // tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'БЕЗУБЫТОК')
         }
+
 
         if(markPrice <= f38) {
           fibaObj[coin][0] = 2
@@ -529,8 +534,8 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       if(fibaObj[coin][0] === 2) {
         if((markPrice > f38) && (markPrice >= t1)) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T1')
-          console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг T1 - ' + coin + '\n')
-          tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'T1')
+          // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг T1 - ' + coin + '\n')
+          // tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'T1')
         }
 
         if(markPrice <= f50) {
@@ -605,7 +610,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
         })
       }
 
-      else if(markPrice < f21) {
+      else if(markPrice < (entryPrice - (entryPrice * 0.002))) {
         cancellFiba = false
         counterWork--
         coinOpenPamp[coin][0] = 0
@@ -628,11 +633,13 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
       cancellFiba = false
+      counterWork--
+      coinOpenPamp[coin][0] = 0
 
-      if(((a === 'ПЛЮС') && c !== 'T1') || (impulsMinus && (a !== 'БЕЗУБЫТОК' && c !== 'T1'))) {
-        counterWork--
-        coinOpenPamp[coin][0] = 0
-      }
+      // if(((a === 'ПЛЮС') && c !== 'T1') || (impulsMinus && (a !== 'БЕЗУБЫТОК' && c !== 'T1'))) {
+      //   counterWork--
+      //   coinOpenPamp[coin][0] = 0
+      // }
 
       buyMarketCoin(coin, positionAmt, binance).then(orderId => {
         if(orderId) {
@@ -645,14 +652,14 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
             }
             console.log('Общая прибыль: ' + pribl + '\n');
 
-            if(a === 'МИНУС') {
-              buyMarketCoin(coin, positionAmt, binance).then(orderId => {
-                if(orderId) {
-                  console.log('\n' + new Date().toLocaleTimeString() + ' Встали в ЛОНГ после минуса: ' + coin + ' - counterWork - ' + counterWork + '\n')
-                  fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4, t5, f100, f161, impulsMinus, f21)
-                }
-              })
-            }
+            // if(a === 'МИНУС') {
+            //   buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+            //     if(orderId) {
+            //       console.log('\n' + new Date().toLocaleTimeString() + ' Встали в ЛОНГ после минуса: ' + coin + ' - counterWork - ' + counterWork + '\n')
+            //       fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4, t5, f100, f161, impulsMinus, f21)
+            //     }
+            //   })
+            // }
           })
         }
       })
