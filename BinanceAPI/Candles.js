@@ -321,17 +321,22 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let candlesPercentOne = (((oneHigh - oneOpen) / oneOpen) * 100)
     let candlesPercentHighToClose = (((oneHigh - oneClose) / (oneHigh - oneOpen)) * 100)
+    let twoOpenTwoClose = twoOpen > twoClose
 
     let down = 8
     let down2 = 24
     if(impulsMinus) {
       down = 10
-      down2 = 15
+      down2 = 24
+    }
+
+    if(coinOpenPamp[coin][2] === 1) {
+      twoOpenTwoClose = true
     }
 
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
     && (percentOneCloseTakeProfit >= 0.3)*/
-    ((((((redOne / impulsPrice) * 100) >= down) && (((redOne / impulsPrice) * 100) <= down2) && (redOne > 0)) && trueMinusPlus) && (twoOpen > twoClose)) 
+    ((((((redOne / impulsPrice) * 100) >= down) && (((redOne / impulsPrice) * 100) <= down2) && (redOne > 0)) && trueMinusPlus) && twoOpenTwoClose) 
     || ((candlesPercentOne >= 1.5) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
       
       // counterWork--
@@ -440,10 +445,13 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
         }
 
         if(markPrice > (entryPrice + (entryPrice * 0.08))) {
+          coinOpenPamp[coin][2] = 0
+          cancell = false
+          counterWork--
+          coinOpenPamp[coin][0] = 0
           buyMarketCoin(coin, positionAmt, binance).then(orderId => {
             //await delay(10000)
             if(orderId) {
-              coinOpenPamp[coin][2] = 0
               statusOrder(coin, orderId, binance).then(avgPrice => {
                 console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'минус' + ': ' + unRealizedProfit + '; ' + '' + ' ' + '----------------')
                 console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
@@ -455,13 +463,13 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
         }
 
         if(markPrice < (entryPrice - (entryPrice * 0.02))) {
+          coinOpenPamp[coin][2] = 0
+          cancell = false
+          counterWork--
+          coinOpenPamp[coin][0] = 0
           buyMarketCoin(coin, positionAmt, binance).then(orderId => {
             //await delay(10000)
             if(orderId) {
-              coinOpenPamp[coin][2] = 0
-              cancell = false
-              counterWork--
-              coinOpenPamp[coin][0] = 0
               statusOrder(coin, orderId, binance).then(avgPrice => {
                 console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'плюс' + ': ' + unRealizedProfit + '; ' + '' + ' ' + '++++++++++++++++++++')
                 console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
