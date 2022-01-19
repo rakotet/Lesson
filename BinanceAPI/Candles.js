@@ -109,12 +109,12 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
         console.log(candlesSymboldata.code + ' - ' + candlesSymboldata.msg);
         throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - candlesOpenPamp')
       }
-
+      
       for(let coin in candlesSymboldata) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandles(coin, binance, opn, priceSymbolPamp)
           //i++
-          //await delay(50)
+          await delay(20)
         }
       }
       //console.log(i);
