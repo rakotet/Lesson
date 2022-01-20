@@ -53,7 +53,7 @@ let candlesGreen = {}
 let fibaObj = {}
 let pribl = 0
 const numberMaxWork = 2
-const numberOneTrade = 100
+const numberOneTrade = 10
 
 const pnlPlusSell = 0.005 // Long (+ это +)
 const pnlMinusSell = 0.005
@@ -211,7 +211,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                     coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                     timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                     //futuresDepth(coin)
-                    opn('https://www.binance.com/ru/futures/' + coin)
+                    //opn('https://www.binance.com/ru/futures/' + coin)
                   }
                 })
               }
@@ -443,19 +443,20 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
         if(positionAmt < 0) {
           positionAmt = positionAmt * (-1)
 
-          if(markPrice > (entryPrice + (entryPrice * 0.01))) {
-            console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи по правилу 1 процента минуса: ' + coin + '\n')
+          if(markPrice > (entryPrice + (entryPrice * 0.08))) {
+            console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи по правилу 8 процента минуса: ' + coin + '\n')
             coinOpenPamp[coin][2] = 0
             cancell = false
             counterWork--
             coinOpenPamp[coin][0] = 0
+            let unRealizedProfit2 = unRealizedProfit
             buyMarketCoin(coin, positionAmt, binance).then(orderId => {
               //await delay(10000)
               if(orderId) {
                 statusOrder(coin, orderId, binance).then(avgPrice => {
-                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'минус' + ': ' + unRealizedProfit + '; ' + '' + ' ' + '----------------')
+                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'минус' + ': ' + unRealizedProfit2 + '; ' + '' + ' ' + '----------------')
                   console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-                  pribl = pribl + unRealizedProfit
+                  pribl = pribl + unRealizedProfit2
                   console.log('Общая прибыль: ' + pribl + '\n');
                 })
               }
@@ -468,13 +469,14 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
             cancell = false
             counterWork--
             coinOpenPamp[coin][0] = 0
+            let unRealizedProfit2 = unRealizedProfit
             buyMarketCoin(coin, positionAmt, binance).then(orderId => {
               //await delay(10000)
               if(orderId) {
                 statusOrder(coin, orderId, binance).then(avgPrice => {
-                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'плюс' + ': ' + unRealizedProfit + '; ' + '' + ' ' + '++++++++++++++++++++')
+                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп БОЛЬШОЙ свечи: ' + coin + ' По цене: ' + avgPrice + '  в ' + 'плюс' + ': ' + unRealizedProfit2 + '; ' + '' + ' ' + '++++++++++++++++++++')
                   console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-                  pribl = pribl + unRealizedProfit
+                  pribl = pribl + unRealizedProfit2
                   console.log('Общая прибыль: ' + pribl + '\n');
                 })
               }
@@ -624,12 +626,13 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
         cancellFiba = false
         counterWork--
         coinOpenPamp[coin][0] = 0
+        let unRealizedProfit2 = unRealizedProfit
         sellMarketCoin(coin, positionAmt, binance).then(orderId => {
           if(orderId) {
             statusOrder(coin, orderId, binance).then(avgPrice => {
-              console.log('\n' + new Date().toLocaleTimeString() + ' Продали LONG: ' + coin + ' По цене: ' + avgPrice + '  в плюс: ' + unRealizedProfit + ' ++++++++++++++++++++')
+              console.log('\n' + new Date().toLocaleTimeString() + ' Продали LONG: ' + coin + ' По цене: ' + avgPrice + '  в плюс: ' + unRealizedProfit2 + ' ++++++++++++++++++++')
               console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-              pribl = pribl + unRealizedProfit
+              pribl = pribl + unRealizedProfit2
               console.log('Общая прибыль: ' + pribl + '\n');
             })
           }
@@ -640,12 +643,13 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
         cancellFiba = false
         counterWork--
         coinOpenPamp[coin][0] = 0
+        let unRealizedProfit2 = unRealizedProfit
         sellMarketCoin(coin, positionAmt, binance).then(orderId => {
           if(orderId) {
             statusOrder(coin, orderId, binance).then(avgPrice => {
-              console.log('\n' + new Date().toLocaleTimeString() + ' Продали LONG: ' + coin + ' По цене: ' + avgPrice + '  в минус: ' + unRealizedProfit + ' -----------------------')
+              console.log('\n' + new Date().toLocaleTimeString() + ' Продали LONG: ' + coin + ' По цене: ' + avgPrice + '  в минус: ' + unRealizedProfit2 + ' -----------------------')
               console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-              pribl = pribl + unRealizedProfit
+              pribl = pribl + unRealizedProfit2
               console.log('Общая прибыль: ' + pribl + '\n');
             })
           }
@@ -668,11 +672,12 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       // }
 
       buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+        let unRealizedProfit2 = unRealizedProfit
         if(orderId) {
           statusOrder(coin, orderId, binance).then(avgPrice => {
-            console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп: ' + coin + ' По цене: ' + avgPrice + '  в ' + a + ': ' + unRealizedProfit + '; ' + c + ' ' + b)
+            console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп: ' + coin + ' По цене: ' + avgPrice + '  в ' + a + ': ' + unRealizedProfit2 + '; ' + c + ' ' + b)
             console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-            pribl = pribl + unRealizedProfit
+            pribl = pribl + unRealizedProfit2
             if(a === 'МИНУС' && impulsMinus) {
               console.log('Остановили ф-ю после двух минусов, рынок оказался сильнее(((((((((((((((((((((((((((((((((((((((((');
             }
