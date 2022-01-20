@@ -53,7 +53,7 @@ let candlesGreen = {}
 let fibaObj = {}
 let pribl = 0
 const numberMaxWork = 2
-const numberOneTrade = 10
+const numberOneTrade = 100
 
 const pnlPlusSell = 0.005 // Long (+ это +)
 const pnlMinusSell = 0.005
@@ -211,7 +211,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                     coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                     timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                     //futuresDepth(coin)
-                    //opn('https://www.binance.com/ru/futures/' + coin)
+                    opn('https://www.binance.com/ru/futures/' + coin)
                   }
                 })
               }
@@ -325,10 +325,11 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
 
     let down = 5
     let down2 = 20
-    if(impulsMinus) {
-      down = 5
-      down2 = 20
-    }
+
+    // if(impulsMinus) {
+    //   down = 5
+    //   down2 = 20
+    // }
 
     if(coinOpenPamp[coin][2] === 1) {
       twoOpenTwoClose = true
@@ -515,7 +516,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
     //let markPrice = Number(data[0]['markPrice']) // текущая цена 
     let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
     let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
-    stop = (entryPrice + (entryPrice * 0.005))
+    stop = Number((entryPrice + (entryPrice * 0.003)).toFixed(numberOfSigns(markPrice)))
 
     if(fibaObj[coin][1] === 0) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop);
@@ -538,7 +539,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
       if(fibaObj[coin][0] === 1) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.002))) {
+        if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.002)))) {
           buyFiba('БЕЗУБЫТОК', '///////////////////////')
           // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг БЕЗУБЫТОК - ' + coin + '\n')
           // tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'БЕЗУБЫТОК')
