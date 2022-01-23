@@ -199,6 +199,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
           if(coinOpenPamp[coin][0] === 0) {
             if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
               if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
+                counterWork++
                 openPosition(coin).then(data => {
                   if(data) {
                     console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
@@ -206,12 +207,11 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                     coinOpenPamp[coin][1] = closePrice // флаг текущей цены пампа
                     coinOpenPamp[coin][2] = 0 // счетчик входа по большой 1.2 свечи
                     coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
-                    counterWork++
                     priceSymbolPamp(coin) 
                     coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                     timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                     //futuresDepth(coin)
-                    opn('https://www.binance.com/ru/futures/' + coin)
+                    //opn('https://www.binance.com/ru/futures/' + coin)
                   }
                 })
               }
@@ -314,7 +314,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let candlesPercentOne = (((oneHigh - oneOpen) / oneOpen) * 100)
     let candlesPercentHighToClose = (((oneHigh - oneClose) / (oneHigh - oneOpen)) * 100)
-    let twoOpenTwoClose = twoOpen > twoClose
+    let twoOpenTwoClose = (twoOpen > twoClose) && ((oneOpen - oneClose) >= (oneOpen * 0.0005))
 
     if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * 0.31))) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
@@ -340,7 +340,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
     && (percentOneCloseTakeProfit >= 0.3)*/
     ((((((redOne / impulsPrice) * 100) >= down) && (((redOne / impulsPrice) * 100) <= down2) && (redOne > 0)) && trueMinusPlus) && twoOpenTwoClose) 
-    || ((candlesPercentOne >= 1.4) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
+    || ((candlesPercentOne >= 2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
       
       // counterWork--
       // coinOpenPamp[coin][0] = 0
@@ -369,7 +369,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       let t5 = Number((impulsMaxPrice - (impulsPrice * 0.90)).toFixed(numberOfSigns(oneClose)))
 
       let flagImpuls = 0
-      if(((candlesPercentOne >= 1.4) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
+      if(((candlesPercentOne >= 2) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
         flagImpuls = 1
       } else {
         cancell = false
@@ -521,9 +521,9 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
     let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
 
     if(big) {
-      stop = Number((entryPrice + (entryPrice * 0.05)).toFixed(numberOfSigns(markPrice)))
+      stop = Number((entryPrice + (entryPrice * 0.02)).toFixed(numberOfSigns(markPrice)))
     } else {
-      stop = Number((entryPrice + (entryPrice * 0.005)).toFixed(numberOfSigns(markPrice)))
+      stop = Number((entryPrice + (entryPrice * 0.01)).toFixed(numberOfSigns(markPrice)))
     }
 
     if(fibaObj[coin][1] === 0) {
