@@ -55,7 +55,7 @@ let pribl = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 2 // количество одновременных сделок
-const numberOneTrade = 10 // сумма одной сделки
+const numberOneTrade = 100 // сумма одной сделки
 const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.4 // Минимальный процент профита при котором открываем сделку
@@ -493,11 +493,11 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
             })
           }
         } else if (positionAmt === 0) {
-          console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в блок БОЛЬШИХ свечей с пустой позицией: ' + coin + '\n')
-          coinOpenPamp[coin][2] = 0
-          cancell = false
-          counterWork--
-          coinOpenPamp[coin][0] = 0
+          // console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в блок БОЛЬШИХ свечей с пустой позицией: ' + coin + '\n')
+          // coinOpenPamp[coin][2] = 0
+          // cancell = false
+          // counterWork--
+          // coinOpenPamp[coin][0] = 0
         }
       }
     }
