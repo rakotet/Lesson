@@ -64,9 +64,9 @@ const closeSearch = 0.31 // Минимальный процент от импу�
 const constDown = 5 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
 const percentBigCandles = 1.5 // Минимальный процент свечи для захода в позицию по большой свечи (1.3 - 2)
-const minusBigCandles = 0.01 // Процент минуса после захода по большой свечи до растягивания фибы
-const plusBigCandles = 0.005 // Процент плюса после захода по большой свечи до растягивания фибы
-const stopPercentBig = 0.01 // Процент минуса после захода по большой свечи после растягивания фибы (1 - 2)
+const minusBigCandles = 0.05 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.01 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
 const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
 ///////////////////////
@@ -193,7 +193,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
 
-    if(true /*Number(data[data.length - 1][5]) >= (meanVolume * 1)*/) {
+    if(!(Number(data[data.length - 1][5]) >= (meanVolume * 50))) { // защита от МЕГА объёмов 
       if(openPrice > closePrice) {
         let differenceRed = Number((((openPrice - closePrice) / closePrice) * 100).toFixed(2))
 
@@ -229,6 +229,11 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
             } 
           }
         }
+      }
+    } else {
+      if(coin !== 'BTTUSDT') {
+        console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ ');
+        opn('https://www.binance.com/ru/futures/' + coin)
       }
     }
 
@@ -713,7 +718,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       //   counterWork--
       //   coinOpenPamp[coin][0] = 0
       // }
-
+y
       buyMarketCoin(coin, positionAmt, binance).then(orderId => {
         let unRealizedProfit2 = unRealizedProfit
         if(orderId) {
