@@ -54,19 +54,19 @@ let fibaObj = {}
 let pribl = 0
 
 /////////////////////// Управление ботом
-const numberMaxWork = 1 // количество одновременных сделок
-const numberOneTrade = 100 // сумма одной сделки
+const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
+const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const minProfitOpenTraid = 0.4 // Минимальный процент профита при котором открываем сделку
+const minProfitOpenTraid = 0.4 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
 const oneCandlesRed = 0.0005 // Минимальный размер первой красной свечи для открытия сделки
-const closeSearch = 0.31 // Минимальный процент от импульса для закрытия слежения
-const constDown = 10 // Минимальный процент от импульса для захода в позицию
+const closeSearch = 0.38 // Минимальный процент от импульса для закрытия слежения
+const constDown = 7 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
 const percentBigCandles = 1.5 // Минимальный процент свечи для захода в позицию по большой свечи (1.3 - 2)
-const minusBigCandles = 0.05 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.01 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
+const minusBigCandles = 0.01 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.005 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const stopPercentBig = 0.01 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
 const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = false // Включение или отключение 2х красных вконце для входа в позицию
 ///////////////////////
@@ -152,9 +152,9 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
   try{
     let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
     //console.log(data);
-    // if(data.code) {
-    //   console.log(data.code + ' - ' + data.msg);
-    // }
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+    }
 
     if(!candlesGreen[coin]) candlesGreen[coin] = 0
 
@@ -239,7 +239,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
 
   } catch(e) {
     // console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -360,8 +360,8 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     if(/*((((redOne / impulsPrice) * 100) > 15) && (redOne > 0) && (((twoOpen - twoClose) > (twoOpen * 0.0006)) && ((oneOpen - oneClose) > (oneOpen * 0.0006)))) 
     && (percentOneCloseTakeProfit >= 0.3)*/
     ((((((redOne / impulsPrice) * 100) >= down) && (((redOne / impulsPrice) * 100) <= down2) && (redOne > 0)) && trueMinusPlus) && twoOpenTwoClose) 
-    || ((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
-      
+    || ((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 5) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 30) && trueMinusPlus)) {
+      //opn('https://www.binance.com/ru/futures/' + coin)
       // counterWork--
       // coinOpenPamp[coin][0] = 0
 
@@ -383,20 +383,22 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       let f21 = Number((impulsMaxPrice - (impulsPrice * 0.05)).toFixed(numberOfSigns(oneClose)))
 
       let t1 = Number((impulsMaxPrice - (impulsPrice * 0.31)).toFixed(numberOfSigns(oneClose)))
-      let t2 = Number((impulsMaxPrice - (impulsPrice * 0.44)).toFixed(numberOfSigns(oneClose)))
+      let t2 = Number((impulsMaxPrice - (impulsPrice * 0.40)).toFixed(numberOfSigns(oneClose)))
       let t3 = Number((impulsMaxPrice - (impulsPrice * 0.56)).toFixed(numberOfSigns(oneClose)))
       let t4 = Number((impulsMaxPrice - (impulsPrice * 0.71)).toFixed(numberOfSigns(oneClose)))
       let t5 = Number((impulsMaxPrice - (impulsPrice * 0.90)).toFixed(numberOfSigns(oneClose)))
 
       let flagImpuls = 0
-      if(((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 10) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 25) && trueMinusPlus)) {
+      if(((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 5) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 30) && trueMinusPlus)) {
         flagImpuls = 1
       } else {
         cancell = false
       }
 
       if(flagImpuls) {
+        //console.log(new Date().toLocaleTimeString() + ' - ВЕРХ');
         if(coinOpenPamp[coin][2] === 0) {
+          //opn('https://www.binance.com/ru/futures/' + coin)
           futuressHoulder(coin, 10, binance).then(data => {
             futuresMarginType(coin, binance).then(data => {
               sellMarketCoin(coin, numberCoinKey, binance).then(data => {
@@ -461,6 +463,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
         let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
 
         if(positionAmt < 0) {
+          //console.log(new Date().toLocaleTimeString() + ' - НИЗ');
           positionAmt = positionAmt * (-1)
 
           if(markPrice > (entryPrice + (entryPrice * minusBigCandles))) {
@@ -562,7 +565,6 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
     if(positionAmt < 0) {
       if(fibaObj[coin][0] === 0) {
         if(markPrice > stop) {
-          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Возможно баг минуса - stop - ' + stop + ' - markPrice - ' + markPrice);
           buyFiba('МИНУС', '-------------------------')
           // if(!impulsMinus) priceSymbolPamp(coin, true)
         }
@@ -580,7 +582,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
             // if(!impulsMinus) priceSymbolPamp(coin, true)
           }
         } else {
-          if(percentOneCloseTakeProfit >= 1) {
+          if(percentOneCloseTakeProfit >= 2) {
             if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.003)))) {
               buyFiba('БЕЗУБЫТОК', '///////////////////////')
               // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг БЕЗУБЫТОК - ' + coin + '\n')
