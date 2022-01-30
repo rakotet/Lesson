@@ -55,7 +55,7 @@ let pribl = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 200 // сумма одной сделки (10 - 1000)
+const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 0.5 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.4 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
@@ -224,6 +224,17 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                 coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                 timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                 //priceSymbolPamp(coin) 
+                let numberCoinKey = Number((numberOneTrade / closePrice).toFixed())
+                // futuressHoulder(coin, 10, binance).then(data => {
+                //   futuresMarginType(coin, binance).then(data => {
+                //     buyMarketCoin(coin, numberCoinKey, binance).then(data => {
+                //       if(data) {
+                //         console.log('---------------------------------------');
+                //         console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' открыли сделку' + '\n' + '---------------------------------------');
+                //       }
+                //     })
+                //   })
+                // })     
                 opn('https://www.binance.com/ru/futures/' + coin)
               }
             } 
