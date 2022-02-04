@@ -69,6 +69,7 @@ const plusBigCandles = 0.004 // Процент плюса после заход�
 const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
 const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
+const houlderCandles = 20 // Плечо сделки
 ///////////////////////
 
 const pnlPlusSell = 0.005 // Long (+ это +)
@@ -326,19 +327,26 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       coinOpenPamp[coin][5] = 1
     }
 
-    let shadowCandles = false
+    let shadowCandlesTwo = false
+    let shadowCandlesOne = false
 
     if(twoOpen > twoClose) {
-      if((twoOpen - twoClose) < (twoHigh - twoOpen)) shadowCandles = true
+      if((twoOpen - twoClose) < (twoHigh - twoOpen)) shadowCandlesTwo = true
     } else if (twoOpen < twoClose) {
-      if((twoClose - twoOpen) < (twoHigh - twoClose)) shadowCandles = true
+      if((twoClose - twoOpen) < (twoHigh - twoClose)) shadowCandlesTwo = true
+    }
+
+    if(oneOpen > oneClose) {
+      if(((oneOpen - oneClose) * 2) < (oneHigh - oneOpen)) shadowCandlesOne = true
+    } else if (oneOpen < oneClose) {
+      if(((oneClose - oneOpen) * 2) < (oneHigh - oneClose)) shadowCandlesOne = true
     }
 
     let redOne = impulsMaxPrice - oneClose
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let candlesPercentOne = (((oneHigh - oneOpen) / oneOpen) * 100)
     let candlesPercentHighToClose = (((oneHigh - oneClose) / (oneHigh - oneOpen)) * 100)
-    let twoOpenTwoClose = (/*(twoOpen > twoClose) &&*/ shadowCandles) && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed))
+    let twoOpenTwoClose = (shadowCandlesTwo && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed))) || (shadowCandlesOne && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed)))
 
     if(!onTwoCandles) {
       twoOpenTwoClose = true
@@ -410,7 +418,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
         //console.log(new Date().toLocaleTimeString() + ' - ВЕРХ');
         if(coinOpenPamp[coin][2] === 0) {
           //opn('https://www.binance.com/ru/futures/' + coin)
-          futuressHoulder(coin, 10, binance).then(data => {
+          futuressHoulder(coin, houlderCandles, binance).then(data => {
             futuresMarginType(coin, binance).then(data => {
               sellMarketCoin(coin, numberCoinKey, binance).then(data => {
                 if(data) {
@@ -434,7 +442,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
           coinOpenPamp[coin][2] = 0
           fibaTraid(coin, f0, f23, f38, f50, f60, priceToMinus, f78, t1, t2, t3, t4, t5, f100, f161, impulsMinus, f21, true, percentOneCloseTakeProfit)
         } else {
-          futuressHoulder(coin, 10, binance).then(data => {
+          futuressHoulder(coin, houlderCandles, binance).then(data => {
             futuresMarginType(coin, binance).then(data => {
               sellMarketCoin(coin, numberCoinKey, binance).then(data => {
                 if(data) {
@@ -676,10 +684,10 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
     } else if (positionAmt === 0) {
-      console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в fibaTraid с пустой позицией: ' + coin + '\n')
       cancellFiba = false
       counterWork--
       coinOpenPamp[coin][0] = 0
+      console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в fibaTraid с пустой позицией: ' + coin + ' counterWork - ' + counterWork + '\n')
     }
     
     else if (positionAmt > 0) {
