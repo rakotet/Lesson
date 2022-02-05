@@ -59,7 +59,8 @@ const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
-const oneCandlesRed = 0.0005 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
+const oneCandlesRed = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
+const oneCandlesRed2 = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
 const closeSearch = 0.23 // Минимальный процент от импульса для закрытия слежения
 const constDown = 7 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
@@ -331,9 +332,9 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let shadowCandlesOne = false
 
     if(twoOpen > twoClose) {
-      if((twoOpen - twoClose) < (twoHigh - twoOpen)) shadowCandlesTwo = true
+      if(((twoOpen - twoClose) * 2) < (twoHigh - twoOpen)) shadowCandlesTwo = true
     } else if (twoOpen < twoClose) {
-      if((twoClose - twoOpen) < (twoHigh - twoClose)) shadowCandlesTwo = true
+      if(((twoClose - twoOpen) * 2) < (twoHigh - twoClose)) shadowCandlesTwo = true
     }
 
     if(oneOpen > oneClose) {
@@ -346,7 +347,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let candlesPercentOne = (((oneHigh - oneOpen) / oneOpen) * 100)
     let candlesPercentHighToClose = (((oneHigh - oneClose) / (oneHigh - oneOpen)) * 100)
-    let twoOpenTwoClose = (shadowCandlesTwo && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed))) || (shadowCandlesOne && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed)))
+    let twoOpenTwoClose = (shadowCandlesTwo && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed))) || (shadowCandlesOne && ((oneOpen - oneClose) >= (oneOpen * oneCandlesRed2)))
 
     if(!onTwoCandles) {
       twoOpenTwoClose = true
