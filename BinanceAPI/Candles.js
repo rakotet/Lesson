@@ -526,7 +526,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
             })
           }
         } else if (positionAmt === 0) {
-          // console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в блок БОЛЬШИХ свечей с пустой позицией: ' + coin + '\n')
+          console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в блок БОЛЬШИХ свечей с пустой позицией: ' + coin + ' counterWork - ' + counterWork + '\n')
           // coinOpenPamp[coin][2] = 0
           // cancell = false
           // counterWork--
