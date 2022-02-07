@@ -55,7 +55,7 @@ let pribl = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
+const numberOneTrade = 80 // сумма одной сделки (10 - 1000)
 const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
@@ -64,9 +64,9 @@ const oneCandlesRed2 = 0.1 // Минимальный размер первой �
 const closeSearch = 0.23 // Минимальный процент от импульса для закрытия слежения
 const constDown = 7 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
-const percentBigCandles = 1.25 // Минимальный процент свечи для захода в позицию по большой свечи (1.3 - 2)
-const minusBigCandles = 0.01 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.004 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const percentBigCandles = 2 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const minusBigCandles = 0.005 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.003 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
 const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
 const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
@@ -178,6 +178,9 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
           console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ' + greenRedCandles + ' зелёных подряд' + '\n');
           //opn('https://www.binance.com/ru/futures/' + coin)
           candlesGreen[coin] = 1
+          setTimeout(() => {
+            candlesGreen[coin] = 0
+          }, 62000)
         }
         //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ' + 'Меньше процента 8 зеленых');
       }
@@ -224,6 +227,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                 coinOpenPamp[coin][2] = 0 // счетчик входа по большой 1.2 свечи
                 coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
                 coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
+                coinOpenPamp[coin][7] = (Number(Date.now()) / 1000) // Время начала слежения
                 timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                 priceSymbolPamp(coin) 
                 opn('https://www.binance.com/ru/futures/' + coin)
@@ -353,11 +357,11 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       twoOpenTwoClose = true
     }
 
-    if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * closeSearch))) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
+    if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * closeSearch)) || ((Number(Date.now()) / 1000) > (coinOpenPamp[coin][7] + 180))) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
-      console.log('\n' + new Date().toLocaleTimeString() + ' - Вышли из ф-и, коррекция завершилась и была не достаточной для нас - ' + coin + ' - counterWork -  ' + counterWork + '\n');
+      console.log('\n' + new Date().toLocaleTimeString() + ' - Вышли из ф-и, коррекция завершилась или прошло 3 мин - ' + coin + ' - counterWork -  ' + counterWork + '\n');
     }  
 
     let down = constDown
@@ -479,7 +483,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
   
         let unRealizedProfit = Number(data[0]['unRealizedProfit']) // профит в $
         let entryPrice = Number(data[0]['entryPrice']) // цена входа в позицию
-        let markPrice = Number(data[0]['markPrice']) // текущая цена маркировки
+        let markPrice = oneClose // текущая цена маркировки
         let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
 
         if(positionAmt < 0) {
@@ -584,7 +588,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
 
     if(positionAmt < 0) {
       if(fibaObj[coin][0] === 0) {
-        if(markPrice > stop) {
+        if(markPrice >= stop || markPrice >= (entryPrice + (entryPrice * stopPercentBig))) {
           buyFiba('МИНУС', '-------------------------')
           // if(!impulsMinus) priceSymbolPamp(coin, true)
         }
@@ -597,24 +601,11 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
 
       if(fibaObj[coin][0] === 1) {
         if(big) {
-          if(markPrice > entryPrice) {
+          if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.0015)))) {
             buyFiba('БЕЗУБЫТОК', '///////////////////////')
             // if(!impulsMinus) priceSymbolPamp(coin, true)
           }
-        } else {
-          if(percentOneCloseTakeProfit >= 1) {
-            if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.003)))) {
-              buyFiba('БЕЗУБЫТОК', '///////////////////////')
-              // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг БЕЗУБЫТОК - ' + coin + '\n')
-              // tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'БЕЗУБЫТОК')
-            }
-          } else {
-            if(markPrice > stop) {
-              buyFiba('МИНУС', '-------------------------')
-              // if(!impulsMinus) priceSymbolPamp(coin, true)
-            }
-          }
-        }
+        } 
 
         if(markPrice <= f38) {
           fibaObj[coin][0] = 2
@@ -623,17 +614,12 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
       }
 
       if(fibaObj[coin][0] === 2) {
-        if(percentOneCloseTakeProfit >= 1) {
-          if((markPrice > f38) && (markPrice >= t1)) {
-            buyFiba('ПЛЮС', '++++++++++++++++', 'T1')
-            // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг T1 - ' + coin + '\n')
-            // tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'T1')
-          }
-        } else {
-          if(markPrice > f23) {
-            buyFiba('БЕЗУБЫТОК', '///////////////////////')
-          }
+        if((markPrice > f38) && (markPrice >= t1)) {
+          buyFiba('ПЛЮС', '++++++++++++++++', 'T1')
+          // console.log('\n' + new Date().toLocaleTimeString() + ' Запустили трекинг T1 - ' + coin + '\n')
+          // tracking(coin, f100, f0, (Number(Date.now()) / 1000), 'T1')
         }
+         
 
         if(markPrice <= f50) {
           fibaObj[coin][0] = 3
