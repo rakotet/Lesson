@@ -54,9 +54,9 @@ let fibaObj = {}
 let pribl = 0
 
 /////////////////////// Управление ботом
-const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 60 // сумма одной сделки (10 - 1000)
-const percentPamp = 2 // Процент пампа при котором начинаем слежение
+const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
+const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
+const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
 const oneCandlesRed = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
@@ -64,13 +64,13 @@ const oneCandlesRed2 = 0.1 // Минимальный размер первой �
 const closeSearch = 0.23 // Минимальный процент от импульса для закрытия слежения
 const constDown = 7 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
-const percentBigCandles = 10 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const percentBigCandles = 2 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
 const minusBigCandles = 0.005 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.004 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const plusBigCandles = 0.003 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
 const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
 const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
-const houlderCandles = 20 // Плечо сделки
+const houlderCandles = 10 // Плечо сделки
 ///////////////////////
 
 const pnlPlusSell = 0.005 // Long (+ это +)
@@ -180,7 +180,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
           candlesGreen[coin] = 1
           setTimeout(() => {
             candlesGreen[coin] = 0
-          }, 62000)
+          }, 120000)
         }
         //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ' + 'Меньше процента 8 зеленых');
       }
@@ -230,7 +230,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                 coinOpenPamp[coin][7] = (Number(Date.now()) / 1000) // Время начала слежения
                 timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                 priceSymbolPamp(coin) 
-                opn('https://www.binance.com/ru/futures/' + coin)
+                //opn('https://www.binance.com/ru/futures/' + coin)
               }
             } 
           }
@@ -357,7 +357,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       twoOpenTwoClose = true
     }
 
-    if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * closeSearch)) || ((Number(Date.now()) / 1000) > (coinOpenPamp[coin][7] + 90))) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
+    if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * closeSearch)) || ((Number(Date.now()) / 1000) > (coinOpenPamp[coin][7] + 65))) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
@@ -425,7 +425,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       if(flagImpuls) {
         //console.log(new Date().toLocaleTimeString() + ' - ВЕРХ');
         if(coinOpenPamp[coin][2] === 0) {
-          //opn('https://www.binance.com/ru/futures/' + coin)
+          opn('https://www.binance.com/ru/futures/' + coin)
           futuressHoulder(coin, houlderCandles, binance).then(data => {
             futuresMarginType(coin, binance).then(data => {
               sellMarketCoin(coin, numberCoinKey, binance).then(data => {
