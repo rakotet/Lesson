@@ -54,8 +54,8 @@ let fibaObj = {}
 let pribl = 0
 
 /////////////////////// Управление ботом
-const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 10 // сумма одной сделки (10 - 1000)
+const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
+const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
@@ -64,11 +64,11 @@ const oneCandlesRed2 = 0.1 // Минимальный размер первой �
 const closeSearch = 0.23 // Минимальный процент от импульса для закрытия слежения
 const constDown = 7 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
-const percentBigCandles = 2 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
-const minusBigCandles = 0.003 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.003 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const stopPercentBig = 0.002 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
-const stopPercentNormal = 0.002 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
+const percentBigCandles = 1.5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const minusBigCandles = 0.08 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.01 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const stopPercentBig = 0.08 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
+const stopPercentNormal = 0.08 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
 const houlderCandles = 10 // Плечо сделки
 ///////////////////////
@@ -230,7 +230,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                 coinOpenPamp[coin][7] = (Number(Date.now()) / 1000) // Время начала слежения
                 timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                 priceSymbolPamp(coin) 
-                //opn('https://www.binance.com/ru/futures/' + coin)
+                opn('https://www.binance.com/ru/futures/' + coin)
               }
             } 
           }
@@ -239,7 +239,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
     } else {
       if(coin !== 'BTTUSDT') {
         console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ ');
-        //opn('https://www.binance.com/ru/futures/' + coin)
+        opn('https://www.binance.com/ru/futures/' + coin)
       }
     }
 
@@ -400,7 +400,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       // }
 
       let f0 = impulsMaxPrice
-      let f23 = Number((impulsMaxPrice - (impulsPrice * 0.22)).toFixed(numberOfSigns(oneClose)))
+      let f23 = Number((impulsMaxPrice - (impulsPrice * 0.20)).toFixed(numberOfSigns(oneClose)))
       let f38 = Number((impulsMaxPrice - (impulsPrice * 0.36)).toFixed(numberOfSigns(oneClose)))
       let f50 = Number((impulsMaxPrice - (impulsPrice * 0.45)).toFixed(numberOfSigns(oneClose)))
       let f60 = Number((impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose)))
@@ -604,7 +604,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
 
       if(fibaObj[coin][0] === 1) {
         if(big) {
-          if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.0015)))) {
+          if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.005)))) {
             buyFiba('БЕЗУБЫТОК', '///////////////////////')
             // if(!impulsMinus) priceSymbolPamp(coin, true)
           }
