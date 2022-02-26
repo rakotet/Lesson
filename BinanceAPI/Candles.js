@@ -65,10 +65,10 @@ const closeSearch = 0.23 // Минимальный процент от импу�
 const constDown = 7 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
 const percentBigCandles = 1.5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
-const minusBigCandles = 0.08 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.01 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const stopPercentBig = 0.08 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
-const stopPercentNormal = 0.08 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
+const minusBigCandles = 0.01 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.005 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
+const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
 const houlderCandles = 10 // Плечо сделки
 ///////////////////////
@@ -228,9 +228,10 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
                 coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
                 coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
                 coinOpenPamp[coin][7] = (Number(Date.now()) / 1000) // Время начала слежения
+                coinOpenPamp[coin][8] = 0
                 timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                 priceSymbolPamp(coin) 
-                opn('https://www.binance.com/ru/futures/' + coin)
+                //opn('https://www.binance.com/ru/futures/' + coin)
               }
             } 
           }
@@ -292,6 +293,14 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
     let twoClose = Number(candlesSymbol[candlesSymbol.length - 2][4])
     let twoHigh = Number(candlesSymbol[candlesSymbol.length - 2][2])
     let oneHigh = Number(candlesSymbol[candlesSymbol.length - 1][2])
+
+    let difference = Number((((oneClose - oneOpen) / oneOpen) * 100).toFixed(2))
+
+    // if(coinOpenPamp[coin][8] == 0) {
+    //   if(difference >= 1) opn('https://www.binance.com/ru/futures/' + coin)
+    //   coinOpenPamp[coin][8] = 1
+    // }
+    
 
     let impulsMaxPrice = 0
     let impulsCandlesLength = 0
@@ -425,7 +434,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       if(flagImpuls) {
         //console.log(new Date().toLocaleTimeString() + ' - ВЕРХ');
         if(coinOpenPamp[coin][2] === 0) {
-          //opn('https://www.binance.com/ru/futures/' + coin)
+          opn('https://www.binance.com/ru/futures/' + coin)
           futuressHoulder(coin, houlderCandles, binance).then(data => {
             futuresMarginType(coin, binance).then(data => {
               sellMarketCoin(coin, numberCoinKey, binance).then(data => {
@@ -584,6 +593,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
 
     if(fibaObj[coin][1] === 0) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop);
+      console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - f23 - ' + f23);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Конец импульса цена - ' + f0);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Начало импульса цена - ' + f100 + '\n');
       fibaObj[coin][1] = 1
