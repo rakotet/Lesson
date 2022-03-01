@@ -1,23 +1,39 @@
-const Binance = require('node-binance-api');
-const binance = new Binance().options({
-  APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
-  APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
-});
+// const arr = [5, 8, 1, 6, 0, 2, 9]
 
-async function futuresCancelAll(coin) { 
-  try {
-    let data = await binance.futuresLeverageBracket(coin);
+// function getArr(arr) {
+//   for(let i = 0; i < arr.length; i++) {
+//     let min = arr[i]
+//     let index = i
+//     for(let i2 = i + 1 ; i2 < arr.length; i2++) {
+//       if(min > arr[i2]) continue
+//       else {
+//         min = arr[i2]
+//         index = i2
+//       }
+//       console.log(min)
+//     }
+//     arr.splice(index, 1)
+//     arr.unshift(min)
+//     //console.log(arr)
+//   }
 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
+//   return arr
+// }
 
-    console.log(data[0])
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresCancelAll');
+// console.log(getArr(arr));
+
+const bubbleSort = arr => {
+  for (let i = 0, endI = arr.length - 1; i < endI; i++) {
+      let wasSwap = false;
+      for (let j = 0, endJ = endI - i; j < endJ; j++) {
+          if (arr[j] < arr[j + 1]) {
+              [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+              wasSwap = true;
+          }
+      }
+      if (!wasSwap) break;
   }
+  return arr;
+};
 
-}
-
-futuresCancelAll('BTCUSDT')
+console.log(bubbleSort([5, 8, 1, 6, 0, 2, 9]));

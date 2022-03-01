@@ -54,21 +54,21 @@ let fibaObj = {}
 let pribl = 0
 
 /////////////////////// Управление ботом
-const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
+const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 1 // Процент пампа при котором начинаем слежение
+const percentPamp = 1.3 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
 const oneCandlesRed = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
 const oneCandlesRed2 = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
 const closeSearch = 0.23 // Минимальный процент от импульса для закрытия слежения
-const constDown = 7 // Минимальный процент от импульса для захода в позицию
+const constDown = 5 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
-const percentBigCandles = 1.5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
-const minusBigCandles = 0.01 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.005 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
-const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
+const percentBigCandles = 2 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const minusBigCandles = 0.02 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.004 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const stopPercentBig = 0.01 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
+const stopPercentNormal = 0.01 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
 const houlderCandles = 10 // Плечо сделки
 ///////////////////////
@@ -197,6 +197,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
 
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
+    let oneHigh = Number(data[data.length - 1][2])
 
     if(!(Number(data[data.length - 1][5]) >= (meanVolume * 50))) { // защита от МЕГА объёмов 
       if(openPrice > closePrice) {
@@ -212,7 +213,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
         }
 
       } else {
-        let differenceGreen = Number((((closePrice - openPrice) / openPrice) * 100).toFixed(2))
+        let differenceGreen = Number((((oneHigh - openPrice) / openPrice) * 100).toFixed(2))
         //console.log(differenceGreen);
         if(differenceGreen >= percentPamp) {
           if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
@@ -366,7 +367,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       twoOpenTwoClose = true
     }
 
-    if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * closeSearch)) || ((Number(Date.now()) / 1000) > (coinOpenPamp[coin][7] + 65))) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
+    if(oneClose < coinOpenPamp[coin][3] || oneClose <= (impulsMaxPrice - (impulsPrice * closeSearch)) || ((Number(Date.now()) / 1000) > (coinOpenPamp[coin][7] + 65)) && (coinOpenPamp[coin][2] == 0)) { // если цена упала ниже начала импульса или коррекция уже прошла, но мы в нее не вошли, то выходим из ф-и
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
@@ -614,7 +615,7 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
 
       if(fibaObj[coin][0] === 1) {
         if(big) {
-          if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.005)))) {
+          if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.002)))) {
             buyFiba('БЕЗУБЫТОК', '///////////////////////')
             // if(!impulsMinus) priceSymbolPamp(coin, true)
           }
