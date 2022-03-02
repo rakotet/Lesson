@@ -22,18 +22,43 @@
 
 // console.log(getArr(arr));
 
-const bubbleSort = arr => {
-  for (let i = 0, endI = arr.length - 1; i < endI; i++) {
-      let wasSwap = false;
-      for (let j = 0, endJ = endI - i; j < endJ; j++) {
-          if (arr[j] < arr[j + 1]) {
-              [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-              wasSwap = true;
-          }
-      }
-      if (!wasSwap) break;
-  }
-  return arr;
-};
+// const bubbleSort = arr => {
+//   for (let i = 0, endI = arr.length - 1; i < endI; i++) {
+//       let wasSwap = false;
+//       for (let j = 0, endJ = endI - i; j < endJ; j++) {
+//           if (arr[j] < arr[j + 1]) {
+//               [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+//               wasSwap = true;
+//           }
+//       }
+//       if (!wasSwap) break;
+//   }
+//   return arr;
+// };
 
-console.log(bubbleSort([5, 8, 1, 6, 0, 2, 9]));
+// console.log(bubbleSort([5, 8, 1, 6, 0, 2, 9]));
+
+const a = 'я миротворец'
+const b = 'я за миролюбие'
+
+function getString(a, b) {
+  let min = a
+  let max = b
+  let w = ''
+  if(a.length > b.length) {
+    min = b
+    max = a
+  }
+
+  for(let i = 0; i < min.length; i++) {
+    for(let j = 0; j < max.length; j++) {
+      if(min[i] === max[j]) {
+        w += min[i]
+        break
+      }
+    }
+  }
+  return w
+}
+
+console.log(getString(a, b));

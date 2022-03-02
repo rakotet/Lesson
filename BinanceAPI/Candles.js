@@ -50,13 +50,14 @@ let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
 let candlesGreen = {}
+let megaVolume = {}
 let fibaObj = {}
 let pribl = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 1.3 // Процент пампа при котором начинаем слежение
+const percentPamp = 1 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
 const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
 const oneCandlesRed = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
@@ -65,12 +66,12 @@ const closeSearch = 0.23 // Минимальный процент от импу�
 const constDown = 5 // Минимальный процент от импульса для захода в позицию
 const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
 const percentBigCandles = 2 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
-const minusBigCandles = 0.02 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.004 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const stopPercentBig = 0.01 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
-const stopPercentNormal = 0.01 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
+const minusBigCandles = 0.008 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
+const plusBigCandles = 0.005 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
+const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
 const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
-const houlderCandles = 10 // Плечо сделки
+const houlderCandles = 20 // Плечо сделки
 ///////////////////////
 
 const pnlPlusSell = 0.005 // Long (+ это +)
@@ -240,8 +241,16 @@ async function getCandles(coin, binance, opn, priceSymbolPamp) { // получи
       }
     } else {
       if(coin !== 'BTTUSDT') {
-        console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ ');
-        opn('https://www.binance.com/ru/futures/' + coin)
+        if(!megaVolume[coin]) megaVolume[coin] = 0
+        if(megaVolume[coin] == 0) {
+          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ ');
+          opn('https://www.binance.com/ru/futures/' + coin)
+          megaVolume[coin] == 1
+
+          setTimeout(() => {
+            megaVolume[coin] = 0
+          }, 60000)
+        }
       }
     }
 
@@ -410,7 +419,7 @@ async function priceSymbolPamp(symbol, impulsMinus = false) {
       // }
 
       let f0 = impulsMaxPrice
-      let f23 = Number((impulsMaxPrice - (impulsPrice * 0.20)).toFixed(numberOfSigns(oneClose)))
+      let f23 = Number((impulsMaxPrice - (impulsPrice * 0.15)).toFixed(numberOfSigns(oneClose)))
       let f38 = Number((impulsMaxPrice - (impulsPrice * 0.36)).toFixed(numberOfSigns(oneClose)))
       let f50 = Number((impulsMaxPrice - (impulsPrice * 0.45)).toFixed(numberOfSigns(oneClose)))
       let f60 = Number((impulsMaxPrice - (impulsPrice * 0.60)).toFixed(numberOfSigns(oneClose)))
@@ -587,9 +596,9 @@ async function fibaTraid(coin, f0, f23, f38, f50, f60, stop, f78, t1, t2, t3, t4
     let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
 
     if(big) {
-      stop = Number((entryPrice + (entryPrice * stopPercentBig)).toFixed(numberOfSigns(markPrice)))
+      stop = Number((f0 + (f0 * stopPercentBig)).toFixed(numberOfSigns(markPrice)))
     } else {
-      stop = Number((entryPrice + (entryPrice * stopPercentNormal)).toFixed(numberOfSigns(markPrice)))
+      stop = Number((f0 + (f0 * stopPercentNormal)).toFixed(numberOfSigns(markPrice)))
     }
 
     if(fibaObj[coin][1] === 0) {
