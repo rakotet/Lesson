@@ -45,6 +45,7 @@ function getString(a, b) {
   let min = a
   let max = b
   let w = ''
+  let index = 0
   if(a.length > b.length) {
     min = b
     max = a
@@ -54,6 +55,7 @@ function getString(a, b) {
     for(let j = 0; j < max.length; j++) {
       if(min[i] === max[j]) {
         w += min[i]
+        index = j
         break
       }
     }
@@ -62,3 +64,4 @@ function getString(a, b) {
 }
 
 console.log(getString(a, b));
+
