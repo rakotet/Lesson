@@ -38,30 +38,43 @@
 
 // console.log(bubbleSort([5, 8, 1, 6, 0, 2, 9]));
 
-const a = 'я миротворец'
-const b = 'я за миролюбие'
+// const a = 'я миротворец'
+// const b = 'я за миролюбие'
 
-function getString(a, b) {
-  let min = a
-  let max = b
-  let w = ''
-  let index = 0
-  if(a.length > b.length) {
-    min = b
-    max = a
-  }
+// function getString(a, b) {
+//   let min = a
+//   let max = b
+//   let w = ''
+//   let index = 0
+//   if(a.length > b.length) {
+//     min = b
+//     max = a
+//   }
 
-  for(let i = 0; i < min.length; i++) {
-    for(let j = 0; j < max.length; j++) {
-      if(min[i] === max[j]) {
-        w += min[i]
-        index = j
-        break
-      }
-    }
-  }
-  return w
+//   for(let i = 0; i < min.length; i++) {
+//     for(let j = 0; j < max.length; j++) {
+//       if(min[i] === max[j]) {
+//         w += min[i]
+//         index = j
+//         break
+//       }
+//     }
+//   }
+//   return w
+// }
+
+// console.log(getString(a, b));
+
+const arr = [1, 2, 3]
+
+let s = 0
+
+for(const v in arr) {
+  console.log(v)
+  console.log(+v)
+  s += +v
+  //console.log(s)
 }
 
-console.log(getString(a, b));
+//console.log(s);
 

@@ -2,7 +2,7 @@
   "name": "binanceapi",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "Candles4percent.js",
   "dependencies": {
     "express": "^4.17.1",
     "node-binance-api": "^0.13.0",
@@ -13,8 +13,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon Candles.js",
-    "prod": "node Candles.js"
+    "start": "nodemon Candles4percent.js",
+    "prod": "node Candles4percent.js"
   },
   "author": "",
   "license": "ISC"
