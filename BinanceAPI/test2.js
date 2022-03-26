@@ -26,47 +26,35 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
-async function stopShort() { 
+async function fibaTraid(coin) {
   try {
-    for(let i = 1; i > 0; i++) {
-      let data = await binance.promiseRequest( 'detail?productId=173304848325765120&number=1', false, { base:fapi, type:'TRADE', method:'GET' } ) 
-      if(data.code) {
-        console.log(data.code + ' - ' + data.msg);
-      }
-      fs.appendFileSync('symbolPamp.txt', data['data']['currentStore'] + ' - ' + new Date().toLocaleTimeString() + '-' + (new Date()).getMilliseconds() + '\n' 
-      + data['data']['totalStore'] + ' - ' + new Date().toLocaleTimeString() + '-' + (new Date()).getMilliseconds() + '\n')
+    let i = Number(Date.now())
+    let data = await binance.futuresPositionRisk({symbol: coin}) 
+
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
     }
-    console.log(data);
+
+    // let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+    // if(candlesSymbol.code) {
+    //   console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    // }
+
+    let markPrice = Number(data[0]['markPrice']) // текущая цена 
+    //let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
     
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
+    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
+    console.log(Number(Date.now()) - i + '\n');
+
   } catch(e) {
     console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'stopShort');
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'fibaTraid');
   }
+
+  setTimeout(() => {
+    fibaTraid(coin)
+  }, 10)
 }
 
-stopShort()
-
-
-// let mm = 1640818800000
-// console.log((new Date(mm)).getHours() + ':' + (new Date(mm)).getMinutes() + ':' + (new Date(mm)).getSeconds())
-
-// for(let i = 0; i < 1000; i++) {
-//   stopShort()
-//   //delay(5000)
-// }
-
-// async function stopShort11111() { 
-//   try {
-//     let data = await binance.promiseRequest( 'purchase', false, { base:fapi2, type:'TRADE', method:'GET' } ) 
-//     if(data.code) {
-//       console.log(data.code + ' - ' + data.msg);
-//     }
-  
-//     console.log(data);
-//   } catch(e) {
-//     console.log(e);
-//     console.log(new Date().toLocaleTimeString() + ' - ' + 'stopShort');
-//   }
-// }
-
-// stopShort11111()
+fibaTraid('ZILUSDT')
