@@ -85,7 +85,7 @@ async function candlesOpenPamp(binance, opn, fs) {
 
 async function getCandles(coin, binance, fs, opn) { // получить свечи
   try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 60}) 
+    let data = await binance.futuresCandles(coin, '1m', {limit: 1}) 
     //console.log(data);
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
@@ -106,16 +106,16 @@ async function getCandles(coin, binance, fs, opn) { // получить свеч
             coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
             //opn('https://www.binance.com/ru/futures/' + coin)
             
-            // setTimeout(() => {
-            //   coinOpenPamp[coin][0] = 0
-            // }, 20000)
+            setTimeout(() => {
+              coinOpenPamp[coin][0] = 0
+            }, 20000)
             
             let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + '\n'
             console.log(mess);
 
             fs.appendFileSync("symbolPamp.txt", mess)
 
-            coinOpenPamp[coin][0] = 0
+            //coinOpenPamp[coin][0] = 0
           }
         } 
       }

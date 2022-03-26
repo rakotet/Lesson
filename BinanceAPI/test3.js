@@ -65,16 +65,16 @@
 
 // console.log(getString(a, b));
 
-const arr = [1, 2, 3]
 
-let s = 0
-
-for(const v in arr) {
-  console.log(v)
-  console.log(+v)
-  s += +v
-  //console.log(s)
+const a = {
+  name: 'a',
+  foo: function() {
+    console.log(this.name);
+  }
 }
 
-//console.log(s);
+const bar = a.foo
 
+// bar()
+
+a.foo()
