@@ -32,11 +32,11 @@ const numberMaxWork = 2 // количество одновременных сд�
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 2 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const percentBigCandles = 3 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const percentBigCandles = 4 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
 const plusBigCandles = 0.015 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
 const houlderCandles = 10 // Плечо сделки
 const openScrin = true // открывать сделки в браузере
-const volumeMega = 1000
+const volumeMega = 70
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -117,7 +117,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
             if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
               if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
                 counterWork++
-                console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice);
+                console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + ' - V в ' + (Number(data[data.length - 1][5]) / meanVolume).toFixed(2));
                 coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
                 coinOpenPamp[coin][1] = closePrice // флаг текущей цены пампа
                 coinOpenPamp[coin][2] = 0 // счетчик входа по большой 1.2 свечи
@@ -128,7 +128,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
                 timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
                 priceSymbolPamp(coin, Number(data[data.length - 1][0]), meanVolume) 
 
-                let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + '\n'
+                let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + ' - V в ' + (Number(data[data.length - 1][5]) / meanVolume).toFixed(2) + '\n'
                 fs.appendFileSync("symbolPamp.txt", mess)
 
                 //opn('https://www.binance.com/ru/futures/' + coin)
@@ -142,7 +142,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
         if(!megaVolume[coin]) megaVolume[coin] = 0
         if(megaVolume[coin] == 0) {
           megaVolume[coin] = 1
-          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ ');
+          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ' + ' - V в ' + (Number(data[data.length - 1][5]) / meanVolume).toFixed(2));
 
           if(openScrin) {
             opn('https://www.binance.com/ru/futures/' + coin)
@@ -196,7 +196,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume) {
       if(!megaVolume[coin]) megaVolume[coin] = 0
         if(megaVolume[coin] == 0) {
           megaVolume[coin] = 1
-          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ - когда мы в функции');
+          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МЕГА ОБЪЕМЫ - когда мы в функции' + ' - V в ' + (Number(candlesSymbol[candlesSymbol.length - 1][5]) / meanVolume).toFixed(2));
 
           if(openScrin) {
             opn('https://www.binance.com/ru/futures/' + coin)
@@ -222,7 +222,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume) {
           sellMarketCoin(coin, numberCoinKey, binance).then(data => {
             if(data) {
               console.log('\n' + '---------------------------------------');
-              console.log(new Date().toLocaleTimeString() + coin + ' - Открыли сделку' + ' - counterWork - ' + counterWork);
+              console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Открыли сделку' + ' - counterWork - ' + counterWork + ' - V в ' + (Number(candlesSymbol[candlesSymbol.length - 1][5]) / meanVolume).toFixed(2));
               console.log('---------------------------------------' + '\n');
               fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0]
               fibaTraid(coin)

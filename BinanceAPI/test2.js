@@ -28,24 +28,24 @@ const binance = new Binance().options({
 
 async function fibaTraid(coin) {
   try {
-    let i = Number(Date.now())
-    let data = await binance.futuresPositionRisk({symbol: coin}) 
+    // let i = Number(Date.now())
+    // let data = await binance.futuresPositionRisk({symbol: coin}) 
 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
-
-    // let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
-    // if(candlesSymbol.code) {
-    //   console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    // if(data.code) {
+    //   console.log(data.code + ' - ' + data.msg);
     // }
 
-    let markPrice = Number(data[0]['markPrice']) // текущая цена 
-    //let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+    if(candlesSymbol.code) {
+      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    }
+
+    //let markPrice = Number(data[0]['markPrice']) // текущая цена 
+    let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
     
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
-    console.log(Number(Date.now()) - i + '\n');
+    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
+    //console.log(Number(Date.now()) - i + '\n');
 
   } catch(e) {
     console.log(e);
