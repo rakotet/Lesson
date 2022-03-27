@@ -32,11 +32,11 @@ const numberMaxWork = 2 // количество одновременных сд�
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 2 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const percentBigCandles = 4 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const percentBigCandles = 5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
 const plusBigCandles = 0.015 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
 const houlderCandles = 10 // Плечо сделки
 const openScrin = true // открывать сделки в браузере
-const volumeMega = 70
+const volumeMega = 120
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -131,7 +131,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
                 let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + ' - V в ' + (Number(data[data.length - 1][5]) / meanVolume).toFixed(2) + '\n'
                 fs.appendFileSync("symbolPamp.txt", mess)
 
-                //opn('https://www.binance.com/ru/futures/' + coin)
+                opn('https://www.binance.com/ru/futures/' + coin)
               }
             } 
           }
