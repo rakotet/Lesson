@@ -26,39 +26,44 @@ const binance = new Binance().options({
   APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
 });
 
-async function fibaTraid(coin) {
-  try {
-    let time = 0
-    let i = Number(Date.now())
-    // let data = await binance.futuresPositionRisk({symbol: coin}) 
+// async function fibaTraid(coin) {
+//   try {
+//     let time = 0
+//     let i = Number(Date.now())
+//     // let data = await binance.futuresPositionRisk({symbol: coin}) 
 
-    // if(data.code) {
-    //   console.log(data.code + ' - ' + data.msg);
-    // }
+//     // if(data.code) {
+//     //   console.log(data.code + ' - ' + data.msg);
+//     // }
 
-    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
-    if(candlesSymbol.code) {
-      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
-    }
+//     let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+//     if(candlesSymbol.code) {
+//       console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+//     }
 
-    //let markPrice = Number(data[0]['markPrice']) // текущая цена 
-    let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
-    //time = Number((new Date(Number(candlesSymbol[candlesSymbol.length - 1][0]))).getMinutes()) // время открытия свечи
+//     //let markPrice = Number(data[0]['markPrice']) // текущая цена 
+//     let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+//     //time = Number((new Date(Number(candlesSymbol[candlesSymbol.length - 1][0]))).getMinutes()) // время открытия свечи
     
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
-    console.log(Number(Date.now()) - i + '\n');
-    // console.log(time);
-    // console.log(Number((new Date()).getMinutes()));
+//     //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
+//     console.log(Number(Date.now()) - i + '\n');
+//     // console.log(time);
+//     // console.log(Number((new Date()).getMinutes()));
 
-  } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'fibaTraid');
-  }
+//   } catch(e) {
+//     console.log(e);
+//     console.log(new Date().toLocaleTimeString() + ' - ' + 'fibaTraid');
+//   }
 
-  setTimeout(() => {
-    fibaTraid(coin)
-  }, 10)
-}
+//   setTimeout(() => {
+//     fibaTraid(coin)
+//   }, 10)
+// }
 
-fibaTraid('ZILUSDT')
+// fibaTraid('ZILUSDT')
+
+binance.depth("RUNEUSDT", (error, depth, symbol) => {
+  console.info(symbol+" market depth", depth);
+  //console.log(new Date(depth['lastUpdateId']).getHours() + ' : ' + new Date(depth['lastUpdateId']).getMinutes());
+}, 10);

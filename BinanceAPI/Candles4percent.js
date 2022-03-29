@@ -104,7 +104,7 @@ async function getCandles(coin, binance, fs, opn) { // получить свеч
         if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
           if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
             coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
-            //opn('https://www.binance.com/ru/futures/' + coin)
+            opn('https://www.binance.com/ru/futures/' + coin)
             
             setTimeout(() => {
               coinOpenPamp[coin][0] = 0
