@@ -28,7 +28,8 @@ const binance = new Binance().options({
 
 async function fibaTraid(coin) {
   try {
-    // let i = Number(Date.now())
+    let time = 0
+    let i = Number(Date.now())
     // let data = await binance.futuresPositionRisk({symbol: coin}) 
 
     // if(data.code) {
@@ -42,10 +43,13 @@ async function fibaTraid(coin) {
 
     //let markPrice = Number(data[0]['markPrice']) // текущая цена 
     let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+    time = Number((new Date(Number(candlesSymbol[candlesSymbol.length - 1][0]))).getMinutes()) // время открытия свечи
     
     //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
-    //console.log(Number(Date.now()) - i + '\n');
+    // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
+    // console.log(Number(Date.now()) - i + '\n');
+    console.log(time);
+    console.log(Number((new Date()).getMinutes()));
 
   } catch(e) {
     console.log(e);
