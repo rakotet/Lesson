@@ -43,13 +43,13 @@ async function fibaTraid(coin) {
 
     //let markPrice = Number(data[0]['markPrice']) // текущая цена 
     let markPrice1 = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
-    time = Number((new Date(Number(candlesSymbol[candlesSymbol.length - 1][0]))).getMinutes()) // время открытия свечи
+    //time = Number((new Date(Number(candlesSymbol[candlesSymbol.length - 1][0]))).getMinutes()) // время открытия свечи
     
     //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена markPrice - ' + markPrice);
-    // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
-    // console.log(Number(Date.now()) - i + '\n');
-    console.log(time);
-    console.log(Number((new Date()).getMinutes()));
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - цена свеча - ' + markPrice1);
+    console.log(Number(Date.now()) - i + '\n');
+    // console.log(time);
+    // console.log(Number((new Date()).getMinutes()));
 
   } catch(e) {
     console.log(e);

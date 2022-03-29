@@ -24,19 +24,20 @@ let coinOpenPamp = {}
 let candlesGreen = {}
 let megaVolume = {}
 let fibaObj = {}
+let dataRisk = {}
 let pribl = 0
 let i = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 50 // сумма одной сделки (10 - 1000)
+const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 1.5 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const percentBigCandles = 2.5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const percentBigCandles = 3 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
 const plusBigCandles = 0.01 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const minusBigCandles = 0.02 
+const minusBigCandles = 0.01 
 const repurchase = 0.015 // процент докупки
-const houlderCandles = 15 // Плечо сделки
+const houlderCandles = 10 // Плечо сделки
 const openScrin = true // открывать сделки в браузере
 const volumeMega = 120 // мега объём
 const secondCandles = 30 // время свечи в секундах до которого открываем сделку
@@ -134,9 +135,13 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
                 let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + ' - V в ' + (Number(data[data.length - 1][5]) / meanVolume).toFixed(2) + '\n'
                 fs.appendFileSync("symbolPamp.txt", mess)
 
-                if(openScrin) {
-                  opn('https://www.binance.com/ru/futures/' + coin)
-                }
+                futuressHoulder(coin, houlderCandles, binance).then(data => {
+                  futuresMarginType(coin, binance).then(data => {
+                    if(openScrin) {
+                      opn('https://www.binance.com/ru/futures/' + coin)
+                    }
+                  })
+                })     
               }
             } 
           }
@@ -214,7 +219,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
     }
 
     if((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 5) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 30)
-    && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) && (Number(new Date().getSeconds) < secondCandles)) {
+    && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) && (Number(new Date().getSeconds()) < secondCandles) && (Number(candlesSymbol[candlesSymbol.length - 1][0]) == dateOneLength)) {
 
       if(openScrin) {
         opn('https://www.binance.com/ru/futures/' + coin)
@@ -224,24 +229,24 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
 
       let differenceGreen = Number((((oneHigh - oneOpen) / oneOpen) * 100).toFixed(2))
 
-      futuressHoulder(coin, houlderCandles, binance).then(data => {
-        futuresMarginType(coin, binance).then(data => {
-          sellMarketCoin(coin, numberCoinKey, binance).then(data => {
-            if(data) {
-              fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0]
-              dateOneLength = Number((new Date(dateOneLength)).getMinutes())
-              fibaTraid(coin, dateOneLength)
-              let mess = ('\n' + '---------------------------------------' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Открыли сделку - цена ' + oneClose + ' - Памп ' + differenceGreen + ' - counterWork - ' + counterWork + ' - V в ' + (Number(candlesSymbol[candlesSymbol.length - 1][5]) / meanVolume).toFixed(2) + '---------------------------------------' + '\n');
-              console.log(mess);
-              fs.appendFileSync("symbolPamp.txt", mess)
-            }
-          })
-        })
-      })     
+      sellMarketCoin(coin, numberCoinKey, binance).then(data => {
+        if(data) {
+          fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0]
+          dateOneLength = Number((new Date(dateOneLength)).getMinutes())
+          fibaTraid(coin, dateOneLength)
+          let mess = ('\n' + '---------------------------------------' + '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Открыли сделку - цена ' + oneClose + ' - Памп ' + differenceGreen + ' - counterWork - ' + counterWork + ' - V в ' + (Number(candlesSymbol[candlesSymbol.length - 1][5]) / meanVolume).toFixed(2) + '\n' + '---------------------------------------' + '\n');
+          console.log(mess);
+          fs.appendFileSync("symbolPamp.txt", mess)
+        }
+      })
+         
     } else {
       if((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 5) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 30)
-      && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) && !(Number(new Date().getSeconds) < secondCandles)) {
-        console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Не открыли сделку т.к было больше ' + secondCandles + ' сек - цена - ' + oneClose + '\n')
+      && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) && !(Number(new Date().getSeconds()) < secondCandles)) {
+        if(coinOpenPamp[coin][2] == 0) {
+          console.log('\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Не открыли сделку т.к было больше ' + secondCandles + ' сек - цена - ' + oneClose + '\n')
+          coinOpenPamp[coin][2] = 1
+        }
       }
     }
     
@@ -262,16 +267,33 @@ async function fibaTraid(coin, dateOneLength) {
   let cancellFiba = true
 
   try {
-    let data = await binance.futuresPositionRisk({symbol: coin}) 
+    if(fibaObj[coin][6] == 0) {
+      dataRisk[coin] = await binance.futuresPositionRisk({symbol: coin}) 
 
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
+      fibaObj[coin][6] = 1
+
+      if(dataRisk[coin].code) {
+        console.log(dataRisk[coin].code + ' - ' + dataRisk[coin].msg);
+      }
     }
 
-    let unRealizedProfit = Number(data[0]['unRealizedProfit']) // профит в $
-    let entryPrice = Number(data[0]['entryPrice']) // цена входа в позицию
-    let markPrice = Number(data[0]['markPrice']) // текущая цена 
-    let positionAmt = Number(data[0]['positionAmt']) // количество монет в позиции
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 90}) 
+    if(candlesSymbol.code) {
+      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    }
+    
+
+    let unRealizedProfit = Number(dataRisk[coin][0]['unRealizedProfit']) // профит в $
+    let entryPrice = Number(dataRisk[coin][0]['entryPrice']) // цена входа в позицию
+    //let markPrice = Number(data[0]['markPrice']) // текущая цена 
+    let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+    let positionAmt = Number(dataRisk[coin][0]['positionAmt']) // количество монет в позиции
+
+    let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
+    let oneClose = Number(candlesSymbol[candlesSymbol.length - 1][4])
+    let oneHigh = Number(candlesSymbol[candlesSymbol.length - 1][2])
+    let candlesPercentOne = (((oneHigh - oneOpen) / oneOpen) * 100)
+    let candlesPercentHighToClose = (((oneHigh - oneClose) / (oneHigh - oneOpen)) * 100)
 
     if(positionAmt < 0) {
       if(markPrice <= (entryPrice - (entryPrice * plusBigCandles))) {

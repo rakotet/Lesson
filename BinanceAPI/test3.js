@@ -66,15 +66,4 @@
 // console.log(getString(a, b));
 
 
-const a = {
-  name: 'a',
-  foo: function() {
-    console.log(this.name);
-  }
-}
-
-const bar = a.foo
-
-// bar()
-
-a.foo()
+console.log(Number(new Date().getSeconds()));
