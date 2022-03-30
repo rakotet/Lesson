@@ -55,7 +55,7 @@ async function candlesOpenPamp(binance, opn, fs) {
   try {
     if(counterWork < numberMaxWork) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
-      console.log(candlesSymboldata);
+  
       if(candlesSymboldata.code) {
         console.log(candlesSymboldata.code + ' - ' + candlesSymboldata.msg);
         throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - candlesOpenPamp')
@@ -84,49 +84,9 @@ async function candlesOpenPamp(binance, opn, fs) {
 }
 
 async function getCandles(coin, binance, fs, opn) { // получить свечи
-  try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 1}) 
-    //console.log(data);
-    if(data.code) {
-      console.log(data.code + ' - ' + data.msg);
-    }
-
-    let openPrice = Number(data[data.length - 1][1])
-    let closePrice = Number(data[data.length - 1][4])
-    let oneHigh = Number(data[data.length - 1][2])
-    
-    let differenceGreen = Number((((oneHigh - openPrice) / openPrice) * 100).toFixed(2))
-    
-    if(differenceGreen >= percentPamp) {
-      if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
-      if(!timeOpenSymbolPamp[coin]) timeOpenSymbolPamp[coin] = 99
-      if(coinOpenPamp[coin][0] === 0) {
-        if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
-          if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
-            coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
-            opn('https://www.binance.com/ru/futures/' + coin)
-            
-            setTimeout(() => {
-              coinOpenPamp[coin][0] = 0
-            }, 20000)
-            
-            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + '\n'
-            console.log(mess);
-
-            fs.appendFileSync("symbolPamp.txt", mess)
-
-            //coinOpenPamp[coin][0] = 0
-          }
-        } 
-      }
-    }
-      
-     
-
-  } catch(e) {
-    //console.log(e);
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
-  }
+  binance.depth(coin, (error, depth, symbol) => {
+    console.log('Bids' + depth);
+  }, 100);
   
 }
 

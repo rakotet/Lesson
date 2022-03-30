@@ -63,7 +63,43 @@ const binance = new Binance().options({
 
 // fibaTraid('ZILUSDT')
 
-binance.depth("RUNEUSDT", (error, depth, symbol) => {
-  console.info(symbol+" market depth", depth);
-  //console.log(new Date(depth['lastUpdateId']).getHours() + ' : ' + new Date(depth['lastUpdateId']).getMinutes());
-}, 10);
+// binance.depth("RUNEUSDT", (error, depth, symbol) => {
+//   console.info(symbol+" market depth", depth);
+//   //console.log(new Date(depth['lastUpdateId']).getHours() + ' : ' + new Date(depth['lastUpdateId']).getMinutes());
+// }, 5);
+
+
+
+function ass() {
+  //console.log(new Date().getSeconds())
+  binance.depth("AVAXUSDT", (error, depth, symbol) => {
+    let maxBids = 0
+    let maxAsks = 0
+    let volumeBids = 0
+    let volumeAsks = 0
+  
+    for(let price in depth['bids']) {
+      maxBids = maxBids > depth['bids'][price] ? maxBids : depth['bids'][price]
+      volumeBids += depth['bids'][price]
+    }
+  
+    for(let price in depth['asks']) {
+      maxAsks = maxAsks > depth['asks'][price] ? maxAsks : depth['asks'][price]
+      volumeAsks += depth['asks'][price]
+    }
+  
+  
+    console.log('------------------');
+    console.log(`${maxAsks} - продать - средний объем - ${volumeAsks / 100}`);
+    console.log(`${maxBids} - купить - средний объем - ${volumeBids / 100}`);
+    console.log('------------------');
+    //console.log(new Date().getSeconds())
+  }, 100);
+
+ 
+  setTimeout(() => {
+    ass()
+  }, 1000)
+}
+
+ass()
