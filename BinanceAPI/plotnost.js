@@ -18,44 +18,27 @@ const fs = require('fs')
 const opn = require('opn')
 
 let counterWork = 0
-let timeOpenSymbolDamp = {}
-let timeOpenSymbolPamp = {}
-let coinOpenPamp = {}
-let candlesGreen = {}
-let megaVolume = {}
-let fibaObj = {}
-let pribl = 0
 let i = 0
+
+let coinObjBids = {}
+let coinObjAsks = {}
 
 /////////////////////// Управление ботом
 const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 500 // сумма одной сделки (10 - 1000)
-const percentPamp = 3 // Процент пампа при котором начинаем слежение
-const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const minProfitOpenTraid = 0.3 // Минимальный процент профита при котором открываем сделку (0.4 - 0.8)
-const oneCandlesRed = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
-const oneCandlesRed2 = 0.1 // Минимальный размер первой красной свечи для открытия сделки (0.0005 - 0.08)
-const closeSearch = 0.23 // Минимальный процент от импульса для закрытия слежения
-const constDown = 5 // Минимальный процент от импульса для захода в позицию
-const constDown2 = 15 // Максимальный процент от импульса для захода в позицию
-const percentBigCandles = 1.7 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
-const minusBigCandles = 0.005 // Процент минуса после захода по большой свечи до растягивания фибы (0.5 - 2)
-const plusBigCandles = 0.005 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const stopPercentBig = 0.005 // Процент минуса после захода по большой свечи после растягивания фибы (0.5 - 2)
-const stopPercentNormal = 0.005 // Процент минуса после захода по нормальному правилу после растягивания фибы (0.5 - 1)
-const onTwoCandles = true // Включение или отключение 2х красных вконце для входа в позицию
-const houlderCandles = 20 // Плечо сделки
-const openScrin = true // открывать сделки в браузере
-const volumeMega = 40
+const numberOneTrade = 150 // сумма одной сделки (10 - 1000)
+const buyBuksSpot = 500000
+const buyBuksFutures = 1000000
+const percentPriceCoin = 1
 ///////////////////////
 
 candlesOpenPamp(binance, opn, fs)
 
 async function candlesOpenPamp(binance, opn, fs) {
   try {
+    //console.log(new Date().getSeconds())
     if(counterWork < numberMaxWork) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
-  
+ 
       if(candlesSymboldata.code) {
         console.log(candlesSymboldata.code + ' - ' + candlesSymboldata.msg);
         throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - candlesOpenPamp')
@@ -63,14 +46,14 @@ async function candlesOpenPamp(binance, opn, fs) {
       
       for(let coin in candlesSymboldata) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
-          getCandles(coin, binance, fs, opn)
+          getSpot(coin, binance, fs, opn, Number(candlesSymboldata[coin]))
           //i++
-          await delay(20)
+          await delay(10)
         }
       }
       //console.log(i);
     }
-      
+    //console.log(new Date().getSeconds())
   } catch(e) {
     console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'candlesOpenPamp');
@@ -83,11 +66,80 @@ async function candlesOpenPamp(binance, opn, fs) {
     }, 6000)
 }
 
-async function getCandles(coin, binance, fs, opn) { // получить свечи
-  binance.depth(coin, (error, depth, symbol) => {
-    console.log('Bids' + depth);
-  }, 100);
+async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получить свечи
+  try {
+    binance.depth(coin, (error, depth, symbol) => {
+      //if(error) console.log(error);
   
+      let maxBids = [0, 0]
+      let maxAsks = [0, 0]
+      let megaPlotnost = buyBuksSpot / priceCoinLive
+      // let volumeBids = 0
+      // let volumeAsks = 0
+    
+      for(let price in depth['bids']) {
+        if((maxBids[1] < depth['bids'][price]) && ((((priceCoinLive - Number(price)) / Number(price)) * 100) < percentPriceCoin)) {
+          maxBids[0] = price
+          maxBids[1] = depth['bids'][price]
+        }
+  
+        //volumeBids += depth['bids'][price]
+      }
+    
+      for(let price in depth['asks']) {
+        if((maxAsks[1] < depth['asks'][price]) && ((((Number(price) - priceCoinLive) / priceCoinLive) * 100) < percentPriceCoin)) {
+          maxAsks[0] = price
+          maxAsks[1] = depth['asks'][price]
+        }
+  
+        //volumeAsks += depth['asks'][price]
+      }
+  
+      // console.log('------------------');
+      // console.log(`${maxAsks} - продать - средний объем - ${volumeAsks / 100}`);
+      // console.log(`${maxBids} - купить - средний объем - ${volumeBids / 100}`);
+      // console.log('------------------');
+
+      if(maxBids[1] >= megaPlotnost) {
+        let percent = (((priceCoinLive - Number(maxBids[0])) / Number(maxBids[0])) * 100).toFixed(2)
+        percent = percent < 0 ? (percent * (-1)) : percent
+
+        if(!coinObjBids[coin]) coinObjBids[coin] = [0]
+        if(coinObjBids[coin][0] === 0) {
+          console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
+          coinObjBids[coin][0] = Number(maxBids[1])
+          //coinObjBids[coin][1] = Number(maxBids[0])
+        } else {
+          if(!((coinObjBids[coin][0] === Number(maxBids[1])) /*&& (coinObjBids[coin][1] === Number(maxBids[0]))*/)) {
+            console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
+          }
+        }
+
+      }
+
+      if(maxAsks[1] >= megaPlotnost) {
+        let percent = (((Number(maxAsks[0]) - priceCoinLive) / priceCoinLive) * 100).toFixed(2)
+        percent = percent < 0 ? (percent * (-1)) : percent
+
+        if(!coinObjAsks[coin]) coinObjAsks[coin] = [0]
+        if(coinObjAsks[coin][0] === 0) {
+          console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
+          coinObjAsks[coin][0] = Number(maxAsks[1])
+          //coinObjAsks[coin][1] = Number(maxAsks[0])
+        } else {
+          if(!((coinObjAsks[coin][0] === Number(maxAsks[1])) /*&& (coinObjAsks[coin][1] === Number(maxAsks[0]))*/)) {
+            console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
+          }
+        }
+
+      }
+      
+    }, 100);
+
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'getSpot');
+  }
 }
 
 //////////////////////////////////////////////////////////

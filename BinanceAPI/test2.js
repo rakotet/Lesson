@@ -70,36 +70,49 @@ const binance = new Binance().options({
 
 
 
-function ass() {
+function ass(coin) {
   //console.log(new Date().getSeconds())
-  binance.depth("AVAXUSDT", (error, depth, symbol) => {
-    let maxBids = 0
-    let maxAsks = 0
+  binance.depth(coin, (error, depth, symbol) => {
+    let maxBids = [0, 0]
+    let maxAsks = [0, 0]
     let volumeBids = 0
     let volumeAsks = 0
   
     for(let price in depth['bids']) {
-      maxBids = maxBids > depth['bids'][price] ? maxBids : depth['bids'][price]
+      //maxBids = maxBids > depth['bids'][price] ? maxBids : depth['bids'][price]
+      
+      if(maxBids[1] < depth['bids'][price]) {
+        maxBids[0] = price
+        maxBids[1] = depth['bids'][price]
+      }
+
       volumeBids += depth['bids'][price]
     }
   
     for(let price in depth['asks']) {
-      maxAsks = maxAsks > depth['asks'][price] ? maxAsks : depth['asks'][price]
+      //maxAsks = maxAsks > depth['asks'][price] ? maxAsks : depth['asks'][price]
+
+      if(maxAsks[1] < depth['asks'][price]) {
+        maxAsks[0] = price
+        maxAsks[1] = depth['asks'][price]
+      }
+
       volumeAsks += depth['asks'][price]
     }
   
   
     console.log('------------------');
-    console.log(`${maxAsks} - продать - средний объем - ${volumeAsks / 100}`);
-    console.log(`${maxBids} - купить - средний объем - ${volumeBids / 100}`);
+    console.log(`${maxAsks[0]} : ${maxAsks[1]} - продать - средний объем - ${volumeAsks / 100}`);
+    console.log(`${maxBids[0]} : ${maxBids[1]} - купить - средний объем - ${volumeBids / 100}`);
     console.log('------------------');
     //console.log(new Date().getSeconds())
   }, 100);
 
  
   setTimeout(() => {
-    ass()
+    ass(coin)
   }, 1000)
 }
 
-ass()
+ass('ZILUSDT')
+
