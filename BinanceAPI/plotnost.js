@@ -108,9 +108,11 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
         if(coinObjBids[coin][0] === 0) {
           console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
           coinObjBids[coin][0] = Number(maxBids[1])
-          //coinObjBids[coin][1] = Number(maxBids[0])
+          coinObjBids[coin][1] = Number(maxBids[0])
         } else {
-          if(!((coinObjBids[coin][0] === Number(maxBids[1])) /*&& (coinObjBids[coin][1] === Number(maxBids[0]))*/)) {
+          //console.log(`${coin} - coinObjBids[coin][1] - ${coinObjBids[coin][1]} ; Number(maxBids[0]) - ${Number(maxBids[0])}`);
+          if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBids[coin][1] === Number(maxBids[0])))) {
+            coinObjBids[coin][1] = Number(maxBids[0])
             console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
           }
         }
@@ -125,9 +127,11 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
         if(coinObjAsks[coin][0] === 0) {
           console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
           coinObjAsks[coin][0] = Number(maxAsks[1])
-          //coinObjAsks[coin][1] = Number(maxAsks[0])
+          coinObjAsks[coin][1] = Number(maxAsks[0])
         } else {
-          if(!((coinObjAsks[coin][0] === Number(maxAsks[1])) /*&& (coinObjAsks[coin][1] === Number(maxAsks[0]))*/)) {
+          //console.log(`${coin} - coinObjAsks[coin][1] - ${coinObjAsks[coin][1]} ; Number(maxAsks[0]) - ${Number(maxAsks[0])}`);
+          if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsks[coin][1] === Number(maxAsks[0])))) {
+            coinObjAsks[coin][1] = Number(maxAsks[0])
             console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ - Процент до цены ${percent} \n`);
           }
         }
