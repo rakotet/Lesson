@@ -49,21 +49,21 @@ const openScrin = true // открывать сделки в браузере
 const volumeMega = 40
 ///////////////////////
 
-candlesOpenPamp(binance, opn, fs)
+openPampCandlesPercentTwo(binance, opn, fs)
 
-async function candlesOpenPamp(binance, opn, fs) {
+async function openPampCandlesPercentTwo(binance, opn, fs) {
   try {
     if(counterWork < numberMaxWork) { // проверка на количество открытых сделок
       let candlesSymboldata = await binance.futuresPrices() 
-      console.log(candlesSymboldata);
+      
       if(candlesSymboldata.code) {
         console.log(candlesSymboldata.code + ' - ' + candlesSymboldata.msg);
-        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - candlesOpenPamp')
+        throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - openPampCandlesPercentTwo')
       }
       
       for(let coin in candlesSymboldata) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
-          getCandles(coin, binance, fs, opn)
+          getCandlesOpenScrin(coin, binance, fs, opn)
           //i++
           await delay(20)
         }
@@ -72,18 +72,18 @@ async function candlesOpenPamp(binance, opn, fs) {
     }
       
   } catch(e) {
-    console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + 'candlesOpenPamp');
+    //console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'ошибка openPampCandlesPercentTwo');
   }
 
     //console.log(new Date().toLocaleTimeString() + ' --------------------------------------------------------------------------');
 
     setTimeout(() => {
-      candlesOpenPamp(binance, opn, fs)
+      openPampCandlesPercentTwo(binance, opn, fs)
     }, 6000)
 }
 
-async function getCandles(coin, binance, fs, opn) { // получить свечи
+async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить свечи
   try{
     let data = await binance.futuresCandles(coin, '1m', {limit: 1}) 
     //console.log(data);
@@ -94,6 +94,23 @@ async function getCandles(coin, binance, fs, opn) { // получить свеч
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
     let oneHigh = Number(data[data.length - 1][2])
+
+    let differenceRed = Number((((openPrice - closePrice) / closePrice) * 100).toFixed(2))
+
+    if(differenceRed >= percentDamp) {
+      if(!timeOpenSymbolDamp[coin]) timeOpenSymbolDamp[coin] = 99
+      if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
+        let messDamp = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n'
+        console.log(messDamp);
+        fs.appendFileSync("symbolPamp.txt", messDamp)
+
+        if(openScrin) {
+          opn('https://www.binance.com/ru/futures/' + coin)
+        }
+
+        timeOpenSymbolDamp[coin] = Number(new Date().getMinutes())
+      }
+    }
     
     let differenceGreen = Number((((oneHigh - openPrice) / openPrice) * 100).toFixed(2))
     
@@ -104,7 +121,9 @@ async function getCandles(coin, binance, fs, opn) { // получить свеч
         if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
           if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
             coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
-            opn('https://www.binance.com/ru/futures/' + coin)
+            if(openScrin) {
+              opn('https://www.binance.com/ru/futures/' + coin)
+            }
             
             setTimeout(() => {
               coinOpenPamp[coin][0] = 0
@@ -125,7 +144,7 @@ async function getCandles(coin, binance, fs, opn) { // получить свеч
 
   } catch(e) {
     //console.log(e);
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandlesOpenScrin');
   }
   
 }
