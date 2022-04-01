@@ -28,13 +28,13 @@ let coinObjAsksFuters = {}
 /////////////////////// Управление ботом
 const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 150 // сумма одной сделки (10 - 1000)
-const buyBuksSpot = 1000000
-const buyBuksFutures = 1000000
+const buyBuksSpot = 2000000
+const buyBuksFutures = 2000000
 // const buyBuksSpot = 500000
 // const buyBuksFutures = 500000
 const percentPriceCoin = 1
 const percentPriceFutures = 1
-const openScrin = true
+const openScrin = false
 ///////////////////////
 
 candlesOpenPamp(binance, opn, fs)
@@ -113,17 +113,22 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
 
         if(!coinObjBids[coin]) coinObjBids[coin] = [0]
         if(coinObjBids[coin][0] === 0) {
-          console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`);
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+          console.log(mess);
           coinObjBids[coin][0] = Number(maxBids[1])
           coinObjBids[coin][1] = Number(maxBids[0])
 
+          fs.appendFileSync("symbolPamp.txt", mess)
           if(openScrin) opn('https://www.binance.com/ru/futures/' + coin)
 
         } else {
           //console.log(`${coin} - coinObjBids[coin][1] - ${coinObjBids[coin][1]} ; Number(maxBids[0]) - ${Number(maxBids[0])}`);
           if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBids[coin][1] === Number(maxBids[0])))) {
             coinObjBids[coin][1] = Number(maxBids[0])
-            console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`);
+
+            let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+            console.log(mess);
+            fs.appendFileSync("symbolPamp.txt", mess)
           }
         }
 
@@ -135,17 +140,22 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
 
         if(!coinObjAsks[coin]) coinObjAsks[coin] = [0]
         if(coinObjAsks[coin][0] === 0) {
-          console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`);
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+          console.log(mess);
           coinObjAsks[coin][0] = Number(maxAsks[1])
           coinObjAsks[coin][1] = Number(maxAsks[0])
 
+          fs.appendFileSync("symbolPamp.txt", mess)
           if(openScrin) opn('https://www.binance.com/ru/futures/' + coin)
 
         } else {
           //console.log(`${coin} - coinObjAsks[coin][1] - ${coinObjAsks[coin][1]} ; Number(maxAsks[0]) - ${Number(maxAsks[0])}`);
           if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsks[coin][1] === Number(maxAsks[0])))) {
             coinObjAsks[coin][1] = Number(maxAsks[0])
-            console.log(`${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`);
+
+            let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+            console.log(mess);
+            fs.appendFileSync("symbolPamp.txt", mess)
           }
         }
 
@@ -229,17 +239,22 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
 
       if(!coinObjBidsFuters[coin]) coinObjBidsFuters[coin] = [0]
       if(coinObjBidsFuters[coin][0] === 0) {
-        console.log(`${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`);
+        let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+        console.log(mess);
         coinObjBidsFuters[coin][0] = Number(maxBids[1])
         coinObjBidsFuters[coin][1] = Number(maxBids[0])
 
+        fs.appendFileSync("symbolPamp.txt", mess)
         if(openScrin) opn('https://www.binance.com/ru/futures/' + coin)
 
       } else {
         //console.log(`${coin} - coinObjBids[coin][1] - ${coinObjBids[coin][1]} ; Number(maxBids[0]) - ${Number(maxBids[0])}`);
         if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBidsFuters[coin][1] === Number(maxBids[0])))) {
           coinObjBidsFuters[coin][1] = Number(maxBids[0])
-          console.log(`${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`);
+
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+          console.log(mess);
+          fs.appendFileSync("symbolPamp.txt", mess)
         }
       }
 
@@ -251,17 +266,22 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
 
       if(!coinObjAsksFuters[coin]) coinObjAsksFuters[coin] = [0]
       if(coinObjAsksFuters[coin][0] === 0) {
-        console.log(`${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`);
+        let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+        console.log(mess);
         coinObjAsksFuters[coin][0] = Number(maxAsks[1])
         coinObjAsksFuters[coin][1] = Number(maxAsks[0])
 
+        fs.appendFileSync("symbolPamp.txt", mess)
         if(openScrin) opn('https://www.binance.com/ru/futures/' + coin)
 
       } else {
         //console.log(`${coin} - coinObjAsks[coin][1] - ${coinObjAsks[coin][1]} ; Number(maxAsks[0]) - ${Number(maxAsks[0])}`);
         if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsksFuters[coin][1] === Number(maxAsks[0])))) {
           coinObjAsksFuters[coin][1] = Number(maxAsks[0])
-          console.log(`${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`);
+
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+          console.log(mess);
+          fs.appendFileSync("symbolPamp.txt", mess)
         }
       }
 
