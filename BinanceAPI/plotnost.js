@@ -39,9 +39,9 @@ const buyBuksFutures = 2000000
 // const buyBuksFutures = 500000
 const percentPriceCoin = 1
 const percentPriceFutures = 1
-const openScrinSpotFutures = true
-const openScrinPamp = true
-const openScrinDamp = true
+const openScrinSpotFutures = false
+const openScrinPamp = false
+const openScrinDamp = false
 ///////////////////////
 
 candlesOpenPamp(binance, opn, fs)
@@ -383,7 +383,7 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
             
             setTimeout(() => {
               coinOpenPamp[coin][0] = 0
-            }, 20000)
+            }, 40000)
             
             let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + '\n'
             console.log(mess);
