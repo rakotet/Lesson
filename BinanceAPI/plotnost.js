@@ -31,16 +31,16 @@ let coinObjAsksFuters = {}
 /////////////////////// Управление ботом
 const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 150 // сумма одной сделки (10 - 1000)
-const percentPamp = 3 // Процент пампа при котором начинаем слежение
+const percentPamp = 4 // Процент пампа при котором начинаем слежение
 const percentDamp = 3 // Процент дампа при котором начинаем слежение
-const buyBuksSpot = 2000000
-const buyBuksFutures = 2000000
+const buyBuksSpot = 3000000
+const buyBuksFutures = 3000000
 // const buyBuksSpot = 500000
 // const buyBuksFutures = 500000
 const percentPriceCoin = 1
 const percentPriceFutures = 1
-const openScrinSpotFutures = false
-const openScrinPamp = false
+const openScrinSpotFutures = true
+const openScrinPamp = true
 const openScrinDamp = false
 ///////////////////////
 

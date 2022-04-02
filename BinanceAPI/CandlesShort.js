@@ -29,18 +29,18 @@ let pribl = 0
 let i = 0
 
 /////////////////////// Управление ботом
-const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
+const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 1.5 // Процент пампа при котором начинаем слежение
+const percentPamp = 4 // Процент пампа при котором начинаем слежение
 const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const percentBigCandles = 3 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
-const plusBigCandles = 0.01 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const minusBigCandles = 0.01 
-const repurchase = 0.015 // процент докупки
-const houlderCandles = 10 // Плечо сделки
+const percentBigCandles = 5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const plusBigCandles = 0.015 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
+const minusBigCandles = 0.02 
+const repurchase = 0.01 // процент докупки
+const houlderCandles = 15 // Плечо сделки
 const openScrin = true // открывать сделки в браузере
-const volumeMega = 120 // мега объём
-const secondCandles = 30 // время свечи в секундах до которого открываем сделку
+const volumeMega = 12000 // мега объём
+const secondCandles = 50 // время свечи в секундах до которого открываем сделку
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -59,7 +59,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandles(coin, binance, opn, priceSymbolPamp, fs)
           //i++
-          await delay(20)
+          await delay(10)
         }
       }
       //console.log(i);
@@ -74,7 +74,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
 
     setTimeout(() => {
       candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
-    }, 6000)
+    }, 3000)
 }
 
 async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // получить свечи
@@ -233,7 +233,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
         if(data) {
           fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0]
           dateOneLength = Number((new Date(dateOneLength)).getMinutes())
-          fibaTraid(coin, dateOneLength)
+          fibaTraid(coin, dateOneLength, fs)
           let mess = ('\n' + '---------------------------------------' + '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Открыли сделку - цена ' + oneClose + ' - Памп ' + differenceGreen + ' - counterWork - ' + counterWork + ' - V в ' + (Number(candlesSymbol[candlesSymbol.length - 1][5]) / meanVolume).toFixed(2) + '\n' + '---------------------------------------' + '\n');
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
@@ -263,8 +263,9 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
 
 }
 
-async function fibaTraid(coin, dateOneLength) {
+async function fibaTraid(coin, dateOneLength, fs) {
   let cancellFiba = true
+  let number = 10
 
   try {
     if(fibaObj[coin][6] == 0) {
@@ -298,18 +299,24 @@ async function fibaTraid(coin, dateOneLength) {
     if(positionAmt < 0) {
       if(markPrice <= (entryPrice - (entryPrice * plusBigCandles))) {
         buyFiba('ПЛЮС', '++++++++++++++++')
+        let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ПЛЮС' + '\n'
+        fs.appendFileSync("symbolPamp.txt", mess)
       }
 
       else if((markPrice >= (entryPrice + (entryPrice * minusBigCandles))) && (dateOneLength != Number((new Date()).getMinutes()))) {
         buyFiba('МИНУС', '----------------')
+        let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МИНУС' + '\n'
+        fs.appendFileSync("symbolPamp.txt", mess)
       }
 
-      else if((markPrice >= (entryPrice + (entryPrice * repurchase))) && (dateOneLength == Number((new Date()).getMinutes()))) {
-        sellMarketCoin(coin, (positionAmt * (-2)), binance).then(data => {
+      else if((markPrice >= (entryPrice + (entryPrice * repurchase))) && (dateOneLength == Number((new Date()).getMinutes())) && (candlesPercentHighToClose >= 5)) {
+        fibaObj[coin][6] = 0
+        number = 1000
+        sellMarketCoin(coin, (positionAmt * (-1)), binance).then(data => {
           if(data) {
-            console.log('\n' + '---------------------------------------');
-            console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Сделали докупку');
-            console.log('---------------------------------------' + '\n');
+            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Сделали докупку' + '\n'
+            console.log(mess);
+            fs.appendFileSync("symbolPamp.txt", mess)
           }
         })
       }
@@ -388,7 +395,7 @@ async function fibaTraid(coin, dateOneLength) {
 
   if(cancellFiba) {
     setTimeout(() => {
-      fibaTraid(coin, dateOneLength)
-    }, 10)
+      fibaTraid(coin, dateOneLength, fs)
+    }, number)
   }
 }
