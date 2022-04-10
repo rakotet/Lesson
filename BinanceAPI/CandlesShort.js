@@ -31,16 +31,16 @@ let i = 0
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 4 // Процент пампа при котором начинаем слежение
-const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
-const percentBigCandles = 5 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const percentPamp = 3 // Процент пампа при котором начинаем слежение
+const percentDamp = 2 // Процент дампа при котором начинаем слежение
+const percentBigCandles = 1000 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
 const plusBigCandles = 0.015 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const minusBigCandles = 0.02 
-const repurchase = 0.01 // процент докупки
-const houlderCandles = 15 // Плечо сделки
-const openScrin = true // открывать сделки в браузере
+const minusBigCandles = 0.10 
+const repurchase = 0.07 // процент докупки
+const houlderCandles = 10 // Плечо сделки
+const openScrin = false // открывать сделки в браузере
 const volumeMega = 12000 // мега объём
-const secondCandles = 50 // время свечи в секундах до которого открываем сделку
+const secondCandles = 55 // время свечи в секундах до которого открываем сделку
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -66,7 +66,7 @@ async function candlesOpenPamp(binance, opn, priceSymbolPamp, fs) {
     }
       
   } catch(e) {
-    console.log(e);
+    //console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'candlesOpenPamp');
   }
 
@@ -167,7 +167,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
   } catch(e) {
     //console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -299,22 +299,22 @@ async function fibaTraid(coin, dateOneLength, fs) {
     if(positionAmt < 0) {
       if(markPrice <= (entryPrice - (entryPrice * plusBigCandles))) {
         buyFiba('ПЛЮС', '++++++++++++++++')
-        let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ПЛЮС' + '\n'
+        let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ПЛЮС +++++++++++++++++++++++++++++' + '\n'
         fs.appendFileSync("symbolPamp.txt", mess)
       }
 
       else if((markPrice >= (entryPrice + (entryPrice * minusBigCandles))) && (dateOneLength != Number((new Date()).getMinutes()))) {
         buyFiba('МИНУС', '----------------')
-        let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МИНУС' + '\n'
+        let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - МИНУС ----------------------------' + '\n'
         fs.appendFileSync("symbolPamp.txt", mess)
       }
 
-      else if((markPrice >= (entryPrice + (entryPrice * repurchase))) && (dateOneLength == Number((new Date()).getMinutes())) && (candlesPercentHighToClose >= 5)) {
+      else if((markPrice >= (entryPrice + (entryPrice * repurchase))) /*&& (dateOneLength == Number((new Date()).getMinutes())) && (candlesPercentHighToClose >= 5)*/) {
         fibaObj[coin][6] = 0
         number = 1000
         sellMarketCoin(coin, (positionAmt * (-1)), binance).then(data => {
           if(data) {
-            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Сделали докупку' + '\n'
+            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Сделали докупку ///////////////////////////' + '\n'
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
           }
