@@ -25,21 +25,23 @@ let candlesGreen = {}
 let megaVolume = {}
 let fibaObj = {}
 let dataRisk = {}
+let volumeOneTwo = {}
 let pribl = 0
 let i = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 3 // Процент пампа при котором начинаем слежение
+const percentPamp = 2 // Процент пампа при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
-const percentBigCandles = 1000 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
+const percentBigCandles = 300 // Минимальный процент свечи для захода в позицию по большой свечи (1.25 - 2)
 const plusBigCandles = 0.015 // Процент плюса после захода по большой свечи до растягивания фибы (0.5 - 1)
-const minusBigCandles = 0.10 
+const minusBigCandles = 0.30 
 const repurchase = 0.07 // процент докупки
 const houlderCandles = 10 // Плечо сделки
 const openScrin = false // открывать сделки в браузере
 const volumeMega = 12000 // мега объём
+const volumeOpen = 10
 const secondCandles = 55 // время свечи в секундах до которого открываем сделку
 ///////////////////////
 
@@ -84,6 +86,33 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
     }
+
+    // let oneVolume = 0
+    // let twoVolume = 0
+
+    // for(let i = 1; i <= 10; i++) {
+    //  oneVolume += Number(data[data.length - i][5])
+    // }
+
+    // for(let i = 11; i <= 21; i++) {
+    //   twoVolume += Number(data[data.length - i][5])
+    //  }
+
+    //  if(oneVolume > (twoVolume * volumeOpen)) {
+    //   if(!volumeOneTwo[coin]) volumeOneTwo[coin] = [0]
+    //   if(volumeOneTwo[coin][0] === 0) {
+    //     volumeOneTwo[coin][0] = 1
+    //     if(openScrin) {
+    //       opn('https://www.binance.com/ru/futures/' + coin)
+    //       let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Взможен памп!!! последние 10 свечей по объему больше предыдущих в ' + volumeOpen + ' раз' + '\n'
+    //       console.log(mess);
+    //       fs.appendFileSync("symbolPamp.txt", mess)
+    //     }
+    //     setTimeout(() => {
+    //       volumeOneTwo[coin][0] = 0
+    //     }, 300000)
+    //   }
+    //  }
 
     let volumeCandlesAll = 0
 
@@ -219,7 +248,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
     }
 
     if((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 5) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 30)
-    && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) && (Number(new Date().getSeconds()) < secondCandles) && (Number(candlesSymbol[candlesSymbol.length - 1][0]) == dateOneLength)) {
+    && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) /*&& (Number(new Date().getSeconds()) < secondCandles)*/ && (Number(candlesSymbol[candlesSymbol.length - 1][0]) == dateOneLength)) {
 
       if(openScrin) {
         opn('https://www.binance.com/ru/futures/' + coin)
@@ -240,7 +269,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
         }
       })
          
-    } else {
+    } /*else {
       if((candlesPercentOne >= percentBigCandles) && (candlesPercentHighToClose >= 5) && (oneClose > oneOpen) && (candlesPercentHighToClose <= 30)
       && (!(Number(candlesSymbol[candlesSymbol.length - 1][5]) >= (meanVolume * volumeMega))) && !(Number(new Date().getSeconds()) < secondCandles)) {
         if(coinOpenPamp[coin][2] == 0) {
@@ -248,7 +277,7 @@ async function priceSymbolPamp(symbol, dateOneLength, meanVolume, fs) {
           coinOpenPamp[coin][2] = 1
         }
       }
-    }
+    }*/
     
   } catch(e) {
     console.log(e);
