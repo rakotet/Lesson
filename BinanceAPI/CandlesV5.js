@@ -31,7 +31,11 @@ const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 2 // Процент пампа при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.25 // процент от цены входа до первой цели(23) по фибо
-const houlderCandles = 10 // Плечо сделки
+const maxMinus = 0.01 // максимальный минус в %
+const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
+const bezubitok = 0.002 // % безубытка
+const chastBuy = 2 // какую часть продать после достижения следующей цели по фиба
+const houlderCandles = 25 // Плечо сделки
 const openScrin = true // открывать сделки в браузере
 ///////////////////////
 
@@ -107,9 +111,6 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
               console.log(mess);
               coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
               coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
-              coinOpenPamp[coin][6] = new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice
-              coinOpenPamp[coin][7] = (Number(Date.now()) / 1000) // Время начала слежения
-              coinOpenPamp[coin][8] = 0
               timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
               priceSymbolPamp(coin, fs) 
 
@@ -230,7 +231,7 @@ async function priceSymbolPamp(symbol, fs) {
       cancell = false
 
       let differenceGreen = Number((((oneHigh - oneOpen) / oneOpen) * 100).toFixed(2))
-      let priceToMinus = Number((impulsMaxPrice + (impulsMaxPrice * 0.003)).toFixed(numberOfSigns(oneClose)))
+      let priceToMinus = Number((impulsMaxPrice + (impulsMaxPrice * maxMinuZaFiba)).toFixed(numberOfSigns(oneClose)))
 
       let f0 = impulsMaxPrice
       let f23 = Number((impulsMaxPrice - (impulsPrice * 0.20)).toFixed(numberOfSigns(oneClose)))
@@ -318,7 +319,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
     if(positionAmt < 0) {
       if(fibaObj[coin][0] === 0) {
-        if(markPrice >= stop || markPrice >= (entryPrice + (entryPrice * 0.01))) {
+        if(markPrice >= stop || markPrice >= (entryPrice + (entryPrice * maxMinus))) {
           buyFiba('МИНУС', '-------------------------')
         }
 
@@ -328,24 +329,26 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           /* Продали часть */
 
-          let kusok = Number((positionAmt / 2).toFixed())
-          if(kusok < 1) kusok = positionAmt
+          if(markPrice < (entryPrice - (entryPrice * (plusProfitPercent / 100)))) {
+            let kusok = Number((positionAmt / chastBuy).toFixed())
+            if(kusok < 1) kusok = positionAmt
 
-          buyMarketCoin(coin, kusok, binance).then(orderId => {
-            if(orderId) {
-              statusOrder(coin, orderId, binance).then(avgPrice => {
-                console.log(' ');
-                console.log(new Date().toLocaleTimeString() + ' Продали часть после первой отметки: ' + coin + ' По цене: ' + avgPrice)
-                console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-                console.log(' ');
-              })
-            }
-          })
+            buyMarketCoin(coin, kusok, binance).then(orderId => {
+              if(orderId) {
+                statusOrder(coin, orderId, binance).then(avgPrice => {
+                  console.log(' ');
+                  console.log(new Date().toLocaleTimeString() + ' Продали часть после первой отметки: ' + coin + ' По цене: ' + avgPrice)
+                  console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                  console.log(' ');
+                })
+              }
+            })
+          }
         }
       }
 
       if(fibaObj[coin][0] === 1) {
-        if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * 0.002)))) {
+        if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * bezubitok)))) {
           buyFiba('БЕЗУБЫТОК', '///////////////////////')
         }
 
@@ -353,7 +356,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
           fibaObj[coin][0] = 2
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли отметки f38 - ' + f38 + ' - ' + coin + '\n')
 
-          let kusok = Number((positionAmt / 2).toFixed())
+          let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
 
           buyMarketCoin(coin, kusok, binance).then(orderId => {
@@ -378,7 +381,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
           fibaObj[coin][0] = 3
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли отметки f50 - ' + f50 + ' - ' + coin + '\n')
 
-          let kusok = Number((positionAmt / 2).toFixed())
+          let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
 
           buyMarketCoin(coin, kusok, binance).then(orderId => {
@@ -403,7 +406,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
           fibaObj[coin][0] = 4
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли отметки f60 - ' + f60 + ' - ' + coin + '\n')
 
-          let kusok = Number((positionAmt / 2).toFixed())
+          let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
 
           buyMarketCoin(coin, kusok, binance).then(orderId => {
@@ -428,7 +431,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
           fibaObj[coin][0] = 5
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли отметки f78 - ' + f78 + ' - ' + coin + '\n')
 
-          let kusok = Number((positionAmt / 2).toFixed())
+          let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
 
           buyMarketCoin(coin, kusok, binance).then(orderId => {
@@ -453,7 +456,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
           fibaObj[coin][0] = 6
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли отметки f100 - ' + f100 + ' - ' + coin + '\n')
 
-          let kusok = Number((positionAmt / 2).toFixed())
+          let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
 
           buyMarketCoin(coin, kusok, binance).then(orderId => {
@@ -521,11 +524,20 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
         positionAmt = positionAmt * (-1)
       }
 
-      cancellFiba = false
-      counterWork--
-      setTimeout(() => {
-        coinOpenPamp[coin][0] = 0
-      }, 60000)
+      if(a === 'ПЛЮС' || a === 'БЕЗУБЫТОК') {
+        cancellFiba = false
+        counterWork--
+        setTimeout(() => {
+          coinOpenPamp[coin][0] = 0
+        }, 60000)
+      } 
+      
+      else if (a === 'МИНУС') {
+        cancellFiba = false
+        priceSymbolPamp(coin, fs) 
+      }
+
+      
 
       buyMarketCoin(coin, positionAmt, binance).then(orderId => {
         if(orderId) {
