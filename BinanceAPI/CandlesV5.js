@@ -28,11 +28,11 @@ let i = 0
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 0.2 // Процент пампа при котором начинаем слежение
+const percentPamp = 2 // Процент пампа при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.25 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 0.01 // максимальный минус в %
-const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
+const maxMinuZaFiba = 0.005// максимальный минус в % за фиба
 const bezubitok = 0.002 // % безубытка
 const chastBuy = 2 // какую часть продать после достижения следующей цели по фиба
 const houlderCandles = 25 // Плечо сделки
@@ -524,7 +524,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
         positionAmt = positionAmt * (-1)
       }
 
-      if(a === 'ПЛЮС' || a === 'БЕЗУБЫТОК') {
+      if(a === 'ПЛЮС') {
         cancellFiba = false
         counterWork--
         setTimeout(() => {
@@ -532,7 +532,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
         }, 60000)
       } 
       
-      else if (a === 'МИНУС') {
+      else if (a === 'МИНУС' || a === 'БЕЗУБЫТОК') {
         cancellFiba = false
         priceSymbolPamp(coin, fs) 
       }
