@@ -27,16 +27,16 @@ let i = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 2 // Процент пампа при котором начинаем слежение
+const numberOneTrade = 50 // сумма одной сделки (10 - 1000)
+const percentPamp = 4 // Процент пампа при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
-const plusProfitPercent = 0.25 // процент от цены входа до первой цели(23) по фибо
-const maxMinus = 0.005 // максимальный минус в %
-const maxMinuZaFiba = 0.005// максимальный минус в % за фиба
+const plusProfitPercent = 0.50 // процент от цены входа до первой цели(23) по фибо
+const maxMinus = 0.003 // максимальный минус в %
+const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
 const bezubitok = 0.002 // % безубытка
 const chastBuy = 2 // какую часть продать после достижения следующей цели по фиба
 const houlderCandles = 25 // Плечо сделки
-const openScrin = true // открывать сделки в браузере
+const openScrin = false // открывать сделки в браузере
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -111,6 +111,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
               console.log(mess);
               coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
               coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
+              coinOpenPamp[coin][6] = 0 // вывод в лог данных по импульсу
               timeOpenSymbolPamp[coin] = Number(new Date().getMinutes())
               priceSymbolPamp(coin, fs) 
 
@@ -164,7 +165,7 @@ async function priceSymbolPamp(symbol, fs) {
           break;
         } 
       }
-      //coinOpenPamp[coin][5] = 1
+      coinOpenPamp[coin][5] = 1
     }
 
     let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
@@ -203,18 +204,20 @@ async function priceSymbolPamp(symbol, fs) {
     let f25 = Number((impulsMaxPrice - (impulsPrice * 0.25)).toFixed(numberOfSigns(oneClose)))
     let f15 = Number((impulsMaxPrice - (impulsPrice * 0.15)).toFixed(numberOfSigns(oneClose)))
 
-    if(coinOpenPamp[coin][5] === 0) {
+    if(coinOpenPamp[coin][6] === 0) {
       console.log(' ');
       console.log(coin +' - время начала импульса - ' + new Date(coinOpenPamp[coin][4]).toLocaleTimeString() + ' - цена начала импульса - ' + coinOpenPamp[coin][3]);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsCandlesLength - ' + impulsCandlesLength);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsMaxPrice - ' + impulsMaxPrice);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsPercent - ' + impulsPercent);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f25 - ' + f25);
       console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
       console.log(' ');
-      coinOpenPamp[coin][5] = 1
+
+      coinOpenPamp[coin][6] = 1
     }
 
-    if(/*(oneLow < f25) && (twoLow < f25) && (twoClose < twoOpen)*/ oneClose <= f25) {
+    if(/*(oneLow < f25) && (twoLow < f25) && (twoClose < twoOpen)*/ (oneClose <= f25) && (twoClose < twoOpen)) {
       cancell = false
       counterWork--
       coinOpenPamp[coin][0] = 0
@@ -223,7 +226,7 @@ async function priceSymbolPamp(symbol, fs) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
     }
 
-    if((oneOpen > oneClose) && (twoOpen > twoClose) && (twoLow > f20) && (oneLow > f20) && (oneClose > f15) && (((((oneClose - f20) / f20) * 100)) > plusProfitPercent)
+    if((oneOpen > oneClose) && (twoOpen > twoClose) && /*(twoLow > f20) && (oneLow > f20) &&*/ (oneClose >= f15) && (((((oneClose - f20) / f20) * 100)) > plusProfitPercent)
     && ((oneOpen - oneClose) > (oneOpen * 0.001))) {
 
       if(openScrin) {
@@ -284,21 +287,21 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
     if(fibaObj[coin][6] == 0) {
       dataRisk[coin] = await binance.futuresPositionRisk({symbol: coin}) 
 
-      //fibaObj[coin][6] = 1
+      fibaObj[coin][6] = 1
 
       if(dataRisk[coin].code) {
         console.log(dataRisk[coin].code + ' - ' + dataRisk[coin].msg);
       }
     }
 
-    // let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
-    // if(candlesSymbol.code) {
-    //   console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
-    // }
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+    if(candlesSymbol.code) {
+      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    }
     
     let entryPrice = Number(dataRisk[coin][0]['entryPrice']) // цена входа в позицию
-    //let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
-    let markPrice = Number(dataRisk[coin][0]['markPrice']) // текущая цена 
+    let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+    //let markPrice = Number(dataRisk[coin][0]['markPrice']) // текущая цена 
     let positionAmt = Number(dataRisk[coin][0]['positionAmt']) // количество монет в позиции
 
     // let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
@@ -325,6 +328,20 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
       if(positionAmt < 0) positionAmt = positionAmt * (-1)
 
+      if(fibaObj[coin][3] === 0) {
+        if(markPrice <= (entryPrice - (entryPrice * 0.0040))) {
+          fibaObj[coin][3] = 1
+          console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны первого безубытка - ' + coin + '\n')
+        }
+      }
+
+      if(fibaObj[coin][3] === 1) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.0030))) {
+          fibaObj[coin][3] = 0
+          buyFiba('БЕЗУБЫТОК', '///////////////////////', 'Первая зона безубытка')
+        }
+      }
+
       if(fibaObj[coin][0] === 0) {
         if(markPrice >= stop || markPrice >= (entryPrice + (entryPrice * maxMinus))) {
           buyFiba('МИНУС', '-------------------------')
@@ -336,10 +353,11 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           /* Продали часть */
 
-          if(markPrice < (entryPrice - (entryPrice * (plusProfitPercent / 100)))) {
+          if(markPrice < (entryPrice - (entryPrice * 0.0020))) {
             let kusok = Number((positionAmt / chastBuy).toFixed())
             if(kusok < 1) kusok = positionAmt
-            
+            fibaObj[coin][6] = 0
+            number = 1000
             buyMarketCoin(coin, kusok, binance).then(orderId => {
               if(orderId) {
                 statusOrder(coin, orderId, binance).then(avgPrice => {
@@ -355,9 +373,9 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
       }
 
       if(fibaObj[coin][0] === 1) {
-        if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * bezubitok)))) {
-          buyFiba('БЕЗУБЫТОК', '///////////////////////')
-        }
+        // if((markPrice > f23) && (markPrice >= (entryPrice - (entryPrice * bezubitok)))) {
+        //   buyFiba('БЕЗУБЫТОК', '///////////////////////')
+        // }
 
         if(markPrice <= f38) {
           fibaObj[coin][0] = 2
@@ -365,7 +383,8 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
-         
+          fibaObj[coin][6] = 0
+          number = 1000
           buyMarketCoin(coin, kusok, binance).then(orderId => {
             if(orderId) {
               statusOrder(coin, orderId, binance).then(avgPrice => {
@@ -390,7 +409,8 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
-        
+          fibaObj[coin][6] = 0
+          number = 1000
           buyMarketCoin(coin, kusok, binance).then(orderId => {
             if(orderId) {
               statusOrder(coin, orderId, binance).then(avgPrice => {
@@ -415,7 +435,8 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
-       
+          fibaObj[coin][6] = 0
+          number = 1000
           buyMarketCoin(coin, kusok, binance).then(orderId => {
             if(orderId) {
               statusOrder(coin, orderId, binance).then(avgPrice => {
@@ -440,7 +461,8 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
-         
+          fibaObj[coin][6] = 0
+          number = 1000
           buyMarketCoin(coin, kusok, binance).then(orderId => {
             if(orderId) {
               statusOrder(coin, orderId, binance).then(avgPrice => {
@@ -465,7 +487,8 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
           let kusok = Number((positionAmt / chastBuy).toFixed())
           if(kusok < 1) kusok = positionAmt
-         
+          fibaObj[coin][6] = 0
+          number = 1000
           buyMarketCoin(coin, kusok, binance).then(orderId => {
             if(orderId) {
               statusOrder(coin, orderId, binance).then(avgPrice => {
@@ -539,9 +562,24 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
         }, 60000)
       } 
       
-      else if (a === 'МИНУС' || a === 'БЕЗУБЫТОК') {
+      else if (a === 'МИНУС') {
         cancellFiba = false
+        // coinOpenPamp[coin][5] = 0
+        fibaObj[coin][6] = 0
+        coinOpenPamp[coin][6] = 0
+        fibaObj[coin][3] = 0
         priceSymbolPamp(coin, fs) 
+      }
+
+      else if (a === 'БЕЗУБЫТОК') {
+        cancellFiba = false
+        // coinOpenPamp[coin][5] = 0
+        fibaObj[coin][6] = 0
+        coinOpenPamp[coin][6] = 0
+        fibaObj[coin][3] = 0
+        setTimeout(() => {
+          priceSymbolPamp(coin, fs) 
+        }, 60000)
       }
 
       
