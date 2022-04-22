@@ -27,9 +27,9 @@ let i = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 50 // сумма одной сделки (10 - 1000)
-const percentPamp = 8 // Процент пампа при котором начинаем слежение
-const percentImpulsConst = 5.5
+const numberOneTrade = 1000 // сумма одной сделки (10 - 1000)
+const percentPamp = 5 // Процент пампа при котором начинаем слежение
+const percentImpulsConst = 1
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 0.003 // максимальный минус в %
@@ -87,6 +87,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
     let oneHigh = Number(data[data.length - 1][2])
 
     let openPriceImpuls = 0
+    let timeOpenImpuls = 0
 
     for(let i = data.length - 2; i > 0; i--) {
       if(Number(data[i][4]) <= Number(data[(i - 1)][1])
@@ -96,6 +97,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
         } else {
           openPriceImpuls = Number(data[i][1]) // цена начала импульса
         }
+        timeOpenImpuls = Number(data[i][0]) // время начала импульса
         break;
       } 
     }
@@ -143,7 +145,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
           if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
             if(Number(new Date().getMinutes()) !== timeOpenSymbolPamp[coin]) {
               counterWork++
-              let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + '\n'
+              let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + timeOpenImpuls + '\n'
               console.log(mess);
               coinOpenPamp[coin][0] = 1 // флаг того что памп пошел в работу
               coinOpenPamp[coin][5] = 0 // счетчик высчитывания импульса после запуска ф-и
@@ -167,8 +169,8 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
     }
 
   } catch(e) {
-    //console.log(e);
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -256,14 +258,16 @@ async function priceSymbolPamp(symbol, fs) {
     if(/*(oneLow < f25) && (twoLow < f25) && (twoClose < twoOpen)*/ (oneClose <= f25) && (twoClose < twoOpen)) {
       cancell = false
       counterWork--
-      coinOpenPamp[coin][0] = 0
+      setTimeout(() => {
+        coinOpenPamp[coin][0] = 0
+      }, 120000)
 
       let message = 'Вышли из ф-и пошла коррекция, но мы не вошли'
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
     }
 
     if((oneOpen > oneClose) && (twoOpen > twoClose) && /*(twoLow > f20) && (oneLow > f20) &&*/ (oneClose >= f15) && (((((oneClose - f20) / f20) * 100)) > plusProfitPercent)
-    && ((oneOpen - oneClose) > (oneOpen * 0.001)) && (impulsPercent >= percentImpulsConst)) {
+    && ((oneOpen - oneClose) > (oneOpen * 0.001)) && (impulsPercent >= percentImpulsConst) && false) {
 
       if(openScrin) {
         opn('https://www.binance.com/ru/futures/' + coin)
