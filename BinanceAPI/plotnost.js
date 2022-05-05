@@ -93,18 +93,18 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
       // let volumeAsks = 0
     
       for(let price in depth['bids']) {
-        if((maxBids[1] < depth['bids'][price]) && ((((priceCoinLive - Number(price)) / Number(price)) * 100) < percentPriceCoin)) {
-          maxBids[0] = price
-          maxBids[1] = depth['bids'][price]
+        if((maxBids[1] < Number(depth['bids'][price])) && ((((priceCoinLive - Number(price)) / Number(price)) * 100) < percentPriceCoin)) {
+          maxBids[0] = Number(price)
+          maxBids[1] = Number(depth['bids'][price])
         }
   
         //volumeBids += depth['bids'][price]
       }
     
       for(let price in depth['asks']) {
-        if((maxAsks[1] < depth['asks'][price]) && ((((Number(price) - priceCoinLive) / priceCoinLive) * 100) < percentPriceCoin)) {
-          maxAsks[0] = price
-          maxAsks[1] = depth['asks'][price]
+        if((maxAsks[1] < Number(depth['asks'][price])) && ((((Number(price) - priceCoinLive) / priceCoinLive) * 100) < percentPriceCoin)) {
+          maxAsks[0] = Number(price)
+          maxAsks[1] = Number(depth['asks'][price])
         }
   
         //volumeAsks += depth['asks'][price]
@@ -235,7 +235,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
     }
 
     for(let i = 0; i < book['asks'].length; i++) {
-      if((maxAsks[1] < Number(book['asks'][i][1])) && ((((priceCoinLive - Number(book['asks'][i][0])) / Number(book['asks'][i][0])) * 100) < percentPriceFutures)) {
+      if((maxAsks[1] < Number(book['asks'][i][1])) && ((((Number(book['asks'][i][0]) - priceCoinLive) / priceCoinLive) * 100) < percentPriceFutures)) {
         maxAsks[0] = Number(book['asks'][i][0])
         maxAsks[1] = Number(book['asks'][i][1])
       }
