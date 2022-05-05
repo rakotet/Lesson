@@ -161,9 +161,9 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
               futuressHoulder(coin, houlderCandles, binance).then(data => {
                 futuresMarginType(coin, binance).then(data => {
-                  // if(openScrin) {
-                  //   opn('https://www.binance.com/ru/futures/' + coin)
-                  // }
+                  if(openScrin) {
+                    opn('https://www.binance.com/ru/futures/' + coin)
+                  }
                 })
               })     
             }
@@ -174,7 +174,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
   } catch(e) {
     //console.log(e);
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -259,7 +259,7 @@ async function priceSymbolPamp(symbol, fs) {
       coinOpenPamp[coin][6] = 1
     }
 
-    if(/*(oneLow < f25) && (twoLow < f25) && (twoClose < twoOpen)*/ (oneClose <= f25) && (twoClose < twoOpen)) {
+    if(/*(oneLow < f25) && (twoLow < f25) && (twoClose < twoOpen)*/ (oneClose <= f25) && (oneClose < oneOpen)) {
       cancell = false
       counterWork--
       setTimeout(() => {
@@ -273,9 +273,9 @@ async function priceSymbolPamp(symbol, fs) {
     if((impulsPercent >= percentImpulsConst) /*&& (oneOpen > oneClose) && (twoOpen > twoClose) && (twoLow > f20) && (oneLow > f20) && (oneClose >= f8) && (((((oneClose - f20) / f20) * 100)) > plusProfitPercent)
     && ((oneOpen - oneClose) >= (oneOpen * 0.001)) /*&& (((twoOpen - twoClose) >= (twoOpen * 0.001)) && ((twoOpen - twoClose) < (twoOpen * 0.003)))/ && (impulsPercent >= percentImpulsConst)*/) {
 
-      if(openScrin) {
-        opn('https://www.binance.com/ru/futures/' + coin)
-      }
+      // if(openScrin) {
+      //   opn('https://www.binance.com/ru/futures/' + coin)
+      // }
 
       try {
         binance.depth(coin, (error, depth, symbol) => {
@@ -303,10 +303,10 @@ async function priceSymbolPamp(symbol, fs) {
           }
       
           console.log('------------------');
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose));
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose));
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose));
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose));
+          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
+          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
+          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
+          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
           console.log(' ');
           
         }, 100);
@@ -332,6 +332,7 @@ async function priceSymbolPamp(symbol, fs) {
             maxBids[0] = Number(book['bids'][i][0])
             maxBids[1] = Number(book['bids'][i][1])
           }
+          volumeBids += Number(book['bids'][i][1])
         }
     
         for(let i = 0; i < book['asks'].length; i++) {
@@ -339,9 +340,16 @@ async function priceSymbolPamp(symbol, fs) {
             maxAsks[0] = Number(book['asks'][i][0])
             maxAsks[1] = Number(book['asks'][i][1])
           }
+          volumeAsks += Number(book['asks'][i][1])
         }
     
-    
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
+        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
+        console.log('------------------');
+        console.log(' ');
+        
     
       } catch(e) {
         //console.log(e);

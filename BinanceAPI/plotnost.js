@@ -29,12 +29,12 @@ let coinObjBidsFuters = {}
 let coinObjAsksFuters = {}
 
 /////////////////////// Управление ботом
-const numberMaxWork = 2 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 150 // сумма одной сделки (10 - 1000)
+const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
+const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 4 // Процент пампа при котором начинаем слежение
 const percentDamp = 3 // Процент дампа при котором начинаем слежение
-const buyBuksSpot = 3000000
-const buyBuksFutures = 3000000
+const buyBuksSpot = 1000000
+const buyBuksFutures = 1000000
 // const buyBuksSpot = 500000
 // const buyBuksFutures = 500000
 const percentPriceCoin = 1
@@ -46,7 +46,7 @@ const openScrinDamp = false
 
 candlesOpenPamp(binance, opn, fs)
 candlesOpenFutures(binance, opn, fs)
-openPampCandlesPercentTwo(binance, opn, fs)
+//openPampCandlesPercentTwo(binance, opn, fs)
 
 async function candlesOpenPamp(binance, opn, fs) {
   try {
@@ -78,7 +78,7 @@ async function candlesOpenPamp(binance, opn, fs) {
 
     setTimeout(() => {
       candlesOpenPamp(binance, opn, fs)
-    }, 70000)
+    }, 31000)
 }
 
 async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получить свечи
@@ -134,7 +134,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
           if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBids[coin][1] === Number(maxBids[0])))) {
             coinObjBids[coin][1] = Number(maxBids[0])
 
-            let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+            let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
           }
@@ -161,7 +161,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
           if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsks[coin][1] === Number(maxAsks[0])))) {
             coinObjAsks[coin][1] = Number(maxAsks[0])
 
-            let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+            let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
           }
@@ -260,7 +260,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
         if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBidsFuters[coin][1] === Number(maxBids[0])))) {
           coinObjBidsFuters[coin][1] = Number(maxBids[0])
 
-          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
         }
@@ -287,7 +287,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
         if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsksFuters[coin][1] === Number(maxAsks[0])))) {
           coinObjAsksFuters[coin][1] = Number(maxAsks[0])
 
-          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
         }
