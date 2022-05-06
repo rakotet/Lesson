@@ -174,7 +174,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
   } catch(e) {
     //console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }

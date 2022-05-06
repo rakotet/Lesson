@@ -16,6 +16,11 @@ const binance = new Binance().options({
 });
 const fs = require('fs')
 const opn = require('opn')
+let http = require('request')
+
+const idBot = '5302452238:AAEmImsTrmLxdkZxDrQoPL4l1DzBnqhhdZg'
+const idChatPlot = '-1001506995531'
+const idChatManipul = '-1001196361965'
 
 let counterWork = 0
 let timeOpenSymbolDamp = {}
@@ -31,22 +36,24 @@ let coinObjAsksFuters = {}
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 4 // Процент пампа при котором начинаем слежение
-const percentDamp = 3 // Процент дампа при котором начинаем слежение
-const buyBuksSpot = 1000000
-const buyBuksFutures = 1000000
+const percentPamp = 10 // Процент пампа при котором начинаем слежение
+const percentImpulsConst = 5
+const percentDamp = 2 // Процент дампа при котором начинаем слежение
+const buyBuksSpot = 1500000
+const buyBuksFutures = 1500000
 // const buyBuksSpot = 500000
 // const buyBuksFutures = 500000
-const percentPriceCoin = 1
-const percentPriceFutures = 1
-const openScrinSpotFutures = true
-const openScrinPamp = true
+const percentPriceCoin = 1.5
+const percentPriceFutures = 1.5
+const openScrinSpotFutures = false
+const openScrinPamp = false
 const openScrinDamp = false
+const houlderCandles = 25
 ///////////////////////
 
 candlesOpenPamp(binance, opn, fs)
 candlesOpenFutures(binance, opn, fs)
-//openPampCandlesPercentTwo(binance, opn, fs)
+openPampCandlesPercentTwo(binance, opn, fs)
 
 async function candlesOpenPamp(binance, opn, fs) {
   try {
@@ -78,7 +85,7 @@ async function candlesOpenPamp(binance, opn, fs) {
 
     setTimeout(() => {
       candlesOpenPamp(binance, opn, fs)
-    }, 31000)
+    }, 35000)
 }
 
 async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получить свечи
@@ -123,10 +130,12 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
         if(coinObjBids[coin][0] === 0) {
           let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
+          
           coinObjBids[coin][0] = Number(maxBids[1])
           coinObjBids[coin][1] = Number(maxBids[0])
 
           fs.appendFileSync("symbolPamp.txt", mess)
+          sendTelega(mess)
           if(openScrinSpotFutures) opn('https://www.binance.com/ru/futures/' + coin)
 
         } else {
@@ -137,6 +146,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
             let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
+            sendTelega(mess)
           }
         }
 
@@ -154,6 +164,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
           coinObjAsks[coin][1] = Number(maxAsks[0])
 
           fs.appendFileSync("symbolPamp.txt", mess)
+          sendTelega(mess)
           if(openScrinSpotFutures) opn('https://www.binance.com/ru/futures/' + coin)
 
         } else {
@@ -164,6 +175,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
             let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
+            sendTelega(mess)
           }
         }
 
@@ -253,6 +265,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
         coinObjBidsFuters[coin][1] = Number(maxBids[0])
 
         fs.appendFileSync("symbolPamp.txt", mess)
+        sendTelega(mess)
         if(openScrinSpotFutures) opn('https://www.binance.com/ru/futures/' + coin)
 
       } else {
@@ -263,6 +276,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
           let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
+          sendTelega(mess)
         }
       }
 
@@ -280,6 +294,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
         coinObjAsksFuters[coin][1] = Number(maxAsks[0])
 
         fs.appendFileSync("symbolPamp.txt", mess)
+        sendTelega(mess)
         if(openScrinSpotFutures) opn('https://www.binance.com/ru/futures/' + coin)
 
       } else {
@@ -290,6 +305,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
           let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
+          sendTelega(mess)
         }
       }
 
@@ -321,7 +337,7 @@ async function openPampCandlesPercentTwo(binance, opn, fs) {
         if((candlesSymboldata[coin] < numberOneTrade) && coin.endsWith('USDT')) {
           getCandlesOpenScrin(coin, binance, fs, opn)
           //i++
-          await delay(20)
+          await delay(10)
         }
       }
       //console.log(i);
@@ -336,12 +352,12 @@ async function openPampCandlesPercentTwo(binance, opn, fs) {
 
     setTimeout(() => {
       openPampCandlesPercentTwo(binance, opn, fs)
-    }, 6000)
+    }, 7000)
 }
 
 async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить свечи
   try{
-    let data = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+    let data = await binance.futuresCandles(coin, '1m', {limit: 90}) 
     //console.log(data);
     if(data.code) {
       console.log(data.code + ' - ' + data.msg);
@@ -350,6 +366,43 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
     let oneHigh = Number(data[data.length - 1][2])
+    
+    let openPriceImpuls = 0
+    let timeOpenImpuls = 0
+
+    for(let i = data.length - 2; i > 0; i--) {
+      if(Number(data[i][4]) <= Number(data[(i - 1)][1])
+      && Number(data[(i - 1)][4]) <= Number(data[(i - 2)][1])) {
+        if(Number(data[i][1]) > Number(data[i][4])) {
+          openPriceImpuls = Number(data[i][4]) // цена начала импульса
+        } else {
+          openPriceImpuls = Number(data[i][1]) // цена начала импульса
+        }
+        timeOpenImpuls = Number(data[i][0]) // время начала импульса
+        break;
+      } 
+    }
+
+    let impulsMaxPrice = 0
+    let impulsCandlesLength = 0
+
+    for(let i = data.length - 1; i > 0; i--) {
+      if(Number(data[i][1]) === openPriceImpuls || Number(data[i][4]) === openPriceImpuls) {
+        break;
+      } else {
+        impulsCandlesLength++
+      }
+    }
+
+    for(let i = data.length - 1; i > ((data.length - 1) - impulsCandlesLength); i--) {
+      if(Number(data[i][1]) > Number(data[i][4])) {
+        if(Number(data[i][1]) > impulsMaxPrice) impulsMaxPrice = Number(data[i][1])
+      } else {
+        if(Number(data[i][4]) > impulsMaxPrice) impulsMaxPrice = Number(data[i][4])
+      }
+    }
+
+    let impulsPercent = Number((((impulsMaxPrice - openPriceImpuls) / openPriceImpuls) * 100).toFixed(2))
 
     let differenceRed = Number((((openPrice - closePrice) / closePrice) * 100).toFixed(2))
 
@@ -370,7 +423,7 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
     
     let differenceGreen = Number((((oneHigh - openPrice) / openPrice) * 100).toFixed(2))
     
-    if(differenceGreen >= percentPamp) {
+    if(differenceGreen >= percentPamp || (impulsPercent >= percentImpulsConst)) {
       if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
       if(!timeOpenSymbolPamp[coin]) timeOpenSymbolPamp[coin] = 99
       if(coinOpenPamp[coin][0] === 0) {
@@ -383,14 +436,20 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
             
             setTimeout(() => {
               coinOpenPamp[coin][0] = 0
-            }, 40000)
+            }, 300000)
             
-            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп + ' + differenceGreen + ' цена - ' + closePrice + '\n'
+            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
             console.log(mess);
 
             fs.appendFileSync("symbolPamp.txt", mess)
-
+            sendTelega2(mess)
             //coinOpenPamp[coin][0] = 0
+
+            futuressHoulder(coin, houlderCandles, binance).then(data => {
+              futuresMarginType(coin, binance).then(data => {
+                
+              })
+            })     
           }
         } 
       }
@@ -400,9 +459,39 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
 
   } catch(e) {
     //console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandlesOpenScrin');
+    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandlesOpenScrin');
   }
   
 }
 
 //////////////////////////////////////////////////////////
+
+function sendTelega(msg) {
+  msg = encodeURI(msg)
+
+  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatPlot}&parse_mode=html&text=${msg}`, function (error, response, body) {  
+      if(error) {
+        console.log('error:', error); 
+      }
+      
+      if(response.statusCode!==200){
+        console.log(new Date().toLocaleTimeString() + ' - ' + 'Произошла ошибка при отправке сообщения в телеграм');
+        console.log(response.statusCode);
+      }
+    });
+}
+
+function sendTelega2(msg) {
+  msg = encodeURI(msg)
+
+  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatManipul}&parse_mode=html&text=${msg}`, function (error, response, body) {  
+      if(error) {
+        console.log('error:', error); 
+      }
+      
+      if(response.statusCode!==200){
+        console.log(new Date().toLocaleTimeString() + ' - ' + 'Произошла ошибка при отправке сообщения в телеграм');
+        console.log(response.statusCode);
+      }
+    });
+}
