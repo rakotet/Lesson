@@ -438,10 +438,14 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
               coinOpenPamp[coin][0] = 0
             }, 300000)
             
-            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
+            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + 
+            ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + 
+            new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
+
             console.log(mess);
 
             fs.appendFileSync("symbolPamp.txt", mess)
+            mess =+ '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
             sendTelega2(mess)
             //coinOpenPamp[coin][0] = 0
 
@@ -469,7 +473,7 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
 function sendTelega(msg) {
   msg = encodeURI(msg)
 
-  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatPlot}&parse_mode=html&text=${msg}`, function (error, response, body) {  
+  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatPlot}&parse_mode=html&text=${msg}&disable_web_page_preview=True`, function (error, response, body) {  
       if(error) {
         console.log('error:', error); 
       }
@@ -484,7 +488,7 @@ function sendTelega(msg) {
 function sendTelega2(msg) {
   msg = encodeURI(msg)
 
-  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatManipul}&parse_mode=html&text=${msg}`, function (error, response, body) {  
+  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatManipul}&parse_mode=html&text=${msg}&disable_web_page_preview=True`, function (error, response, body) {  
       if(error) {
         console.log('error:', error); 
       }
