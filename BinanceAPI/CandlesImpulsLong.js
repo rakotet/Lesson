@@ -31,13 +31,13 @@ let i = 0
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 80 // Процент пампа первой свечи при котором начинаем слежение
-const percentImpulsConst = 5 // % импульса при котором начинаем слежение
+const percentImpulsConst = 10 // % импульса при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 0.01 // максимальный минус в %
 const maxMinuZaFiba = 0.01 // максимальный минус в % за фиба
-const bezubitok = 0.004 // % безубытка
-const bezubitokBuy = 0.002 // % безубытка
+const bezubitok = 0.02 // % безубытка
+const bezubitokBuy = 0.01 // % безубытка
 const chastBuy = 3 // какую часть продать после достижения следующей цели по фиба
 const houlderCandles = 25 // Плечо сделки
 const openScrin = true // открывать сделки в браузере
@@ -174,7 +174,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
   } catch(e) {
     //console.log(e);
-    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -277,84 +277,84 @@ async function priceSymbolPamp(symbol, fs) {
       //   opn('https://www.binance.com/ru/futures/' + coin)
       // }
 
-      try {
-        binance.depth(coin, (error, depth, symbol) => {
-          //if(error) console.log(error);
+      // try {
+      //   binance.depth(coin, (error, depth, symbol) => {
+      //     //if(error) console.log(error);
       
-          let maxBids = [0, 0]
-          let maxAsks = [0, 0]
-          let volumeBids = 0
-          let volumeAsks = 0
+      //     let maxBids = [0, 0]
+      //     let maxAsks = [0, 0]
+      //     let volumeBids = 0
+      //     let volumeAsks = 0
         
-          for(let price in depth['bids']) {
-            if((maxBids[1] < Number(depth['bids'][price])) && ((((oneClose - Number(price)) / Number(price)) * 100) < 0.5)) {
-              maxBids[0] = Number(price)
-              maxBids[1] = Number(depth['bids'][price])
-            }
-            volumeBids += Number(depth['bids'][price])
-          }
+      //     for(let price in depth['bids']) {
+      //       if((maxBids[1] < Number(depth['bids'][price])) && ((((oneClose - Number(price)) / Number(price)) * 100) < 0.5)) {
+      //         maxBids[0] = Number(price)
+      //         maxBids[1] = Number(depth['bids'][price])
+      //       }
+      //       volumeBids += Number(depth['bids'][price])
+      //     }
         
-          for(let price in depth['asks']) {
-            if((maxAsks[1] < Number(depth['asks'][price])) && ((((Number(price) - oneClose) / oneClose) * 100) < 0.5)) {
-              maxAsks[0] = Number(price)
-              maxAsks[1] = Number(depth['asks'][price])
-            }
-            volumeAsks += Number(depth['asks'][price])
-          }
+      //     for(let price in depth['asks']) {
+      //       if((maxAsks[1] < Number(depth['asks'][price])) && ((((Number(price) - oneClose) / oneClose) * 100) < 0.5)) {
+      //         maxAsks[0] = Number(price)
+      //         maxAsks[1] = Number(depth['asks'][price])
+      //       }
+      //       volumeAsks += Number(depth['asks'][price])
+      //     }
       
-          console.log('------------------');
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
-          console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
-          console.log(' ');
+      //     console.log('------------------');
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
+      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
+      //     console.log(' ');
           
-        }, 100);
+      //   }, 100);
     
-      } catch(e) {
-        //console.log(e);
-        console.log(new Date().toLocaleTimeString() + ' - ' + 'ошибка getSpot');
-      }
+      // } catch(e) {
+      //   //console.log(e);
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + 'ошибка getSpot');
+      // }
 
-      try {
-        let book = await binance.futuresDepth(coin, {limit: 100});
-        if(book.code) {
-          console.log(book.code + ' - ' + book.msg);
-        }
+      // try {
+      //   let book = await binance.futuresDepth(coin, {limit: 100});
+      //   if(book.code) {
+      //     console.log(book.code + ' - ' + book.msg);
+      //   }
     
-        let maxBids = [0, 0]
-        let maxAsks = [0, 0]
-        let volumeBids = 0
-        let volumeAsks = 0
+      //   let maxBids = [0, 0]
+      //   let maxAsks = [0, 0]
+      //   let volumeBids = 0
+      //   let volumeAsks = 0
     
-        for(let i = 0; i < book['bids'].length; i++) {
-          if((maxBids[1] < Number(book['bids'][i][1])) && ((((oneClose - Number(book['bids'][i][0])) / Number(book['bids'][i][0])) * 100) < 0.5)) {
-            maxBids[0] = Number(book['bids'][i][0])
-            maxBids[1] = Number(book['bids'][i][1])
-          }
-          volumeBids += Number(book['bids'][i][1])
-        }
+      //   for(let i = 0; i < book['bids'].length; i++) {
+      //     if((maxBids[1] < Number(book['bids'][i][1])) && ((((oneClose - Number(book['bids'][i][0])) / Number(book['bids'][i][0])) * 100) < 0.5)) {
+      //       maxBids[0] = Number(book['bids'][i][0])
+      //       maxBids[1] = Number(book['bids'][i][1])
+      //     }
+      //     volumeBids += Number(book['bids'][i][1])
+      //   }
     
-        for(let i = 0; i < book['asks'].length; i++) {
-          if((maxAsks[1] < Number(book['asks'][i][1])) && ((((Number(book['asks'][i][0]) - oneClose) / oneClose) * 100) < 0.5)) {
-            maxAsks[0] = Number(book['asks'][i][0])
-            maxAsks[1] = Number(book['asks'][i][1])
-          }
-          volumeAsks += Number(book['asks'][i][1])
-        }
+      //   for(let i = 0; i < book['asks'].length; i++) {
+      //     if((maxAsks[1] < Number(book['asks'][i][1])) && ((((Number(book['asks'][i][0]) - oneClose) / oneClose) * 100) < 0.5)) {
+      //       maxAsks[0] = Number(book['asks'][i][0])
+      //       maxAsks[1] = Number(book['asks'][i][1])
+      //     }
+      //     volumeAsks += Number(book['asks'][i][1])
+      //   }
     
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
-        console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
-        console.log('------------------');
-        console.log(' ');
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
+      //   console.log('------------------');
+      //   console.log(' ');
         
     
-      } catch(e) {
-        //console.log(e);
-        console.log(new Date().toLocaleTimeString() + ' - ' + 'ошибка futuresDepth');
-      }
+      // } catch(e) {
+      //   //console.log(e);
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + 'ошибка futuresDepth');
+      // }
 
       if(false) {
         cancell = false
@@ -411,21 +411,21 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
     if(fibaObj[coin][6] == 0) {
       dataRisk[coin] = await binance.futuresPositionRisk({symbol: coin}) 
 
-      //fibaObj[coin][6] = 1
+      fibaObj[coin][6] = 1
 
       if(dataRisk[coin].code) {
         console.log(dataRisk[coin].code + ' - ' + dataRisk[coin].msg);
       }
     }
 
-    // let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
-    // if(candlesSymbol.code) {
-    //   console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
-    // }
+    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+    if(candlesSymbol.code) {
+      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    }
     
     let entryPrice = Number(dataRisk[coin][0]['entryPrice']) // цена входа в позицию
-    //let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
-    let markPrice = Number(dataRisk[coin][0]['markPrice']) // текущая цена 
+    let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+    //let markPrice = Number(dataRisk[coin][0]['markPrice']) // текущая цена 
     let positionAmt = Number(dataRisk[coin][0]['positionAmt']) // количество монет в позиции
 
     // let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])

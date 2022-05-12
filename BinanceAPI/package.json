@@ -2,7 +2,7 @@
   "name": "binanceapi",
   "version": "1.0.0",
   "description": "",
-  "main": "plotnost.js",
+  "main": "CandlesImpulsLong.js",
   "dependencies": {
     "express": "^4.17.1",
     "node-binance-api": "^0.13.0",
@@ -13,8 +13,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon plotnost.js",
-    "prod": "node plotnost.js"
+    "start": "nodemon CandlesImpulsLong.js",
+    "prod": "node CandlesImpulsLong.js"
   },
   "author": "",
   "license": "ISC"

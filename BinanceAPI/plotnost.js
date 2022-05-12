@@ -37,10 +37,10 @@ let coinObjAsksFuters = {}
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
 const percentPamp = 10 // Процент пампа при котором начинаем слежение
-const percentImpulsConst = 5
+const percentImpulsConst = 10
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
-const buyBuksSpot = 1000000
-const buyBuksFutures = 1000000
+const buyBuksSpot = 2000000
+const buyBuksFutures = 2000000
 // const buyBuksSpot = 500000
 // const buyBuksFutures = 500000
 const percentPriceCoin = 1.5
@@ -48,7 +48,7 @@ const percentPriceFutures = 1.5
 const openScrinSpotFutures = false
 const openScrinPamp = false
 const openScrinDamp = false
-const houlderCandles = 25
+const houlderCandles = 5
 ///////////////////////
 
 candlesOpenPamp(binance, opn, fs)
@@ -128,7 +128,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
 
         if(!coinObjBids[coin]) coinObjBids[coin] = [0]
         if(coinObjBids[coin][0] === 0) {
-          let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${divideNumber((Number(maxBids[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           
           coinObjBids[coin][0] = Number(maxBids[1])
@@ -143,7 +143,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
           if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBids[coin][1] === Number(maxBids[0])))) {
             coinObjBids[coin][1] = Number(maxBids[0])
 
-            let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+            let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на LONG - цена ${maxBids[0]} - V ${divideNumber((Number(maxBids[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
             sendTelega(mess)
@@ -158,7 +158,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
 
         if(!coinObjAsks[coin]) coinObjAsks[coin] = [0]
         if(coinObjAsks[coin][0] === 0) {
-          let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${divideNumber((Number(maxAsks[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           coinObjAsks[coin][0] = Number(maxAsks[1])
           coinObjAsks[coin][1] = Number(maxAsks[0])
@@ -172,7 +172,7 @@ async function getSpot(coin, binance, fs, opn, priceCoinLive) { // получи�
           if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsks[coin][1] === Number(maxAsks[0])))) {
             coinObjAsks[coin][1] = Number(maxAsks[0])
 
-            let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+            let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА СПОТ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${divideNumber((Number(maxAsks[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
             console.log(mess);
             fs.appendFileSync("symbolPamp.txt", mess)
             sendTelega(mess)
@@ -259,7 +259,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
 
       if(!coinObjBidsFuters[coin]) coinObjBidsFuters[coin] = [0]
       if(coinObjBidsFuters[coin][0] === 0) {
-        let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+        let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${divideNumber((Number(maxBids[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
         console.log(mess);
         coinObjBidsFuters[coin][0] = Number(maxBids[1])
         coinObjBidsFuters[coin][1] = Number(maxBids[0])
@@ -273,7 +273,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
         if(!(/*(coinObjBids[coin][0] === Number(maxBids[1])) &&*/ (coinObjBidsFuters[coin][1] === Number(maxBids[0])))) {
           coinObjBidsFuters[coin][1] = Number(maxBids[0])
 
-          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${(Number(maxBids[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на LONG - цена ${maxBids[0]} - V ${divideNumber((Number(maxBids[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxBids[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
           sendTelega(mess)
@@ -288,7 +288,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
 
       if(!coinObjAsksFuters[coin]) coinObjAsksFuters[coin] = [0]
       if(coinObjAsksFuters[coin][0] === 0) {
-        let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+        let mess = `${new Date().toLocaleTimeString()} - ${coin} - ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${divideNumber((Number(maxAsks[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
         console.log(mess);
         coinObjAsksFuters[coin][0] = Number(maxAsks[1])
         coinObjAsksFuters[coin][1] = Number(maxAsks[0])
@@ -302,7 +302,7 @@ async function futuresDepth(coin, binance, fs, opn, priceCoinLive) { // книг
         if(!(/*(coinObjAsks[coin][0] === Number(maxAsks[1])) &&*/ (coinObjAsksFuters[coin][1] === Number(maxAsks[0])))) {
           coinObjAsksFuters[coin][1] = Number(maxAsks[0])
 
-          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${(Number(maxAsks[1]) * priceCoinLive).toFixed()} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
+          let mess = `${new Date().toLocaleTimeString()} - ${coin} - ИЗМЕГИЛАСЬ ЦЕНА ФЬЮЧЕРСЫ мега Плотность! на SHORT - цена ${maxAsks[0]} - V ${divideNumber((Number(maxAsks[1]) * priceCoinLive).toFixed())} БАКСОВ ${Number(maxAsks[1])} Лотов - Процент до цены ${percent} \n`
           console.log(mess);
           fs.appendFileSync("symbolPamp.txt", mess)
           sendTelega(mess)
@@ -445,7 +445,7 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
             console.log(mess);
 
             fs.appendFileSync("symbolPamp.txt", mess)
-            mess =+ '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+            mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
             sendTelega2(mess)
             //coinOpenPamp[coin][0] = 0
 
@@ -498,4 +498,36 @@ function sendTelega2(msg) {
         console.log(response.statusCode);
       }
     });
+}
+
+/////////////////////////////////////////////
+
+function divideNumber(str) {
+  str = String(str)
+  str = str.split('')
+  if(str.length == 7) {
+    for(let i = 0; i < str.length; i++) {
+      if(i == 0) str[i] = str[i] + ' '
+      else if(i == 3) str[i] = str[i] + ' '
+    }
+    str = str.join('')
+    return str
+  }
+
+  else if(str.length == 8) {
+    for(let i = 0; i < str.length; i++) {
+      if(i == 1) str[i] = str[i] + ' '
+      else if(i == 4) str[i] = str[i] + ' '
+    }
+    str = str.join('')
+    return str
+  }
+
+  else if(str.length == 6) {
+    for(let i = 0; i < str.length; i++) {
+      if(i == 2) str[i] = str[i] + ' '
+    }
+    str = str.join('')
+    return str
+  }
 }
