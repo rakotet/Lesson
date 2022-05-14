@@ -16,12 +16,19 @@ const binance = new Binance().options({
 });
 const fs = require('fs')
 const opn = require('opn')
+let http = require('request')
+
+const idBot = '5302452238:AAEmImsTrmLxdkZxDrQoPL4l1DzBnqhhdZg'
+const idChatPlot = '-1001506995531'
+const idChatManipul = '-1001196361965'
 
 let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
 let fibaObj = {}
+let stakanSpot = {}
+let stakanFutures = {}
 let positionRisObjShort = {}
 let positionRisObjLong = {}
 let dataRisk = {}
@@ -34,13 +41,14 @@ const percentPamp = 80 // Процент пампа первой свечи пр
 const percentImpulsConst = 10 // % импульса при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
-const maxMinus = 0.01 // максимальный минус в %
-const maxMinuZaFiba = 0.01 // максимальный минус в % за фиба
-const bezubitok = 0.02 // % безубытка
+const maxMinus = 0.02 // максимальный минус в %
+const maxMinuZaFiba = 0.02 // максимальный минус в % за фиба
+const bezubitok = 0.015 // % безубытка
 const bezubitokBuy = 0.01 // % безубытка
+const zonaBuy = 0.01
 const chastBuy = 3 // какую часть продать после достижения следующей цели по фиба
 const houlderCandles = 25 // Плечо сделки
-const openScrin = true // открывать сделки в браузере
+const openScrin = false // открывать сделки в браузере
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -159,6 +167,9 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
               fs.appendFileSync("symbolPamp.txt", mess)
 
+              mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+              sendTelega2(mess)
+
               futuressHoulder(coin, houlderCandles, binance).then(data => {
                 futuresMarginType(coin, binance).then(data => {
                   if(openScrin) {
@@ -272,11 +283,24 @@ async function priceSymbolPamp(symbol, fs) {
 
     if((impulsPercent >= percentImpulsConst) /*&& (oneOpen > oneClose) && (twoOpen > twoClose) && (twoLow > f20) && (oneLow > f20) && (oneClose >= f8) && (((((oneClose - f20) / f20) * 100)) > plusProfitPercent)
     && ((oneOpen - oneClose) >= (oneOpen * 0.001)) /*&& (((twoOpen - twoClose) >= (twoOpen * 0.001)) && ((twoOpen - twoClose) < (twoOpen * 0.003)))/ && (impulsPercent >= percentImpulsConst)*/) {
+      
+      // futuresPositionRiskPampSell()
+      // cancell = false
+
+      // let btcData = await binance.futuresCandles('BTCUSDT', '1m', {limit: 2}) 
+      // if(btcData.code) {
+      //   console.log(btcData.code + ' - ' + btcData.msg);
+      // }
+
+      // let oneOpen = Number(btcData[btcData.length - 1][1])
+      // let oneClose = Number(btcData[btcData.length - 1][4])
+
+      // console.log((((oneOpen - oneClose) / oneClose) * 100) + ' - BTC % свечи 1');
 
       // if(openScrin) {
       //   opn('https://www.binance.com/ru/futures/' + coin)
       // }
-
+//////////////
       // try {
       //   binance.depth(coin, (error, depth, symbol) => {
       //     //if(error) console.log(error);
@@ -301,13 +325,15 @@ async function priceSymbolPamp(symbol, fs) {
       //       }
       //       volumeAsks += Number(depth['asks'][price])
       //     }
+
+      //     stakanSpot[coin] = [volumeBids, volumeAsks]
       
-      //     console.log('------------------');
-      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
-      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
-      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
-      //     console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
-      //     console.log(' ');
+      //     // console.log('------------------');
+      //     // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
+      //     // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
+      //     // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Спот Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
+      //     // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
+      //     // console.log(' ');
           
       //   }, 100);
     
@@ -342,21 +368,36 @@ async function priceSymbolPamp(symbol, fs) {
       //     }
       //     volumeAsks += Number(book['asks'][i][1])
       //   }
+
+      //   stakanFutures[coin] = [volumeBids, volumeAsks]
     
-      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
-      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
-      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
-      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
-      //   console.log('------------------');
-      //   console.log(' ');
+      //   // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Продать цена ' + maxAsks[0] + ' - лотов ' + maxAsks[1] + ' В баксах ' + (maxAsks[1] * oneClose).toFixed());
+      //   // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeAsks + ' В баксах ' + (volumeAsks * oneClose).toFixed());
+      //   // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Футерсы Купить цена ' + maxBids[0] + ' - лотов ' + maxBids[1] + ' В баксах ' + (maxBids[1] * oneClose).toFixed());
+      //   // console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Лотов ' + volumeBids + ' В баксах ' + (volumeBids * oneClose).toFixed());
+      //   // console.log('------------------');
+      //   // console.log(' ');
         
-    
       // } catch(e) {
       //   //console.log(e);
       //   console.log(new Date().toLocaleTimeString() + ' - ' + 'ошибка futuresDepth');
       // }
 
-      if(false) {
+      // if(stakanSpot[coin][0] > stakanSpot[coin][1]) {
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - СПОТ LONG в ' + (stakanSpot[coin][0] / stakanSpot[coin][1]).toFixed(1))
+      // } else {
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - СПОТ SHORT в ' + (stakanSpot[coin][1] / stakanSpot[coin][0]).toFixed(1))
+      // }
+
+      // if(stakanFutures[coin][0] > stakanFutures[coin][1]) {
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ФЬЮЧИ LONG в ' + (stakanFutures[coin][0] / stakanFutures[coin][1]).toFixed(1))
+      // } else {
+      //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ФЬЮЧИ SHORT в ' + (stakanFutures[coin][1] / stakanFutures[coin][0]).toFixed(1))
+      // }
+
+      // console.log(' ');
+//////////
+      if(false /*(oneOpen > oneClose) && ((((oneOpen - oneClose) / oneClose) * 100) >= 0.1)*/) {
         cancell = false
 
         let differenceGreen = Number((((oneHigh - oneOpen) / oneOpen) * 100).toFixed(2))
@@ -411,21 +452,21 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
     if(fibaObj[coin][6] == 0) {
       dataRisk[coin] = await binance.futuresPositionRisk({symbol: coin}) 
 
-      fibaObj[coin][6] = 1
+      //fibaObj[coin][6] = 1
 
       if(dataRisk[coin].code) {
         console.log(dataRisk[coin].code + ' - ' + dataRisk[coin].msg);
       }
     }
 
-    let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
-    if(candlesSymbol.code) {
-      console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
-    }
+    // let candlesSymbol = await binance.futuresCandles(coin, '1m', {limit: 1}) 
+    // if(candlesSymbol.code) {
+    //   console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
+    // }
     
     let entryPrice = Number(dataRisk[coin][0]['entryPrice']) // цена входа в позицию
-    let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
-    //let markPrice = Number(dataRisk[coin][0]['markPrice']) // текущая цена 
+    //let markPrice = Number(candlesSymbol[candlesSymbol.length - 1][4]) // текущая цена 
+    let markPrice = Number(dataRisk[coin][0]['markPrice']) // текущая цена 
     let positionAmt = Number(dataRisk[coin][0]['positionAmt']) // количество монет в позиции
 
     // let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
@@ -469,106 +510,106 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
           buyFiba('БЕЗУБЫТОК', '///////////////////////', 'Первая зона безубытка')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.01))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.04))) {
           fibaObj[coin][0] = 2
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны второго безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 2) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.005))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.03))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T0')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.015))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.05))) {
           fibaObj[coin][0] = 3
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны третьего безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 3) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.01))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.04))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T1')
         }
          
-        else if(markPrice <= (entryPrice - (entryPrice * 0.02))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.06))) {
           fibaObj[coin][0] = 4
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны четвертого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 4) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.015))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.05))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T2')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.025))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.07))) {
           fibaObj[coin][0] = 5
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны пятого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 5) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.02))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.06))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T3')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.03))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.08))) {
           fibaObj[coin][0] = 6
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны шестого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 6) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.025))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.07))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T4')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.035))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.09))) {
           fibaObj[coin][0] = 7
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны седьмого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 7) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.03))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.08))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T5')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.04))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.10))) {
           fibaObj[coin][0] = 8
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны восьмого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 8) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.035))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.09))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T6')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.045))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.011))) {
           fibaObj[coin][0] = 9
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны девятого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 9) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.04))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.10))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T7')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.05))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.12))) {
           fibaObj[coin][0] = 10
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны десятого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 10) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.045))) {
+        if(markPrice >= (entryPrice - (entryPrice * 0.013))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T8')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.055))) {
+        else if(markPrice <= (entryPrice - (entryPrice * 0.015))) {
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли последний зоны безубытка - ' + coin + '\n')
           buyFiba('ПЛЮС', '++++++++++++++++', 'T9')
         }
@@ -682,133 +723,150 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
 ////////////////////////////////////////////////////////////////////
 
-// async function futuresPositionRiskPampSell() {
-//   let timeout = 10
+async function futuresPositionRiskPampSell() {
+  let timeout = 10
   
-//   try {
-//     let data = await binance.futuresPositionRisk() 
-//     if(data.code) {
-//       console.log(data.code + ' - ' + data.msg);
-//       throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - futuresPositionRiskPampSell')
-//     }
+  try {
+    let data = await binance.futuresPositionRisk() 
+    if(data.code) {
+      console.log(data.code + ' - ' + data.msg);
+      throw new Error(new Date().toLocaleTimeString() + ' - ' + 'Моя собственная ошибка, сервер не ответил по таймауту - futuresPositionRiskPampSell')
+    }
   
-//     let markets = Object.keys( data );
-//     for ( let market of markets ) {
-//       let obj = data[market], size = Number( obj.positionAmt );
-//       if ( size != 0) {
-//         let unRealizedProfit = Number(obj['unRealizedProfit'])
-//         let entryPrice = Number(obj['entryPrice']) // цена входа в позицию
-//         let markPrice = Number(obj['markPrice']) // текущая цена маркировки
-//         let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
-//         let coin = obj['symbol']
+    let markets = Object.keys( data );
+    for ( let market of markets ) {
+      let obj = data[market], size = Number( obj.positionAmt );
+      if ( size != 0) {
+        let unRealizedProfit = Number(obj['unRealizedProfit'])
+        let entryPrice = Number(obj['entryPrice']) // цена входа в позицию
+        let markPrice = Number(obj['markPrice']) // текущая цена маркировки
+        let positionAmt = Number(obj['positionAmt']) // количество монет в позиции
+        let coin = obj['symbol']
         
-//         if(positionAmt < 0) {
-//           positionAmt = positionAmt * (-1)
+        if(positionAmt < 0) {
+          positionAmt = positionAmt * (-1)
 
-//           if(!positionRisObjShort[coin]) positionRisObjShort[coin] = [0]
+          if(!positionRisObjShort[coin]) positionRisObjShort[coin] = [0]
 
-//           if(markPrice >= (entryPrice + (entryPrice * 0.003))) {
-//             timeout = 1500
-//             buyMarketCoin(coin, positionAmt, binance).then(orderId => {
-//               if(orderId) {
-//                 statusOrder(coin, orderId, binance).then(avgPrice => {
-//                   console.log('\n' + new Date().toLocaleTimeString() + ' Продали Short в МИНУС: ' + coin + ' По цене: ' + avgPrice)
-//                   console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-//                 })
-//               }
-//             })
-//           }
+          if(markPrice >= (entryPrice + (entryPrice * 0.02))) {
+            timeout = 1500
+            buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+              if(orderId) {
+                statusOrder(coin, orderId, binance).then(avgPrice => {
+                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Short в МИНУС: ' + coin + ' По цене: ' + avgPrice)
+                  console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                })
+              }
+            })
+          }
 
-//           if(positionRisObjShort[coin][0] === 0) {
-//             if(markPrice <= (entryPrice - (entryPrice * 0.0045))) {
-//               positionRisObjShort[coin][0] = 1
-//               console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 1 зоны безубытка - ' + coin + '\n')
-//             }
-//           }
+          if(positionRisObjShort[coin][0] === 0) {
+            if(markPrice <= (entryPrice - (entryPrice * 0.015))) {
+              positionRisObjShort[coin][0] = 1
+              console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 1 зоны безубытка - ' + coin + '\n')
+            }
+          }
 
-//           if(positionRisObjShort[coin][0] === 1) {
-//             if(markPrice >= (entryPrice - (entryPrice * 0.0030))) {
-//               positionRisObjShort[coin][0] = 0
-//               timeout = 1500
-//               buyMarketCoin(coin, positionAmt, binance).then(orderId => {
-//                 if(orderId) {
-//                   statusOrder(coin, orderId, binance).then(avgPrice => {
-//                     console.log('\n' + new Date().toLocaleTimeString() + ' Продали Short в Безубыток 1: ' + coin + ' По цене: ' + avgPrice)
-//                     console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-//                   })
-//                 }
-//               })
-//             } else if (markPrice <= (entryPrice - (entryPrice * 0.0080))) {
-//               positionRisObjShort[coin][0] = 2
-//               console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 2 зоны безубытка - ' + coin + '\n')
-//             }
-//           }
+          if(positionRisObjShort[coin][0] === 1) {
+            if(markPrice >= (entryPrice - (entryPrice * 0.01))) {
+              positionRisObjShort[coin][0] = 0
+              timeout = 1500
+              buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+                if(orderId) {
+                  statusOrder(coin, orderId, binance).then(avgPrice => {
+                    console.log('\n' + new Date().toLocaleTimeString() + ' Продали Short в Безубыток 1: ' + coin + ' По цене: ' + avgPrice)
+                    console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                  })
+                }
+              })
+            } else if (markPrice <= (entryPrice - (entryPrice * 0.035))) {
+              positionRisObjShort[coin][0] = 2
+              console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 2 зоны безубытка - ' + coin + '\n')
+            }
+          }
 
-//           if(positionRisObjShort[coin][0] === 2) {
-//             if(markPrice >= (entryPrice - (entryPrice * 0.0060))) {
-//               positionRisObjShort[coin][0] = 0
-//               timeout = 1500
-//               buyMarketCoin(coin, positionAmt, binance).then(orderId => {
-//                 if(orderId) {
-//                   statusOrder(coin, orderId, binance).then(avgPrice => {
-//                     console.log('\n' + new Date().toLocaleTimeString() + ' Продали Short в Безубыток 2: ' + coin + ' По цене: ' + avgPrice)
-//                     console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-//                   })
-//                 }
-//               })
-//             } else if (markPrice <= (entryPrice - (entryPrice * 0.01))) {
-//               //positionRisObjShort[coin][0] = 2
-//               console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 3 зоны безубытка - ' + coin + '\n')
-//             }
-//           }
+          if(positionRisObjShort[coin][0] === 2) {
+            if(markPrice >= (entryPrice - (entryPrice * 0.03))) {
+              positionRisObjShort[coin][0] = 0
+              timeout = 1500
+              buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+                if(orderId) {
+                  statusOrder(coin, orderId, binance).then(avgPrice => {
+                    console.log('\n' + new Date().toLocaleTimeString() + ' Продали Short в Безубыток 2: ' + coin + ' По цене: ' + avgPrice)
+                    console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                  })
+                }
+              })
+            } else if (markPrice <= (entryPrice - (entryPrice * 0.10))) {
+              //positionRisObjShort[coin][0] = 2
+              console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 3 зоны безубытка - ' + coin + '\n')
+            }
+          }
 
 
-//         } else if (positionAmt > 0) {
-//           if(!positionRisObjLong[coin]) positionRisObjLong[coin] = [0]
+        } else if (positionAmt > 0) {
+          if(!positionRisObjLong[coin]) positionRisObjLong[coin] = [0]
 
-//           if(markPrice <= (entryPrice - (entryPrice * 0.003))) {
-//             timeout = 1500
-//             sellMarketCoin(coin, positionAmt, binance).then(orderId => {
-//               if(orderId) {
-//                 statusOrder(coin, orderId, binance).then(avgPrice => {
-//                   console.log('\n' + new Date().toLocaleTimeString() + ' Продали Long в МИНУС: ' + coin + ' По цене: ' + avgPrice)
-//                   console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-//                 })
-//               }
-//             })
-//           }
+          if(markPrice <= (entryPrice - (entryPrice * 0.02))) {
+            timeout = 1500
+            sellMarketCoin(coin, positionAmt, binance).then(orderId => {
+              if(orderId) {
+                statusOrder(coin, orderId, binance).then(avgPrice => {
+                  console.log('\n' + new Date().toLocaleTimeString() + ' Продали Long в МИНУС: ' + coin + ' По цене: ' + avgPrice)
+                  console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                })
+              }
+            })
+          }
 
-//           if(positionRisObjLong[coin][0] === 0) {
-//             if(markPrice >= (entryPrice + (entryPrice * 0.0045))) {
-//               positionRisObjLong[coin][0] = 1
-//               console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны безубытка - ' + coin + '\n')
-//             }
-//           }
+          if(positionRisObjLong[coin][0] === 0) {
+            if(markPrice >= (entryPrice + (entryPrice * 0.015))) {
+              positionRisObjLong[coin][0] = 1
+              console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны безубытка - ' + coin + '\n')
+            }
+          }
 
-//           if(positionRisObjLong[coin][0] === 1) {
-//             if(markPrice <= (entryPrice + (entryPrice * 0.0030))) {
-//               positionRisObjLong[coin][0] = 0
-//               timeout = 1500
-//               sellMarketCoin(coin, positionAmt, binance).then(orderId => {
-//                 if(orderId) {
-//                   statusOrder(coin, orderId, binance).then(avgPrice => {
-//                     console.log('\n' + new Date().toLocaleTimeString() + ' Продали Long в Безубыток: ' + coin + ' По цене: ' + avgPrice)
-//                     console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
-//                   })
-//                 }
-//               })
-//             }
-//           }
-//         }
-//       }
-//     }
+          if(positionRisObjLong[coin][0] === 1) {
+            if(markPrice <= (entryPrice + (entryPrice * 0.01))) {
+              positionRisObjLong[coin][0] = 0
+              timeout = 1500
+              sellMarketCoin(coin, positionAmt, binance).then(orderId => {
+                if(orderId) {
+                  statusOrder(coin, orderId, binance).then(avgPrice => {
+                    console.log('\n' + new Date().toLocaleTimeString() + ' Продали Long в Безубыток: ' + coin + ' По цене: ' + avgPrice)
+                    console.log(new Date().toLocaleTimeString() + ' - counterWork - ' + counterWork);
+                  })
+                }
+              })
+            }
+          }
+        }
+      }
+    }
 
-//   } catch(e) {
-//     console.log(e);
-//     console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresPositionRiskPampSell');
-//   }
+  } catch(e) {
+    console.log(e);
+    console.log(new Date().toLocaleTimeString() + ' - ' + 'futuresPositionRiskPampSell');
+  }
   
-//   setTimeout(() => {
-//     futuresPositionRiskPampSell()
-//   }, timeout)
-// }
+  setTimeout(() => {
+    futuresPositionRiskPampSell()
+  }, timeout)
+}
+
+/////////////////////////
+
+function sendTelega2(msg) {
+  msg = encodeURI(msg)
+
+  http.post(`https://api.telegram.org/bot${idBot}/sendMessage?chat_id=${idChatManipul}&parse_mode=html&text=${msg}&disable_web_page_preview=True`, function (error, response, body) {  
+      if(error) {
+        console.log('error:', error); 
+      }
+      
+      if(response.statusCode!==200){
+        console.log(new Date().toLocaleTimeString() + ' - ' + 'Произошла ошибка при отправке сообщения в телеграм');
+        console.log(response.statusCode);
+      }
+    });
+}

@@ -48,11 +48,11 @@ const percentPriceFutures = 1.5
 const openScrinSpotFutures = false
 const openScrinPamp = false
 const openScrinDamp = false
-const houlderCandles = 5
+const houlderCandles = 25
 ///////////////////////
 
-candlesOpenPamp(binance, opn, fs)
-candlesOpenFutures(binance, opn, fs)
+//candlesOpenPamp(binance, opn, fs)
+//candlesOpenFutures(binance, opn, fs)
 openPampCandlesPercentTwo(binance, opn, fs)
 
 async function candlesOpenPamp(binance, opn, fs) {
@@ -352,7 +352,7 @@ async function openPampCandlesPercentTwo(binance, opn, fs) {
 
     setTimeout(() => {
       openPampCandlesPercentTwo(binance, opn, fs)
-    }, 7000)
+    }, 3000)
 }
 
 async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить свечи
@@ -411,7 +411,7 @@ async function getCandlesOpenScrin(coin, binance, fs, opn) { // получить
       if(Number(new Date().getMinutes()) !== timeOpenSymbolDamp[coin]) {
         let messDamp = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n'
         console.log(messDamp);
-        fs.appendFileSync("symbolPamp.txt", messDamp)
+        //fs.appendFileSync("symbolPamp.txt", messDamp)
 
         if(openScrinDamp) {
           opn('https://www.binance.com/ru/futures/' + coin)
