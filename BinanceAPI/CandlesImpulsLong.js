@@ -37,11 +37,11 @@ let i = 0
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
-const percentPamp = 80 // Процент пампа первой свечи при котором начинаем слежение
+const percentPamp = 5 // Процент пампа первой свечи при котором начинаем слежение
 const percentImpulsConst = 10 // % импульса при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
-const maxMinus = 0.02 // максимальный минус в %
+const maxMinus = 0.015 // максимальный минус в %
 const maxMinuZaFiba = 0.02 // максимальный минус в % за фиба
 const bezubitok = 0.015 // % безубытка
 const bezubitokBuy = 0.01 // % безубытка
@@ -185,7 +185,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
   } catch(e) {
     //console.log(e);
-    console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
+    //console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - ошибка getCandles');
   }
   
 }
@@ -748,7 +748,7 @@ async function futuresPositionRiskPampSell() {
 
           if(!positionRisObjShort[coin]) positionRisObjShort[coin] = [0]
 
-          if(markPrice >= (entryPrice + (entryPrice * 0.02))) {
+          if(markPrice >= (entryPrice + (entryPrice * maxMinus))) {
             timeout = 1500
             buyMarketCoin(coin, positionAmt, binance).then(orderId => {
               if(orderId) {
@@ -761,14 +761,14 @@ async function futuresPositionRiskPampSell() {
           }
 
           if(positionRisObjShort[coin][0] === 0) {
-            if(markPrice <= (entryPrice - (entryPrice * 0.015))) {
+            if(markPrice <= (entryPrice - (entryPrice * 0.01))) {
               positionRisObjShort[coin][0] = 1
               console.log('\n' + new Date().toLocaleTimeString() + ' Достигли 1 зоны безубытка - ' + coin + '\n')
             }
           }
 
           if(positionRisObjShort[coin][0] === 1) {
-            if(markPrice >= (entryPrice - (entryPrice * 0.01))) {
+            if(markPrice >= (entryPrice - (entryPrice * 0.005))) {
               positionRisObjShort[coin][0] = 0
               timeout = 1500
               buyMarketCoin(coin, positionAmt, binance).then(orderId => {
@@ -807,7 +807,7 @@ async function futuresPositionRiskPampSell() {
         } else if (positionAmt > 0) {
           if(!positionRisObjLong[coin]) positionRisObjLong[coin] = [0]
 
-          if(markPrice <= (entryPrice - (entryPrice * 0.02))) {
+          if(markPrice <= (entryPrice - (entryPrice * maxMinus))) {
             timeout = 1500
             sellMarketCoin(coin, positionAmt, binance).then(orderId => {
               if(orderId) {
@@ -820,14 +820,14 @@ async function futuresPositionRiskPampSell() {
           }
 
           if(positionRisObjLong[coin][0] === 0) {
-            if(markPrice >= (entryPrice + (entryPrice * 0.015))) {
+            if(markPrice >= (entryPrice + (entryPrice * 0.01))) {
               positionRisObjLong[coin][0] = 1
               console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны безубытка - ' + coin + '\n')
             }
           }
 
           if(positionRisObjLong[coin][0] === 1) {
-            if(markPrice <= (entryPrice + (entryPrice * 0.01))) {
+            if(markPrice <= (entryPrice + (entryPrice * 0.005))) {
               positionRisObjLong[coin][0] = 0
               timeout = 1500
               sellMarketCoin(coin, positionAmt, binance).then(orderId => {

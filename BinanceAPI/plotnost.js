@@ -7,7 +7,7 @@ const numberOfSigns = require('./function/numberOfSigns')
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-let fapi = 'https://fapi.binance.com/fapi/';
+let fapi = 'https://fapi.binance.com/fapi/'
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
