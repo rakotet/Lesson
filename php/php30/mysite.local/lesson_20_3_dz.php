@@ -15,10 +15,12 @@
   }
 
   mkdir('lib/1/'.getRandomName());
+  mkdir('lib/1/'.getRandomName());
+  mkdir('lib/1/'.getRandomName());
   
   $files = scandir('lib/1');
   
-  $handler = fopen('lib/1/'.$files[mt_rand(0, count($files) - 1)].'/'.getRandomName('.txt'), 'a');
+  $handler = fopen('lib/1/'.$files[mt_rand(2, count($files) - 1)].'/'.getRandomName('.txt'), 'a');
   fclose($handler);
 
   function deleteDirectory($folder) {
@@ -26,13 +28,18 @@
     foreach($files as $file) {
       if($file == '.' || $file == '..') continue;
       $f = $folder.'/'.$file;
-      if(is_dir($f)) deleteDirectory($f);
-      else()
-  
+      if(is_dir($f) && count(scandir($f)) != 2) deleteDirectory($f);
+      elseif(!is_dir($f)) unlink($f);
+      if(is_dir($f) && count(scandir($f)) == 2) rmdir($f);
     }
   }
 
-  
-
   deleteDirectory($folder);
+
+  //////////////////
+
+  $arr = ["57abc", "a7cdc", "A889c", "/7abc", "57abd"];
+  $reg = '/\w\w\w\wc/';
+
+  foreach($arr as $v) echo preg_match($reg, $v).'<br />';
 ?>
