@@ -1,0 +1,1 @@
+O:4:"User":2:{s:5:"email";s:12:"asdf@mail.ru";s:8:"password";s:32:"48df5dc47a3af3eb3863d3858187ce69";}

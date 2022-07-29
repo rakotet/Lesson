@@ -47,7 +47,7 @@ const bezubitok = 0.01 // % безубытка
 const bezubitokBuy = 0.005 // % безубытка
 const zonaBuy = 0.01
 const chastBuy = 3 // какую часть продать после достижения следующей цели по фиба
-const houlderCandles = 25 // Плечо сделки
+const houlderCandles = 15 // Плечо сделки
 const openScrin = false // открывать сделки в браузере
 ///////////////////////
 
@@ -254,7 +254,7 @@ async function priceSymbolPamp(symbol, fs) {
     let impulsPercent = Number((((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2))
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let f20 = Number((impulsMaxPrice - (impulsPrice * 0.20)).toFixed(numberOfSigns(oneClose)))
-    let f25 = Number((impulsMaxPrice - (impulsPrice * 0.23)).toFixed(numberOfSigns(oneClose)))
+    let f25 = Number((impulsMaxPrice - (impulsPrice * 0.05)).toFixed(numberOfSigns(oneClose)))
     let f8 = Number((impulsMaxPrice - (impulsPrice * 0.08)).toFixed(numberOfSigns(oneClose)))
 
     if(coinOpenPamp[coin][6] === 0) {
