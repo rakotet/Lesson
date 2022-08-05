@@ -47,7 +47,7 @@ const bezubitok = 0.01 // % безубытка
 const bezubitokBuy = 0.005 // % безубытка
 const zonaBuy = 0.01
 const chastBuy = 3 // какую часть продать после достижения следующей цели по фиба
-const houlderCandles = 15 // Плечо сделки
+const houlderCandles = 25 // Плечо сделки
 const openScrin = false // открывать сделки в браузере
 ///////////////////////
 
