@@ -36,9 +36,9 @@ let i = 0
 
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 100 // сумма одной сделки (10 - 1000)
+const numberOneTrade = 50 // сумма одной сделки (10 - 1000)
 const percentPamp = 50 // Процент пампа первой свечи при котором начинаем слежение
-const percentImpulsConst = 10 // % импульса при котором начинаем слежение
+const percentImpulsConst = 5 // % импульса при котором начинаем слежение
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 0.01 // максимальный минус в %
@@ -254,7 +254,7 @@ async function priceSymbolPamp(symbol, fs) {
     let impulsPercent = Number((((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2))
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let f20 = Number((impulsMaxPrice - (impulsPrice * 0.20)).toFixed(numberOfSigns(oneClose)))
-    let f25 = Number((impulsMaxPrice - (impulsPrice * 0.05)).toFixed(numberOfSigns(oneClose)))
+    let f25 = Number((impulsMaxPrice - (impulsPrice * 0.31)).toFixed(numberOfSigns(oneClose)))
     let f8 = Number((impulsMaxPrice - (impulsPrice * 0.08)).toFixed(numberOfSigns(oneClose)))
 
     if(coinOpenPamp[coin][6] === 0) {
@@ -277,8 +277,19 @@ async function priceSymbolPamp(symbol, fs) {
         coinOpenPamp[coin][0] = 0
       }, 300000)
 
-      let message = 'Вышли из ф-и пошла коррекция, но мы не вошли'
+      let message = 'Вышли из ф-и пошла коррекция, но мы не вошли f25 = ' + f25
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
+
+      sellMarketCoin(coin, numberCoinKey, binance).then(data => {
+        if(data) {
+          let differenceGreen = Number((((oneHigh - oneOpen) / oneOpen) * 100).toFixed(2))
+          let mess = ('\n' + '---------------------------------------' + '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Открыли сделку - цена ' + oneClose + ' - Памп ' + differenceGreen + ' - counterWork - ' + counterWork + '\n' + '---------------------------------------' + '\n');
+          console.log(mess);
+          fs.appendFileSync("symbolPamp.txt", mess)
+          fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0]
+          //fibaTraid(coin)
+        }
+      })
     }
 
     if(true/*(impulsPercent >= percentImpulsConst)*/ /*&& (oneOpen > oneClose) && (twoOpen > twoClose) && (twoLow > f20) && (oneLow > f20) && (oneClose >= f8) && (((((oneClose - f20) / f20) * 100)) > plusProfitPercent)
@@ -446,7 +457,7 @@ async function priceSymbolPamp(symbol, fs) {
 
 }
 
-async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, t2, t3, t4, t5, stop, impulsPercent) {
+async function fibaTraid(coin/*, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, t2, t3, t4, t5, stop, impulsPercent*/) {
   let cancellFiba = true
   let number = 10
 
@@ -476,142 +487,142 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
     // let oneHigh = Number(candlesSymbol[candlesSymbol.length - 1][2])
     // let oneLow = Number(candlesSymbol[candlesSymbol.length - 1][3])
 
-    let percentMinusToStop = Number((((stop - entryPrice) / entryPrice) * 100).toFixed(2))
-    let percentPlusToStop = Number((((entryPrice - f23) / f23) * 100).toFixed(2))
+    // let percentMinusToStop = Number((((stop - entryPrice) / entryPrice) * 100).toFixed(2))
+    // let percentPlusToStop = Number((((entryPrice - f23) / f23) * 100).toFixed(2))
 
-    if(fibaObj[coin][1] === 0) {
-      console.log(' ');
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Процент от цены входа до стопа - ' + percentMinusToStop);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Процент цены до первого тейка - ' + percentPlusToStop);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f23 - ' + f23);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Конец импульса цена - ' + f0);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Начало импульса цена - ' + f100);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsPercent - ' + impulsPercent);
-      console.log(' ');
-      fibaObj[coin][1] = 1
-    }
+    // if(fibaObj[coin][1] === 0) {
+    //   console.log(' ');
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Процент от цены входа до стопа - ' + percentMinusToStop);
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Процент цены до первого тейка - ' + percentPlusToStop);
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + stop);
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f23 - ' + f23);
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Конец импульса цена - ' + f0);
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Начало импульса цена - ' + f100);
+    //   console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsPercent - ' + impulsPercent);
+    //   console.log(' ');
+    //   fibaObj[coin][1] = 1
+    // }
 
-    if(positionAmt < 0) {
+    if(positionAmt > 0) {
 
-      if(positionAmt < 0) positionAmt = positionAmt * (-1)
+      //if(positionAmt < 0) positionAmt = positionAmt * (-1)
 
       if(fibaObj[coin][0] === 0) {
-        if(markPrice <= (entryPrice - (entryPrice * bezubitok))) {
+        if(markPrice >= (entryPrice + (entryPrice * bezubitok))) {
           fibaObj[coin][0] = 1
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны первого безубытка - ' + coin + '\n')
         }
 
-        else if(markPrice >= (entryPrice + (entryPrice * maxMinus))) {
+        else if(markPrice <= (entryPrice - (entryPrice * maxMinus))) {
           buyFiba('МИНУС', '-------------------------')
         }
       }
 
       else if(fibaObj[coin][0] === 1) {
-        if(markPrice >= (entryPrice - (entryPrice * bezubitokBuy))) {
+        if(markPrice <= (entryPrice + (entryPrice * bezubitokBuy))) {
           buyFiba('БЕЗУБЫТОК', '///////////////////////', 'Первая зона безубытка')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.04))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.02))) {
           fibaObj[coin][0] = 2
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны второго безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 2) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.03))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.01))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T0')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.05))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.03))) {
           fibaObj[coin][0] = 3
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны третьего безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 3) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.04))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.02))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T1')
         }
          
-        else if(markPrice <= (entryPrice - (entryPrice * 0.06))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.05))) {
           fibaObj[coin][0] = 4
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны четвертого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 4) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.05))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.04))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T2')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.07))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.07))) {
           fibaObj[coin][0] = 5
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны пятого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 5) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.06))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.06))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T3')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.08))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.08))) {
           fibaObj[coin][0] = 6
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны шестого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 6) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.07))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.07))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T4')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.09))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.09))) {
           fibaObj[coin][0] = 7
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны седьмого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 7) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.08))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.08))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T5')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.10))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.15))) {
           fibaObj[coin][0] = 8
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны восьмого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 8) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.09))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.10))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T6')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.011))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.20))) {
           fibaObj[coin][0] = 9
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны девятого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 9) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.10))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.15))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T7')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.12))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.25))) {
           fibaObj[coin][0] = 10
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли зоны десятого безубытка - ' + coin + '\n')
         }
       }
 
       else if(fibaObj[coin][0] === 10) {
-        if(markPrice >= (entryPrice - (entryPrice * 0.013))) {
+        if(markPrice <= (entryPrice + (entryPrice * 0.20))) {
           buyFiba('ПЛЮС', '++++++++++++++++', 'T8')
         }
 
-        else if(markPrice <= (entryPrice - (entryPrice * 0.015))) {
+        else if(markPrice >= (entryPrice + (entryPrice * 0.30))) {
           console.log('\n' + new Date().toLocaleTimeString() + ' Достигли последний зоны безубытка - ' + coin + '\n')
           buyFiba('ПЛЮС', '++++++++++++++++', 'T9')
         }
@@ -623,10 +634,12 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
       setTimeout(() => {
         coinOpenPamp[coin][0] = 0
       }, 300000)
-      console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в fibaTraid с пустой позицией: ' + coin + ' counterWork - ' + counterWork + '\n')
+      console.log('\n' + new Date().toLocaleTimeString() + ' Вошли в fibaTraid с пустой позицией или закрыли сделку: ' + coin + ' counterWork - ' + counterWork + '\n')
     }
     
-    else if (positionAmt > 0) {
+    else if (positionAmt < 0) {
+      positionAmt = positionAmt * (-1)
+
       if(markPrice > (entryPrice + (entryPrice * 0.01))) {
         cancellFiba = false
         counterWork--
@@ -695,7 +708,7 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
 
       
 
-      buyMarketCoin(coin, positionAmt, binance).then(orderId => {
+      sellMarketCoin(coin, positionAmt, binance).then(orderId => {
         if(orderId) {
           statusOrder(coin, orderId, binance).then(avgPrice => {
             console.log('\n' + new Date().toLocaleTimeString() + ' Продали Памп: ' + coin + ' По цене: ' + avgPrice + '  в ' + a + ': ' + '; ' + c + ' ' + b)
@@ -706,13 +719,13 @@ async function fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, 
     }
 
   } catch(e) {
-    console.log(e);
+    //console.log(e);
     console.log(new Date().toLocaleTimeString() + ' - ' + 'fibaTraid');
   }
 
   if(cancellFiba) {
     setTimeout(() => {
-      fibaTraid(coin, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, t2, t3, t4, t5, stop, impulsPercent)
+      fibaTraid(coin/*, fs, f0, f23, f38, f50, f60, f78, f100, f161, t1, t2, t3, t4, t5, stop, impulsPercent*/)
     }, number)
   }
 }
