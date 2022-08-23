@@ -31,35 +31,42 @@ const binance = new Binance().options({
 });
 
 async function historyTraide(coin) {
+  
   try {
-    let priceData = await binance.futuresPrices({symbol: coin}) 
+    let priceData = await binance.futuresTrades(coin, {limit: 100}) 
     if(priceData.code) {
       console.log(priceData.code + ' - ' + priceData.msg);
     }
 
-    let priceOld = Number(priceData['price'])
+    //console.log(priceData.length)
+    console.log(new Date().toLocaleTimeString())
+    console.log(new Date(priceData[0].time).toLocaleTimeString())
+    console.log(new Date(priceData[99].time).toLocaleTimeString() + '\n')
+    
 
-    let history = await binance.futuresTrades(coin, {limit: 100} )
-    if(history.code) {
-      console.log(history.code + ' - ' + history.msg);
-    }
+    // let priceOld = Number(priceData['price'])
 
-    let sellVolume = 0
-    let buyVolume = 0
+    // let history = await binance.futuresTrades(coin, {limit: 100} )
+    // if(history.code) {
+    //   console.log(history.code + ' - ' + history.msg);
+    // }
 
-    for(let obj in history) {
-      if(priceOld < Number(history[obj]['price'])) {
-        sellVolume += Number(history[obj]['quoteQty'])
-      } else if(priceOld > Number(history[obj]['price'])) {
-        buyVolume += Number(history[obj]['quoteQty'])
-      }
-    }
+    // let sellVolume = 0
+    // let buyVolume = 0
 
-    if(sellVolume > buyVolume) {
-      console.log(sellVolume + ' SELL')
-    } else if(sellVolume < buyVolume) {
-      console.log(buyVolume + ' BUY')
-    }
+    // for(let obj in history) {
+    //   if(priceOld < Number(history[obj]['price'])) {
+    //     sellVolume += Number(history[obj]['quoteQty'])
+    //   } else if(priceOld > Number(history[obj]['price'])) {
+    //     buyVolume += Number(history[obj]['quoteQty'])
+    //   }
+    // }
+
+    // if(sellVolume > buyVolume) {
+    //   console.log(sellVolume + ' SELL')
+    // } else if(sellVolume < buyVolume) {
+    //   console.log(buyVolume + ' BUY')
+    // }
 
     
 
@@ -73,4 +80,4 @@ async function historyTraide(coin) {
   }, 10)
 }
 
-historyTraide('GALUSDT')
+historyTraide('ANTUSDT')

@@ -26,6 +26,7 @@ let counterWork = 0
 let timeOpenSymbolDamp = {}
 let timeOpenSymbolPamp = {}
 let coinOpenPamp = {}
+let coinPampAndVolumeSearch = {}
 let fibaObj = {}
 let stakanSpot = {}
 let stakanFutures = {}
@@ -35,21 +36,22 @@ let dataRisk = {}
 let i = 0
 
 /////////////////////// Управление ботом
-const numberMaxWork = 1 // количество одновременных сделок (1 - 5)
-const numberOneTrade = 50 // сумма одной сделки (10 - 1000)
-const percentPamp = 50 // Процент пампа первой свечи при котором начинаем слежение
-const percentImpulsConst = 2 // % импульса при котором начинаем слежение
+const numberMaxWork = 1 // количество одновременных сделок (1 - 5)                   ++++++++++++
+const numberOneTrade = 50 // сумма одной сделки (10 - 1000)                          ++++++++++++
+const percentPamp = 3 // Процент пампа первой свечи при котором начинаем слежение    +++++++++++
+const percentImpulsConst = 5 // % импульса при котором начинаем слежение             +++++++++++++++
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
-const maxMinus = 0.01 // максимальный минус в %
+const maxMinus = 0.01 // максимальный минус в %                                      ++++++++++++
 const maxMinuZaFiba = 0.01 // максимальный минус в % за фиба
-const bezubitok = 0.01 // % безубытка
-const bezubitokBuy = 0.005 // % безубытка
+const bezubitok = 0.01 // % безубытка                                                ++++++++++++++++
+const bezubitokBuy = 0.005 // % безубытка                                            ++++++++++++++++++
 const zonaBuy = 0.01
 const chastBuy = 3 // какую часть продать после достижения следующей цели по фиба
-const houlderCandles = 25 // Плечо сделки
+const houlderCandles = 25 // Плечо сделки                                            ++++++++++++++++
 const openScrin = false // открывать сделки в браузере
-const longAndShort = true // true лонгуем, false шортим
+const longAndShort = false // true лонгуем, false шортим                             ++++++++++++++++
+const megaVolume = 25 //                                                             +++++++++++++++++
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -95,9 +97,24 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
       console.log(data.code + ' - ' + data.msg);
     }
 
+    let volumeCandlesAll = 0
+
+    for(let i = 0; i < data.length - 2; i++) {
+      let volume = Number(data[i][5]) // объём 1
+      volumeCandlesAll = volumeCandlesAll + volume
+    }
+
+    let meanVolume = volumeCandlesAll / (data.length - 2)
+
     let openPrice = Number(data[data.length - 1][1])
     let closePrice = Number(data[data.length - 1][4])
     let oneHigh = Number(data[data.length - 1][2])
+
+    let openVolumeTrade = false
+
+    if((Number(data[data.length - 1][5]) >= (meanVolume * megaVolume)) && closePrice > openPrice) {
+      openVolumeTrade = true
+    }
 
     let openPriceImpuls = 0
     let timeOpenImpuls = 0
@@ -150,8 +167,36 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
     } else {
       let differenceGreen = Number((((oneHigh - openPrice) / openPrice) * 100).toFixed(2))
-      //console.log(differenceGreen);
-      if((differenceGreen >= percentPamp) || ((impulsPercent >= percentImpulsConst)/* && (impulsCandlesLength >= 3)*/)) {
+
+      if(differenceGreen >= percentPamp) {
+        if(!coinPampAndVolumeSearch[coin]) coinPampAndVolumeSearch[coin] = [0]
+        if(coinPampAndVolumeSearch[coin][0] === 0) {
+          let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
+          mess += '<b>Зашли по Пампу первой свечи</b>'
+          mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+          sendTelega2(mess)
+          coinPampAndVolumeSearch[coin][0] = 1
+          setTimeout(() => {
+            coinPampAndVolumeSearch[coin][0] = 0
+          }, 300000)
+        }
+      }
+
+      if(openVolumeTrade) {
+        if(!coinPampAndVolumeSearch[coin]) coinPampAndVolumeSearch[coin] = [0]
+        if(coinPampAndVolumeSearch[coin][0] === 0) {
+          let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
+          mess += '<b>Зашли по МЕГА Объему</b>'
+          mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+          sendTelega2(mess)
+          coinPampAndVolumeSearch[coin][0] = 1
+          setTimeout(() => {
+            coinPampAndVolumeSearch[coin][0] = 0
+          }, 300000)
+        }
+      }
+      
+      if(/*(differenceGreen >= percentPamp) || */(impulsPercent >= percentImpulsConst)/* || openVolumeTrade*/) {
         if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
         if(!timeOpenSymbolPamp[coin]) timeOpenSymbolPamp[coin] = 99
         if(coinOpenPamp[coin][0] === 0) {
@@ -256,7 +301,7 @@ async function priceSymbolPamp(symbol, fs) {
     let impulsPercent = Number((((impulsMaxPrice - coinOpenPamp[coin][3]) / coinOpenPamp[coin][3]) * 100).toFixed(2))
     let impulsPrice = impulsMaxPrice - coinOpenPamp[coin][3]
     let f20 = Number((impulsMaxPrice - (impulsPrice * 0.20)).toFixed(numberOfSigns(oneClose)))
-    let f25 = Number((impulsMaxPrice - (impulsPrice * 0.38))/*.toFixed(numberOfSigns(oneClose))*/)
+    let f25 = Number((impulsMaxPrice - (impulsPrice * 0.36))/*.toFixed(numberOfSigns(oneClose))*/)
     let f8 = Number((impulsMaxPrice - (impulsPrice * 0.08)).toFixed(numberOfSigns(oneClose)))
 
     if(coinOpenPamp[coin][6] === 0) {
