@@ -1,7 +1,5 @@
 <?php
-  require_once "src/Config.php";
-
-  $db = Database::getDBO();
+  require_once "src/Base.php";
 
   $title = 'Библиотека';
   $content = 'index';
