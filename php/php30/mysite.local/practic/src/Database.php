@@ -55,16 +55,19 @@
     }
 
     public function getRowByIds(string $table_name, array $ids) : array {
-      $in = str_repeat('?,', count($ids) - 1).'?'; // ф-я повторяет 1 арг количество раз 2 арг (действиями дальше убираем лишнюю , в конце)
-      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` IN ($in)";
-      $query = $this->pdo->prepare($sql);
-      $query->execute($ids);
-      $result = [];
-      foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        $result[$row['id']] = $row;
+      if($ids) {
+        $in = str_repeat('?,', count($ids) - 1).'?'; // ф-я повторяет 1 арг количество раз 2 арг (действиями дальше убираем лишнюю , в конце)
+        $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` IN ($in)";
+        $query = $this->pdo->prepare($sql);
+        $query->execute($ids);
+        $result = [];
+        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+          $result[$row['id']] = $row;
+        }
+  
+        return $result;
       }
-
-      return $result;
+      return [];
     }
 
     public function update(string $table_name, array $fields, array $values, string $where = '', array $where_values = []) {
