@@ -73,7 +73,7 @@
     public function update(string $table_name, array $fields, array $values, string $where = '', array $where_values = []) {
       $sql = 'UPDATE '.$this->getTableName($table_name).' SET ';
       foreach($fields as $fild) {
-        $sql .= "`$fild` = ?, ";
+        $sql .= "`$fild` = ?,";
       }
 
       $sql = substr($sql, 0, -1); // обрезаем последнюю лишнюю запятую в запросе

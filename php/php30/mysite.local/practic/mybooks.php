@@ -1,7 +1,7 @@
 <?php
   require_once "src/Base.php";
 
-  if(!$auth_user) exit('Нет прав для просмотра!');
+  if(!$auth_user) to403();
 
   $title = 'Мои книги';
   $content = 'mybooks';

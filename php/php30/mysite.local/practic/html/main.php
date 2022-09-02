@@ -47,6 +47,11 @@
         <li>
           <a href="mybooks.php">Мои книги</a>
         </li>
+        <?php if($auth_user[0]['type'] >= LIBRARIAN) { ?>
+          <li>
+            <a href="debtors.php">Должники</a>
+          </li>
+        <?php } ?>
         <li>
           <a href="?<?=http_build_query(array_merge($_GET, ['logout' => 1]))?>">Выход</a>
         </li>

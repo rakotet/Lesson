@@ -8,13 +8,10 @@
     }
 
     $error = true;
-  }
-
-  if(isset($request->logout)) {
+  } elseif(isset($request->logout)) {
     unset($_SESSION['login']);
     unset($_SESSION['password']);
-    $error = false;
-    header('Location: index.php');
+    //header('Location: index.php');
   }
 
   $login = $_SESSION['login'] ?? false;
