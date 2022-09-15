@@ -48,5 +48,12 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+
+        //наш ограничитель запросов с именем 'test' нужно подключить к нужному роуту в файле с роутами (web.php)
+
+        RateLimiter::for('test', function(Request $request) {
+            if($request->ip() == '127.0.0.1') return Limit::none(); // если совпадает ip то нет ограничений по частоте запросов
+            return Limit::perMinute(5)->by($request->ip()); // ограничение на 5 запросов в минуту, разграничивает по ip адресу
+        });
     }
 }

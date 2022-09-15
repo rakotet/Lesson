@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DzControl;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -112,6 +114,25 @@ Route::prefix('manager')->group(function() {
     });
 });
 
+// ограничители запросов 
+
+Route::any('/all', function () {
+    return 3;
+})->middleware('throttle:test'); // ф-я для закреплением за роутом ограничителя запросов по созданному имени ограничителя 
+
+// ограничитель запросов сразу на группу роутов
+
+Route::group(['prefix' => 'manager', 'middleware' => 'throttle:test'], function() {
+    Route::get('/1', function() {
+        return 'manager.index';
+    });
+
+    Route::post('/1', function() {
+        return 'manager.index';
+    });
+});
+
+
 //редирект - перенаправление
 
 Route::redirect('/myuser', '/all'); // 1 арг с кокого адреса 2 арг на какой
@@ -134,7 +155,7 @@ Route::prefix('admin')->group(function() {
 
     Route::match(['get', 'post'], '/auth', function(Request $request) {
         return $request->url().'<br />';
-    });
+    })->middleware('throttle:test');
 
     Route::match(['get', 'post'], '/products', function(Request $request) {
         return $request->url().'<br />';
@@ -144,3 +165,33 @@ Route::prefix('admin')->group(function() {
         return $request->url().'<br />';
     });
 });
+
+// тема про посредников
+
+Route::get('/secretpage', function () {
+    return 'secretpage';
+})->middleware('checklocalhost');
+
+Route::get('/secretpage', function(Request $request) {
+    return $request->fullUrl().'<br />';
+})->middleware('checkkey');
+
+// тема про контроллеры
+
+Route::get('/home', [MainController::class, 'home']); // связываем контроллер с роутом, в массиве 1 арг это название нужного контроллера, 2 арг нужная ф-я из этого контроллера
+Route::get('/map', [MainController::class, 'map']);
+Route::get('/message/{id}', [MainController::class, 'message']); // {id} параметр передастся в нашу ф-ю контроллера message($id)
+Route::get('/request', MainController::class); // с этом случае вызовется ф-я контроллера __invoke
+
+// дз
+
+Route::get('/mypage', [DzControl::class, 'dzMyPage']);
+
+// тема шаблоны
+
+Route::get('/testview', [MainController::class, 'testView']);
+
+// тема blade шаблоны
+
+Route::get('/testblade', [MainController::class, 'testBlade']);
+

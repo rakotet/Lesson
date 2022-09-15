@@ -1,0 +1,50 @@
+#header {
+  background-color: #ff7000;
+  padding: 10px 0;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1310px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.header-top a {
+  text-decoration: none;
+}
+
+.header-top a:hover {
+  text-decoration: underline;
+}
+
+.header-top__login {
+  display: flex;
+  align-items: center;
+}
+
+.header-top__link {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.header-top__link svg {
+  margin-right: 8px;
+}
+
+.header-top__link span {
+  color: #fff;
+}
+
+.header-top__login .divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 7px;
+  background-color: #fff;
+}
