@@ -15,7 +15,7 @@
         <a href="">
           <li>Скидки</li>
         </a>
-        <a href="/page/catalog.php">
+        <a href="/page/catalog">
           <li>Каталог</li>
         </a>
         <a href="">

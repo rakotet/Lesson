@@ -24,6 +24,31 @@
       return '`'.DB_PREFIX.$table_name.'`';
     }
 
+    ////////////////////////////////
+
+    public function setRowCatalog(string $table_name, string $name, string $image, int $price) {
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`name`, `image`, `price`) VALUES ('$name', '$image', '$price')";
+      //$query = $this->pdo->prepare($sql);
+      $this->pdo->exec($sql);
+    }
+
+    public function getCatalog(string $table_name, array $values = []) : array{
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name);
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    public function getProduct(string $table_name, array $values = []) : array {
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    ///////////////////////////////
+
     public function getCountRows(string $table_name, string $where = '', array $values = []) : int { // ф-я возвращает количество строк в таблице, можно указывать параметры выборки
       $sql = 'SELECT COUNT(`id`) as `count` FROM '.$this->getTableName($table_name);
       if($where) $sql .= " WHERE $where";
