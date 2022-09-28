@@ -1,0 +1,269 @@
+.basket {
+  margin-top: 4%;
+  margin-left: 2%;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 86%;
+}
+
+.basket-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.basket-content__header {
+  border-style: none !important;
+  font-size: 32px;
+  font-weight: 700;
+  color: #473816;
+  margin-bottom: 4%;
+}
+
+.basket-content__items {
+  display: flex;
+  flex-direction: column;
+}
+
+.basket-content__item {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #e6e6e6;
+  padding: 24px 32px;
+  /* margin-top: 4%; */
+  transition: all .2s ease-in-out;
+}
+
+.item-img {
+  font-size: 0;
+  text-align: center;
+  width: 120px;
+  height: 120px;
+}
+
+.item-name {
+  display: flex;
+  justify-content: center;
+  margin: 0 3%;
+  padding-top: 2.5%;
+  font-weight: 700;
+  font-size: 16px;
+  color: #473816;
+  width: 350px;
+  word-wrap: break-word;
+}
+
+.item-price {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 5%;
+}
+
+.item-price__kg {
+  font-size: 14px;
+  line-height: 1.14;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.item-price__number {
+  font-size: 24px;
+  line-height: 1.17;
+  color: #1b1e25;
+}
+
+.item-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1%;
+  margin-left: 3%;
+}
+
+.item-panel__total {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10%;
+}
+
+.total {
+  font-size: 24px;
+  line-height: 1.17;
+  color: #1b1e25;
+  padding-left: 60px;
+  padding-top: 10px;
+}
+
+.item-panel__remove {
+  padding: 6px 10px;
+}
+
+.remove-btn {
+  width: 135px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #e8e8e8;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 2px;
+  transition-duration: .35s;
+  transition-property: border-color,background-color;
+}
+
+.remove-btn:hover {
+  background: #d6c4c4;
+}
+
+.remove-btn__span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove-btn__svg {
+  font-size: 0;
+  position: relative;
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.remove-btn__svg svg{
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  width: 16px;
+  height: 16px;
+}
+
+.remove-btn__inscription {
+  padding-left: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  color: grey;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  transition-duration: .35s;
+  transition-property: color;
+}
+
+.basket-content__total {
+  padding: 40px;
+  margin-top: 40px;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+}
+
+.total-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.total-items__number {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  color: #1b1e25;
+}
+
+.total-items__btn {
+  border: none;
+  background-color: #ffab00;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+  color: #fff;
+  padding: 16px 24px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition-duration: .35s;
+  transition-property: background-color,border-color;
+}
+
+.total-items__btn:hover {
+  opacity: 0.7;
+}
+
+.items-panel {
+  display: none;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid #e6e6e6;
+  padding: 24px 32px;
+  /* margin-top: 4%; */
+  transition: all .2s ease-in-out;
+}
+
+.items-panel:hover, .basket-content__item:hover {
+  box-shadow: 0px 10px 10px rgb(0 0 0 / 7%);
+}
+
+.items-panel__left {
+  width: 750px;
+  color: grey;
+  font-size: 14px;
+}
+
+.items-panel__center {
+  color: #ffab00;
+  cursor: pointer;
+}
+
+.items-panel__center:hover {
+  color: #ffaa00bd;
+}
+
+.items-panel__right {
+  cursor: pointer;
+}
+
+.basket-content__not {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.basket-content__not svg {
+
+}
+
+.not-basket {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.17;
+    color: #b0b0b0;
+    margin: 10px;
+}
+
+.not-katalog {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b0b0b0;
+  margin: 16px;
+}
+
+.not-link {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  color: #fff;
+  text-decoration: none;
+  padding: 16px 40px;
+  background-color: #ffab00;
+  border-radius: 4px;
+  user-select: none;
+  transition-duration: .35s;
+  transition-property: background-color;
+  transition: all .2s ease-in-out;
+}
+
+.not-link:hover {
+  opacity: 0.7;
+}

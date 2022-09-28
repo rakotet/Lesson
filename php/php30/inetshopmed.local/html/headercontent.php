@@ -38,7 +38,7 @@
   </div>
 
   <div class="header-inner__right">
-  <a href="" class="header-inner__basket">
+  <a href="/page/basket" class="header-inner__basket">
     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="20" r="2" stroke="#fff" stroke-width="2"></circle><circle cx="19" cy="20" r="2" stroke="#fff" stroke-width="2"></circle><path d="M1 2h3l2 12c.5 2 2 2 3 2h12" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 5h18l-1 5c-.5 2-2 2-3 2H6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     <span class="header-basket__text">Корзина</span>
     <span class="header-basket__divider"></span>

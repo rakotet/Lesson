@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link type="text/css" rel="stylesheet" href="../css/index.css?<?php echo time(); ?>" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;display=swap?<?php echo time(); ?>" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/image/favicon.png">
+  <link rel="apple-touch-icon" href="/image/favicon.png">
   <title><?=$title?></title>
 </head>
 <body>
