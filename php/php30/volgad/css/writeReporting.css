@@ -1,0 +1,47 @@
+.writeReporting {
+  width: 100%;
+  padding-left: 5%;
+}
+
+.writeReporting h1 {
+  padding-top: 5%;
+  padding-left: 20%;
+  padding-bottom: 5%;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-content__text {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.content-topic {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5%;
+}
+
+.content-topic select {
+  margin-right: 10px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+.content-topic input {
+  width: 700px;
+}
+
+.form-content1__submit {
+  padding-top: 10px;
+  padding-left: 25%;
+}
+
+.uploads-btn {
+  width: 75px;
+  margin-top: 15px;
+}

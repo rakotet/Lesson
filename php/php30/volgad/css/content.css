@@ -1,0 +1,23 @@
+.menu {
+  padding: 30px;
+}
+
+.menu li {
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: black;
+}
+
+.menu a:hover {
+  color: rgb(157, 226, 188);
+}
+
+.separator {
+  width: 2px;
+  min-height: 100%;
+  background-color: #EFE0C6;
+}

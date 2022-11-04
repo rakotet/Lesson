@@ -1,7 +1,7 @@
 <div class="header-top">
 
   <div class="header-top__login">					
-    <a href="" class="header-top__link">
+    <a href="/page/authorization" class="header-top__link">
       <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="7" r="4" stroke="#fff" stroke-width="2"></circle><path d="M4 21v-2c0-2 1.5-4 4-4h8c2.5 0 4 2 4 4v2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       <span>Личный кабинет</span>
     </a>

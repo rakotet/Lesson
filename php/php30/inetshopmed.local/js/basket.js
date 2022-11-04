@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
           </div>
           <div class="item-panel">
             <div class="item-panel__total">
-              <button class="buy-panel__btn minus" data-id="${arrItems[i].med}${arrItems[i].number}"><span data-id="${arrItems[i].med}${arrItems[i].number}">-</span></button><input class="buy-panel__input input${arrItems[i].med}${arrItems[i].number}" type="text" min="1" value="${arrItems[i].volume}" maxquantity="9" ratio="1"><button class="buy-panel__btn plus" data-id="${arrItems[i].med}${arrItems[i].number}"><span data-id="${arrItems[i].med}${arrItems[i].number}">+</span></button>
+              <button class="buy-panel__btn minus" data-id="${arrItems[i].med}${arrItems[i].number}"><span data-id="${arrItems[i].med}${arrItems[i].number}">-</span></button><input class="buy-panel__input input${arrItems[i].med}${arrItems[i].number}" data-id="${arrItems[i].med}${arrItems[i].number}" type="text" min="1" value="${arrItems[i].volume}" maxquantity="9" ratio="1"><button class="buy-panel__btn plus" data-id="${arrItems[i].med}${arrItems[i].number}"><span data-id="${arrItems[i].med}${arrItems[i].number}">+</span></button>
               <div class="total">
                 <span class="span${arrItems[i].med}${arrItems[i].number}">${arrItems[i].price * arrItems[i].volume}</span> руб.
               </div>
@@ -76,6 +76,22 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let itogo = document.querySelector('.total-items__number span');
 
     btnReestablish.addEventListener('click', reestablish); 
+    btnReestablish.addEventListener('input', setInput);
+
+    function setInput(event) {
+      let total = btnReestablish.querySelector(`.span${event.target.getAttribute('data-id')}`)
+      let price = btnReestablish.querySelector(`.price${event.target.getAttribute('data-id')}`)
+      
+      if(event.target.value == 0 || !Number.isInteger(Number(event.target.value)) || event.target.value > 99) {
+        event.target.value = 1
+        total.innerHTML = Number(price.innerText) * Number(event.target.value)
+        totalCount()
+      } else {
+        total.innerHTML = Number(price.innerText) * Number(event.target.value)
+        totalCount()
+      }
+      
+    }
 
     function reestablish(event) {
       if(event.target.closest('.items-panel__center')) {

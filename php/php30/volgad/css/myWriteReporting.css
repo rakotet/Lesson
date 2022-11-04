@@ -1,0 +1,174 @@
+.myWriteReporting {
+  display: flex;
+  flex-direction: column;
+  margin-left: 35px;
+  width: 93%;
+}
+
+.myWriteReporting-panel {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.panel-name {
+  margin: 10px;
+}
+
+.panel-tema {
+  padding-left: 90px;
+  margin-right: 325px;
+}
+
+.panel-type {
+  margin-right: 310px;
+}
+
+.panel-status {
+  margin-left: 305px;
+}
+
+.myWriteReporting-wraper {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.myWriteReporting-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+.item-coordinating {
+  display: flex;
+  flex-direction: row;
+  width: 1145px;
+  margin-right: 20px;
+}
+
+.item-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.item-wrap a {
+  display: block;
+  width: 100px;
+  text-decoration: none;
+  margin-top: 15px;
+}
+
+.item-wrap a:hover {
+  font-weight: 700;
+  color: green;
+}
+
+.item-coordinating span {
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.coordinating {
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.item-coordinating div[data-sing="1"] {
+  background-color: rgb(86, 165, 86);
+}
+
+.item-coordinating div[data-sing="0"] {
+  background-color: rgb(179, 184, 179);
+}
+
+.item-name {
+  margin: 10px;
+}
+
+.item-tema {
+  width: 269px;
+  padding-left: 50px;
+  word-wrap: break-word;
+}
+
+.link-wrap {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.link span {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.item-link {
+  width: 400px;
+  text-decoration: none;
+  color: rgba(27, 95, 221);
+  transition: all .1s ease-in-out;
+}
+
+.item-link:hover {
+  font-weight: 700;
+}
+
+.item-link__dell {
+  width: 70px;
+  height: auto;
+  padding: 3px;
+  margin-top: 15px;
+  text-decoration: none;
+  color: black;
+  border-radius: 10px;
+  transition: all .2s ease-in-out;
+  /* display: block; */
+}
+
+.item-link__dell:hover {
+  /* font-weight: 700; */
+  transform: scale(1.1);
+  background: #e98080;
+}
+
+.item-btn__wrapp {
+  margin-top: 15px;
+}
+
+.item-download {
+  display: none;
+  margin-top: 15px;
+}
+
+.uploads-btn1 {
+  width: 115px;
+  margin-top: 10px;
+}
+
+.form-content2__submit {
+  margin-left: 43%;
+}
+
+.form-content__text input {
+  margin-top: 5px;
+}
+
+.grin {
+  color: rgb(7, 68, 7);
+}
+
+.grined {
+  color: rgb(86, 165, 86);
+  font-weight: 700;
+}

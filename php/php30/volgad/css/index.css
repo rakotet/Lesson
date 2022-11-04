@@ -1,20 +1,17 @@
 @import url("reset.css");
-@import url("header.css");
-@import url("headercontent.css");
-@import url("catalog.css");
-@import url("footer.css");
-@import url("categori.css");
-@import url("product.css");
-@import url("basket.css");
 @import url("authorization.css");
+@import url("header.css");
+@import url("footer.css");
+@import url("content.css");
+@import url("writeReporting.css");
+@import url("myWriteReporting.css");
+
 
 
 body {
   background: white;
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
 }
 
@@ -37,16 +34,22 @@ body {
 #content {
   display: flex;
   flex-direction: row;
-  margin-top: 180px;
-  margin-bottom: 5%;
+  min-height: 85vh;
+  width: 1900px;
+  margin-top: 30px;
   background-color: #F6F3F2;
-  padding: 0 14%;
-  padding-right: 10%;
+}
+
+#content-right {
+  display: flex;
+  width: 75%;
+  padding: 30px;
 }
 
 #footer {
   display: flex;
   flex-direction: column;
+  height: 50px;
   background-color: #EFE0C6;
   padding-top: 50px;
   padding-bottom: 20px;

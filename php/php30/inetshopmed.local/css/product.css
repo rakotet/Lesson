@@ -90,6 +90,10 @@
   background: #ff7000;
 }
 
+.price-button:focus {
+  border-color: #FFAB00;
+}
+
 .product-description {
   display: flex;
   flex-direction: column;
@@ -145,11 +149,11 @@
   width: 1280px;
   max-width: 1280px;
   padding: 0;
-  margin-bottom: 25%;
+  /* margin-bottom: 25%; */
   position: relative;
   display: inline-block;
   border-radius: 4px;
-  top: 60px;
+  /* top: 60px; */
   background-color: #fff;
   padding-bottom: 20px;
 }

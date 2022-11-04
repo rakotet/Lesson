@@ -10,6 +10,7 @@
 
   if(isset($_FILES['upload_files'])) {
     foreach($_FILES['upload_files']['error'] as $key => $error) {
+      echo '<br/>'.$key.'<br/>';
       if($error == 0) {
         $dist = 'lib/fileslesson2410/'.$_FILES['upload_files']['name'][$key];
         $success_multi = move_uploaded_file($_FILES['upload_files']['tmp_name'][$key], $dist);

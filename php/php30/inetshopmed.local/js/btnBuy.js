@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
   basketBtn.addEventListener('click', btnBasket); 
   buy.addEventListener('click', btnBuy); 
   input.addEventListener('input', setInput);
-  // document.body.addEventListener('click', closeModalBody); 
+  document.querySelector('.container-buy').addEventListener('click', closeModalBody); 
+  document.body.addEventListener('keydown', closeModalBodyEsc); 
 
   function openModal(event) {
     if(btn.innerHTML.trim() == 'Купить') {
@@ -57,10 +58,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
     modal.classList.add('close')
   }
 
-  // function closeModalBody(event) {
-  //   console.log(event.target.classList);
-  //   if(!event.target.classList.contains('container-buy__modal')) modal.classList.add('close')
-  // }
+  function closeModalBody(event) {
+    if(event.target.classList.contains('container-buy')) modal.classList.add('close');
+    
+  }
+
+  function closeModalBodyEsc(event) {
+    if(event.key === 'Escape') modal.classList.add('close');
+  }
 
   function btnMinus(event) {
     if(inputNumber >= 2) {

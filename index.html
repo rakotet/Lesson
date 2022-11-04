@@ -568,6 +568,13 @@
                   }<br>
               }<br>
         </li>
+        <li>
+            Имитация ввода с буфера обмена в input
+
+            let inputElement = document.querySelector('.content-topic input');
+            inputElement.focus();
+            document.execCommand('insertText', false, '11.22.3444');
+        </li>
     </ol>
 </body>
 
