@@ -1,0 +1,297 @@
+@import url("reset.css");
+
+@font-face {
+  font-family: Inter; 
+  src: url(../fonts/Inter-Medium.otf); 
+ }
+
+.container {
+  display: flex;
+  justify-content: center;
+  background: #B0B0B0;
+  font-family: 'Inter';
+  font-style: normal;
+}
+
+.wrapper {
+  width: 445px;
+  background: #FFFFFF;
+  padding: 14px;
+  overflow: hidden;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: #336699;
+}
+
+.hrDiv {
+  height: 1px;
+  background: #A2AE80;
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #A2AE80;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+.hrDivBold {
+  height: 2px;
+  background: #A2AE80;
+  margin-top: 2px;
+}
+
+.module {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.gray {
+  padding: 5px 10px;
+  gap: 10px;
+  background: #D9D9D9;
+  color: #5F5F5F;
+  line-height: 17px;
+}
+
+.lightGray {
+  padding: 5px 10px;
+  gap: 10px;
+  background: #E8E8E8;
+  color: #333333;
+  line-height: 17px;
+}
+
+.lightGray a {
+  text-decoration-line: underline;
+  color: #336699;
+  margin-right: 5px;
+}
+
+.group {
+  width: 100%;
+}
+
+.documentNumber, .documentNumberVgr {
+  font-weight: 600;
+}
+
+.blue {
+  color: #44586E;
+}
+
+.counterparties {
+  text-align: center;
+  color: #333333;
+}
+
+.provider a:last-child {
+  color: #FF0000;
+}
+
+.total {
+  background: #E0EBF1;
+  margin-top: 2px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #5F5F5F;
+}
+
+.total h3 {
+  font-weight: 600;
+  font-size: 14px;
+  color: #44586E;
+  padding: 8px 10px;
+}
+
+.total-line {
+  display: flex;
+  flex-direction: row;
+  margin-left: 28px;
+  padding-bottom: 4px;
+}
+
+.total .data-line:last-child {
+  margin-bottom: 0px;
+}
+
+.two {
+  padding-bottom: 8px;
+}
+
+.consulting {
+  display: flex;
+  flex-direction: column;
+  background: #D9D9D9;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding-top: 8px;
+}
+
+.consulting-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.svgList {
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.consulting h3 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #333333;
+}
+
+.consulting-data {
+  display: flex;
+  flex-direction: column;
+  margin-left: 7%;
+  padding-top: 6px;
+  padding-bottom: 8px;
+}
+
+.data-line {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 4px;
+}
+
+.data-line div:nth-child(1) {
+  width: 65%;
+  position: relative;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #5F5F5F;
+  overflow: hidden;
+}
+
+.data-line div:nth-child(1)::after {
+  width: 100%;
+  height: 15px;
+  border-bottom: 1px dashed #7B7B7B;
+  position: absolute;
+  content: '';
+}
+
+.data-line div:nth-child(3) {
+  position: relative;
+  width: 170px;
+  margin-right: 15%;
+  font-weight: 500;
+  padding-left: 5px;
+  color: #333333;
+}
+
+.plus {
+  position: relative;
+  top: 3px;
+}
+
+.plus svg:first-child {
+  left: -5px;
+  top: 5px;
+}
+
+.plus svg {
+  position: absolute;
+  top: 0;
+}
+
+.hrDivWhite {
+  width: 100%;
+  height: 2px;
+  background: #FFFFFF;
+}
+
+.close {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.close h3 {
+  margin-left: 6px;
+}
+
+.close .svgList {
+  margin-left: 6px;
+}
+
+.lighter {
+  background: #E8E8E8;
+}
+
+.consulting-header h4 {
+  font-weight: 400;
+  color: #5F5F5F;
+  margin-left: 12px;
+}
+
+.file a:first-child {
+  text-decoration: none;
+}
+
+.openStage {
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.approvalProcess {
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.openStage a, .approvalProcess a {
+  text-decoration-line: underline;
+  color: #333333;
+  margin-left: 6px;
+}
+
+.color-blue {
+  background: #DFECF2;
+}
+
+.color-green {
+  background: #E8F5DB;
+}
+
+.openStage-line .data-line {
+  margin-left: 30px;
+}
+
+.openStage-line .data-line:last-child {
+  padding-bottom: 10px;
+}
+
+.color-gray {
+  background: #E8E8E8;
+}
+
+.color-yellow {
+  background: #EEE7BB;
+}
+
+.approvalProcess .data-line:last-child {
+  margin-bottom: 0;
+}
