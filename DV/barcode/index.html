@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="qart"></div>
+  <!-- <iframe id="iframe" width="400" height="300"></iframe> -->
+  <!-- <img id="im" width="400" height="300"> -->
+  <script src="./labelmake.min.js"></script>
+  <script>
+    (async () => {
+      const template = {
+        basePdf: { width: 100, height: 60 },
+        schemas: [
+          {
+            field1: {
+              position: { x: 5, y: 5 },
+              width: 150,
+              height: 50,
+              fontSize: 14,
+              type: "text"
+            },
+            field2: {
+              position: { x: 5, y: 10 },
+              width: 150,
+              height: 50,
+              fontSize: 14,
+              type: "text"
+            },
+            field3: {
+              position: { x: 5, y: 15 },
+              width: 150,
+              height: 50,
+              fontSize: 14,
+              type: "text"
+            },
+            qrcode: {
+              type: "qrcode",
+              position: { x: 30, y: 25 },
+              width: 30,
+              height: 30
+            }
+          }
+        ]
+      };
+      
+      const inputs = [
+        { 
+          field1: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1", 
+          field2: "bbbbbbbbbbbbbbbbbbbbbb1", 
+          field3: "ccccccccccccccccccccccccc1", 
+          qrcode: "dfd1324"
+        }
+      ];
+      const pdf = await labelmake({ template, inputs });
+      const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+      window.open(URL.createObjectURL(blob))
+      //window.location.assign(URL.createObjectURL(blob))
+      //document.getElementById("iframe").src = URL.createObjectURL(blob);
+    })();
+  </script>
+
+</body>
+</html>
+
