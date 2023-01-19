@@ -60,6 +60,7 @@
   width: 100px;
   text-decoration: none;
   margin-top: 15px;
+  color: #225fe9;
 }
 
 .item-wrap a:hover {
@@ -72,11 +73,89 @@
   padding-left: 10px;
 }
 
+.item-executor {
+  display: flex;
+  flex-direction: row;
+  padding-top: 40px;
+  padding-left: 10px;
+}
+
+.item-executor form {
+  display: flex;
+  flex-direction: row;
+}
+
+.item-executor form select {
+  height: 21px;
+  margin-left: 2px;
+}
+
+.form-executor__submit {
+  margin-left: 20px;
+}
+
+.item-back, .item-end {
+  display: flex;
+  justify-content: center;
+  height: 12px;
+  width: 225px;
+  background: #ccd5db;
+  padding: 5px;
+  margin-left: 25px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.item-back a {
+  text-decoration: none;
+  color: #e98080;
+}
+
+.item-end a {
+  text-decoration: none;
+  color: blue;
+}
+
+.item-back a:hover {
+  font-weight: 700;
+}
+
+.item-end a:hover {
+  font-weight: 700;
+}
+
+.item-comments {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-comments form {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-comments__span {
+  width: 200px;
+  font-weight: 700;
+  margin: 10px;
+  margin-bottom: 30px;
+}
+
+.item-comments__span:hover {
+  cursor: pointer;
+}
+
+.item-comments__container {
+  display: none;
+  word-wrap: break-word;
+}
+
 .coordinating {
   margin: 10px;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 5px;
+  padding: 5px 25px;
+  text-align: center;
 }
 
 .item-coordinating div[data-sing="1"] {
@@ -171,4 +250,13 @@
 .grined {
   color: rgb(86, 165, 86);
   font-weight: 700;
+}
+
+.grineds {
+  color: rgb(29, 61, 29);
+  font-weight: 700;
+}
+
+.coordinating__delete {
+  display: inline !important;
 }

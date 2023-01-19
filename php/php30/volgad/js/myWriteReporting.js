@@ -1,9 +1,47 @@
 document.addEventListener('DOMContentLoaded', function (event) { 
-  let fileBtn = document.querySelector('.uploads-btn1')
   let myWriteReporting = document.querySelector('.myWriteReporting')
 
   myWriteReporting.addEventListener('click', addFileUpload);
   myWriteReporting.addEventListener('click', btnHide);
+  myWriteReporting.addEventListener('click', hideComments);
+  myWriteReporting.addEventListener('click', openDeleteSign);
+
+  let signObj = {};
+  let textObj = {};
+
+  function openDeleteSign(event) {
+    if(event.target.getAttribute('data-userSingId') && !event.target.getAttribute('style')) {
+      let target = event.target.getAttribute('data-userSingId')
+      let sign = myWriteReporting.querySelector(`div[data-userSingId="${event.target.getAttribute('data-userSingId')}"]`)
+      signObj[target] = sign
+      let w = sign.offsetWidth
+      textObj[target] = sign.innerText
+      sign.innerHTML = `<a href="/page/myWriteReporting?deleteSign=${event.target.getAttribute('data-userSingId')}" class="coordinating__delete">Удалить</a>`
+      sign.style.width = `${w - 52}px`
+      sign.style.backgroundColor = `red`
+
+    } else if(event.target.getAttribute('data-userSingId') && event.target.getAttribute('style')) {
+        let target = event.target.getAttribute('data-userSingId')
+        let sign = signObj[target]
+        sign.innerHTML = textObj[target]
+        sign.removeAttribute('style')
+        delete signObj[target]
+        delete textObj[target]
+    }
+  }
+
+  function hideComments(event) {
+    if(event.target.classList.contains('item-comments__span')) {
+      let comments = myWriteReporting.querySelector(`div[data-comment="${event.target.getAttribute('data-id')}"]`)
+      if(event.target.innerText == 'Открыть комментарии') {
+        comments.style.display = 'block';
+        event.target.innerText = 'Закрыть комментарии';
+      } else {
+        comments.style.display = 'none';
+        event.target.innerText = 'Открыть комментарии';
+      }
+    }
+  }
  
   function addFileUpload(event) {
     if(event.target.classList.contains('uploads-btn1')) {

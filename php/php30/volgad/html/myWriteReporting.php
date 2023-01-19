@@ -17,7 +17,11 @@
         <?php if($getMemoUser[$i]['status'] == 1) { ?>
           <div class="item-name grin">На согласовании</div>
         <?php } elseif($getMemoUser[$i]['status'] == 2) { ?>
-          <div class="item-name grined">На Рассмотрении</div>
+          <div class="item-name grined">На рассмотрении</div>
+        <?php } elseif($getMemoUser[$i]['status'] == 3) { ?>
+          <div class="item-name grineds">На исполнение</div>
+        <?php } elseif($getMemoUser[$i]['status'] == 4) { ?>
+          <div class="item-name grin">Завершено</div>
         <?php } ?>
       </div>
       <div>
@@ -29,16 +33,50 @@
             <span>Согласующие: </span>
             <?php foreach(json_decode($getMemoUser[$i]['signature'], true) as $usersSing) { 
               if($usersSing[1] == 0 && $usersSing[0] == (int) $auth_user[0]['id']) $printSign = true; ?>
-              <div class="coordinating" data-sing="<?=$usersSing[1]?>"><?=$nameAndDepartamentUser($usersSing[0], true)?></div>
+              <div class="coordinating" data-sing="<?=$usersSing[1]?>" data-userSingId="<?=$usersSing[0].'_'.$getMemoUser[$i]['id']?>"><?=$nameAndDepartamentUser($usersSing[0], true)?></div>
             <?php } ?>
           </div>
           <div>
-            <?php if($printSign) { 
+            <?php if($printSign && $getMemoUser[$i]['status'] != 4) { 
               $printSign = false ?>
               <a href="/page/myWriteReporting?idmemo=<?=(int) $getMemoUser[$i]['id']?>">Согласовать</a>
             <?php } ?>
           </div>
         </div>
+        <?php if($getMemoUser[$i]['status'] == 3 || $getMemoUser[$i]['status'] == 4) { ?>
+          <div class="item-executor">
+            <span>Ответственный исполнитель: <?=$getNameToId($getMemoUser[$i]['executor_id'])?></span>
+          </div>
+        <?php } ?>
+        <?php if($auth_user[0]['type'] == 1 && $getMemoUser[$i]['status'] != 4) { ?> <!-- Выбор исполнителя для менеджера начало -->
+          <div class="item-executor">
+            <form action="" name="myWriteReporting" method="post" enctype="multipart/form-data">
+              <?php if($getMemoUser[$i]['status'] == 2 || $getMemoUser[$i]['status'] == 1) { ?>
+                <span>Назначить испольнителя: &nbsp;&nbsp;</span>
+              <?php } elseif($getMemoUser[$i]['status'] == 3) { ?>
+                <span>Сменить испольнителя: &nbsp;&nbsp;</span>
+              <?php } ?>
+              <select class="signs copy" name="users_executor[]">
+                <?php for($idUser = 0; $idUser < count($arrayUsers); $idUser++) { ?>
+                  <option value="<?=$arrayUsers[$idUser]['id'].'_'.$getMemoUser[$i]['id']?>"><?=$arrayUsers[$idUser]['department']?> <?=$arrayUsers[$idUser]['name']?></option>
+                <?php } ?>
+              </select>
+              <div class="form-executor__submit">
+                <?php if($getMemoUser[$i]['status'] == 2 || $getMemoUser[$i]['status'] == 1) { ?>
+                  <input type="submit" name="myWriteReporting" value="Назначить">
+                <?php } elseif($getMemoUser[$i]['status'] == 3) { ?>
+                  <input type="submit" name="myWriteReporting" value="Сменить">
+                <?php } ?>
+              </div>
+            </form>
+            <div class="item-back">
+              <a href="/page/myWriteReporting?backId=<?=$getMemoUser[$i]['id']?>">Вернуть на согласование</a>
+            </div>
+            <div class="item-end">
+              <a href="/page/myWriteReporting?endId=<?=$getMemoUser[$i]['id']?>">Завершить документ</a>
+            </div>
+          </div>
+        <?php } ?> <!-- Выбор исполнителя для менеджера конец -->
         <div>
           <hr>
         </div>
@@ -50,10 +88,10 @@
             <div class="link-wrap">
               <a class="item-link" href="<?=$file?>" download><?=nameFile($file)?></a>
               <?php if($getMemoUser[$i]['id_user'] == $auth_user[0]['id']) { ?>
-                <?php if(count($arrFileWrite) > 1) { ?>
+                <?php if(count($arrFileWrite) > 1 && ($getMemoUser[$i]['status'] == 1)) { ?>
                   <a class="item-link__dell" href="/page/myWriteReporting?removeDoc=<?=$file?>&memoId=<?=$getMemoUser[$i]['id']?>">Удалить</a>
                 <?php } ?>
-                <?php if (!next($arrFileWrite)) { ?>
+                <?php if (!next($arrFileWrite) && ($getMemoUser[$i]['status'] == 1)) { ?>
                   <div class="item-download" data-id="<?=$getMemoUser[$i]['id']?>">
                     <form action="" name="writeReporting" method="post" enctype="multipart/form-data">
                       <div class="form-content__text">
@@ -73,6 +111,27 @@
               <? } ?>
             </div>
           <?php } ?>
+        </div>
+        <div class="item-comments">
+          <span class="item-comments__span" data-id="<?=$getMemoUser[$i]['id']?>">Открыть комментарии</span>
+          <div class="item-comments__container" data-comment="<?=$getMemoUser[$i]['id']?>">
+            <?php if($getMemoUser[$i]['comment']) { ?>
+              <div>
+                <?=$getMemoUser[$i]['comment']?>
+              </div>
+            <?php } ?>
+            <div>
+              <form action="" name="writeReportingCommit" method="post" enctype="multipart/form-data">
+                <div>
+                  <textarea name="textComment" cols="100" rows="5"></textarea>
+                </div>
+                <div>
+                  <input name="idMemoComment" type="text" value="<?=$getMemoUser[$i]['id']?>" style="display: none;">
+                  <input type="submit" name="writeReportingCommit" value="Добавить комментарий">
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>

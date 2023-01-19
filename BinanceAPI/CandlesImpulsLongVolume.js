@@ -11,8 +11,8 @@ let fapi = 'https://fapi.binance.com/fapi/';
 
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
-  APIKEY: 'yTrguRvjlECCZg4haqpPkM2byGn0sojZS5UT4F2KHoy3Vzf0nxWvATrgoSEFbaX5',
-  APISECRET: 'WfTYhUO7LcLTCorB1vWe1YSDOUvj9jNetKnxUpLHH1bjUVbGQITJUaoxhmuMqw0I'
+  APIKEY: 'uyaPRnAfTZfAGHnku75rygaAWEFM3THPQzeDCVpsN5sCrGHHD89fQzMENnBvsdsb',
+  APISECRET: '1xTGtRmGrfr2OPkIpXD1l6yU6jq8eGifRRBwR9lrJcCm7C9v2QiwTruSKtdqeOf7'
 });
 const fs = require('fs')
 const opn = require('opn')
@@ -42,8 +42,8 @@ let i = 0
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)                   ++++++++++++
 const numberOneTrade = 10 // сумма одной сделки (10 - 1000)                          ++++++++++++
 const percentPamp = 5 // Процент пампа первой свечи при котором начинаем слежение    ++++++++++++
-const percentImpulsConst = 8 // % импульса при котором начинаем слежение            ++++++++++++
-const percentDamp = 4 // Процент дампа при котором начинаем слежение
+const percentImpulsConst = 10 // % импульса при котором начинаем слежение            ++++++++++++
+const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 0.02 // максимальный минус в %                                      ++++++++++++
 const maxMinuZaFiba = 0.01 // максимальный минус в % за фиба
@@ -399,7 +399,7 @@ async function priceSymbolPamp(symbol, fs) {
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       setTimeout(() => {
         coinOpenPamp[coin][0] = 0
-      }, 300000)
+      }, 3000000)
     }
 
     if(/*(oneLow < f25) && (twoLow < f25) && (twoClose < twoOpen)*/sdelkaOpen) {

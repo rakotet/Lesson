@@ -38,6 +38,58 @@
       return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function usersSet(string $table_name, array $values = []) : void {
+      $sql = 'SELECT `comment` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values[0]]);
+      $query = $query->fetchAll(PDO::FETCH_ASSOC);
+      $query = $query[0]['comment'];
+      $query = explode(";", $query);
+      
+      for($i = 0; $i < count($query); $i++) {
+        $arrUser = explode("\n", $query[$i]);
+
+        if($i == 0) {
+          $pass = random_int(0, 9).random_int(0, 9).random_int(0, 9).random_int(0, 9);
+          file_put_contents('../file/pass.txt', file_get_contents('../file/pass.txt')."\n $arrUser[1] - $pass");
+          $pass = md5($pass.SECRET);
+          $sql = 'INSERT INTO '.$this->getTableName('users')." (`type`, `department`, `name`, `login`, `password`) VALUES ('0', '$arrUser[0]', '$arrUser[1]', '$arrUser[1]', '$pass')";
+          $this->pdo->exec($sql);
+        } elseif($i == 27) {
+          $pass = random_int(0, 9).random_int(0, 9).random_int(0, 9).random_int(0, 9);
+          file_put_contents('../file/pass.txt', file_get_contents('../file/pass.txt')."\n $arrUser[2] - $pass");
+          $pass = md5($pass.SECRET);
+          $sql = 'INSERT INTO '.$this->getTableName('users')." (`type`, `department`, `name`, `login`, `password`) VALUES ('0', '$arrUser[1]', '$arrUser[2]', '$arrUser[2]', '$pass')";
+          $this->pdo->exec($sql);
+        } else {
+          $depart = $arrUser[1];
+          for($q = 2; $q < count($arrUser); $q++) {
+            if($arrUser[$q]) {
+              $pass = random_int(0, 9).random_int(0, 9).random_int(0, 9).random_int(0, 9);
+              file_put_contents('../file/pass.txt', file_get_contents('../file/pass.txt')."\n $arrUser[$q] - $pass");
+              $pass = md5($pass.SECRET);
+              $sql = 'INSERT INTO '.$this->getTableName('users')." (`type`, `department`, `name`, `login`, `password`) VALUES ('0', '$depart', '$arrUser[$q]', '$arrUser[$q]', '$pass')";
+              $this->pdo->exec($sql);
+            }
+          }
+        }
+      }
+    }
+
+    public function setCommentMemo(string $table_name, array $values = []) : void { // добавить комментарий к документу
+      $sql = 'SELECT `comment` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values[0]]);
+      $commit = $query->fetchAll(PDO::FETCH_ASSOC);
+      $commit = $commit[0]['comment'];
+      $commit = $commit == null ? '' : $commit;
+      $commit .= '<p>'.$values[2].': '.$values[1].'</p></br>';
+
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `comment` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$commit, $values[0]]);
+    }
+
     public function removeDocMemo(string $table_name, array $values = []) : void {
       $sql = 'SELECT `dir` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);
@@ -54,6 +106,38 @@
       $sql = 'UPDATE '.$this->getTableName($table_name).' SET `dir` = ? WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);
       $query->execute([$dirArr, $values[0]]);
+    }
+
+    public function setMemoExecutor(string $table_name, array $values = []) : void { // Назничить или изменить исполнителя
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `executor_id` = ?, `status` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values[0], '3', $values[1]]);
+    }
+
+    public function setStatusMemo(string $table_name, array $values = []) : void { // Сменить статус служебки
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `status` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values[1], $values[0]]);
+
+      if($values[1] == 1) {
+        $sql = 'SELECT `signature` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$values[0]]);
+        $query = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query = json_decode($query[0]['signature'], true);
+        $arrSign = [];
+  
+        foreach($query as $sign) {
+          $sign[1] = 0;
+          $arrSign[] = $sign;
+        }
+  
+        $arrSign = json_encode($arrSign);
+  
+        $sql = 'UPDATE '.$this->getTableName($table_name).' SET `signature` = ? WHERE `id` = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$arrSign, $values[0]]);
+      }
     }
 
     public function setDirMemo(string $table_name, array $values = []) : void {
@@ -106,15 +190,17 @@
       }
     }
 
-    public function getMemoAllWork(string $table_name, array $values = [1, 2]) : array {
-      $sql = 'SELECT * FROM '.$this->getTableName($table_name). ' WHERE `status` IN (?, ?)';
+    public function getMemoAllWork(string $table_name, array $values = [1, 2, 3], bool $search = false) : array {
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name). ' WHERE `status` IN (?, ?, ?) ORDER BY `date` DESC';
+      if($search) $sql = 'SELECT * FROM '.$this->getTableName($table_name). ' WHERE `status` = ? ORDER BY `date` DESC';
       $query = $this->pdo->prepare($sql);
+      if($search) $values = [4];
       $query->execute($values);
       return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getUsers(string $table_name, array $values = []) : array {
-      $sql = 'SELECT * FROM '.$this->getTableName($table_name);
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name).' ORDER BY `name`';
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
       return $query->fetchAll(PDO::FETCH_ASSOC);

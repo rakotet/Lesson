@@ -42,7 +42,7 @@
 
         foreach($_FILES['upload_files']['error'] as $key => $error) {
           if($error == 0) {
-            $dist = $dirName.'/'.$_FILES['upload_files']['name'][$key];
+            $dist = $dirName.'/'.date('H_m_s', time()).'_'.$_FILES['upload_files']['name'][$key];
             $success_multi = move_uploaded_file($_FILES['upload_files']['tmp_name'][$key], $dist);
             $strFiles[] = $dist;
           }
