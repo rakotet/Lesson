@@ -29,7 +29,9 @@
           </select>
           <select class="signs copy" name="users_sign[]">
             <?php for($idUser = 0; $idUser < count($arrayUsers); $idUser++) { ?>
-              <option value="<?=$arrayUsers[$idUser]['id']?>"><?=$arrayUsers[$idUser]['department']?> <?=$arrayUsers[$idUser]['name']?></option>
+              <?php if($arrayUsers[$idUser]['id'] != $auth_user[0]['id']) { ?>
+                <option value="<?=$arrayUsers[$idUser]['id']?>"><?=$arrayUsers[$idUser]['department']?> <?=$arrayUsers[$idUser]['name']?></option>
+              <?php } ?>
             <?php } ?>
           </select>
           <button class="signs-btn">Добавить</button>

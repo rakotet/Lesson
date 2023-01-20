@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   myWriteReporting.addEventListener('click', btnHide);
   myWriteReporting.addEventListener('click', hideComments);
   myWriteReporting.addEventListener('click', openDeleteSign);
+  myWriteReporting.addEventListener('click', openAddSign);
 
   let signObj = {};
   let textObj = {};
@@ -27,6 +28,19 @@ document.addEventListener('DOMContentLoaded', function (event) {
         sign.removeAttribute('style')
         delete signObj[target]
         delete textObj[target]
+    }
+  }
+
+  function openAddSign(event) {
+    if(event.target.getAttribute('data-addSing')) {
+      let form = myWriteReporting.querySelector(`form[data-addSingOpen="${event.target.getAttribute('data-addSing')}"]`)
+      if(form.getAttribute('style')) {
+        form.removeAttribute('style')
+        event.target.innerText = 'Добавить согласующего'
+      } else {
+        form.style.display = 'flex';
+        event.target.innerText = 'Скрыть добавление'
+      }
     }
   }
 

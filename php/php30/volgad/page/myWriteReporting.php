@@ -25,6 +25,17 @@
       //header('Location: /page/myWriteReporting');
     }
 
+    if(isset($request->addSing)) { // Добавить согласующего
+      $addSignArr = explode("_", $request->addSing);
+      $db->addSignMemo('memo', [$addSignArr[0], $addSignArr[1]]);
+    }
+
+    if(isset($request->deleteSign)) { // Удалить согласующего
+      $deleteSignArr = explode("_", $request->deleteSign);
+      $db->deleteSignMemo('memo', [$deleteSignArr[0], $deleteSignArr[1]]);
+      header('Location: /page/myWriteReporting');
+    }
+
     if(isset($request->textComment) && isset($request->idMemoComment)) { // добавить коммент к документу
       $db->setCommentMemo('memo', [(int) $request->idMemoComment, $request->textComment, $getNameToId($auth_user[0]['id'])]);
       header('Location: /page/myWriteReporting');

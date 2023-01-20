@@ -31,9 +31,14 @@
         <div class="item-wrap">
           <div class="item-coordinating">
             <span>Согласующие: </span>
-            <?php foreach(json_decode($getMemoUser[$i]['signature'], true) as $usersSing) { 
+            <?php foreach(json_decode($getMemoUser[$i]['signature'], true) as $key => $usersSing) { 
               if($usersSing[1] == 0 && $usersSing[0] == (int) $auth_user[0]['id']) $printSign = true; ?>
-              <div class="coordinating" data-sing="<?=$usersSing[1]?>" data-userSingId="<?=$usersSing[0].'_'.$getMemoUser[$i]['id']?>"><?=$nameAndDepartamentUser($usersSing[0], true)?></div>
+              <div class="coordinating" data-sing="<?=$usersSing[1]?>" 
+                <?php if($getMemoUser[$i]['status'] == 1 && $key != 0 && count(json_decode($getMemoUser[$i]['signature'], true)) > 2) { ?>
+                  data-userSingId="<?=$usersSing[0].'_'.$getMemoUser[$i]['id']?>"
+                <?php } ?>
+                ><?=$nameAndDepartamentUser($usersSing[0], true)?>
+              </div>
             <?php } ?>
           </div>
           <div>
@@ -77,6 +82,21 @@
             </div>
           </div>
         <?php } ?> <!-- Выбор исполнителя для менеджера конец -->
+        <?php if($getMemoUser[$i]['status'] == 1 || $auth_user[0]['type'] == 1 && ($getMemoUser[$i]['status'] == 1 || $getMemoUser[$i]['status'] == 2)) { ?>
+          <div class="item-addSing"> <!-- Добавление согласующего начало -->
+            <div class="item-addSing__open" data-addSing="<?=$getMemoUser[$i]['id']?>">Добавить согласующего</div>
+            <form action="" name="myWriteReportingSing" method="post" enctype="multipart/form-data" data-addSingOpen="<?=$getMemoUser[$i]['id']?>">
+              <select class="signs copy" name="addSing">
+                <?php for($idUser = 0; $idUser < count($arrayUsers); $idUser++) { ?>
+                  <option value="<?=$arrayUsers[$idUser]['id'].'_'.$getMemoUser[$i]['id']?>"><?=$arrayUsers[$idUser]['department']?> <?=$arrayUsers[$idUser]['name']?></option>
+                <?php } ?>
+              </select>
+              <div class="form-executor__submit">
+                <input type="submit" name="myWriteReportingSing" value="Добавить">
+              </div>
+            </form>
+          </div> <!-- Добавление согласующего конец -->
+        <?php } ?>
         <div>
           <hr>
         </div>
@@ -139,5 +159,3 @@
 </div>
 
 <script src="../js/myWriteReporting.js"></script>
-
-

@@ -38,6 +38,49 @@
       return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function deleteSignMemo(string $table_name, array $values = []) : void { // удалить согласующего
+      $sql = 'SELECT `signature` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values[1]]);
+      $query = $query->fetchAll(PDO::FETCH_ASSOC);
+      $query = json_decode($query[0]['signature'], true);
+      
+      $arrSign = [];
+
+      foreach($query as $sign) {
+        if($sign[0] != $values[0]) $arrSign[] = $sign;
+      }
+
+      $arrSign = json_encode($arrSign);
+
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `signature` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$arrSign, $values[1]]);
+    }
+
+    public function addSignMemo(string $table_name, array $values = []) : void { // добавить согласующего
+      $sql = 'SELECT `signature` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values[1]]);
+      $query = $query->fetchAll(PDO::FETCH_ASSOC);
+      $query = json_decode($query[0]['signature'], true);
+      $add = true;
+
+      foreach($query as $sign) {
+        if($sign[0] == $values[0]) $add = false;
+      }
+
+      if($add) {
+        $query[] = [$values[0], 0];
+
+        $arrSign = json_encode($query);
+  
+        $sql = 'UPDATE '.$this->getTableName($table_name).' SET `signature` = ? WHERE `id` = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$arrSign, $values[1]]);
+      }
+    }
+
     public function usersSet(string $table_name, array $values = []) : void {
       $sql = 'SELECT `comment` FROM '.$this->getTableName($table_name). ' WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);

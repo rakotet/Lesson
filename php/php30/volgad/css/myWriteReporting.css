@@ -46,6 +46,7 @@
 .item-coordinating {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 1145px;
   margin-right: 20px;
 }
@@ -228,6 +229,27 @@
 .item-download {
   display: none;
   margin-top: 15px;
+}
+
+.item-addSing {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+}
+
+.item-addSing__open {
+  width: 220px;
+  font-weight: 700;
+}
+
+.item-addSing__open:hover {
+  cursor: pointer;
+}
+
+.item-addSing form {
+  display: none;
+  flex-direction: row;
+  margin-left: -3px;
 }
 
 .uploads-btn1 {
