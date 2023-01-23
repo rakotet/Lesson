@@ -14,7 +14,7 @@
     $header = 'header';
     $footer = 'footer';
   
-    $vers = 1.0;
+    $vers = 2.2;
 
     $db = Database::getDBO();
     $request = new Request();

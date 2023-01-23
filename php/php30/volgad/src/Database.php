@@ -75,9 +75,9 @@
 
         $arrSign = json_encode($query);
   
-        $sql = 'UPDATE '.$this->getTableName($table_name).' SET `signature` = ? WHERE `id` = ?';
+        $sql = 'UPDATE '.$this->getTableName($table_name).' SET `signature` = ?, `status` = ? WHERE `id` = ?';
         $query = $this->pdo->prepare($sql);
-        $query->execute([$arrSign, $values[1]]);
+        $query->execute([$arrSign, 1, $values[1]]);
       }
     }
 
@@ -152,9 +152,15 @@
     }
 
     public function setMemoExecutor(string $table_name, array $values = []) : void { // Назничить или изменить исполнителя
-      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `executor_id` = ?, `status` = ? WHERE `id` = ?';
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `executor_id` = ?, `status` = ?, `ready` = ? WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);
-      $query->execute([$values[0], '3', $values[1]]);
+      $query->execute([$values[0], '3', 0, $values[1]]);
+    }
+
+    public function readyMemo(string $table_name, array $values = []) : void { // Исполнитель ставит 'Выполнено"
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `ready` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([1, $values[0]]);
     }
 
     public function setStatusMemo(string $table_name, array $values = []) : void { // Сменить статус служебки

@@ -12,7 +12,7 @@
 
   <div class="header-top__right">
     <?php if($auth_user) { ?>
-      <div><?=$auth_user[0]['name']?></div>
+      <div class="right__user"><?=$auth_user[0]['name']?></div>
     <?php } ?>
   </div>
   

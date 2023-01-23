@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function (event) { 
   let myWriteReporting = document.querySelector('.myWriteReporting')
+  let user = document.querySelector('.right__user')
 
   myWriteReporting.addEventListener('click', addFileUpload);
   myWriteReporting.addEventListener('click', btnHide);
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   let textObj = {};
 
   function openDeleteSign(event) {
-    if(event.target.getAttribute('data-userSingId') && !event.target.getAttribute('style')) {
+    if(event.target.getAttribute('data-userSingId') && !event.target.getAttribute('style') && user.innerText != event.target.innerText) {
       let target = event.target.getAttribute('data-userSingId')
       let sign = myWriteReporting.querySelector(`div[data-userSingId="${event.target.getAttribute('data-userSingId')}"]`)
       signObj[target] = sign

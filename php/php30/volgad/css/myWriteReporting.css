@@ -91,6 +91,30 @@
   margin-left: 2px;
 }
 
+.item-executor__ready {
+  font-size: 20px;
+  text-decoration: none;
+  margin-left: 55px;
+  margin-bottom: 19px;
+  color: rgba(10, 233, 21, 0.774);
+}
+
+.item-executor__a {
+  margin: 10px;
+}
+
+.item-executor__a a {
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: 55px;
+  margin-bottom: 19px;
+  color: rgb(40 221 48);
+}
+
+.item-executor__a a:hover {
+  font-weight: 700;
+}
+
 .form-executor__submit {
   margin-left: 20px;
 }

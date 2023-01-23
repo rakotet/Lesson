@@ -23,6 +23,12 @@
       //echo md5('0907');
       //$db->usersSet('memo', [74, 0]);
       //header('Location: /page/myWriteReporting');
+      echo md5('1020aDr71Jfu8');
+    }
+
+    if(isset($request->readyMemo)) { // Исполнитель ставит 'Выполнено"
+      $db->readyMemo('memo', [$request->readyMemo]);
+      header('Location: /page/myWriteReporting');
     }
 
     if(isset($request->addSing)) { // Добавить согласующего

@@ -1,0 +1,13 @@
+.contentRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.contentRight h1 {
+  margin-bottom: 30px;
+}
+
+.contentRight p {
+ margin: 10px;
+ font-weight: 700;
+}

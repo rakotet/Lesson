@@ -48,4 +48,4 @@
   </form>
 </div>
 
-<script src="../js/writeReporting.js"></script>
+<script src="../js/writeReporting.js?<?php echo $vers; ?>"></script>

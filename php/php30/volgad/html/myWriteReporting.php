@@ -49,8 +49,13 @@
           </div>
         </div>
         <?php if($getMemoUser[$i]['status'] == 3 || $getMemoUser[$i]['status'] == 4) { ?>
-          <div class="item-executor">
+          <div class="item-executor__a">
             <span>Ответственный исполнитель: <?=$getNameToId($getMemoUser[$i]['executor_id'])?></span>
+            <?php if($getMemoUser[$i]['status'] != 4 && $auth_user[0]['id'] == $getMemoUser[$i]['executor_id'] && $getMemoUser[$i]['ready'] == 0) { ?>
+              <a href="/page/myWriteReporting?readyMemo=<?=(int) $getMemoUser[$i]['id']?>">Выполнено</a>
+            <?php } elseif($getMemoUser[$i]['ready'] == 1) { ?>
+              <span class="item-executor__ready">Выполнено</span>
+            <?php } ?>
           </div>
         <?php } ?>
         <?php if($auth_user[0]['type'] == 1 && $getMemoUser[$i]['status'] != 4) { ?> <!-- Выбор исполнителя для менеджера начало -->
@@ -158,4 +163,4 @@
   <?php } ?>
 </div>
 
-<script src="../js/myWriteReporting.js"></script>
+<script src="../js/myWriteReporting.js?<?php echo $vers; ?>"></script>
