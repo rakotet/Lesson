@@ -4,7 +4,7 @@ module.exports = async function sellMarketCoin(coin, number, binance) { // пр�
       if(data.code) {
         console.log(data.code + ' - ' + data.msg);
       }
-    
+      
       let orderId = data['orderId']
       return orderId
     } catch(e) {
