@@ -42,7 +42,7 @@ let i = 0
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)                   ++++++++++++
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)                          ++++++++++++
 const percentPamp = 5 // Процент пампа первой свечи при котором начинаем слежение    ++++++++++++
-const percentImpulsConst = 2 // % импульса при котором начинаем слежение            ++++++++++++
+const percentImpulsConst = 5 // % импульса при котором начинаем слежение            ++++++++++++
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 0.02 // максимальный минус в %                                      ++++++++++++
@@ -53,7 +53,7 @@ const zonaBuy = 0.01
 const chastBuy = 3 // какую часть продать после достижения следующей цели по фиба
 const houlderCandles = 10 // Плечо сделки                                            ++++++++++++
 const openScrin = false // открывать сделки в браузере
-let go = true // запускать покупку или нет                            ++++++++++++
+let go = false // запускать покупку или нет                            ++++++++++++
 const megaVolume = 350 //                                                             ++++++++++++
 const numberMinus = 2 //                                                             ++++++++++++
 ///////////////////////
@@ -244,7 +244,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
             coinOpenPamp[coin][7] = 1
             setTimeout(() => {
               coinOpenPamp[coin][7] = 0
-            }, 300000)
+            }, 3000000)
           }
 
           if(counterWork < numberMaxWork) { // проверка на количество ф-й в работе
@@ -391,6 +391,13 @@ async function priceSymbolPamp(symbol, fs) {
 
     let f30Entrance = Number((impulsMaxPrice - (impulsPrice * 0.30)).toFixed(numberOfSigns(oneClose)))
     let minus = Number((impulsMaxPrice + (impulsMaxPrice * 0.01)).toFixed(numberOfSigns(oneClose)))
+    let numberCoin = numberOfSigns(oneClose)
+
+    let minusPercent = Number((((minus - f30Entrance) / f30Entrance) * 100).toFixed(2))
+
+    if(minusPercent >= 5) {
+      minus = f30Entrance + (f30Entrance * 0.05)
+    }
 
     if(coinOpenPamp[coin][6] === 0) {
       console.log(' ');
@@ -413,9 +420,9 @@ async function priceSymbolPamp(symbol, fs) {
       fs.appendFileSync("symbolPamp.txt", mess)
 
       setTimeout(() => {
-        fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance)
+        fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance, numberCoin, impulsPercent, minusPercent)
       }, 1500)
-      
+
       sellMarketCoin(coin, numberCoinKey, binance).then(data => {
         if(data) {
           
@@ -440,7 +447,7 @@ async function priceSymbolPamp(symbol, fs) {
 ////////////////////////////////////////////////////////////////////
 
 
-async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance) {
+async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance, numberCoin, impulsPercent, minusPercent) {
   let cancellFiba = true
   let number = 10
 
@@ -459,10 +466,13 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
 
     if(fibaObj[coin][1] === 0) {
       console.log(' ');
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - numberCoin - ' + numberCoin);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - СТОП - ' + minus);
-      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f30Entrance - ' + f30Entrance);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - minusPercent - ' + minusPercent);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - impulsPercent - ' + impulsPercent);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f0 - ' + f0);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f23 - ' + f23);
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f30Entrance - ' + f30Entrance);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f38 - ' + f38);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f50 - ' + f50);
       console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - f60 - ' + f60);
@@ -595,7 +605,7 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
 
   if(cancellFiba) {
     setTimeout(() => {
-      fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance)
+      fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance, numberCoin, impulsPercent, minusPercent)
     }, number)
   }
 }
