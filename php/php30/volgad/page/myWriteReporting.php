@@ -23,7 +23,8 @@
       //echo md5('0907');
       //$db->usersSet('memo', [74, 0]);
       //header('Location: /page/myWriteReporting');
-      echo md5('1020aDr71Jfu8');
+      //echo md5('1020aDr71Jfu8');
+      print_r($_SERVER);
     }
 
     if(isset($request->readyMemo)) { // Исполнитель ставит 'Выполнено"
