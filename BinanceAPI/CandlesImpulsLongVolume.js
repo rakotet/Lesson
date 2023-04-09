@@ -46,7 +46,7 @@ const percentImpulsConst = 7 // % импульса при котором нач�
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 5 // максимальный минус в %                                      ++++++++++++
-const maxMinuZaFiba = 0.005 // максимальный минус в % за фиба
+const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
 const bezubitok = 0.01 // % безубытка                                               ++++++++++++
 const bezubitokBuy = 0.002 // % безубытка                                            ++++++++++++
 const zonaBuy = 0.01
@@ -55,7 +55,7 @@ const houlderCandles = 10 // Плечо сделки                            
 const openScrin = false // открывать сделки в браузере
 let go = true // запускать покупку или нет                            ++++++++++++
 const megaVolume = 350 //                                                             ++++++++++++
-let numberMinus = 0 //  0 перезаходим после минуса                                                           ++++++++++++
+let numberMinus = 1 //  0 перезаходим после минуса                                                           ++++++++++++
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -341,7 +341,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
 
     if(impelszero) {
       coinOpenPamp[coin][3] = impelszero
-      candlesNumberTime = candlesNumberTime / 5
+      candlesNumberTime = candlesNumberTime / 2
     } 
 
     let oneOpen = Number(candlesSymbol[candlesSymbol.length - 1][1])
