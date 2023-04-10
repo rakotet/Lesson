@@ -45,7 +45,7 @@ const percentPamp = 5 // Процент пампа первой свечи пр�
 const percentImpulsConst = 7 // % импульса при котором начинаем слежение            ++++++++++++
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
-const maxMinus = 5 // максимальный минус в %                                      ++++++++++++
+const maxMinus = 6 // максимальный минус в %                                      ++++++++++++
 const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
 const bezubitok = 0.01 // % безубытка                                               ++++++++++++
 const bezubitokBuy = 0.002 // % безубытка                                            ++++++++++++
@@ -380,9 +380,9 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
     let f0 = impulsMaxPrice
     let f23 = Number((impulsMaxPrice - (impulsPrice * 0.23))/*.toFixed(numberOfSigns(oneClose))*/)
     let f38 = Number((impulsMaxPrice - (impulsPrice * 0.38)))
-    let f50 = Number((impulsMaxPrice - (impulsPrice * 0.48)))
-    let f60 = Number((impulsMaxPrice - (impulsPrice * 0.60)))
-    let f78 = Number((impulsMaxPrice - (impulsPrice * 0.70)))
+    let f50 = Number((impulsMaxPrice - (impulsPrice * 0.47)))
+    let f60 = Number((impulsMaxPrice - (impulsPrice * 0.58)))
+    let f78 = Number((impulsMaxPrice - (impulsPrice * 0.75)))
     let f100 = Number((impulsMaxPrice - (impulsPrice * 0.95)))
     let f161 = Number((impulsMaxPrice - (impulsPrice * 1.55)))
 
@@ -399,8 +399,19 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
 
     let minusPercent = Number((((minus - f30Entrance) / f30Entrance) * 100).toFixed(2))
 
-    if(minusPercent >= maxMinus) {
-      minus = f30Entrance + (f30Entrance * (maxMinus / 100))
+    // if(minusPercent >= maxMinus) {
+    //   minus = f30Entrance + (f30Entrance * (maxMinus / 100))
+    // }
+
+    if(minusPercent > maxMinus) {
+      cancell = false
+      counterWork--
+      let message = 'Слишком большой минус, больше ' + maxMinus
+      setTimeout(() => {
+        coinOpenPamp[coin][0] = 0
+      }, 300000)
+      console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
+      return false
     }
 
     if(impulsPercent <= (percentImpulsConst - 2)) {
@@ -454,11 +465,12 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
 
       setTimeout(() => {
         fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, minus, f30Entrance, numberCoin, impulsPercent, minusPercent, coinOpenPamp[coin][3])
-      }, 1000)
+      }, 3000)
 
       sellMarketCoin(coin, numberCoinKey, binance).then(data => {
-        if(data) {
-          
+        if(!data) {
+          let mess = ('\n' + '---------------------------------------' + '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - По какой то причине не открыли шорт' + ' - counterWork - ' + counterWork + '\n' + '---------------------------------------' + '\n');
+          console.log(mess);
         }
       })
     }
