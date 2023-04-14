@@ -55,7 +55,7 @@ const houlderCandles = 10 // Плечо сделки                            
 const openScrin = false // открывать сделки в браузере
 let go = true // запускать покупку или нет                            ++++++++++++
 const megaVolume = 350 //                                                             ++++++++++++
-let numberMinus = 1 //  0 перезаходим после минуса                                                           ++++++++++++
+let numberMinus = 1 //  0 перезаходим после минуса                                                 
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -300,13 +300,14 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
     }
 
-    let maxPriceCoin = 0
+    let maxPriceCoin = 0 
+
+    for(let i = 0; i < candlesSymbol.length - 1; i++) {
+      if(candlesSymbol[i][2] > maxPriceCoin) maxPriceCoin = Number(candlesSymbol[i][2])
+    }
     
     if(coinOpenPamp[coin][5] === 0) {
       for(let i = candlesSymbol.length - 2; i > 0; i--) {
-
-        if(candlesSymbol[i][2] > maxPriceCoin) maxPriceCoin = candlesSymbol[i][2]
-
         if(Number(candlesSymbol[i][4]) <= Number(candlesSymbol[(i - 1)][1])
         && Number(candlesSymbol[(i - 1)][4]) <= Number(candlesSymbol[(i - 2)][1])) {
 
@@ -447,10 +448,10 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if((((percentTailCandles / impulsPercent) * 100) <= 15) && (oneClose < t1)) {
+    } else if((((percentTailCandles / impulsPercent) * 100) >= 20) && (oneClose < t1) && !impelszero) {
       cancell = false
       counterWork--
-      let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' %'
+      let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' % хвоста от импульса ' + ((percentTailCandles / impulsPercent) * 100).toFixed(2)
       setTimeout(() => {
         coinOpenPamp[coin][0] = 0
       }, 300000)
@@ -473,6 +474,8 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
     if((oneClose < f30Entrance) && (oneClose > f38) && (oneOpen < t1) && go) {
       cancell = false
       fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0, 0]
+
+      console.log(new Date().toLocaleTimeString() + ' - ' + coin + ' - Процент хвоста верхней свечи - ' + percentTailCandles + ' % хвоста от импульса ' + ((percentTailCandles / impulsPercent) * 100).toFixed(2));
 
       let mess = ('\n' + '---------------------------------------' + '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Открыли сделку - цена ' + oneClose + ' - counterWork - ' + counterWork + '\n' + '---------------------------------------' + '\n');
       console.log(mess);
