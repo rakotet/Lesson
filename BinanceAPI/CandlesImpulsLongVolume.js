@@ -45,7 +45,7 @@ const percentPamp = 5 // Процент пампа первой свечи пр�
 const percentImpulsConst = 7 // % импульса при котором начинаем слежение            ++++++++++++
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
-const maxMinus = 6 // максимальный минус в %                                      ++++++++++++
+const maxMinus = 7 // максимальный минус в %                                      ++++++++++++
 const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
 const bezubitok = 0.01 // % безубытка                                               ++++++++++++
 const bezubitokBuy = 0.002 // % безубытка                                            ++++++++++++
@@ -438,7 +438,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if(candlesNumberTime > 50) {
+    } else if(candlesNumberTime > 60) {
       cancell = false
       counterWork--
       let message = 'Не зашли в сделку за ' + candlesNumberTime + ' мин'
@@ -447,10 +447,10 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if(((percentTailCandles / impulsPercent) * 100) <= 15) {
+    } else if((((percentTailCandles / impulsPercent) * 100) <= 20) && (oneClose < t1)) {
       cancell = false
       counterWork--
-      let message = 'Слишком большой хвост - ' + percentTailCandles + ' %'
+      let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' %'
       setTimeout(() => {
         coinOpenPamp[coin][0] = 0
       }, 300000)
