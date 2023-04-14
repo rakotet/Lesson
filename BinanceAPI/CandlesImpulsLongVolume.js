@@ -447,7 +447,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if((((percentTailCandles / impulsPercent) * 100) <= 20) && (oneClose < t1)) {
+    } else if((((percentTailCandles / impulsPercent) * 100) <= 15) && (oneClose < t1)) {
       cancell = false
       counterWork--
       let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' %'
