@@ -299,9 +299,13 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
     if(candlesSymbol.code) {
       console.log(candlesSymbol.code + ' - ' + candlesSymbol.msg);
     }
+
+    let maxPriceCoin = 0
     
     if(coinOpenPamp[coin][5] === 0) {
       for(let i = candlesSymbol.length - 2; i > 0; i--) {
+
+        if(candlesSymbol[i][2] > maxPriceCoin) maxPriceCoin = candlesSymbol[i][2]
 
         if(Number(candlesSymbol[i][4]) <= Number(candlesSymbol[(i - 1)][1])
         && Number(candlesSymbol[(i - 1)][4]) <= Number(candlesSymbol[(i - 2)][1])) {
@@ -379,14 +383,14 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
    
     let f0 = impulsMaxPrice
     let f23 = Number((impulsMaxPrice - (impulsPrice * 0.23))/*.toFixed(numberOfSigns(oneClose))*/)
-    let f38 = Number((impulsMaxPrice - (impulsPrice * 0.38)))
+    let f38 = Number((impulsMaxPrice - (impulsPrice * 0.36)))
     let f50 = Number((impulsMaxPrice - (impulsPrice * 0.47)))
     let f60 = Number((impulsMaxPrice - (impulsPrice * 0.58)))
     let f78 = Number((impulsMaxPrice - (impulsPrice * 0.75)))
-    let f100 = Number((impulsMaxPrice - (impulsPrice * 0.95)))
+    let f100 = Number((impulsMaxPrice - (impulsPrice * 0.90)))
     let f161 = Number((impulsMaxPrice - (impulsPrice * 1.55)))
 
-    let t1 = Number((impulsMaxPrice - (impulsPrice * 0.27)).toFixed(numberOfSigns(oneClose)))
+    let t1 = Number((impulsMaxPrice - (impulsPrice * 0.10)).toFixed(numberOfSigns(oneClose)))
     let t2 = Number((impulsMaxPrice - (impulsPrice * 0.40)).toFixed(numberOfSigns(oneClose)))
     let t3 = Number((impulsMaxPrice - (impulsPrice * 0.56)).toFixed(numberOfSigns(oneClose)))
     let t4 = Number((impulsMaxPrice - (impulsPrice * 0.71)).toFixed(numberOfSigns(oneClose)))
@@ -398,6 +402,8 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
     let numberCoin = numberOfSigns(oneClose)
 
     let minusPercent = Number((((minus - f30Entrance) / f30Entrance) * 100).toFixed(2))
+
+    let percentTailCandles = Number((((maxPriceCoin - impulsMaxPrice) / impulsMaxPrice) * 100).toFixed(2))
 
     // if(minusPercent >= maxMinus) {
     //   minus = f30Entrance + (f30Entrance * (maxMinus / 100))
@@ -432,10 +438,19 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if(candlesNumberTime > 45) {
+    } else if(candlesNumberTime > 50) {
       cancell = false
       counterWork--
       let message = 'Не зашли в сделку за ' + candlesNumberTime + ' мин'
+      setTimeout(() => {
+        coinOpenPamp[coin][0] = 0
+      }, 300000)
+      console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
+      return false
+    } else if(((percentTailCandles / impulsPercent) * 100) <= 15) {
+      cancell = false
+      counterWork--
+      let message = 'Слишком большой хвост - ' + percentTailCandles + ' %'
       setTimeout(() => {
         coinOpenPamp[coin][0] = 0
       }, 300000)
@@ -455,7 +470,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       coinOpenPamp[coin][6] = 1
     }
 
-    if((oneClose < f30Entrance) && (oneClose > f38) && (oneOpen < f23) && go) {
+    if((oneClose < f30Entrance) && (oneClose > f38) && (oneOpen < t1) && go) {
       cancell = false
       fibaObj[coin] = [0, 0, 0, 0, 0, 0, 0, 0]
 
