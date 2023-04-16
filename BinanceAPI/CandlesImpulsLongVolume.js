@@ -55,7 +55,7 @@ const houlderCandles = 10 // Плечо сделки                            
 const openScrin = false // открывать сделки в браузере
 let go = true // запускать покупку или нет                            ++++++++++++
 const megaVolume = 350 //                                                             ++++++++++++
-let numberMinus = 1 //  0 перезаходим после минуса                                                 
+let numberMinus = 0 //  0 перезаходим после минуса 2 раза                                                 
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -398,8 +398,8 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
     let t5 = Number((impulsMaxPrice - (impulsPrice * 0.90)).toFixed(numberOfSigns(oneClose)))
 
     let f30Entrance = Number((impulsMaxPrice - (impulsPrice * 0.30))/*.toFixed(numberOfSigns(oneClose))*/)
-    let minus = Number((impulsMaxPrice + (impulsMaxPrice * maxMinuZaFiba))/*.toFixed(numberOfSigns(oneClose))*/)
-    //let minus = Number((impulsMaxPrice - (impulsPrice * 0.05)))
+    //let minus = Number((impulsMaxPrice + (impulsMaxPrice * maxMinuZaFiba))/*.toFixed(numberOfSigns(oneClose))*/)
+    let minus = Number((impulsMaxPrice - (impulsPrice * 0.12)))
     let numberCoin = numberOfSigns(oneClose)
 
     let minusPercent = Number((((minus - f30Entrance) / f30Entrance) * 100).toFixed(2))
@@ -448,7 +448,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if((((percentTailCandles / impulsPercent) * 100) >= 16) && (oneClose < t1) && !impelszero) {
+    } else if((((percentTailCandles / impulsPercent) * 100) >= 20) && (oneClose < t1) && !impelszero) {
       cancell = false
       counterWork--
       let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' % хвоста от импульса ' + ((percentTailCandles / impulsPercent) * 100).toFixed(2)
@@ -669,7 +669,7 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
           priceSymbolPamp(coin, fs, impelszero)
           numberMinus++
         } else {
-          numberMinus = 1
+          numberMinus = 0
           counterWork--
           setTimeout(() => {
             coinOpenPamp[coin][0] = 0
@@ -677,7 +677,7 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
         }
         
       } else {
-        numberMinus = 1
+        numberMinus = 0
         counterWork--
         setTimeout(() => {
           coinOpenPamp[coin][0] = 0
