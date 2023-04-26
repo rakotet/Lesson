@@ -42,7 +42,7 @@ let i = 0
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)                   ++++++++++++
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)                          ++++++++++++
 const percentPamp = 5 // Процент пампа первой свечи при котором начинаем слежение    ++++++++++++
-const percentImpulsConst = 7 // % импульса при котором начинаем слежение            ++++++++++++
+const percentImpulsConst = 15 // % импульса при котором начинаем слежение            ++++++++++++
 const percentDamp = 2 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 7 // максимальный минус в %                                      ++++++++++++
@@ -55,7 +55,7 @@ const houlderCandles = 10 // Плечо сделки                            
 const openScrin = false // открывать сделки в браузере
 let go = true // запускать покупку или нет                            ++++++++++++
 const megaVolume = 350 //                                                             ++++++++++++
-let numberMinus = 0 //  0 перезаходим после минуса 2 раза                                                 
+let numberMinus = 1 //  0 перезаходим после минуса 2 раза                                                 
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -227,6 +227,25 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
           }, 300000)
         }
       }
+
+      ///////////
+      if((impulsPercent >= 7)) {
+        if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
+        if(!coinOpenPamp[coin][8]) coinOpenPamp[coin][8] = 0
+          if(coinOpenPamp[coin][8] == 0) {
+
+            let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - <b>БЕЗ сделки</b> Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - counterWork -  ' + counterWork +  ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
+            console.log(mess);
+            mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+            sendTelega2(mess)
+
+            coinOpenPamp[coin][8] = 1
+            setTimeout(() => {
+              coinOpenPamp[coin][8] = 0
+            }, 3000000)
+          }
+      }
+      ///////////////////
       
       if((impulsPercent >= percentImpulsConst)) {
         if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
@@ -448,7 +467,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if((((percentTailCandles / impulsPercent) * 100) >= 20) && (oneClose < t1) && !impelszero) {
+    } else if((((percentTailCandles / impulsPercent) * 100) >= 55) && (oneClose < t1) && !impelszero) {
       cancell = false
       counterWork--
       let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' % хвоста от импульса ' + ((percentTailCandles / impulsPercent) * 100).toFixed(2)
@@ -669,7 +688,7 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
           priceSymbolPamp(coin, fs, impelszero)
           numberMinus++
         } else {
-          numberMinus = 0
+          numberMinus = 1
           counterWork--
           setTimeout(() => {
             coinOpenPamp[coin][0] = 0
@@ -677,7 +696,7 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
         }
         
       } else {
-        numberMinus = 0
+        numberMinus = 1
         counterWork--
         setTimeout(() => {
           coinOpenPamp[coin][0] = 0
