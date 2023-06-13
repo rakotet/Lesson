@@ -1,30 +1,7 @@
-const path = require('path'); // стандартная библиотека для путей 
-const NODE_ENV = process.env.NODE_ENV; // какой командой запущен процесс в консоле (насколько я понял)
-const HTMLWebpackPlugin = require('html-webpack-plugin');
+const clientConfig = require('./cfg/webpack.client.config');
+const serverConfig = require('./cfg/webpack.server.config');
 
-module.exports = { // объект с настройками вебпака
-  resolve: { // расширения файлов нашего проэкта которые должен обрабаотывать вебпак
-    extensions: ['.js', '.jsx', 'ts', 'tsx', 'json']
-  },
-  mode: NODE_ENV ? NODE_ENV : 'development', // если webpack запущен без команды то используем команду development
-  entry: path.resolve(__dirname, 'src/index.jsx'), // параметр откуда начинать собирать приложение
-  output: { // параметр куда собирать приложение
-    path: path.resolve(__dirname, 'dist'), // конечный путь куда собрать приложение
-    filename: 'index.js' // имя конечного bandle файла
-  },
-  module: { // объект для настройки loaders вебпака, нужны для того что бы вебпак мог использовать и приобразовывать другие типы файлов, который мы тут укажим
-    rules: [{
-      test: /\.[tj]sx?$/, // регулярное выражение для tsx и jsx расширений файлов
-      use: ['ts-loader'] // спомощью этого лоадера обрабатываем расширения файлов указаныне в test
-    }],
-  }, 
-  plugins: [ // добавляем плагин
-    new HTMLWebpackPlugin({ template: path.resolve(__dirname, 'index.html') }) // в какой файл добавлять наш бандл
-  ],
-  devServer: { // настройка вебпак сервера для разработки
-    port: 3000,
-    open: true, // при запуске сервера автоматически открывается страница с приложением на порту указанном выше
-    hot: true // автоматически перегружает проэкт при изменении файлов проэкта
-  }, 
-  devtool: 'eval' // показывает где ошибка в файле до объединения в один бандл
-};
+module.exports = [
+  clientConfig,
+  serverConfig
+];

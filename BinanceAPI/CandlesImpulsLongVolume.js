@@ -379,6 +379,10 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
 
     let numberCoinKey = Number((numberOneTrade / oneClose).toFixed())
 
+    if(impelszero) {
+      numberCoinKey = numberCoinKey * 2
+    } 
+
     let impulsMaxPrice = 0
     let impulsCandlesLength = 0
 
@@ -417,8 +421,8 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
     let t5 = Number((impulsMaxPrice - (impulsPrice * 0.90)).toFixed(numberOfSigns(oneClose)))
 
     let f30Entrance = Number((impulsMaxPrice - (impulsPrice * 0.30))/*.toFixed(numberOfSigns(oneClose))*/)
-    //let minus = Number((impulsMaxPrice + (impulsMaxPrice * maxMinuZaFiba))/*.toFixed(numberOfSigns(oneClose))*/)
-    let minus = Number((impulsMaxPrice - (impulsPrice * 0.12)))
+    let minus = Number((impulsMaxPrice + (impulsMaxPrice * maxMinuZaFiba))/*.toFixed(numberOfSigns(oneClose))*/)
+    //let minus = Number((impulsMaxPrice - (impulsPrice * 0.12)))
     let numberCoin = numberOfSigns(oneClose)
 
     let minusPercent = Number((((minus - f30Entrance) / f30Entrance) * 100).toFixed(2))
@@ -467,7 +471,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } else if((((percentTailCandles / impulsPercent) * 100) >= 55) && (oneClose < t1) && !impelszero) {
+    } /*else if((((percentTailCandles / impulsPercent) * 100) >= 55) && (oneClose < t1) && !impelszero) {
       cancell = false
       counterWork--
       let message = 'Слишком большой хвост в верх - ' + percentTailCandles + ' % хвоста от импульса ' + ((percentTailCandles / impulsPercent) * 100).toFixed(2)
@@ -476,7 +480,7 @@ async function priceSymbolPamp(symbol, fs, impelszero) {
       }, 300000)
       console.log('\n' + new Date().toLocaleTimeString() + ' - ' + message + ' - ' + coin + ' - counterWork -  ' + counterWork + '\n');
       return false
-    } 
+    } */
 
     if(coinOpenPamp[coin][6] === 0) {
       console.log(' ');
@@ -581,6 +585,10 @@ async function fibaTraidShort(coin, f0, f23, f38, f50, f60, f78, f100, f161, min
       }
 
       else if(fibaObj[coin][0] === 1) {
+        // if(markPrice <= minus) {
+        //   buyFiba('БЕЗУБЫТОК', '///////////////////////', 'По процентам')
+        // }
+
         if(markPrice >= minus) {
           //buyFiba('БЕЗУБЫТОК', '///////////////////////', 'Первая зона безубытка')
           buyFiba('МИНУС', '-------------------------')
