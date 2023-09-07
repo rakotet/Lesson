@@ -1,0 +1,10 @@
+.block {
+  background-color: rgb(170, 170, 95);
+  padding: 20px;
+}
+
+.test {
+  width: 100px;
+  height: 100px;
+  background-color: orange;
+}
