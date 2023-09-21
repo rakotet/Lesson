@@ -1,7 +1,7 @@
 import sgkImage from '../../../public/images/sgk.png'
 import userMenu from '../../../public/images/user-menu.png'
 
-export default function Header({label}) {
+export default function Header({label, name, email}) {
 
   return(
     <>
@@ -12,8 +12,8 @@ export default function Header({label}) {
         </div>
         <div className="header-user-menu">
           <div>
-            <h2>Еремин Артем Валентинович</h2>
-            <h3>eremin@suek.ru</h3>
+            <h2>{name}</h2>
+            <h3>{email}</h3>
           </div>
           <div>
             <img src={userMenu} alt="" />

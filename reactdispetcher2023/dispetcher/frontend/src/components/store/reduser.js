@@ -3,7 +3,10 @@ import {createSlice} from '@reduxjs/toolkit'
 const dataSlice = createSlice({
   name: 'dataStore', // имя хранилища
   initialState: {
-    userData: [],
+    userData: [{
+      name: '111',
+      email: '111@mail.ru'
+    }],
     text: 'privet'
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
