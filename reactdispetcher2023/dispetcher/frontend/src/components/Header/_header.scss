@@ -1,0 +1,62 @@
+%flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+%houschka-pro {
+  font-family: Houschka Pro;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: left;
+  color:rgba(51, 51, 51, 1);
+}
+
+@font-face {
+  font-family: "Houschka Pro";
+  src: url("/public/images/houschkapro_demibold.ttf");
+}
+
+.header {
+  @extend %flex-row;
+  padding: 30px;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(232, 232, 232, 1);
+
+  .header-wrapper {
+    @extend %flex-row;
+    align-items: center;
+
+    h1 {
+      @extend %houschka-pro;
+      margin-left: 300px
+    }
+  }
+
+  .header-user-menu {
+    @extend %flex-row;
+
+    img {
+      cursor: pointer;
+      margin-left: 50px;
+    }
+
+    h2 {
+      @extend %houschka-pro;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 16px;
+      color: rgba(51, 51, 51, 1);
+    }
+
+    h3 {
+      @extend %houschka-pro;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 14px;
+      color: rgba(160, 158, 163, 1);
+    }
+  }
+}
+

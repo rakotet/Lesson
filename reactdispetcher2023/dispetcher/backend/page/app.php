@@ -1,15 +1,9 @@
 <?php
   require_once "../src/Base.php";
 
-  if($auth_user) {
-    // print_r($auth_user);
-
-
-  } else {
+  if(!$auth_user) {
     header('Location: /');
-  }
-
- 
+  } 
 ?>
 <!DOCTYPE html>
 <html lang="en">

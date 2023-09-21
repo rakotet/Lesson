@@ -28,6 +28,9 @@
           <h3>Неверный логин или пароль</h3>
         <?php } ?>
       </div>
+      <img class="form-user" src="../image/user.png" alt="">
+      <img class="form-lock" src="../image/lock.png" alt="">
+      <img class="form-glaz" src="../image/glaz.png" alt="">
       <input type="text" name="login" placeholder="Логин" class="form-input">
       <input type="password" name="password" placeholder="Пароль" class="form-input">
       <div>
@@ -36,3 +39,14 @@
     </form>
   </div>
 </div>
+<script>
+  let h3 = document.querySelector('.auth-content__form h3')
+
+  if(h3) {
+    let img = document.querySelectorAll('img')
+
+    img[2].style.top = '87px'
+    img[3].style.top = '155px'
+    img[4].style.top = '155px'
+  } 
+</script>
