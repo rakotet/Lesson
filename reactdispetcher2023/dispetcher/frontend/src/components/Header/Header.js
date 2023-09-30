@@ -1,7 +1,44 @@
+import { useDispatch, useSelector } from 'react-redux'
+import { userDataStore, setDataStore } from "../store/reduser";
+import { url } from '../../core/core';
+import { useEffect, useState } from 'react';
 import sgkImage from '../../../public/images/sgk.png'
 import userMenu from '../../../public/images/user-menu.png'
 
-export default function Header({label, name, email}) {
+export default function Header() {
+
+  const countArr = useSelector(userDataStore)
+  const id = document.querySelector('#user').textContent
+  const dispatch = useDispatch()
+  const [label, setLabel] = useState('')
+
+  useEffect(() => {
+    fetch(url.urlBack1, {
+    method: 'POST',
+    header: {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify({userData: id})
+  
+    })
+    .then(data => {
+      return data.text()
+    })
+    .then(data => {
+      data = JSON.parse(data)
+      dispatch(setDataStore(data))
+
+      if(data[0].type == 1) setLabel('Панель администратора')
+      else if(data[0].type == 2) setLabel('Панель диспетчера')
+      else if(data[0].type == 3) setLabel('Панель пользователя')
+      else if(data[0].type == 0) setLabel('Панель Супер Администратора')
+
+    })
+    .catch((er) => {
+      console.log(er)
+    })
+    
+  }, []);
 
   return(
     <>
@@ -12,8 +49,8 @@ export default function Header({label, name, email}) {
         </div>
         <div className="header-user-menu">
           <div>
-            <h2>{name}</h2>
-            <h3>{email}</h3>
+            <h2>{countArr[0].name}</h2>
+            <h3>{countArr[0].email}</h3>
           </div>
           <div>
             <img src={userMenu} alt="" />

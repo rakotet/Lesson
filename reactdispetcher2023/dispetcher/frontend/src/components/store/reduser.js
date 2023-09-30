@@ -4,13 +4,13 @@ const dataSlice = createSlice({
   name: 'dataStore', // имя хранилища
   initialState: {
     userData: [{
-      name: '111',
-      email: '111@mail.ru'
+      name: '',
+      email: ''
     }],
     text: 'privet'
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
-    increment(state, data) {
+    setDataStore(state, data) {
       state.userData = data.payload
     },
     showConsole: state => {
@@ -19,7 +19,7 @@ const dataSlice = createSlice({
   },
 })
 
-export const {increment, showConsole} = dataSlice.actions
+export const {setDataStore, showConsole} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 
