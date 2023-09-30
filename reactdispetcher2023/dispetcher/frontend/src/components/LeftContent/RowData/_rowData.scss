@@ -1,0 +1,54 @@
+.rowData {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-left: 20px;
+  margin-top: 30px;
+
+  .rowData-name {
+    font-family: Houschka Pro;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-left: 10px;
+    width: 100px;
+  }
+
+  .rowData-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#0078A8;
+    font-family: Houschka Pro;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 5px;
+    border-radius: 5px;
+    gap: 10px;
+
+  }
+
+  .rowData-name-active {
+    color: #0078A8;
+  }
+
+  .rowData-name-noActive {
+    color: #42474F;
+  }
+
+  .rowData-count-wrapp {
+    display: flex;
+    justify-content: space-between;
+    width: 85px;
+  }
+}
+
+.rowData:hover {
+  cursor: pointer;
+}

@@ -1,3 +1,154 @@
+// @font-face {
+//   font-family: "Houschka Pro";
+//   src: url("/public/images/font/HouschkaPro-Bold.ttf");
+// }
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-Bold.eot');
+  src: local('/public/images/font/Houschka Pro Bold'), local('/public/images/font/HouschkaPro-Bold'),
+      url('/public/images/font/HouschkaPro-Bold.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-Bold.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-Bold.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-ExtraBoldItalic.eot');
+  src: local('/public/images/font/Houschka Pro ExtraBold Italic'), local('/public/images/font/HouschkaPro-ExtraBoldItalic'),
+      url('/public/images/font/HouschkaPro-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-ExtraBoldItalic.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-ExtraBoldItalic.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-BoldItalic.eot');
+  src: local('/public/images/font/Houschka Pro Bold Italic'), local('/public/images/font/HouschkaPro-BoldItalic'),
+      url('/public/images/font/HouschkaPro-BoldItalic.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-BoldItalic.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-BoldItalic.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-ThinItalic.eot');
+  src: local('/public/images/font/Houschka Pro Thin Italic'), local('/public/images/font/HouschkaPro-ThinItalic'),
+      url('/public/images/font/HouschkaPro-ThinItalic.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-ThinItalic.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-ThinItalic.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-Light.eot');
+  src: local('/public/images/font/Houschka Pro Light'), local('/public/images/font/HouschkaPro-Light'),
+      url('/public/images/font/HouschkaPro-Light.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-Light.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-Light.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-LightItalic.eot');
+  src: local('/public/images/font/Houschka Pro Light Italic'), local('/public/images/font/HouschkaPro-LightItalic'),
+      url('/public/images/font/HouschkaPro-LightItalic.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-LightItalic.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-LightItalic.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-DemiBoldItalic.eot');
+  src: local('/public/images/font/Houschka Pro DemiBold Italic'), local('/public/images/font/HouschkaPro-DemiBoldItalic'),
+      url('/public/images/font/HouschkaPro-DemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-DemiBoldItalic.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-DemiBoldItalic.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-DemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-DemiBold.eot');
+  src: local('/public/images/font/Houschka Pro DemiBold'), local('/public/images/font/HouschkaPro-DemiBold'),
+      url('/public/images/font/HouschkaPro-DemiBold.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-DemiBold.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-DemiBold.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-Thin.eot');
+  src: local('/public/images/font/Houschka Pro Thin'), local('/public/images/font/HouschkaPro-Thin'),
+      url('/public/images/font/HouschkaPro-Thin.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-Thin.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-Thin.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-ExtraBold.eot');
+  src: local('/public/images/font/Houschka Pro Extra Bold'), local('/public/images/font/HouschkaPro-ExtraBold'),
+      url('/public/images/font/HouschkaPro-ExtraBold.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-ExtraBold.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-ExtraBold.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-MediumItalic.eot');
+  src: local('/public/images/font/Houschka Pro Medium Italic'), local('/public/images/font/HouschkaPro-MediumItalic'),
+      url('/public/images/font/HouschkaPro-MediumItalic.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-MediumItalic.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-MediumItalic.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('/public/images/font/HouschkaPro-Medium.eot');
+  src: local('/public/images/font/Houschka Pro Medium'), local('/public/images/font/HouschkaPro-Medium'),
+      url('/public/images/font/HouschkaPro-Medium.eot?#iefix') format('embedded-opentype'),
+      url('/public/images/font/HouschkaPro-Medium.woff2') format('woff2'),
+      url('/public/images/font/HouschkaPro-Medium.woff') format('woff'),
+      url('/public/images/font/HouschkaPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+
 %flex-row {
   display: flex;
   flex-direction: row;
@@ -11,11 +162,6 @@
   letter-spacing: 0em;
   text-align: left;
   color:rgba(51, 51, 51, 1);
-}
-
-@font-face {
-  font-family: "Houschka Pro";
-  src: url("/public/images/houschkapro_demibold.ttf");
 }
 
 .header {

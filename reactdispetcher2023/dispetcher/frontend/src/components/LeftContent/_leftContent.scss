@@ -1,0 +1,17 @@
+@import './RowData/rowData';
+
+.leftContent-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    font-family: Houschka Pro;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+    text-align: left;
+    color: #42474F;
+    margin: 20px;
+  }
+}

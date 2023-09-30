@@ -1,3 +1,4 @@
+import BodyWrapper from "../BodyWrapper/BodyWrapper";
 import Header from "../Header/Header";
 
 function App() {
@@ -5,6 +6,7 @@ function App() {
   return (
     <>
      <Header />
+     <BodyWrapper />
     </>
   );
 }
