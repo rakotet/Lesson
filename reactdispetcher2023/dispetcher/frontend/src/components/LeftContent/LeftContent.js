@@ -23,7 +23,7 @@ export default function LeftContent() {
   return(
     <div className="leftContent-wrapper">
       <h3>Сервис диспетчеризации</h3>
-      <RowData name={'Диспетчеры'} count={20} active={isActiveDisp} click={handleClickDisp}/>
+      <RowData name={'Диспетчеры'} count={202} active={isActiveDisp} click={handleClickDisp}/>
       <RowData name={'Предприятия'} count={2} active={isActiveGroup} click={handleClickGroup}/>
     </div>
   )
