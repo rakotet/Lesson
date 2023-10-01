@@ -10,7 +10,7 @@ Unit1 Запуск реакт
 Unit2 Создание компанентов
 1) Создадим свои компаненты классовый TestClass.js и функциональный TestFunc.js и очистим от стандартной верстки компанент App.js, добавим один компанент в другой.
 2) Создадим папку Header для хранения компанентов для headera
-3) Что бы html теги дописывались течез tab в jsx нужно в vs code нажать ctr + , Emmet -> idd item -> javascript javascriptreact
+3) Что бы html теги дописывались течез tab в jsx нужно в vs code нажать ctr + , Emmet -> idd item -> "javascript" "javascriptreact"
 4) props в React только для чтения!!! Одна из основных концепций чистых ф-й
 5) Создадим компанент Googs.js
 
