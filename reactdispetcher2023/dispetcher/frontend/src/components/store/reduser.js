@@ -8,7 +8,31 @@ const dataSlice = createSlice({
       email: '',
       type: ''
     }],
-    activeRow: '1',
+    activeRow: '',
+    nameRowData: {
+      disp: 'Диспетчеры',
+      group: 'Предприятия',
+      auto: 'Автотранспорт',
+      applications: 'Заявки',
+      myApplications: 'Мои заявки',
+      myTemplates: 'Мои шаблоны',
+      admins: 'Администраторы'
+    },
+    activRightContent: {
+      disp: 'disp',
+      group: 'group',
+      auto: 'auto',
+      applications: 'applications',
+      myApplications: 'myApplications',
+      myTemplates: 'myTemplates',
+      admins: 'admins'
+    },
+    roleUsers: {
+      admin: 1,
+      disp: 2,
+      user: 3,
+      sa: 0
+    },
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
     setDataStore(state, data) {
@@ -24,5 +48,8 @@ export const {setDataStore, setActiveRow} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
+export const nameRowData = state => state.dataStore.nameRowData
+export const activRightContent = state => state.dataStore.activRightContent
+export const roleUsers = state => state.dataStore.roleUsers
 
 export default dataSlice.reducer

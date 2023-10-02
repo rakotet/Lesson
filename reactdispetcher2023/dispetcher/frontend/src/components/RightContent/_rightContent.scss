@@ -1,0 +1,20 @@
+@import './Admins/admins';
+@import './Applications/applications';
+@import './Auto/auto';
+@import './Disp/disp';
+@import './Group/group';
+@import './MyApplications/myApplications';
+@import './MyTemplates/myTemplates';
+
+.rightContent {
+
+  h3 {
+    font-family: Houschka Pro;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #333333;
+  }
+}

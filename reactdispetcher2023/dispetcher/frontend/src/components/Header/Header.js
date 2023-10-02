@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { userDataStore, setDataStore } from "../store/reduser";
+import { userDataStore, setDataStore, roleUsers } from "../store/reduser";
 import { url } from '../../core/core';
 import { useEffect, useState } from 'react';
 import sgkImage from '../../../public/images/sgk.png'
@@ -8,6 +8,7 @@ import userMenu from '../../../public/images/user-menu.png'
 export default function Header() {
 
   const countArr = useSelector(userDataStore)
+  const roleUsersData = useSelector(roleUsers)
   const id = document.querySelector('#user').textContent
   const dispatch = useDispatch()
   const [label, setLabel] = useState('')
@@ -28,10 +29,10 @@ export default function Header() {
       data = JSON.parse(data)
       dispatch(setDataStore(data))
 
-      if(data[0].type == 1) setLabel('Панель администратора')
-      else if(data[0].type == 2) setLabel('Панель диспетчера')
-      else if(data[0].type == 3) setLabel('Панель пользователя')
-      else if(data[0].type == 0) setLabel('Панель Супер Администратора')
+      if(data[0].type == roleUsersData.admin) setLabel('Панель администратора')
+      else if(data[0].type == roleUsersData.disp) setLabel('Панель диспетчера')
+      else if(data[0].type == roleUsersData.user) setLabel('Панель пользователя')
+      else if(data[0].type == roleUsersData.sa) setLabel('Панель Супер Администратора')
 
     })
     .catch((er) => {

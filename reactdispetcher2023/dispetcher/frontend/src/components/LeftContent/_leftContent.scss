@@ -3,6 +3,7 @@
 .leftContent-wrapper {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   h3 {
     font-family: Houschka Pro;
@@ -13,5 +14,46 @@
     text-align: left;
     color: #42474F;
     margin: 20px;
+  }
+
+  .leftContent-bottom {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+    justify-content: flex-end;
+
+    .leftContent-bottom-row {
+      display: flex;
+
+      img {
+        margin-right: 10px;
+      }
+
+      a {
+        text-decoration: none;
+        font-family: Houschka Pro;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 18px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #42474F;
+
+      }
+    }
+
+    .leftContent-bottom-collapse {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin-top: 10px;
+      margin-right: 20px;
+
+      img:hover {
+        cursor: pointer;
+      }
+    }
   }
 }

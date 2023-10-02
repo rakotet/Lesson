@@ -1,8 +1,152 @@
 @import url("reset.css");
 
-@font-face {
+/* @font-face {
   font-family: "Houschka Pro";
   src: url("../image/houschkapro_demibold.ttf");
+} */
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-Bold.eot');
+  src: local('./font/Houschka Pro Bold'), local('./font/HouschkaPro-Bold'),
+      url('./font/HouschkaPro-Bold.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-Bold.woff2') format('woff2'),
+      url('./font/HouschkaPro-Bold.woff') format('woff'),
+      url('./font/HouschkaPro-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-ExtraBoldItalic.eot');
+  src: local('./font/Houschka Pro ExtraBold Italic'), local('./font/HouschkaPro-ExtraBoldItalic'),
+      url('./font/HouschkaPro-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-ExtraBoldItalic.woff2') format('woff2'),
+      url('./font/HouschkaPro-ExtraBoldItalic.woff') format('woff'),
+      url('./font/HouschkaPro-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-BoldItalic.eot');
+  src: local('./font/Houschka Pro Bold Italic'), local('.font/HouschkaPro-BoldItalic'),
+      url('./font/HouschkaPro-BoldItalic.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-BoldItalic.woff2') format('woff2'),
+      url('./font/HouschkaPro-BoldItalic.woff') format('woff'),
+      url('./font/HouschkaPro-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-ThinItalic.eot');
+  src: local('./font/Houschka Pro Thin Italic'), local('./font/HouschkaPro-ThinItalic'),
+      url('./font/HouschkaPro-ThinItalic.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-ThinItalic.woff2') format('woff2'),
+      url('./font/HouschkaPro-ThinItalic.woff') format('woff'),
+      url('./font/HouschkaPro-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-Light.eot');
+  src: local('./font/Houschka Pro Light'), local('./font/HouschkaPro-Light'),
+      url('./font/HouschkaPro-Light.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-Light.woff2') format('woff2'),
+      url('./font/HouschkaPro-Light.woff') format('woff'),
+      url('./font/HouschkaPro-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-LightItalic.eot');
+  src: local('./font/Houschka Pro Light Italic'), local('./font/HouschkaPro-LightItalic'),
+      url('./font/HouschkaPro-LightItalic.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-LightItalic.woff2') format('woff2'),
+      url('./font/HouschkaPro-LightItalic.woff') format('woff'),
+      url('./font/HouschkaPro-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-DemiBoldItalic.eot');
+  src: local('./font/Houschka Pro DemiBold Italic'), local('./font/HouschkaPro-DemiBoldItalic'),
+      url('./font/HouschkaPro-DemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-DemiBoldItalic.woff2') format('woff2'),
+      url('./font/HouschkaPro-DemiBoldItalic.woff') format('woff'),
+      url('./font/HouschkaPro-DemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-DemiBold.eot');
+  src: local('./font/Houschka Pro DemiBold'), local('./font/HouschkaPro-DemiBold'),
+      url('./font/HouschkaPro-DemiBold.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-DemiBold.woff2') format('woff2'),
+      url('./font/HouschkaPro-DemiBold.woff') format('woff'),
+      url('./font/HouschkaPro-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-Thin.eot');
+  src: local('./font/Houschka Pro Thin'), local('./font/HouschkaPro-Thin'),
+      url('./font/HouschkaPro-Thin.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-Thin.woff2') format('woff2'),
+      url('./font/HouschkaPro-Thin.woff') format('woff'),
+      url('./font/HouschkaPro-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-ExtraBold.eot');
+  src: local('./font/Houschka Pro Extra Bold'), local('./font/HouschkaPro-ExtraBold'),
+      url('./font/HouschkaPro-ExtraBold.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-ExtraBold.woff2') format('woff2'),
+      url('./font/HouschkaPro-ExtraBold.woff') format('woff'),
+      url('./font/HouschkaPro-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-MediumItalic.eot');
+  src: local('./font/Houschka Pro Medium Italic'), local('./font/HouschkaPro-MediumItalic'),
+      url('./font/HouschkaPro-MediumItalic.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-MediumItalic.woff2') format('woff2'),
+      url('./font/HouschkaPro-MediumItalic.woff') format('woff'),
+      url('./font/HouschkaPro-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Houschka Pro';
+  src: url('./font/HouschkaPro-Medium.eot');
+  src: local('./font/Houschka Pro Medium'), local('./font/HouschkaPro-Medium'),
+      url('./font/HouschkaPro-Medium.eot?#iefix') format('embedded-opentype'),
+      url('./font/HouschkaPro-Medium.woff2') format('woff2'),
+      url('./font/HouschkaPro-Medium.woff') format('woff'),
+      url('./font/HouschkaPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
 }
 
 #container {
