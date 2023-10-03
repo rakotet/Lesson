@@ -1,0 +1,40 @@
+.search-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  margin: 0 10px;
+  height: 40px;
+
+  img {
+    position: absolute;
+    margin-right: 15px;
+  }
+
+  img:hover {
+    cursor: pointer;
+  }
+
+  input {
+    width: 220px;
+    height: 40px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 3px 0px #0000000D;
+    border: aliceblue;
+    font-family: Houschka Pro;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 15px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: #A09EA3;
+    padding: 0 20px;
+    padding-right: 50px;
+  }
+
+  input:focus-visible {
+    outline:none;
+  }
+}

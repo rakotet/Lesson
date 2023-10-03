@@ -71,9 +71,7 @@ export default function RightContent() {
   return(
     <div className="rightContent">
       <h3>{tabName}</h3>
-      <div>
-        {getContentRight()}
-      </div>
+      {getContentRight()}
     </div>
   )
 }

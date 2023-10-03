@@ -5,6 +5,10 @@
   flex-direction: column;
   height: 100%;
 
+  .leftContent-hide {
+    opacity: 0 !important;
+  }
+
   h3 {
     font-family: Houschka Pro;
     font-size: 18px;

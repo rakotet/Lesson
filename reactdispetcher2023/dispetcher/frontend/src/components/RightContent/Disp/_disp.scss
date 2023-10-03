@@ -1,0 +1,24 @@
+.disp-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  .disp-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    .disp-row-menu {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+    }
+  }
+
+  .disp-row-name-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+}

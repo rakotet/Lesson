@@ -15,7 +15,7 @@ import adminsActivImg from "./images/admins-activ.png";
 import { useSelector } from 'react-redux';
 import { nameRowData } from "../../store/reduser";
 
-export default function RowData({name, count, active, click, hide = ''}) {
+export default function RowData({name, count, active, click, hide = '', hideRow}) {
   let nameRow = useSelector(nameRowData)
 
   let img;
@@ -36,11 +36,11 @@ export default function RowData({name, count, active, click, hide = ''}) {
 
   return(
     <div className="rowData">
-      <img src={img} alt=""></img>
-      <div className={`rowData-name ${active ? 'rowData-name-active' : 'rowData-name-noActive'}`} onClick={click}>
+      <img src={img} alt="" onClick={click}></img>
+      <div className={`rowData-name ${active ? 'rowData-name-active' : 'rowData-name-noActive'} ${hideRow ? '' : 'leftContent-hide'}`} onClick={click}>
         {name}
       </div>
-      <div className={`rowData-count-wrapp ${hide}`}>
+      <div className={`rowData-count-wrapp ${hide} ${hideRow ? '' : 'leftContent-hide'}`}>
         <div></div>
         <div className="rowData-count">
           {count}

@@ -1,0 +1,31 @@
+.wrapNameRowData {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  span {
+    font-family: Houschka Pro;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color: #A09EA3;
+  }
+
+  span:hover {
+    color: #4a4a4b;
+  }
+
+  img {
+    width: 6.51px;
+    height: 6px;
+    margin-top: 2px;
+    margin-left: 5px
+
+  }
+}
+
+.wrapNameRowData:hover {
+  cursor: pointer;
+}

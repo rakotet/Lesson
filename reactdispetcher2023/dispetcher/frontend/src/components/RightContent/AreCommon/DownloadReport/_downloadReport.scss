@@ -1,0 +1,27 @@
+.downloadReport {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 146px;
+  height: 40px;
+  padding: 13px, 20px, 13px, 20px;
+  border-radius: 10px;
+  border: 1px;
+  gap: 10px;
+  border: 1px solid #0078A8;
+  margin-left: 10px;
+
+  span {
+    font-family: Houschka Pro;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: #42474F;
+  }
+}
+
+.downloadReport:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,23 @@
+.wrapperContentCentr {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: #FCFCFC;
+  margin-right: 30px;
+  height: 54px;
+  box-shadow: 0px 3px 3px 0px #0000000D;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  span {
+    font-family: Houschka Pro;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    color:#A09EA3;
+  }
+}

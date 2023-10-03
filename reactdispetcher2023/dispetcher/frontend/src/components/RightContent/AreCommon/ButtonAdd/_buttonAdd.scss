@@ -1,0 +1,11 @@
+.buttonAdd {
+  animation-timing-function: ease-out;
+  animation-duration: 300ms;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.buttonAdd:hover {
+  cursor: pointer;
+}

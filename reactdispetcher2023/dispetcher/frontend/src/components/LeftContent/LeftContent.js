@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userDataStore, setActiveRow, nameRowData, activRightContent, roleUsers } from "../store/reduser";
 
 
-export default function LeftContent() {
+export default function LeftContent({collapseData, hideRow}) {
   const [isActiveDisp, setActiveDisp] = useState(true);
   const [isActiveGroup, setActiveGroup] = useState(false);
   const [isActiveAuto, setActiveAuto] = useState(true);
@@ -91,28 +91,28 @@ export default function LeftContent() {
     if(userArr.type == roleUsersData.admin) {
       return (
         <>
-          <RowData name={nameRow.disp} count={202} active={isActiveDisp} click={handleClickDisp}/>
-          <RowData name={nameRow.group} count={2} active={isActiveGroup} click={handleClickGroup}/>
+          <RowData name={nameRow.disp} count={202} active={isActiveDisp} click={handleClickDisp} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.group} count={2} active={isActiveGroup} click={handleClickGroup} hide='' hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.disp) {
       return (
         <>
-          <RowData name={nameRow.auto} count={202} active={isActiveAuto} click={handleClickAuto}/>
-          <RowData name={nameRow.applications} count={2} active={isActiveApplications} click={handleClickApplications}/>
+          <RowData name={nameRow.auto} count={202} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.applications} count={2} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.user) {
       return (
         <>
-          <RowData name={nameRow.myApplications} count={202} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'}/>
-          <RowData name={nameRow.myTemplates} count={2} active={isActiveMytemplates} click={handleClickMytemplates} hide={'rowData-hide'}/>
+          <RowData name={nameRow.myApplications} count={202} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
+          <RowData name={nameRow.myTemplates} count={2} active={isActiveMytemplates} click={handleClickMytemplates} hide={'rowData-hide'} hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.sa) {
       return (
         <>
-          <RowData name={nameRow.admins} count={202} active={isActiveAdmins} click={handleClickAdmins}/>
+          <RowData name={nameRow.admins} count={202} active={isActiveAdmins} click={handleClickAdmins} hide='' hideRow={hideRow}/>
         </>
       )
     }
@@ -121,18 +121,20 @@ export default function LeftContent() {
   return(
     <>
       <div className="leftContent-wrapper">
-        <h3>Сервис диспетчеризации</h3>
+        <h3 className={hideRow ? '' : 'leftContent-hide'}>Сервис диспетчеризации</h3>
         {getRow()}
         <div className="leftContent-bottom">
           <div></div>
           <div>
             <div className="leftContent-bottom-row">
-              <img src={logout} alt="" />
-              <a href="?logout">Выйти</a>
+              <a href="?logout">
+                <img src={logout} alt="" />
+              </a>
+              <a href="?logout" className={hideRow ? '' : 'leftContent-hide'}>Выйти</a>
             </div>
             <div className="leftContent-bottom-collapse">
               <div></div>
-              <img src={collapse} alt="" />
+              <img src={collapse} alt="" style={hideRow ? {transform: "none"} : {transform: "rotate(180deg)"}} onClick={collapseData}/>
             </div>
           </div>
         </div>

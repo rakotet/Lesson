@@ -1,0 +1,20 @@
+.disp-row-name-wrapper {
+  width: 100%;
+}
+
+.dispRowNameWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: aliceblue;
+  background: #FFFFFF;
+  margin-top: 20px;
+  margin-right: 30px;
+  margin-bottom: 2px;
+  padding-left: 15px;
+  padding-right: 25px;
+}
