@@ -1,14 +1,29 @@
 .selectData-wrapper {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column;
   position: relative;
+  align-items: flex-end;
+  justify-content: space-around;
   margin: 0 10px;
-  height: 40px;
 
-  select {
-    width: 290px;
+  .selectData-hide {
+    opacity: 0;
+    display: none;
+  }
+
+  img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-right: 20px;
+  }
+
+  img:hover {
+    cursor: pointer;
+  }
+
+  input {
+    width: 220px;
     height: 40px;
     border-radius: 10px;
     background: #FFFFFF;
@@ -16,18 +31,55 @@
     border: aliceblue;
     font-family: Houschka Pro;
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 500;
     line-height: 15px;
     letter-spacing: -0.02em;
     text-align: left;
-    color: #A09EA3;
+    color: #333333;
     padding: 0 20px;
     padding-right: 50px;
+
+    input::placeholder {
+      font-family: Houschka Pro;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      text-align: left;
+      color: #A09EA3;
+    }
   }
 
-  select:focus-visible {
+  input:focus-visible {
     outline:none;
   }
 
-  
+  .selectData-input {
+    position: absolute;
+    width: 290px;
+    height: 250px;
+    background-color: #FFFFFF;
+    top: 35px;
+    transition: 0.3s linear;
+    overflow: auto;
+    
+    .selectData-row {
+      width: fit-content;
+      font-family: Houschka Pro;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 15px;
+      letter-spacing: -0.02em;
+      text-align: left;
+      color: #333333;
+      margin-left: 20px;
+      margin-top: 15px;
+    }
+
+    .selectData-row:hover {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+  }
 }

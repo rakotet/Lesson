@@ -1,7 +1,7 @@
+@import './Disp/disp';
 @import './Admins/admins';
 @import './Applications/applications';
 @import './Auto/auto';
-@import './Disp/disp';
 @import './Group/group';
 @import './MyApplications/myApplications';
 @import './MyTemplates/myTemplates';
@@ -13,6 +13,12 @@
 @import './AreCommon/DispRowNameWrapper/dispRowNameWrapper';
 @import './AreCommon/WrapNameRowData/wrapNameRowData';
 @import './AreCommon/WrapperContentCentr/wrapperContentCentr';
+@import './AreCommon/GroupRowNameWrapper/groupRowNameWrapper';
+@import './AddDisp/addDisp';
+@import './AddGroup/addGroup';
+@import './AreCommon/AddRowNameInput/addRowNameInput';
+@import './AreCommon/ButtonCreate/buttonCreate';
+@import './AreCommon/ButtonCancellation/buttonCancellation';
 
 
 .rightContent {

@@ -1,8 +1,8 @@
-.disp-row-name-wrapper {
+%right-disp-row-name-wrapper {
   width: 100%;
 }
 
-.dispRowNameWrapper {
+%right-dispRowNameWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -17,4 +17,12 @@
   margin-bottom: 2px;
   padding-left: 15px;
   padding-right: 25px;
+}
+
+.disp-row-name-wrapper {
+  @extend %right-disp-row-name-wrapper;
+}
+
+.dispRowNameWrapper {
+  @extend %right-dispRowNameWrapper;
 }

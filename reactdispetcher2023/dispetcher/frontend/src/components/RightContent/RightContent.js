@@ -8,6 +8,8 @@ import Applications from './Applications/Applications';
 import MyApplications from './MyApplications/MyApplications';
 import MyTemplates from './MyTemplates/MyTemplates';
 import Admins from './Admins/Admins';
+import AddDisp from './AddDisp/AddDisp';
+import AddGroup from './AddGroup/AddGroup';
 
 export default function RightContent() {
   const [tabName, setTabName] = useState('')
@@ -30,11 +32,14 @@ export default function RightContent() {
       setTabName(nameRow.myTemplates)
     } else if(activeData == activRightContentData.admins) {
       setTabName(nameRow.admins)
+    } else if(activeData == activRightContentData.addDisp) {
+      setTabName(nameRow.addDisp)
+    } else if(activeData == activRightContentData.addGroup) {
+      setTabName(nameRow.addGroup)
     }
 
   }, [activeData])
 
-  
 
   function getContentRight() {
     if(activeData == activRightContentData.disp) {
@@ -64,6 +69,14 @@ export default function RightContent() {
     } else if(activeData == activRightContentData.admins) {
       return(
         <Admins />
+      )
+    } else if(activeData == activRightContentData.addDisp) {
+      return(
+        <AddDisp />
+      )
+    } else if(activeData == activRightContentData.addGroup) {
+      return(
+        <AddGroup />
       )
     }
   }

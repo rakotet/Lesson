@@ -1,0 +1,15 @@
+.group-wrapper {
+  @extend %right-wrapper-content;
+
+  .group-row {
+    @extend %right-wrapper-row;
+
+    .group-row-menu {
+      @extend %right-wrapper-menu;
+    }
+  }
+
+  .group-row-name-wrapper {
+    @extend %right-disp-row-name-wrapper;
+  }
+}

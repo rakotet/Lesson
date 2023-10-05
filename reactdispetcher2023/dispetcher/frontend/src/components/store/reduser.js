@@ -16,7 +16,9 @@ const dataSlice = createSlice({
       applications: 'Заявки',
       myApplications: 'Мои заявки',
       myTemplates: 'Мои шаблоны',
-      admins: 'Администраторы'
+      admins: 'Администраторы',
+      addDisp: 'Добавить диспетчера',
+      addGroup: 'Добавить предприятие'
     },
     activRightContent: {
       disp: 'disp',
@@ -25,7 +27,9 @@ const dataSlice = createSlice({
       applications: 'applications',
       myApplications: 'myApplications',
       myTemplates: 'myTemplates',
-      admins: 'admins'
+      admins: 'admins',
+      addDisp: 'addDisp',
+      addGroup: 'addGroup'
     },
     roleUsers: {
       admin: 1,

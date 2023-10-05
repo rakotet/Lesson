@@ -5,17 +5,25 @@ import ListDataNumber from "../AreCommon/ListDataNumber/ListDataNumber"
 import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
+import { useDispatch, useSelector } from 'react-redux';
+import { activRightContent, setActiveRow } from "../../store/reduser";
 
 export default function Disp() {
+  let activRight = useSelector(activRightContent)
+  const dispatch = useDispatch()
+
+  function addDispFunc() {
+    dispatch(setActiveRow(activRight.addDisp))
+  }
 
   return(
     <div className="disp-wrapper">
       <div className="disp-row">
         <div className="disp-row-menu">
-          <ButtonAdd />
+          <ButtonAdd addFunc={addDispFunc}/>
           <SearchData />
-          <SelectData namePlaceholder={'Выбрать предприятие'}/>
-          <SelectData namePlaceholder={'Выбрать категорию'}/>
+          <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={['test1','test2','test3','test1','test2','test3','test1','test2','test3','test1','test2','test3']}/>
+          <SelectData namePlaceholder={'Выбрать категорию'} nameArr={['test4','test5','test6']}/>
           <DownloadReport />
         </div>
         <div>
