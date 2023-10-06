@@ -1,0 +1,55 @@
+%groupUnloadingData-style {
+  font-family: Houschka Pro;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+.groupUnloadingData {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 17px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #F5F9FB;
+  @extend %groupUnloadingData-style;
+
+  .groupUnloadingData-namber {
+    width: 415px;
+
+    div {
+      margin-left: 10px;
+      height: 14px;
+      color: #0078A8;
+      width: fit-content;
+      border-bottom: 1px solid #0078A8;
+    }
+
+    div:hover {
+      cursor: pointer;
+    }
+  }
+
+  .groupUnloadingData-group {
+    width: 570px;
+    
+    div {
+      padding-right: 175px;
+    }
+  }
+
+  .groupUnloadingData-supervisor {
+    width: 465px;
+
+    div {
+      padding-right: 100px;
+    }
+  }
+
+  .groupUnloadingData-auto {
+    width: 50px;
+  }
+}

@@ -1,0 +1,26 @@
+.showMore {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+  font-family: Houschka Pro;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: right;
+  color: #007BC4;
+
+  span {
+    width: fit-content;
+    margin-right: 5px;
+    border-bottom: 1px solid #0078A8;
+  }
+
+  span:hover {
+    cursor: pointer;
+  }
+}
+

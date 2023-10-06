@@ -5,14 +5,21 @@ import GroupRowNameWrapper from "../AreCommon/GroupRowNameWrapper/GroupRowNameWr
 import WrapperContentCentr from '../AreCommon/WrapperContentCentr/WrapperContentCentr'
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, actionLkData } from "../../store/reduser";
+import ShowMore from "../AreCommon/ShowMore/ShowMore"
+import { useState } from "react"
 
 export default function Group() {
+  const [showMoreActiv, setShowMoreActiv] = useState(8)
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   const dispatch = useDispatch()
 
   function addGroupFunc() {
     dispatch(setActiveRow(activRight.addGroup))
+  }
+
+  function showMoreActivClick() {
+    setShowMoreActiv(n => n * 2)
   }
 
   return(
@@ -26,7 +33,10 @@ export default function Group() {
       </div>
       <div className="group-row-name-wrapper">
         <GroupRowNameWrapper />
-        <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData}/>
+        <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv}/>
+      </div>
+      <div>
+        <ShowMore label={'Показать еще'} click={showMoreActivClick}/>
       </div>
     </div>
   )
