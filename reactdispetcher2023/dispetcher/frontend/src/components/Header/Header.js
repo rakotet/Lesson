@@ -19,7 +19,7 @@ export default function Header() {
     header: {
       'content-type': 'application/x-www-form-urlencoded',
     },
-    body: JSON.stringify({userData: id})
+    body: JSON.stringify({userId: id})
   
     })
     .then(data => {
@@ -27,12 +27,13 @@ export default function Header() {
     })
     .then(data => {
       data = JSON.parse(data)
+      data = data[0]
       dispatch(setDataStore(data))
 
-      if(data[0].type == roleUsersData.admin) setLabel('Панель администратора')
-      else if(data[0].type == roleUsersData.disp) setLabel('Панель диспетчера')
-      else if(data[0].type == roleUsersData.user) setLabel('Панель пользователя')
-      else if(data[0].type == roleUsersData.sa) setLabel('Панель Супер Администратора')
+      if(data.type == roleUsersData.admin) setLabel('Панель администратора')
+      else if(data.type == roleUsersData.disp) setLabel('Панель диспетчера')
+      else if(data.type == roleUsersData.user) setLabel('Панель пользователя')
+      else if(data.type == roleUsersData.sa) setLabel('Панель Супер Администратора')
 
     })
     .catch((er) => {
@@ -50,8 +51,8 @@ export default function Header() {
         </div>
         <div className="header-user-menu">
           <div>
-            <h2>{countArr[0].name}</h2>
-            <h3>{countArr[0].email}</h3>
+            <h2>{countArr.name}</h2>
+            <h3>{countArr.email}</h3>
           </div>
           <div>
             <img src={userMenu} alt="" />

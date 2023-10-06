@@ -4,10 +4,11 @@ import DownloadReport from "../AreCommon/DownloadReport/DownloadReport"
 import GroupRowNameWrapper from "../AreCommon/GroupRowNameWrapper/GroupRowNameWrapper"
 import WrapperContentCentr from '../AreCommon/WrapperContentCentr/WrapperContentCentr'
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData } from "../../store/reduser";
 
 export default function Group() {
   let activRight = useSelector(activRightContent)
+  let actionLk = useSelector(actionLkData)
   const dispatch = useDispatch()
 
   function addGroupFunc() {
@@ -25,7 +26,7 @@ export default function Group() {
       </div>
       <div className="group-row-name-wrapper">
         <GroupRowNameWrapper />
-        <WrapperContentCentr label="Записей не найдено. Добавьте новоге предприятие"/>
+        <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData}/>
       </div>
     </div>
   )

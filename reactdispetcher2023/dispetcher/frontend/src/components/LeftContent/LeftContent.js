@@ -16,7 +16,6 @@ export default function LeftContent({collapseData, hideRow}) {
   const [isActiveAdmins, setActiveAdmins] = useState(true);
 
   let userArr = useSelector(userDataStore)
-  userArr = userArr[0]
   
   const roleUsersData = useSelector(roleUsers)
   let nameRow = useSelector(nameRowData)

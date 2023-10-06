@@ -26,6 +26,36 @@
 
     ////////////////////////////////
 
+    //////////////////////////////// Диспетчеризация
+
+    //Вернуть даныне пользователя по его id
+    public function getDataUser(string $table_name, string $where, array $values = []) : array { 
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
+    //Добавить предприятие
+    public function addGroup(string $table_name, string $nameGroup , string $supervisor, string $divisions) {
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`nameGroup`, `supervisor`, `divisions`) VALUES ('$nameGroup', '$supervisor', '$divisions')";
+      $this->pdo->exec($sql);
+    }
+
+    //Вернуть все предприятия
+    public function getaTable(string $table_name, array $values = []) : array{
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name);
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
+    ////////////////////////////////
+
     public function writeMemo(string $table_name, int $date, int $user_id, string $tema, string $text, string $signs, int $typeMemo) {
       $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`date`, `id_user`, `tema`, `dir`, `signature`, `type_memo`) VALUES ('$date', '$user_id', '$tema', '$text', '$signs', '$typeMemo')";
       $this->pdo->exec($sql);

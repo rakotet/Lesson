@@ -3,11 +3,11 @@ import {createSlice} from '@reduxjs/toolkit'
 const dataSlice = createSlice({
   name: 'dataStore', // имя хранилища
   initialState: {
-    userData: [{
+    userData: {
       name: '',
       email: '',
       type: ''
-    }],
+    },
     activeRow: '',
     nameRowData: {
       disp: 'Диспетчеры',
@@ -37,6 +37,10 @@ const dataSlice = createSlice({
       user: 3,
       sa: 0
     },
+    actionLkData: {
+      getDispData: 'getDispData',
+      getGroupData: 'getGroupData'
+    },
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
     setDataStore(state, data) {
@@ -55,5 +59,6 @@ export const activeRowStore = state => state.dataStore.activeRow
 export const nameRowData = state => state.dataStore.nameRowData
 export const activRightContent = state => state.dataStore.activRightContent
 export const roleUsers = state => state.dataStore.roleUsers
+export const actionLkData = state => state.dataStore.actionLkData
 
 export default dataSlice.reducer

@@ -6,10 +6,11 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData } from "../../store/reduser";
 
 export default function Disp() {
   let activRight = useSelector(activRightContent)
+  let actionLk = useSelector(actionLkData)
   const dispatch = useDispatch()
 
   function addDispFunc() {
@@ -32,7 +33,7 @@ export default function Disp() {
       </div>
       <div className="disp-row-name-wrapper">
         <DispRowNameWrapper />
-        <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера"/>
+        <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData}/>
       </div>
     </div>
   )
