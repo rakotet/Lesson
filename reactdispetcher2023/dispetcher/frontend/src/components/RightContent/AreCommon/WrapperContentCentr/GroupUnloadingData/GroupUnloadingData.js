@@ -21,8 +21,7 @@ export default function GroupUnloadingData({data, count}) {
               </div>
             </div>
             )
-        }
-        
+          }
       })}
     </>
   )

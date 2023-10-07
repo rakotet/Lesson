@@ -42,7 +42,18 @@ export default function AddGroup() {
         // отправда данных на сервер
         let objInputs = {...dataInput}
         const {nameGroup, nameGroupSupervisor, ...rest} = objInputs
-        objInputs = {nameGroup, nameGroupSupervisor, divisions: rest}
+        const obj = {}
+
+        for(let i = 0; i < Object.keys(rest).length; i++) { // разделение на объекты подразделений
+          for(let key in rest) {
+            if(key.split('-')[1] == i + 1) {
+              obj[`division${i + 1}`] = {...obj[`division${i + 1}`], autoNumber: 0}
+              obj[`division${i + 1}`] = {...obj[`division${i + 1}`], [`${key.split('-')[0]}`]: rest[`${key}`]}
+            }
+          }
+        }
+
+        objInputs = {nameGroup, nameGroupSupervisor, divisions: obj}
 
         fetch(url.urlBack1, {
           method: 'POST',
