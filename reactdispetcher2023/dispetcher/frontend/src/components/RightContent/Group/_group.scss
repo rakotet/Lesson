@@ -1,3 +1,5 @@
+@import './CompanyCard/companyCard';
+
 .group-wrapper {
   @extend %right-wrapper-content;
 
@@ -12,4 +14,8 @@
   .group-row-name-wrapper {
     @extend %right-disp-row-name-wrapper;
   }
+}
+
+.group-wrapper-hide {
+  display: none;
 }

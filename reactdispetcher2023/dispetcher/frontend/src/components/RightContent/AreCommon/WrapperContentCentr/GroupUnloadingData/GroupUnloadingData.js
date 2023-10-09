@@ -1,12 +1,12 @@
-export default function GroupUnloadingData({data, count}) {
-  console.log(data)
+export default function GroupUnloadingData({data, count, companyCardOpenHide}) {
+  //console.log(data)
 
   return (
     <>
       {data.map((item, index) => {
         if(index < count) {
           return(
-            <div key={index} className="groupUnloadingData">
+            <div key={index} className="groupUnloadingData" onClick={() => companyCardOpenHide(data[`${index}`])}>
               <div className="groupUnloadingData-namber">
                 <div>{index + 1}</div>
               </div>

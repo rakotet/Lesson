@@ -18,7 +18,8 @@ const dataSlice = createSlice({
       myTemplates: 'Мои шаблоны',
       admins: 'Администраторы',
       addDisp: 'Добавить диспетчера',
-      addGroup: 'Добавить предприятие'
+      addGroup: 'Добавить предприятие',
+      companyCard: 'Карточка предприятия'
     },
     activRightContent: {
       disp: 'disp',
@@ -29,7 +30,8 @@ const dataSlice = createSlice({
       myTemplates: 'myTemplates',
       admins: 'admins',
       addDisp: 'addDisp',
-      addGroup: 'addGroup'
+      addGroup: 'addGroup',
+      companyCard: 'companyCard'
     },
     roleUsers: {
       admin: 1,

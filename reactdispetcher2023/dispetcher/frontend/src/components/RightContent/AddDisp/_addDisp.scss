@@ -1,0 +1,27 @@
+.addDisp-wrap {
+  display: flex;
+  flex-direction: column;
+  background-color: #F5F9FB;
+
+  h4 {
+    font-family: Houschka Pro;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #333333;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .addDisp-panell-button {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+
+    .addDisp-delimiter {
+      margin: 0 10px;
+    }
+  }
+}

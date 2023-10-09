@@ -4,7 +4,7 @@ import { actionLkData } from "../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = ''}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
@@ -40,7 +40,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = ''}) 
 
   function getDataUnloading() {
     if(actionLk == actionLkUnloading.getGroupData) {
-      return <GroupUnloadingData data={arrGroup} count={count}/>
+      return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide}/>
     } else if(actionLk == actionLkUnloading.getDispData) {
       
     }

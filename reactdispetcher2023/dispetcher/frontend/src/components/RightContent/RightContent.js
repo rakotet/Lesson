@@ -36,7 +36,9 @@ export default function RightContent() {
       setTabName(nameRow.addDisp)
     } else if(activeData == activRightContentData.addGroup) {
       setTabName(nameRow.addGroup)
-    }
+    } else if(activeData == activRightContentData.companyCard) {
+      setTabName(nameRow.companyCard)
+    } 
 
   }, [activeData])
 
@@ -48,7 +50,7 @@ export default function RightContent() {
       )
     } else if(activeData == activRightContentData.group) {
       return(
-        <Group />
+        <Group setTabName={setTabName}/>
       )
     } else if(activeData == activRightContentData.auto) {
       return(

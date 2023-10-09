@@ -62,6 +62,7 @@
     top: 35px;
     transition: 0.3s linear;
     overflow: auto;
+    z-index: 1000;
     
     .selectData-row {
       width: fit-content;
@@ -82,4 +83,13 @@
     }
 
   }
+}
+
+.selectData-wrapper-margin {
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.selectData-input-margin {
+  width: 558px !important;
 }

@@ -27,10 +27,6 @@
       width: fit-content;
       border-bottom: 1px solid #0078A8;
     }
-
-    div:hover {
-      cursor: pointer;
-    }
   }
 
   .groupUnloadingData-group {
@@ -52,4 +48,8 @@
   .groupUnloadingData-auto {
     width: 50px;
   }
+}
+
+.groupUnloadingData:hover {
+  cursor: pointer;
 }

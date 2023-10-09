@@ -24,7 +24,7 @@ export default function AddGroup() {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    setDataInput({...dataInput, [name]: value})
+    setDataInput({...dataInput, [name]: value.trim()})
   }
 
   function dataInputBack() {
@@ -47,8 +47,8 @@ export default function AddGroup() {
         for(let i = 0; i < Object.keys(rest).length; i++) { // разделение на объекты подразделений
           for(let key in rest) {
             if(key.split('-')[1] == i + 1) {
-              obj[`division${i + 1}`] = {...obj[`division${i + 1}`], autoNumber: 0}
-              obj[`division${i + 1}`] = {...obj[`division${i + 1}`], [`${key.split('-')[0]}`]: rest[`${key}`]}
+              obj[`division-${i + 1}`] = {...obj[`division-${i + 1}`], autoNumber: 0}
+              obj[`division-${i + 1}`] = {...obj[`division-${i + 1}`], [`${key.split('-')[0]}`]: rest[`${key}`]}
             }
           }
         }
