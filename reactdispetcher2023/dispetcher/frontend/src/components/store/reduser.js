@@ -43,6 +43,8 @@ const dataSlice = createSlice({
       getDispData: 'getDispData',
       getGroupData: 'getGroupData'
     },
+    selectSubdivision: [1, 'a'],
+
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
     setDataStore(state, data) {
@@ -50,11 +52,14 @@ const dataSlice = createSlice({
     },
     setActiveRow(state, data) {
       state.activeRow = data.payload
+    },
+    setSelectSubdivision(state, data) {
+      state.selectSubdivision = data.payload
     }
   },
 })
 
-export const {setDataStore, setActiveRow} = dataSlice.actions
+export const {setDataStore, setActiveRow, setSelectSubdivision} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -62,5 +67,6 @@ export const nameRowData = state => state.dataStore.nameRowData
 export const activRightContent = state => state.dataStore.activRightContent
 export const roleUsers = state => state.dataStore.roleUsers
 export const actionLkData = state => state.dataStore.actionLkData
+export const selectSubdivision = state => state.dataStore.selectSubdivision
 
 export default dataSlice.reducer

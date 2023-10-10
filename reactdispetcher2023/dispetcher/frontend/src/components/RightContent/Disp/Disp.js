@@ -7,8 +7,10 @@ import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, actionLkData } from "../../store/reduser";
+import { useState } from "react"
 
 export default function Disp() {
+  const [dataInput, setDataInput] = useState({})
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   const dispatch = useDispatch()
@@ -17,14 +19,25 @@ export default function Disp() {
     dispatch(setActiveRow(activRight.addDisp))
   }
 
+  function dataInputOnChange(event, inputData = false) { // данные из всех input
+    if(!inputData) {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+      setDataInput(n => ({...n, [name]: value.trim()}))
+    } else {
+      setDataInput(n => ({...n, [inputData[0]]: inputData[1]}))
+    }
+  }
+
   return(
     <div className="disp-wrapper">
       <div className="disp-row">
         <div className="disp-row-menu">
           <ButtonAdd addFunc={addDispFunc}/>
           <SearchData />
-          <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={['test1','test2','test3','test1','test2','test3','test1','test2','test3','test1','test2','test3']}/>
-          <SelectData namePlaceholder={'Выбрать категорию'} nameArr={['test4','test5','test6']}/>
+          <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={['test1','test2','test3','test4','test5']} name={'dispGroup'} dataInputOnChange={dataInputOnChange}/>
+          <SelectData namePlaceholder={'Выбрать категорию'} nameArr={['test1','test2','test3']} name={'dispCategory'} dataInputOnChange={dataInputOnChange}/>
           <DownloadReport />
         </div>
         <div>
