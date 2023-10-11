@@ -4,9 +4,9 @@ import DownloadReport from "../AreCommon/DownloadReport/DownloadReport"
 import GroupRowNameWrapper from "../AreCommon/GroupRowNameWrapper/GroupRowNameWrapper"
 import WrapperContentCentr from '../AreCommon/WrapperContentCentr/WrapperContentCentr'
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setSelectSubdivision } from "../../store/reduser";
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import CompanyCard from "./CompanyCard/CompanyCard"
 
 export default function Group({setTabName}) {
@@ -17,6 +17,10 @@ export default function Group({setTabName}) {
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(setSelectSubdivision([])) // обнуляем массив подразделений диспетчера
+  }, [])
 
   function addGroupFunc() {
     dispatch(setActiveRow(activRight.addGroup))

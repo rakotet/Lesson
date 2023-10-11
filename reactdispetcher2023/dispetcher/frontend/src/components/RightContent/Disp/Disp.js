@@ -7,7 +7,7 @@ import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, actionLkData } from "../../store/reduser";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Disp() {
   const [dataInput, setDataInput] = useState({})

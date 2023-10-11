@@ -1,9 +1,11 @@
 import { useState } from "react"
 import imgDown from './image/Chevron_Down.png'
+import { useSelector } from 'react-redux';
+import { selectSubdivision } from "../../../store/reduser";
 
-export default function SelectData({namePlaceholder, nameArr = [], name = '', margin = true, dataInputOnChange}) {
+export default function SelectDataTwo({namePlaceholder, name = '', margin = true, dataInputOnChange, valueInput, setValueInput}) {
   const [rotation, setRotation] = useState(true);
-  const [valueInput, setValueInput] = useState('');
+  let selectSub = useSelector(selectSubdivision)
 
   function handleClick() {
     setRotation(!rotation)
@@ -20,10 +22,10 @@ export default function SelectData({namePlaceholder, nameArr = [], name = '', ma
       <img src={imgDown} alt="" style={rotation ? {transform: "none"} : {transform: "rotate(180deg)"}} onClick={handleClick}/>
       <div className={`selectData-input ${margin ? '' : 'selectData-input-margin'} ${rotation ? 'selectData-hide' : ''}`} >
 
-        {nameArr.map((item, index) => {
+        {selectSub.map((item, index) => {
           return <div key={index} className="selectData-row" onClick={()=> {
             dataInput(item)
-            dataInputOnChange(event, [name, item])
+            dataInputOnChange([name, item])
           }}>{item}</div>
         })}
         

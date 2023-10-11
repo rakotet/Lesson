@@ -43,7 +43,7 @@ const dataSlice = createSlice({
       getDispData: 'getDispData',
       getGroupData: 'getGroupData'
     },
-    selectSubdivision: [1, 'a'],
+    selectSubdivision: [],
 
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится

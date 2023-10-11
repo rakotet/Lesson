@@ -44,6 +44,12 @@
       $this->pdo->exec($sql);
     }
 
+    //Добавить диспетчера
+    public function addDisp(string $table_name, string $nameDispp , string $jobTitle, string $telephone, string $dispGroup, string $dispSubdivision, string $login, string $password, string $email, string $type) {
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`nameDispp`, `jobTitle`, `telephone`, `dispGroup`, `dispSubdivision`, `login`, `password`, `email`, `type`) VALUES ('$nameDispp', '$jobTitle', '$telephone', '$dispGroup', '$dispSubdivision', '$login', '$password', '$email', '$type')";
+      $this->pdo->exec($sql);
+    }
+
     //Вернуть все предприятия
     public function getaTable(string $table_name, array $values = []) : array{
       $sql = 'SELECT * FROM '.$this->getTableName($table_name);

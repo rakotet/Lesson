@@ -3,17 +3,16 @@ import { useState, useEffect } from "react";
 import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate";
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, selectSubdivision, setSelectSubdivision } from "../../store/reduser";
+import { activRightContent, setActiveRow, setSelectSubdivision } from "../../store/reduser";
 import { url } from '../../../core/core';
 import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
+import AddRowNameSelectTwo from "../AreCommon/AddRowNameSelectTwo/AddRowNameSelectTwo";
 
 export default function AddDisp() {
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
-  const [arrDivisions, setArrDivisions] = useState([1, 2])
-  const [gg, setGg] = useState(1)
+  const [valueInput, setValueInput] = useState('');
   let activRight = useSelector(activRightContent)
-  let selectSub = useSelector(selectSubdivision)
   const dispatch = useDispatch()
 
   let group = []
@@ -49,21 +48,62 @@ export default function AddDisp() {
   }
 
   useEffect(() => {
-    console.log('add')
     backDataGroup()
-  }, [selectSub])
+  }, [])
 
   function cancellation() { // переход в disp
     dispatch(setActiveRow(activRight.disp))
+    dispatch(setSelectSubdivision([]))
   }
 
   function dataInputBack() {
-    console.log(dataInput)
+    let lengthDataInput = Object.keys(dataInput).length
+    if(lengthDataInput == 8) {
+      let count = 0
+      for(let key in dataInput) {
+        if(dataInput[key] == '') count++
+      }
+
+      if(count == 0) {
+        if(isNaN(Number(dataInput.telephone))) {
+          alert('Введите верный сотовый номер')
+        } else {
+          if((dataInput.telephone).length == 11) {
+           
+            fetch(url.urlBack1, {
+              method: 'POST',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+              },
+              body: JSON.stringify({dataInputDisp: dataInput})
+            
+              })
+              .then(data => {
+                return data.text()
+              })
+              .then(data => {
+                if(data != 'null') {
+                  alert('Такой диспетчер уже существует')
+                } else {
+                    // переход в disp
+                    dispatch(setSelectSubdivision([]))
+                    dispatch(setActiveRow(activRight.disp))
+                }
+          
+              })
+              .catch((er) => {
+                console.log(er)
+              })
+
+          } else alert('Введите верный сотовый номер')
+        
+        }
+        
+      } else alert('Заполните все поля!')
+
+    } else alert('Заполните все поля!')
   }
 
-  // function ss() {
-  //   dispatch(setSelectSubdivision(divisions))
-  // }
 
   function dataInputOnChange(event, inputData = false) { // данные из всех input
     if(!inputData) {
@@ -84,24 +124,27 @@ export default function AddDisp() {
           divisions.push(div[`${key}`].nameDivisions)
         }
 
-        //setArrDivisions(n => divisions)
         dispatch(setSelectSubdivision(divisions))
+        delete dataInput.dispSubdivision
+        setValueInput('')
 
         return ({...n, [inputData[0]]: inputData[1]})
       })
-
-       
     }
+  }
+
+  function dataInputOnChangeTwo(inputData) {
+    setDataInput(n => ({...n, [inputData[0]]: inputData[1]}))
   }
 
   return(
     <div className="addDisp-wrap">
-      {console.log(selectSub)}
       <AddRowNameInput dataName={'Фамилия Имя Отчество'} placeholder={'Введите ФИО'} name={'nameDispp'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Должность'} placeholder={'Введите должность'} name={'jobTitle'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Телефон'} placeholder={'Введите телефон'} name={'telephone'} dataInputOnChange={dataInputOnChange} type={'tel'}/>
+      <AddRowNameInput dataName={'Электронная почта'} placeholder={'Введите почту'} name={'email'} dataInputOnChange={dataInputOnChange} />
       <AddRowNameSelect dataName={'Предприятие'} placeholder={'Выберите предприятие'} name={'dispGroup'} dataInputOnChange={dataInputOnChange} arrData={group}/>
-      <AddRowNameSelect dataName={'Подразделение'} placeholder={'Выберите подразделение'} name={'dispSubdivision'} dataInputOnChange={dataInputOnChange} arrData={selectSub} selectSub={selectSub}/>
+      <AddRowNameSelectTwo dataName={'Подразделение'} placeholder={'Выберите подразделение'} name={'dispSubdivision'} dataInputOnChange={dataInputOnChangeTwo} valueInput={valueInput} setValueInput={setValueInput}/>
       <h4>Доступ</h4>
       <AddRowNameInput dataName={'Логин'} placeholder={'Введите логин'} name={'login'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Пароль'} placeholder={'Введите пароль'} name={'password'} dataInputOnChange={dataInputOnChange}/>

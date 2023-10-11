@@ -15,6 +15,10 @@
     echo json_encode($db->addGroup('group', $dataFront['dataInputGroup']['nameGroup'], $dataFront['dataInputGroup']['nameGroupSupervisor'], json_encode($dataFront['dataInputGroup']['divisions'], JSON_UNESCAPED_UNICODE)));
   }
 
+  if(isset($dataFront['dataInputDisp'])) {
+    echo json_encode($db->addDisp('users', $dataFront['dataInputDisp']['nameDispp'], $dataFront['dataInputDisp']['jobTitle'], $dataFront['dataInputDisp']['telephone'], $dataFront['dataInputDisp']['dispGroup'], $dataFront['dataInputDisp']['dispSubdivision'], $dataFront['dataInputDisp']['login'], md5($dataFront['dataInputDisp']['password'].SECRET), $dataFront['dataInputDisp']['email'], '2'));
+  }
+
   if(isset($dataFront['getGroupData'])) {
     echo json_encode($db->getaTable('group'));
   } 
