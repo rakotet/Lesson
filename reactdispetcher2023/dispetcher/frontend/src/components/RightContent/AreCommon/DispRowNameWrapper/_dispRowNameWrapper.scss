@@ -25,4 +25,33 @@
 
 .dispRowNameWrapper {
   @extend %right-dispRowNameWrapper;
+  justify-content: flex-start;
+}
+
+.dispRowNameWrapper-one {
+  width: 205px;
+}
+
+.dispRowNameWrapper-two {
+  width: 315px;
+}
+
+.dispRowNameWrapper-three {
+  width: 230px;
+}
+
+.dispRowNameWrapper-four {
+  width: 215px;
+}
+
+.dispRowNameWrapper-five {
+  width: 270px;
+}
+
+.dispRowNameWrapper-six {
+  width: 225px;
+}
+
+.dispRowNameWrapper-seven {
+  width: 50px;
 }

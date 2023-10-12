@@ -16,15 +16,15 @@
   }
 
   if(isset($dataFront['dataInputDisp'])) {
-    echo json_encode($db->addDisp('users', $dataFront['dataInputDisp']['nameDispp'], $dataFront['dataInputDisp']['jobTitle'], $dataFront['dataInputDisp']['telephone'], $dataFront['dataInputDisp']['dispGroup'], $dataFront['dataInputDisp']['dispSubdivision'], $dataFront['dataInputDisp']['login'], md5($dataFront['dataInputDisp']['password'].SECRET), $dataFront['dataInputDisp']['email'], '2'));
+    echo json_encode($db->addDisp('users', $dataFront['dataInputDisp']['userName'], $dataFront['dataInputDisp']['jobTitle'], $dataFront['dataInputDisp']['telephone'], $dataFront['dataInputDisp']['userGroup'], $dataFront['dataInputDisp']['userSubdivision'], $dataFront['dataInputDisp']['login'], md5($dataFront['dataInputDisp']['password'].SECRET), $dataFront['dataInputDisp']['email'], '2'));
   }
 
   if(isset($dataFront['getGroupData'])) {
-    echo json_encode($db->getaTable('group'));
+    echo json_encode($db->getGroup('group'));
   } 
 
   if(isset($dataFront['getDispData'])) {
-    echo json_encode([]);
+    echo json_encode($db->getDisp('users', '`type` = ?', [2]));
   } 
 
 

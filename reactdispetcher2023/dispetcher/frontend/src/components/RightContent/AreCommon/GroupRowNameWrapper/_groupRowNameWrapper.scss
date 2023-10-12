@@ -4,4 +4,21 @@
 
 .groupRowNameWrapper {
   @extend %right-dispRowNameWrapper;
+  justify-content: flex-start;
+}
+
+.groupRowNameWrapper-width-one {
+  width: 390px;
+}
+
+.groupRowNameWrapper-width-two {
+  width: 645px;
+}
+
+.groupRowNameWrapper-width-three {
+  width: 355px;
+}
+
+.groupRowNameWrapper-width-four {
+  width: 105px;
 }

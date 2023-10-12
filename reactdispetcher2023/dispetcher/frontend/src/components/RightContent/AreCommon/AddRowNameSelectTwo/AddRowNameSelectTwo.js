@@ -6,7 +6,7 @@ export default function AddRowNameSelectTwo({dataName, placeholder, name, dataIn
   return(
     <div className="addRowNameInput-wrap">
       <div className="addRowNameInput-name">{dataName}</div>
-      <SelectDataTwo namePlaceholder={placeholder} name={name} margin = {false} dataInputOnChange={dataInputOnChange} valueInput={valueInput} setValueInput={setValueInput}/>
+      <SelectDataTwo namePlaceholder={placeholder} name={name} margin = {false} dataInputOnChange={dataInputOnChange} valueInput={valueInput} setValueInput={setValueInput} />
     </div>
   )
 }

@@ -30,7 +30,7 @@ export default function SelectDataTwo({namePlaceholder, name = '', margin = true
         })}
         
       </div>
-      <input className={margin ? '' : 'selectData-wrapper-margin'} name={name} type="text" placeholder={namePlaceholder} disabled defaultValue={valueInput} />
+      <input className={margin ? '' : 'selectData-wrapper-margin'} name={name} type="text" placeholder={namePlaceholder} readOnly={true} defaultValue={valueInput} />
     </div>
   )
 }

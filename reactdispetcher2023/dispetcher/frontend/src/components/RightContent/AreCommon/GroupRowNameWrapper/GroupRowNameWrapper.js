@@ -3,10 +3,18 @@ import WrapNameRowData from "../WrapNameRowData/WrapNameRowData"
 export default function GroupRowNameWrapper() {
   return(
     <div className="groupRowNameWrapper">
-      <WrapNameRowData name={'Номер'}/>
-      <WrapNameRowData name={'Предприятие / - Подразделение'}/>
-      <WrapNameRowData name={'Руководитель'}/>
-      <WrapNameRowData name={'Кол-во машин'}/>
+      <div className="groupRowNameWrapper-width-one">
+        <WrapNameRowData name={'Номер'}/>
+      </div>
+      <div className="groupRowNameWrapper-width-two">
+        <WrapNameRowData name={'Предприятие'}/>
+      </div>
+      <div className="groupRowNameWrapper-width-three">
+        <WrapNameRowData name={'Руководитель'}/>
+      </div>
+      <div className="groupRowNameWrapper-width-four">
+        <WrapNameRowData name={'Кол-во машин'}/>
+      </div>
     </div>
   )
 }

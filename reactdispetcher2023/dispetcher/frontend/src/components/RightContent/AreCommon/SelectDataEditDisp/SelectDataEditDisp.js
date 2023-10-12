@@ -1,7 +1,7 @@
 import { useState } from "react"
 import imgDown from './image/Chevron_Down.png'
 
-export default function SelectData({namePlaceholder, nameArr = [], name = '', margin = true, dataInputOnChange}) {
+export default function SelectDataEditDisp({namePlaceholder, nameArr = [], name = '', margin = true, dataInputOnChange}) {
   const [rotation, setRotation] = useState(true);
   const [valueInput, setValueInput] = useState('');
 

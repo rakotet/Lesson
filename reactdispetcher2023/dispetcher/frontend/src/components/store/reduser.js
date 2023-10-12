@@ -4,7 +4,7 @@ const dataSlice = createSlice({
   name: 'dataStore', // имя хранилища
   initialState: {
     userData: {
-      name: '',
+      userName: '',
       email: '',
       type: ''
     },
@@ -19,7 +19,9 @@ const dataSlice = createSlice({
       admins: 'Администраторы',
       addDisp: 'Добавить диспетчера',
       addGroup: 'Добавить предприятие',
-      companyCard: 'Карточка предприятия'
+      companyCard: 'Карточка предприятия',
+      dispCard: 'Карточка диспетчера',
+      editDisp: 'Редактирование диспетчера'
     },
     activRightContent: {
       disp: 'disp',
@@ -31,7 +33,9 @@ const dataSlice = createSlice({
       admins: 'admins',
       addDisp: 'addDisp',
       addGroup: 'addGroup',
-      companyCard: 'companyCard'
+      companyCard: 'companyCard',
+      dispCard: 'dispCard',
+      editDisp: 'editDisp'
     },
     roleUsers: {
       admin: 1,
@@ -44,6 +48,7 @@ const dataSlice = createSlice({
       getGroupData: 'getGroupData'
     },
     selectSubdivision: [],
+    dispSelectOne: []
 
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
@@ -55,11 +60,14 @@ const dataSlice = createSlice({
     },
     setSelectSubdivision(state, data) {
       state.selectSubdivision = data.payload
+    },
+    setDispSelectOne(state, data) {
+      state.dispSelectOne = data.payload
     }
   },
 })
 
-export const {setDataStore, setActiveRow, setSelectSubdivision} = dataSlice.actions
+export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -68,5 +76,6 @@ export const activRightContent = state => state.dataStore.activRightContent
 export const roleUsers = state => state.dataStore.roleUsers
 export const actionLkData = state => state.dataStore.actionLkData
 export const selectSubdivision = state => state.dataStore.selectSubdivision
+export const dispSelectOne = state => state.dataStore.dispSelectOne
 
 export default dataSlice.reducer

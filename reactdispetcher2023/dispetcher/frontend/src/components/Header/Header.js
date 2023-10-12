@@ -51,7 +51,7 @@ export default function Header() {
         </div>
         <div className="header-user-menu">
           <div>
-            <h2>{countArr.name}</h2>
+            <h2>{countArr.userName}</h2>
             <h3>{countArr.email}</h3>
           </div>
           <div>

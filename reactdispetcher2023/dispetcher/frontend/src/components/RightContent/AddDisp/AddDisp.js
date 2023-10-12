@@ -83,7 +83,7 @@ export default function AddDisp() {
               })
               .then(data => {
                 if(data != 'null') {
-                  alert('Такой диспетчер уже существует')
+                  alert('Такой login уже существует')
                 } else {
                     // переход в disp
                     dispatch(setSelectSubdivision([]))
@@ -139,12 +139,12 @@ export default function AddDisp() {
 
   return(
     <div className="addDisp-wrap">
-      <AddRowNameInput dataName={'Фамилия Имя Отчество'} placeholder={'Введите ФИО'} name={'nameDispp'} dataInputOnChange={dataInputOnChange}/>
+      <AddRowNameInput dataName={'Фамилия Имя Отчество'} placeholder={'Введите ФИО'} name={'userName'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Должность'} placeholder={'Введите должность'} name={'jobTitle'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Телефон'} placeholder={'Введите телефон'} name={'telephone'} dataInputOnChange={dataInputOnChange} type={'tel'}/>
       <AddRowNameInput dataName={'Электронная почта'} placeholder={'Введите почту'} name={'email'} dataInputOnChange={dataInputOnChange} />
-      <AddRowNameSelect dataName={'Предприятие'} placeholder={'Выберите предприятие'} name={'dispGroup'} dataInputOnChange={dataInputOnChange} arrData={group}/>
-      <AddRowNameSelectTwo dataName={'Подразделение'} placeholder={'Выберите подразделение'} name={'dispSubdivision'} dataInputOnChange={dataInputOnChangeTwo} valueInput={valueInput} setValueInput={setValueInput}/>
+      <AddRowNameSelect dataName={'Предприятие'} placeholder={'Выберите предприятие'} name={'userGroup'} dataInputOnChange={dataInputOnChange} arrData={group}/>
+      <AddRowNameSelectTwo dataName={'Подразделение'} placeholder={'Выберите подразделение'} name={'userSubdivision'} dataInputOnChange={dataInputOnChangeTwo} valueInput={valueInput} setValueInput={setValueInput}/>
       <h4>Доступ</h4>
       <AddRowNameInput dataName={'Логин'} placeholder={'Введите логин'} name={'login'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Пароль'} placeholder={'Введите пароль'} name={'password'} dataInputOnChange={dataInputOnChange}/>

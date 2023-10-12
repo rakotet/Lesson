@@ -1,3 +1,5 @@
+@import './DispCard/dispCard';
+
 %right-wrapper-content {
   display: flex;
   flex-direction: column;
@@ -37,4 +39,8 @@
   .disp-row-name-wrapper {
     @extend %right-disp-row-name-wrapper;
   }
+}
+
+.disp-wrapper-hide {
+  display: none;
 }

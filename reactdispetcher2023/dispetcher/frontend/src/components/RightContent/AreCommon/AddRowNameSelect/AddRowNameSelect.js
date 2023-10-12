@@ -7,7 +7,7 @@ export default function AddRowNameSelect({dataName, placeholder, name, dataInput
   return(
     <div className="addRowNameInput-wrap">
       <div className="addRowNameInput-name">{dataName}</div>
-      <SelectData namePlaceholder={placeholder} nameArr={dataGroup} name={name} margin = {false} dataInputOnChange={dataInputOnChange} />
+      <SelectData namePlaceholder={placeholder} nameArr={dataGroup} name={name} margin = {false} dataInputOnChange={dataInputOnChange}/>
     </div>
   )
 }
