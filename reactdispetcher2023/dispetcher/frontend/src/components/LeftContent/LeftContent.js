@@ -1,10 +1,10 @@
 import RowData from "./RowData/RowData";
 import logout from '../../../public/images/logout.png';
 import collapse from '../../../public/images/collapse.png';
+import { url } from '../../core/core';
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { userDataStore, setActiveRow, nameRowData, activRightContent, roleUsers } from "../store/reduser";
-
+import { userDataStore, setActiveRow, nameRowData, activRightContent, roleUsers, updateLeftContent } from "../store/reduser";
 
 export default function LeftContent({collapseData, hideRow}) {
   const [isActiveDisp, setActiveDisp] = useState(true);
@@ -14,8 +14,11 @@ export default function LeftContent({collapseData, hideRow}) {
   const [isActiveMyApplications, setActiveMyApplications] = useState(true);
   const [isActiveMytemplates, setActiveMytemplates] = useState(false);
   const [isActiveAdmins, setActiveAdmins] = useState(true);
+  const [numberDisp, setNumberDisp] = useState(0);
+  const [numberGroup, setNumberGroup] = useState(0);
 
   let userArr = useSelector(userDataStore)
+  let updateLeftContentData = useSelector(updateLeftContent)
   
   const roleUsersData = useSelector(roleUsers)
   let nameRow = useSelector(nameRowData)
@@ -23,6 +26,8 @@ export default function LeftContent({collapseData, hideRow}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    getNumber('getDispNumber', setNumberDisp)
+    getNumber('getGroupNumber', setNumberGroup)
     if(userArr.type == roleUsersData.admin) {
       dispatch(setActiveRow(activRight.disp))
     } else if(userArr.type == roleUsersData.disp) {
@@ -32,7 +37,28 @@ export default function LeftContent({collapseData, hideRow}) {
     } else if(userArr.type == roleUsersData.sa) {
       dispatch(setActiveRow(activRight.admins))
     }
-  }, [userArr])
+  }, [userArr, updateLeftContentData])
+
+  function getNumber(parametr, setNumberDisp) {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({[parametr]: true})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        data = JSON.parse(data)
+        setNumberDisp(data.length)
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
 
   function handleClickDisp() {
     if(!isActiveDisp) {
@@ -90,8 +116,8 @@ export default function LeftContent({collapseData, hideRow}) {
     if(userArr.type == roleUsersData.admin) {
       return (
         <>
-          <RowData name={nameRow.disp} count={202} active={isActiveDisp} click={handleClickDisp} hide='' hideRow={hideRow}/>
-          <RowData name={nameRow.group} count={2} active={isActiveGroup} click={handleClickGroup} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.disp} count={numberDisp} active={isActiveDisp} click={handleClickDisp} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.group} count={numberGroup} active={isActiveGroup} click={handleClickGroup} hide='' hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.disp) {

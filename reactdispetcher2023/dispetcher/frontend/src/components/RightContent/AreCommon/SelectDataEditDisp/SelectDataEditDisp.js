@@ -1,9 +1,9 @@
 import { useState } from "react"
 import imgDown from './image/Chevron_Down.png'
 
-export default function SelectDataEditDisp({namePlaceholder, nameArr = [], name = '', margin = true, dataInputOnChange}) {
+export default function SelectDataEditDisp({namePlaceholder, nameArr = [], name = '', margin = true, dataInputOnChange, valueEdit}) {
   const [rotation, setRotation] = useState(true);
-  const [valueInput, setValueInput] = useState('');
+  const [valueInput, setValueInput] = useState(valueEdit);
 
   function handleClick() {
     setRotation(!rotation)
@@ -28,7 +28,7 @@ export default function SelectDataEditDisp({namePlaceholder, nameArr = [], name 
         })}
         
       </div>
-      <input className={margin ? '' : 'selectData-wrapper-margin'} name={name} type="text" placeholder={namePlaceholder} readOnly={true} defaultValue={valueInput} />
+      <input className={margin ? '' : 'selectData-wrapper-margin'} name={name} type="text" placeholder={namePlaceholder} readOnly={true} value={valueInput} />
     </div>
   )
 }

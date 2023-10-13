@@ -2,8 +2,8 @@ import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput";
 import { useState, useEffect } from "react";
 import ButtonEdit from "../AreCommon/ButtonEdit/ButtonEdit";
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
-import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, setSelectSubdivision } from "../../store/reduser";
+import { useDispatch } from 'react-redux';
+import { setSelectSubdivision, setDispSelectTwo } from "../../store/reduser";
 import { url } from '../../../core/core';
 import AddRowNameSelectEditDisp from "../AreCommon/AddRowNameSelectEditDisp/AddRowNameSelectEditDisp";
 import AddRowNameSelectTwoEditDisp from "../AreCommon/AddRowNameSelectTwoEditDisp/AddRowNameSelectTwoEditDisp";
@@ -11,8 +11,6 @@ import AddRowNameSelectTwoEditDisp from "../AreCommon/AddRowNameSelectTwoEditDis
 export default function EditDisp({editDisp, companyCardData}) {
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
-  const [valueInput, setValueInput] = useState(companyCardData.userSubdivision);
-  let activRight = useSelector(activRightContent)
   const dispatch = useDispatch()
 
   let group = []
@@ -22,6 +20,21 @@ export default function EditDisp({editDisp, companyCardData}) {
   function divideArr(arrData) {
     for(let i = 0; i < arrData.length; i++) {
       group.push(arrData[i].nameGroup)
+    }
+  }
+
+  function dispArrDivision(data) {
+    for(let i = 0; i< data.length; i++) {
+      if(data[i].nameGroup == companyCardData.userGroup) {
+        data = JSON.parse(data[i].divisions)
+        let arr = []
+
+        for(let key in data) {
+          arr.push(data[`${key}`].nameDivisions)
+        }
+
+        dispatch(setSelectSubdivision(arr))
+      }
     }
   }
 
@@ -41,6 +54,7 @@ export default function EditDisp({editDisp, companyCardData}) {
         data = JSON.parse(data)
         setArrGroup(n => [...data])
         divideArr(data)
+        dispArrDivision(data)
       })
       .catch((er) => {
         console.log(er)
@@ -48,9 +62,9 @@ export default function EditDisp({editDisp, companyCardData}) {
   }
 
   useEffect(() => {
-    console.log('editDisp')
     backDataGroup()
-    setDataInput({userName: companyCardData.userName, jobTitle: companyCardData.jobTitle, telephone: companyCardData.telephone, email: companyCardData.email, userGroup: companyCardData.userGroup, userSubdivision: companyCardData.userSubdivision,})
+    setDataInput({userName: companyCardData.userName, jobTitle: companyCardData.jobTitle, telephone: companyCardData.telephone, email: companyCardData.email, userGroup: companyCardData.userGroup, userSubdivision: companyCardData.userSubdivision, id: companyCardData.id})
+    dispatch(setDispSelectTwo([companyCardData.userSubdivision, []]))
   }, [])
 
   function cancellation() { // переход в disp
@@ -59,11 +73,8 @@ export default function EditDisp({editDisp, companyCardData}) {
   }
 
   function dataInputBack() {
-    console.log('dataInput1')
-    console.log(dataInput)
-
     let lengthDataInput = Object.keys(dataInput).length
-    if(lengthDataInput = 6) {
+    if(lengthDataInput = 7) {
       let count = 0
       for(let key in dataInput) {
         if(dataInput[key] == '') count++
@@ -74,42 +85,35 @@ export default function EditDisp({editDisp, companyCardData}) {
           alert('Введите верный сотовый номер')
         } else {
           if((dataInput.telephone).length == 11) {
-
-            console.log('dataInputYes')
-            console.log(dataInput)
-           
-            // fetch(url.urlBack1, {
-            //   method: 'POST',
-            //   header: {
-            //     'content-type': 'application/x-www-form-urlencoded',
-            //   },
-            //   body: JSON.stringify({dataInputDisp: dataInput})
+      
+            fetch(url.urlBack1, {
+              method: 'POST',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+              },
+              body: JSON.stringify({updateDisp: dataInput})
             
-            //   })
-            //   .then(data => {
-            //     return data.text()
-            //   })
-            //   .then(data => {
-            //     if(data != 'null') {
-            //       alert('Такой login уже существует')
-            //     } else {
-            //         // переход в disp
-            //         dispatch(setSelectSubdivision([]))
-            //         dispatch(setActiveRow(activRight.disp))
-            //     }
-          
-            //   })
-            //   .catch((er) => {
-            //     console.log(er)
-            //   })
+              })
+              .then(data => {
+                return data.text()
+              })
+              .then(data => {
+                //data = JSON.parse(data)
+                //console.log(data)
+
+                cancellation()
+              })
+              .catch((er) => {
+                console.log(er)
+              })
 
           } else alert('Введите верный сотовый номер')
         
         }
         
-      } else alert('Заполните все поля!2')
+      } else alert('Заполните все поля!')
 
-    } else alert('Заполните все поля!1')
+    } else alert('Заполните все поля!')
   }
 
 
@@ -134,9 +138,9 @@ export default function EditDisp({editDisp, companyCardData}) {
 
         dispatch(setSelectSubdivision(divisions))
         delete dataInput.dispSubdivision
-        setValueInput('')
+        dispatch(setDispSelectTwo(['', []]))
 
-        return ({...n, [inputData[0]]: inputData[1]})
+        return ({...n, [inputData[0]]: inputData[1], userSubdivision: ''})
       })
     }
   }
@@ -147,13 +151,12 @@ export default function EditDisp({editDisp, companyCardData}) {
 
   return(
     <div className="addDisp-wrap">
-      {/* {console.log(companyCardData)} */}
       <AddRowNameInput dataName={'Фамилия Имя Отчество'} placeholder={'Введите ФИО'} name={'userName'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.userName}/>
       <AddRowNameInput dataName={'Должность'} placeholder={'Введите должность'} name={'jobTitle'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.jobTitle}/>
       <AddRowNameInput dataName={'Телефон'} placeholder={'Введите телефон'} name={'telephone'} dataInputOnChange={dataInputOnChange} type={'tel'} defaultValue={companyCardData.telephone}/>
       <AddRowNameInput dataName={'Электронная почта'} placeholder={'Введите почту'} name={'email'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.email}/>
-      <AddRowNameSelectEditDisp dataName={'Предприятие'} placeholder={'Выберите предприятие'} name={'userGroup'} dataInputOnChange={dataInputOnChange} arrData={group}/>
-      <AddRowNameSelectTwoEditDisp dataName={'Подразделение'} placeholder={'Выберите подразделение'} name={'userSubdivision'} dataInputOnChange={dataInputOnChangeTwo} valueInput={valueInput} setValueInput={setValueInput} />
+      <AddRowNameSelectEditDisp dataName={'Предприятие'} placeholder={'Выберите предприятие'} name={'userGroup'} dataInputOnChange={dataInputOnChange} arrData={group} valueEdit={companyCardData.userGroup}/>
+      <AddRowNameSelectTwoEditDisp dataName={'Подразделение'} placeholder={'Выберите подразделение'} name={'userSubdivision'} dataInputOnChange={dataInputOnChangeTwo} />
       <div className="addDisp-panell-button">
         <ButtonEdit name={'Сохранить'} dataInputBack={dataInputBack}/>
         <div className="addDisp-delimiter"></div>

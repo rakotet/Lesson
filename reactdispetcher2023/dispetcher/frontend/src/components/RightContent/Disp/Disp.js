@@ -13,6 +13,7 @@ import EditDisp from "../EditDisp/EditDisp"
 
 export default function Disp({setTabName}) {
   const [dataInput, setDataInput] = useState({})
+  const [backDisp, setBackDisp] = useState(1)
   const [dispCardOpen, setDispCardOpen] = useState(true)
   const [dispCardEdit, setDispCardEdit] = useState(true)
   const [companyCardData, setCompanyCardData] = useState({})
@@ -23,7 +24,7 @@ export default function Disp({setTabName}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('disp')
+  
   }, [])
 
   function addDispFunc() {
@@ -53,6 +54,7 @@ export default function Disp({setTabName}) {
   }
 
   function editDisp(data = {}) {
+    setBackDisp(n => n + 1)
     companyCardDataSend(data)
     setDispCardEdit(!dispCardEdit)
     if(dispCardEdit) setTabName(nameRowDataLabel.editDisp)
@@ -74,12 +76,12 @@ export default function Disp({setTabName}) {
               <DownloadReport />
             </div>
             <div>
-              <ListDataNumber />
+              <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
             </div>
           </div>
           <div className="disp-row-name-wrapper">
             <DispRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv}/>
           </div>
         </div>
       </div>

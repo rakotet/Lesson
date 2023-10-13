@@ -1,18 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import imgDown from './image/Chevron_Down.png'
 import { useSelector } from 'react-redux';
-import { selectSubdivision } from "../../../store/reduser";
+import { selectSubdivision, dispSelectTwo } from "../../../store/reduser";
 
-export default function SelectDataTwoEditDisp({namePlaceholder, name = '', margin = true, dataInputOnChange, valueInput, setValueInput}) {
+export default function SelectDataTwoEditDisp({namePlaceholder, name = '', margin = true, dataInputOnChange}) {
   const [rotation, setRotation] = useState(true);
+  let dispSelectTwoData = useSelector(dispSelectTwo)
+  const [val, setVal] = useState('');
   let selectSub = useSelector(selectSubdivision)
+
+  useEffect(() => {
+    setVal(dispSelectTwoData[0])
+  }, [dispSelectTwoData])
 
   function handleClick() {
     setRotation(!rotation)
   }
 
   function dataInput(data) {
-    setValueInput(data)
+    setVal(data)
     setRotation(!rotation)
   }
 
@@ -30,7 +36,7 @@ export default function SelectDataTwoEditDisp({namePlaceholder, name = '', margi
         })}
         
       </div>
-      <input className={margin ? '' : 'selectData-wrapper-margin'} name={name} type="text" placeholder={namePlaceholder} readOnly={true} defaultValue={valueInput} />
+      <input className={margin ? '' : 'selectData-wrapper-margin'} name={name} type="text" placeholder={namePlaceholder} readOnly={true} value={val} />
     </div>
   )
 }

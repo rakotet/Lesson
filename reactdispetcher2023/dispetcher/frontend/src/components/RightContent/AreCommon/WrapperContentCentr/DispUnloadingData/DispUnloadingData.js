@@ -1,9 +1,13 @@
 import edit from './images/Edit.png'
 import trash from './images/Trash.png'
-
+import { useEffect } from 'react'
 
 export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit}) {
   //console.log(data)
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <>

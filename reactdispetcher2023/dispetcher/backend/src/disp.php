@@ -27,5 +27,15 @@
     echo json_encode($db->getDisp('users', '`type` = ?', [2]));
   } 
 
+  if(isset($dataFront['updateDisp'])) {
+    echo json_encode($db->updateDisp('users', [$dataFront['updateDisp']['email'], $dataFront['updateDisp']['jobTitle'], $dataFront['updateDisp']['telephone'], $dataFront['updateDisp']['userGroup'], $dataFront['updateDisp']['userName'], $dataFront['updateDisp']['userSubdivision'], $dataFront['updateDisp']['id'], ]));
+  } 
 
+  if(isset($dataFront['getDispNumber'])) {
+    echo json_encode($db->getDispNumber('users', '`type` = ?', [2]));
+  } 
+
+  if(isset($dataFront['getGroupNumber'])) {
+    echo json_encode($db->getGroupNumber('group'));
+  } 
 ?>

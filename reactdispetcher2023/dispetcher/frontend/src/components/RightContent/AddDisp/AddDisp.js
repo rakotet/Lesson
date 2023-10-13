@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate";
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, setSelectSubdivision } from "../../store/reduser";
+import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent } from "../../store/reduser";
 import { url } from '../../../core/core';
 import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
 import AddRowNameSelectTwo from "../AreCommon/AddRowNameSelectTwo/AddRowNameSelectTwo";
@@ -86,6 +86,7 @@ export default function AddDisp() {
                   alert('Такой login уже существует')
                 } else {
                     // переход в disp
+                    dispatch(setUpdateLeftContent(dataInput.login))
                     dispatch(setSelectSubdivision([]))
                     dispatch(setActiveRow(activRight.disp))
                 }

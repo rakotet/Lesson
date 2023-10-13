@@ -3,7 +3,7 @@ import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellati
 import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate"
 import { useState } from "react"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow } from "../../store/reduser";
+import { activRightContent, setActiveRow, setUpdateLeftContent } from "../../store/reduser";
 import { url } from '../../../core/core';
 
 export default function AddGroup() {
@@ -71,6 +71,7 @@ export default function AddGroup() {
               alert('Такое предприятие уже существует')
             } else {
                 // переход в group
+                dispatch(setUpdateLeftContent(objInputs.nameGroup))
                 dispatch(setActiveRow(activRight.group))
             }
       

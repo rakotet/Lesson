@@ -70,6 +70,33 @@
       return [];
     }
 
+    //Вернуть число диспетчеров
+    public function getDispNumber(string $table_name, string $where, array $values = []) : array{
+      $sql = 'SELECT `id` FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
+    //Вернуть число предприятий
+    public function getGroupNumber(string $table_name, array $values = []) : array{
+      $sql = 'SELECT `id` FROM '.$this->getTableName($table_name);
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
+    //Обновить диспетчера
+    public function updateDisp(string $table_name, array $values = []) {
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `email` = ?, `jobTitle` = ?, `telephone` = ?, `userGroup` = ?, `userName` = ?, `userSubdivision` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
     ////////////////////////////////
 
     public function writeMemo(string $table_name, int $date, int $user_id, string $tema, string $text, string $signs, int $typeMemo) {

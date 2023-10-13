@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv=''}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
@@ -33,7 +33,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
 
   useEffect(() => {
     fetchBack()
-  }, [])
+  }, [backDisp, showMoreActiv])
 
   //console.log(arrGroup)
 
