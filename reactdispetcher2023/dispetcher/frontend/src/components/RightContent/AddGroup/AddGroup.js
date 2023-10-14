@@ -71,8 +71,8 @@ export default function AddGroup() {
               alert('Такое предприятие уже существует')
             } else {
                 // переход в group
-                dispatch(setUpdateLeftContent(objInputs.nameGroup))
                 dispatch(setActiveRow(activRight.group))
+                dispatch(setUpdateLeftContent(objInputs.nameGroup))
             }
       
           })

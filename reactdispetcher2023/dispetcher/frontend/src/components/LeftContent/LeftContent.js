@@ -4,7 +4,7 @@ import collapse from '../../../public/images/collapse.png';
 import { url } from '../../core/core';
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { userDataStore, setActiveRow, nameRowData, activRightContent, roleUsers, updateLeftContent } from "../store/reduser";
+import { userDataStore, setActiveRow, nameRowData, activRightContent, roleUsers, updateLeftContent, activeRowStore } from "../store/reduser";
 
 export default function LeftContent({collapseData, hideRow}) {
   const [isActiveDisp, setActiveDisp] = useState(true);
@@ -17,8 +17,9 @@ export default function LeftContent({collapseData, hideRow}) {
   const [numberDisp, setNumberDisp] = useState(0);
   const [numberGroup, setNumberGroup] = useState(0);
 
+  let activeRow = useSelector(activeRowStore)
   let userArr = useSelector(userDataStore)
-  let updateLeftContentData = useSelector(updateLeftContent)
+  let updateLeft = useSelector(updateLeftContent)
   
   const roleUsersData = useSelector(roleUsers)
   let nameRow = useSelector(nameRowData)
@@ -26,18 +27,37 @@ export default function LeftContent({collapseData, hideRow}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getNumber('getDispNumber', setNumberDisp)
-    getNumber('getGroupNumber', setNumberGroup)
     if(userArr.type == roleUsersData.admin) {
+      getNumber('getDispNumber', setNumberDisp)
+      getNumber('getGroupNumber', setNumberGroup)
       dispatch(setActiveRow(activRight.disp))
+
     } else if(userArr.type == roleUsersData.disp) {
       dispatch(setActiveRow(activRight.auto))
+
     } else if(userArr.type == roleUsersData.user) {
       dispatch(setActiveRow(activRight.myApplications))
+
     } else if(userArr.type == roleUsersData.sa) {
       dispatch(setActiveRow(activRight.admins))
+
     }
-  }, [userArr, updateLeftContentData])
+    
+  }, [userArr])
+
+  useEffect(() => {
+    if(userArr.type == roleUsersData.admin) {
+      getNumber('getDispNumber', setNumberDisp)
+      getNumber('getGroupNumber', setNumberGroup)
+
+    } else if(userArr.type == roleUsersData.disp) {
+
+    } else if(userArr.type == roleUsersData.user) {
+
+    } else if(userArr.type == roleUsersData.sa) {
+
+    }
+  }, [updateLeft])
 
   function getNumber(parametr, setNumberDisp) {
     fetch(url.urlBack1, {

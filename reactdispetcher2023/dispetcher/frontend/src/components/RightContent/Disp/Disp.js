@@ -24,7 +24,7 @@ export default function Disp({setTabName}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-  
+   
   }, [])
 
   function addDispFunc() {
