@@ -1,12 +1,11 @@
 import edit from './images/Edit.png'
 import trash from './images/Trash.png'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit}) {
-  //console.log(data)
+export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp}) {
 
   useEffect(() => {
-
+ 
   }, [])
 
   return (
@@ -36,7 +35,7 @@ export default function DispUnloadingData({data, count, dispCardOpenHide, setDis
               <div className="dispUnloadingData-action">
                 <div className="dispUnloadingData-action-row">
                   <img src={edit} alt="" onClick={() => setDispCardEdit(data[`${index}`])}/>
-                  <img src={trash} alt="" />
+                  <img src={trash} alt="" onClick={() => trashDisp(item)}/>
                 </div>
               </div>
             </div>

@@ -38,4 +38,8 @@
   if(isset($dataFront['getGroupNumber'])) {
     echo json_encode($db->getGroupNumber('group'));
   } 
+
+  if(isset($dataFront['trashDisp'])) {
+    echo json_encode($db->trashDisp('users', '`id` = ?', [$dataFront['trashDisp']]));
+  } 
 ?>

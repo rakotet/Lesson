@@ -6,10 +6,11 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import DispCard from "./DispCard/DispCard"
 import EditDisp from "../EditDisp/EditDisp"
+import { url } from "../../../core/core"
 
 export default function Disp({setTabName}) {
   const [dataInput, setDataInput] = useState({})
@@ -24,7 +25,7 @@ export default function Disp({setTabName}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-   
+  
   }, [])
 
   function addDispFunc() {
@@ -61,6 +62,30 @@ export default function Disp({setTabName}) {
     else setTabName(nameRowDataLabel.disp)
   }
 
+  function trashDisp(item) {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({trashDisp: item.id})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null') {
+          console.log(data)
+        } else {
+          dispatch(setUpdateLeftContent(item.id))
+        }
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditDisp editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -81,7 +106,7 @@ export default function Disp({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <DispRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
           </div>
         </div>
       </div>

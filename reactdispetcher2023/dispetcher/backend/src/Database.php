@@ -97,6 +97,13 @@
       $query->execute($values);
     }
 
+    //Удалить диспетчера
+    public function trashDisp(string $table_name, string $where, array $values = []) {
+      $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
     ////////////////////////////////
 
     public function writeMemo(string $table_name, int $date, int $user_id, string $tema, string $text, string $signs, int $typeMemo) {

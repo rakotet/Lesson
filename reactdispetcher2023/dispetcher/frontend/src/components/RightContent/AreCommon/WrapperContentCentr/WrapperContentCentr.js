@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react"
 import { url } from '../../../../core/core';
-import { actionLkData } from "../../../store/reduser";
+import { actionLkData, updateLeftContent } from "../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv=''}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
+  let updateLeft = useSelector(updateLeftContent)
 
   function fetchBack() {
     fetch(url.urlBack1, {
@@ -33,7 +34,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
 
   useEffect(() => {
     fetchBack()
-  }, [backDisp, showMoreActiv])
+  }, [backDisp, showMoreActiv, updateLeft])
 
   //console.log(arrGroup)
 
@@ -41,7 +42,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     if(actionLk == actionLkUnloading.getGroupData) {
       return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide}/>
     } else if(actionLk == actionLkUnloading.getDispData) {
-      return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit}/>
+      return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
     } else if(false) {
 
     }
