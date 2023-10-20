@@ -45,7 +45,8 @@ const dataSlice = createSlice({
     },
     actionLkData: {
       getDispData: 'getDispData',
-      getGroupData: 'getGroupData'
+      getGroupData: 'getGroupData',
+      getAutoData: 'getAutoData'
     },
     selectSubdivision: [],
     dispSelectOne: [],

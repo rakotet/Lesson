@@ -42,4 +42,8 @@
   if(isset($dataFront['trashDisp'])) {
     echo json_encode($db->trashDisp('users', '`id` = ?', [$dataFront['trashDisp']]));
   } 
+
+  if(isset($dataFront['getAutoData'])) {
+    echo json_encode(['AutoData']);
+  } 
 ?>

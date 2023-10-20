@@ -1,8 +1,46 @@
+import ButtonAdd from "../AreCommon/ButtonAdd/ButtonAdd"
+import AutoRowNameWrapper from "../AreCommon/AutoRowNameWrapper/AutoRowNameWrapper"
+import DownloadReport from "../AreCommon/DownloadReport/DownloadReport"
+import ListDataNumber from "../AreCommon/ListDataNumber/ListDataNumber"
+import SearchData from "../AreCommon/Search/SearchData"
+import SelectData from "../AreCommon/SelectData/SelectData"
+import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
+import { useDispatch, useSelector } from 'react-redux';
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent } from "../../store/reduser";
+import { useState, useEffect } from "react"
+import { url } from "../../../core/core"
+import Datepicker from "../AreCommon/Datepicker/Datepicker"
+import TimePicker from "../AreCommon/TimePicker/TimePicker"
+
 export default function Auto() {
+  const [dispCardOpen, setDispCardOpen] = useState(true)
+  const [dispCardEdit, setDispCardEdit] = useState(true)
+  const [showMoreActiv, setShowMoreActiv] = useState(10)
+  const [backDisp, setBackDisp] = useState(1)
+
+  let actionLk = useSelector(actionLkData)
 
   return(
-    <>
-      <p>Auto</p>
-    </>
+    <div className={dispCardEdit ? '' : 'disp-wrapper-hide' }>
+      <div className={dispCardOpen ? 'disp-wrapper' : 'disp-wrapper-hide' }>
+        <div className="disp-row">
+          <div className="disp-row-menu">
+            <ButtonAdd addFunc={() => {}}/>
+            <SearchData />
+            <SelectData namePlaceholder={'Выбрать марку'} nameArr={['test1','test2','test3','test4','test5']} name={'autoMarc'} dataInputOnChange={() => {}}/>
+            <Datepicker />
+            <TimePicker />
+            <DownloadReport />
+          </div>
+          <div>
+            <ListDataNumber setShowMoreActiv={() => {}}/>
+          </div>
+        </div>
+        <div className="disp-row-name-wrapper">
+          <AutoRowNameWrapper />
+          <WrapperContentCentr label="Записей не найдено. Добавьте нового автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={() => {}} setDispCardEdit={() => {}} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={() => {}}/>
+        </div>
+      </div>
+    </div>
   )
 }

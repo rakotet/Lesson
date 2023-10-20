@@ -4,6 +4,7 @@ import { actionLkData, updateLeftContent } from "../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
+import AutoUnloadingData from "./AutoUnloadingData/AutoUnloadingData";
 
 export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp}) {
   const [arrGroup, setArrGroup] = useState([])
@@ -43,8 +44,8 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
       return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide}/>
     } else if(actionLk == actionLkUnloading.getDispData) {
       return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
-    } else if(false) {
-
+    } else if(actionLk == actionLkUnloading.getAutoData) {
+      return <AutoUnloadingData />
     }
   }
 

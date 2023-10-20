@@ -188,7 +188,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
           let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n'
           console.log(mess)
           mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
-          sendTelega2(mess)
+          //sendTelega2(mess)
           //opn('https://www.binance.com/ru/futures/' + coin)
           timeOpenSymbolDamp[coin][0] = 1
           setTimeout(() => {
