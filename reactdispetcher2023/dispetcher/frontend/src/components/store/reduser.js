@@ -21,7 +21,8 @@ const dataSlice = createSlice({
       addGroup: 'Добавить предприятие',
       companyCard: 'Карточка предприятия',
       dispCard: 'Карточка диспетчера',
-      editDisp: 'Редактирование диспетчера'
+      editDisp: 'Редактирование диспетчера',
+      addAuto: 'Добавить автотранспорт'
     },
     activRightContent: {
       disp: 'disp',
@@ -35,7 +36,8 @@ const dataSlice = createSlice({
       addGroup: 'addGroup',
       companyCard: 'companyCard',
       dispCard: 'dispCard',
-      editDisp: 'editDisp'
+      editDisp: 'editDisp',
+      addAuto: 'addAuto'
     },
     roleUsers: {
       admin: 1,

@@ -17,15 +17,21 @@ export default function Auto() {
   const [dispCardEdit, setDispCardEdit] = useState(true)
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [backDisp, setBackDisp] = useState(1)
-
+  const dispatch = useDispatch()
+  
+  let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
+
+  function addAutoFunc() {
+    dispatch(setActiveRow(activRight.addAuto))
+  }
 
   return(
     <div className={dispCardEdit ? '' : 'disp-wrapper-hide' }>
       <div className={dispCardOpen ? 'disp-wrapper' : 'disp-wrapper-hide' }>
         <div className="disp-row">
           <div className="disp-row-menu">
-            <ButtonAdd addFunc={() => {}}/>
+            <ButtonAdd addFunc={addAutoFunc}/>
             <SearchData />
             <SelectData namePlaceholder={'Выбрать марку'} nameArr={['test1','test2','test3','test4','test5']} name={'autoMarc'} dataInputOnChange={() => {}}/>
             <Datepicker />

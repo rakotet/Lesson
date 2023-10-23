@@ -10,6 +10,7 @@ import MyTemplates from './MyTemplates/MyTemplates';
 import Admins from './Admins/Admins';
 import AddDisp from './AddDisp/AddDisp';
 import AddGroup from './AddGroup/AddGroup';
+import AddAuto from './AddAuto/AddAuto';
 
 export default function RightContent() {
   const [tabName, setTabName] = useState('')
@@ -40,6 +41,8 @@ export default function RightContent() {
       setTabName(nameRow.companyCard)
     }  else if(activeData == activRightContentData.editDisp) {
       setTabName(nameRow.editDisp)
+    } else if(activeData == activRightContentData.addAuto) {
+      setTabName(nameRow.addAuto)
     } 
 
   }, [activeData])
@@ -81,6 +84,10 @@ export default function RightContent() {
     } else if(activeData == activRightContentData.addGroup) {
       return(
         <AddGroup />
+      )
+    } else if(activeData == activRightContentData.addAuto) {
+      return(
+        <AddAuto />
       )
     } 
   }

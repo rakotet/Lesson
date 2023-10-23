@@ -104,6 +104,38 @@
       $query->execute($values);
     }
 
+    //Добавить машину
+    public function addAuto(string $table_name, array $values = []) {
+      // $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`nameGroup`, `supervisor`, `divisions`) VALUES ('$nameGroup', '$supervisor', '$divisions')";
+      // $this->pdo->exec($sql);
+
+      //return $values;
+
+      $userGroup = $values['userGroup'];
+      
+      $sql = 'SELECT `autoNumber`, `divisions` FROM `lib_group` WHERE `nameGroup` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$userGroup]);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      $result = $result[0];
+
+      $autoNumber = ((int) $result['autoNumber']) + 1;
+      $divisions = json_decode($result['divisions'], true);
+
+      foreach ($divisions as $key => $value) {
+        if($value['nameDivisions'] == $values['userSubdivision']) {
+          $divisions[$key]['autoNumber'] = $divisions[$key]['autoNumber'] + 1;
+        }
+      }
+
+      $divisions = json_encode($divisions, JSON_UNESCAPED_UNICODE);
+
+      $sql = 'UPDATE '.$this->getTableName('group').' SET `autoNumber` = ?, `divisions` = ? WHERE `nameGroup` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$autoNumber, $divisions, $userGroup]);
+      
+    }
+
     ////////////////////////////////
 
     public function writeMemo(string $table_name, int $date, int $user_id, string $tema, string $text, string $signs, int $typeMemo) {

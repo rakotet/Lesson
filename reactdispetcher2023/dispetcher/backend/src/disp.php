@@ -46,4 +46,8 @@
   if(isset($dataFront['getAutoData'])) {
     echo json_encode(['AutoData']);
   } 
+
+  if(isset($dataFront['dataInputAuto'])) {
+    echo json_encode($db->addAuto('auto', ['userGroup' => $dataFront['dataInputAuto']['userGroup'], 'userSubdivision' => $dataFront['dataInputAuto']['userSubdivision']]));
+  } 
 ?>
