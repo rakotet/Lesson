@@ -48,6 +48,6 @@
   } 
 
   if(isset($dataFront['dataInputAuto'])) {
-    echo json_encode($db->addAuto('auto', ['userGroup' => $dataFront['dataInputAuto']['userGroup'], 'userSubdivision' => $dataFront['dataInputAuto']['userSubdivision']]));
+    echo json_encode($db->addAuto('auto', ['userGroup' => $dataFront['dataInputAuto']['userGroup'], 'userSubdivision' => $dataFront['dataInputAuto']['userSubdivision'], 'idDisp' => $dataFront['dataInputAuto']['idDisp'], 'marc' => $dataFront['dataInputAuto']['marc'], 'gossNumber' => $dataFront['dataInputAuto']['gossNumber'], 'yearOfIssue' => $dataFront['dataInputAuto']['yearOfIssue'], 'view' => $dataFront['dataInputAuto']['view'], 'driver' => $dataFront['dataInputAuto']['driver'], 'telephone' => $dataFront['dataInputAuto']['telephone'], 'status' => $dataFront['dataInputAuto']['status'] ]));
   } 
 ?>

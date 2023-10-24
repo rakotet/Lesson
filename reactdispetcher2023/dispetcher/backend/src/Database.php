@@ -104,15 +104,22 @@
       $query->execute($values);
     }
 
-    //Добавить машину
+    //Добавить машину так же в предприятие и диспетчера
     public function addAuto(string $table_name, array $values = []) {
-      // $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`nameGroup`, `supervisor`, `divisions`) VALUES ('$nameGroup', '$supervisor', '$divisions')";
-      // $this->pdo->exec($sql);
-
-      //return $values;
-
       $userGroup = $values['userGroup'];
-      
+      $userSubdivision = $values['userSubdivision'];
+      $idDisp = $values['idDisp'];
+      $marc = $values['marc'];
+      $gossNumber = $values['gossNumber'];
+      $yearOfIssue = (int) $values['yearOfIssue'];
+      $view = $values['view'];
+      $driver = $values['driver'];
+      $telephone = (int) $values['telephone'];
+      $status = $values['status'];
+
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`autoGroup`, `autoSubdivision`, `idAddDisp`, `marc`, `gossNumber`, `yearOfIssue`, `view`, `driver`, `telephone`, `status`) VALUES ('$userGroup', '$userSubdivision', '$idDisp', '$marc', '$gossNumber', '$yearOfIssue', '$view', '$driver', '$telephone', '$status')";
+      $this->pdo->exec($sql);
+
       $sql = 'SELECT `autoNumber`, `divisions` FROM `lib_group` WHERE `nameGroup` = ?';
       $query = $this->pdo->prepare($sql);
       $query->execute([$userGroup]);
@@ -123,7 +130,7 @@
       $divisions = json_decode($result['divisions'], true);
 
       foreach ($divisions as $key => $value) {
-        if($value['nameDivisions'] == $values['userSubdivision']) {
+        if($value['nameDivisions'] == $userSubdivision) {
           $divisions[$key]['autoNumber'] = $divisions[$key]['autoNumber'] + 1;
         }
       }
@@ -134,6 +141,15 @@
       $query = $this->pdo->prepare($sql);
       $query->execute([$autoNumber, $divisions, $userGroup]);
       
+      $sql = 'SELECT `auto` FROM `lib_users` WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$idDisp]);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      $dispAuto = ((int) $result[0]['auto']) + 1;
+      
+      $sql = 'UPDATE '.$this->getTableName('users').' SET `auto` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$dispAuto, $idDisp]);
     }
 
     ////////////////////////////////

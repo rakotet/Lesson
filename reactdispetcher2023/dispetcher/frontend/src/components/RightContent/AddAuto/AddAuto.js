@@ -27,7 +27,7 @@ export default function AddAuto() {
 
   function dataInputBack() {
     let lengthDataInput = Object.keys(dataInput).length
-    if(lengthDataInput >= 8) {
+    if(lengthDataInput >= 7) {
       let count = 0
       for(let key in dataInput) {
         if(dataInput[key] == '') count++
@@ -59,16 +59,12 @@ export default function AddAuto() {
                   })
                   .then(data => {
                     if(data != 'null') {
-                      console.log(data)
-                      console.log(JSON.parse(data))
-                      
-                      //alert('Такой госс номер уже существует')
+                      alert('Такой госс номер уже существует')
                     } else {
-                      console.log('ok')
-                        // переход в auto
-                        // dispatch(setUpdateLeftContent(dataInput.gossNumber))
-                        // dispatch(setSelectSubdivision([]))
-                        // dispatch(setActiveRow(activRight.auto))
+                        //переход в auto
+                        dispatch(setUpdateLeftContent(dataInput.gossNumber))
+                        dispatch(setSelectSubdivision([]))
+                        dispatch(setActiveRow(activRight.auto))
                     }
               
                   })
@@ -104,7 +100,7 @@ export default function AddAuto() {
       setDataInput(n => {
         setValueInput('')
 
-        return ({...n, [inputData[0]]: inputData[1]})
+        return ({...n, [inputData[0]]: (inputData[1]).trim()})
       })
     }
   }
@@ -112,9 +108,8 @@ export default function AddAuto() {
   return(
     <div className="addDisp-wrap">
       <AddRowNameInput dataName={'Марка'} placeholder={'Введите название'} name={'marc'} dataInputOnChange={dataInputOnChange}/>
-      <AddRowNameInput dataName={'Государственный номер'} placeholder={'Введите номер'} name={'gossNumber '} dataInputOnChange={dataInputOnChange}/>
+      <AddRowNameInput dataName={'Государственный номер'} placeholder={'Введите номер'} name={'gossNumber'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Год выпуска'} placeholder={'Введите год'} name={'yearOfIssue'} dataInputOnChange={dataInputOnChange} type={'tel'}/>
-      <AddRowNameInput dataName={'Электронная почта'} placeholder={'Введите почту'} name={'email'} dataInputOnChange={dataInputOnChange} />
       <AddRowNameSelect dataName={'Вид'} placeholder={'Выберите вид'} name={'view'} dataInputOnChange={dataInputOnChange} arrData={['Аренда', 'Собственность']}/>
       <AddRowNameInput dataName={'Водитель'} placeholder={'Введите ФИО'} name={'driver'} dataInputOnChange={dataInputOnChange} />
       <AddRowNameInput dataName={'Телефон'} placeholder={'Введите телефон'} name={'telephone'} dataInputOnChange={dataInputOnChange} />
