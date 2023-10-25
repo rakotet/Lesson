@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { url } from '../../../../core/core';
-import { actionLkData, updateLeftContent } from "../../../store/reduser";
+import { actionLkData, updateLeftContent, userDataStore } from "../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
@@ -11,6 +11,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
   let updateLeft = useSelector(updateLeftContent)
+  let dispId = useSelector(userDataStore)
 
   function fetchBack() {
     fetch(url.urlBack1, {
@@ -18,7 +19,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
       header: {
         'content-type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({[actionLk]: true})
+      body: JSON.stringify({[actionLk]: dispId.id})
     
       })
       .then(data => {
@@ -45,7 +46,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     } else if(actionLk == actionLkUnloading.getDispData) {
       return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
     } else if(actionLk == actionLkUnloading.getAutoData) {
-      return <AutoUnloadingData />
+      return <AutoUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
     }
   }
 

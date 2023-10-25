@@ -44,7 +44,7 @@
   } 
 
   if(isset($dataFront['getAutoData'])) {
-    echo json_encode(['AutoData']);
+    echo json_encode($db->getAutoData('auto', '`idAddDisp` = ?', [$dataFront['getAutoData']]));
   } 
 
   if(isset($dataFront['dataInputAuto'])) {
