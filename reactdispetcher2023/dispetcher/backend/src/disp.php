@@ -50,4 +50,12 @@
   if(isset($dataFront['dataInputAuto'])) {
     echo json_encode($db->addAuto('auto', ['userGroup' => $dataFront['dataInputAuto']['userGroup'], 'userSubdivision' => $dataFront['dataInputAuto']['userSubdivision'], 'idDisp' => $dataFront['dataInputAuto']['idDisp'], 'marc' => $dataFront['dataInputAuto']['marc'], 'gossNumber' => $dataFront['dataInputAuto']['gossNumber'], 'yearOfIssue' => $dataFront['dataInputAuto']['yearOfIssue'], 'view' => $dataFront['dataInputAuto']['view'], 'driver' => $dataFront['dataInputAuto']['driver'], 'telephone' => $dataFront['dataInputAuto']['telephone'], 'status' => $dataFront['dataInputAuto']['status'] ]));
   } 
+
+  if(isset($dataFront['updateAuto'])) {
+    echo json_encode($db->updateAuto('auto', [$dataFront['updateAuto']['marc'], $dataFront['updateAuto']['gossNumber'], $dataFront['updateAuto']['yearOfIssue'], $dataFront['updateAuto']['view'], $dataFront['updateAuto']['driver'], $dataFront['updateAuto']['telephone'], $dataFront['updateAuto']['status'], $dataFront['updateAuto']['id']]));
+  } 
+
+  if(isset($dataFront['trashAuto'])) {
+    echo json_encode($db->trashAuto('auto', '`id` = ?', [$dataFront['trashAuto']]));
+  } 
 ?>

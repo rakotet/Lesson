@@ -59,7 +59,7 @@ export default function RightContent() {
       )
     } else if(activeData == activRightContentData.auto) {
       return(
-       <Auto />
+       <Auto setTabName={setTabName}/>
       )
     } else if(activeData == activRightContentData.applications) {
       return(

@@ -162,6 +162,19 @@
       return [];
     }
 
+    //Обновить машину
+    public function updateAuto(string $table_name, array $values = []) {
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `marc` = ?, `gossNumber` = ?, `yearOfIssue` = ?, `view` = ?, `driver` = ?, `telephone` = ?, `status` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
+    //Удалить машину
+    public function trashAuto(string $table_name, string $where, array $values = []) {
+      $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
     ////////////////////////////////
 
     public function writeMemo(string $table_name, int $date, int $user_id, string $tema, string $text, string $signs, int $typeMemo) {

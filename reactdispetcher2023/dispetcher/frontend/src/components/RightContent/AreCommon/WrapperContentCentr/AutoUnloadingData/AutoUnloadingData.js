@@ -3,7 +3,7 @@ import trash from './images/Trash.png'
 import { useEffect, useState } from 'react'
 
 export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp}) {
-console.log(data)
+
   useEffect(() => {
  
   }, [])
@@ -14,10 +14,10 @@ console.log(data)
         if(index < count) {
           return(
             <div key={index} className="dispUnloadingData">
-              <div className="autoUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
+              <div className="autoUnloadingData-namber" >
                 <div>{index + 1}</div>
               </div>
-              <div className="autoUnloadingData-auto" >
+              <div className="autoUnloadingData-auto" onClick={() => dispCardOpenHide(data[`${index}`])}>
                 <div>
                   <div className='autoUnloadingData-margin'>{item.marc}</div>
                   <div>{(item.gossNumber).toUpperCase()}</div>
@@ -30,10 +30,10 @@ console.log(data)
                 </div>
               </div>
               <div className="autoUnloadingData-freeTimeToday">
-                <div>{item.freeTimeToday}</div>
+                <div>{item.freeTimeToday == null ? 'Свободен' : item.freeTimeToday}</div>
               </div>
               <div className="autoUnloadingData-freeTimeTomorrow">
-                <div>{item.freeTimeTomorrow}</div>
+                <div>{item.freeTimeTomorrow == null ? 'Свободен' : item.freeTimeTomorrow}</div>
               </div>
               <div className="autoUnloadingData-yearOfIssue">
                 <div>{item.yearOfIssue}</div>
