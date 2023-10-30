@@ -1,0 +1,15 @@
+@import './ApplicationsCard/applicationsCard';
+
+.applications-margin {
+  margin-left: 10px;
+}
+
+.applications-rowUp {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+}
+
+.applications-rowUp-hide {
+  display: none;
+}

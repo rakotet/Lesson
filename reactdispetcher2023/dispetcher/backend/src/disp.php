@@ -58,4 +58,8 @@
   if(isset($dataFront['trashAuto'])) {
     echo json_encode($db->trashAuto('auto', '`id` = ?', [$dataFront['trashAuto']]));
   } 
+
+  if(isset($dataFront['getApplicationsData'])) {
+    echo json_encode(['getApplicationsData']);
+  } 
 ?>

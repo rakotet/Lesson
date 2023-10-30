@@ -11,6 +11,7 @@ import Admins from './Admins/Admins';
 import AddDisp from './AddDisp/AddDisp';
 import AddGroup from './AddGroup/AddGroup';
 import AddAuto from './AddAuto/AddAuto';
+import AddApplications from './AddApplications/AddApplications';
 
 export default function RightContent() {
   const [tabName, setTabName] = useState('')
@@ -43,6 +44,8 @@ export default function RightContent() {
       setTabName(nameRow.editDisp)
     } else if(activeData == activRightContentData.addAuto) {
       setTabName(nameRow.addAuto)
+    } else if(activeData == activRightContentData.addAuto) {
+      setTabName(nameRow.addApplications)
     } 
 
   }, [activeData])
@@ -63,7 +66,7 @@ export default function RightContent() {
       )
     } else if(activeData == activRightContentData.applications) {
       return(
-        <Applications />
+        <Applications setTabName={setTabName}/>
       )
     } else if(activeData == activRightContentData.myApplications) {
       return(
@@ -88,6 +91,10 @@ export default function RightContent() {
     } else if(activeData == activRightContentData.addAuto) {
       return(
         <AddAuto />
+      )
+    } else if(activeData == activRightContentData.addApplications) {
+      return(
+        <AddApplications />
       )
     } 
   }

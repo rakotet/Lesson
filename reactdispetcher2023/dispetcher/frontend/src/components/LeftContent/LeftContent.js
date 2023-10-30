@@ -177,7 +177,7 @@ export default function LeftContent({collapseData, hideRow}) {
               </a>
               <a href="?logout" className={hideRow ? '' : 'leftContent-hide'}>Выйти</a>
             </div>
-            <div className="leftContent-bottom-collapse">
+            <div className={hideRow ? 'leftContent-bottom-collapse' : 'leftContent-bottom-collapse-false'}>
               <div></div>
               <img src={collapse} alt="" style={hideRow ? {transform: "none"} : {transform: "rotate(180deg)"}} onClick={collapseData}/>
             </div>

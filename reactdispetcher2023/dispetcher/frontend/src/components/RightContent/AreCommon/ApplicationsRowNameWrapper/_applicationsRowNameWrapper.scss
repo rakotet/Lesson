@@ -1,0 +1,99 @@
+%right-applicationsRowNameWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: aliceblue;
+  background: #FFFFFF;
+  margin-top: 20px;
+  margin-right: 30px;
+  margin-bottom: 2px;
+  padding-left: 15px;
+  padding-right: 25px;
+}
+
+.applicationsRowNameWrapper {
+  @extend %right-applicationsRowNameWrapper;
+}
+
+.applicationsRowNameWrapper-input {
+  width: 40px;
+  
+  input[id="cb1"] + label {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #0078A8;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  input[id="cb1"]:checked + label:after {
+    position: relative;
+    top: -4px;
+    left: 2px;
+    content: '\2714';
+    font-size: 14px;
+  }
+  input[id="cb1"] {
+    display: none;
+  }
+}
+
+.applicationsRowNameWrapper-one {
+  width: 75px;
+}
+
+.applicationsRowNameWrapper-two {
+  width: 120px;
+}
+
+.applicationsRowNameWrapper-three {
+  width: 160px;
+}
+
+.applicationsRowNameWrapper-four {
+  width: 105px;
+}
+
+.applicationsRowNameWrapper-five {
+  width: 75px;
+}
+
+.applicationsRowNameWrapper-six {
+  width: 120px;
+}
+
+.applicationsRowNameWrapper-seven {
+  width: 120px;
+}
+
+.applicationsRowNameWrapper-eight {
+  width: 100px;
+}
+
+.applicationsRowNameWrapper-nine {
+  width: 120px;
+}
+
+.applicationsRowNameWrapper-ten {
+  width: 120px;
+}
+
+.applicationsRowNameWrapper-eleven {
+  width: 130px;
+}
+
+.applicationsRowNameWrapper-twelve {
+  width: 140px;
+}
+
+.applicationsRowNameWrapper-thirteen {
+  width: 120px;
+}
+
+.applicationsRowNameWrapper-fourteen {
+  width: 120px;
+}
