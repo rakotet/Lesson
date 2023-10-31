@@ -44,7 +44,7 @@ export default function RightContent() {
       setTabName(nameRow.editDisp)
     } else if(activeData == activRightContentData.addAuto) {
       setTabName(nameRow.addAuto)
-    } else if(activeData == activRightContentData.addAuto) {
+    } else if(activeData == activRightContentData.addApplications) {
       setTabName(nameRow.addApplications)
     } 
 

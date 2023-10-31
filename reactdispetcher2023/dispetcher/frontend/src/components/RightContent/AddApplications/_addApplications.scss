@@ -1,0 +1,51 @@
+.addApplications-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.addApplications-margin {
+  margin-right: 50px;
+}
+
+.addApplications-flex {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px !important;
+
+  .addApplications-delimiter {
+    margin-left: 20px;
+  }
+}
+
+.addApplications-file {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 1565px;
+  height: 216px;
+  border: 1px dashed #DADADA;
+  margin-bottom: 20px;
+
+  .addApplications-file-one {
+    font-family: Houschka Pro;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #333333; 
+    margin-bottom: 20px;   
+  }
+
+  .addApplications-file-two {
+    font-family: Houschka Pro;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #707274;    
+    margin-bottom: 20px;   
+  }
+}

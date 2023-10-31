@@ -62,4 +62,8 @@
   if(isset($dataFront['getApplicationsData'])) {
     echo json_encode(['getApplicationsData']);
   } 
+
+  if(isset($dataFront['dataInputApplications'])) {
+    echo json_encode($db->addApplications('applications', $dataFront['dataInputApplications']['dateOfApplication'], $dataFront['dataInputApplications']['submissionTime'], $dataFront['dataInputApplications']['submissionAddress'], $dataFront['dataInputApplications']['arrivalAddress'], $dataFront['dataInputApplications']['rideWithAnticipation'], $dataFront['dataInputApplications']['comment'], $dataFront['dataInputApplications']['timeOfUseOfTransport'], $dataFront['dataInputApplications']['purposeOfTheTrip'], $dataFront['dataInputApplications']['applicationInitiator'], $dataFront['dataInputApplications']['jobTitle'], $dataFront['dataInputApplications']['subdivision'], $dataFront['dataInputApplications']['initiatorPhone'], $dataFront['dataInputApplications']['carClass'], $dataFront['dataInputApplications']['numberOfPassengers'], $dataFront['dataInputApplications']['namePassengers'], $dataFront['dataInputApplications']['passengersPhone'], $dataFront['dataInputApplications']['idDisp']));
+  } 
 ?>

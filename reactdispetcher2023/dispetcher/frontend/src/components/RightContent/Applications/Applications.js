@@ -55,7 +55,7 @@ export default function Applications({setTabName}) {
     companyCardDataSend(data)
     setDispCardOpen(!dispCardOpen)
     if(dispCardOpen) setTabName(nameRowDataLabel.applicationsCard)
-    else setTabName(nameRowDataLabel.Applications)
+    else setTabName(nameRowDataLabel.applications)
   }
 
   function companyCardDataSend(data = {}) {
@@ -67,7 +67,7 @@ export default function Applications({setTabName}) {
     companyCardDataSend(data)
     setDispCardEdit(!dispCardEdit)
     if(dispCardEdit) setTabName(nameRowDataLabel.editApplications)
-    else setTabName(nameRowDataLabel.Applications)
+    else setTabName(nameRowDataLabel.applications)
   }
 
   function trashDisp(item) {

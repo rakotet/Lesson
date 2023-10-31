@@ -1,5 +1,3 @@
-
-
 export default function ButtonCancellation({name, cancellation}) {
   return(
     <div className="buttonCancellation-wrap" onClick={cancellation}>

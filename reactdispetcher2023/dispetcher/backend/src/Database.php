@@ -175,6 +175,22 @@
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
     }
+
+    //Добавить заявку от диспетчера
+    public function addApplications(string $table_name, string $dateOfApplication , string $submissionTime, string $submissionAddress, string $arrivalAddress, string $rideWithAnticipation, string $comment, string $timeOfUseOfTransport, string $purposeOfTheTrip, string $applicationInitiator, string $jobTitle, string $subdivision, string $initiatorPhone, string $carClass, string $numberOfPassengers, string $namePassengers, string $passengersPhone, string $idDisp) {
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`dateOfApplication`, `submissionTime`, `submissionAddress`, `arrivalAddress`, `rideWithAnticipation`, `comment`, `timeOfUseOfTransport`, `purposeOfTheTrip`, `applicationInitiator`, `jobTitle`, `subdivision`, `initiatorPhone`, `carClass`, `numberOfPassengers`, `namePassengers`, `passengersPhone`, `idDisp`) VALUES ('$dateOfApplication', '$submissionTime', '$submissionAddress', '$arrivalAddress', '$rideWithAnticipation', '$comment', '$timeOfUseOfTransport', '$purposeOfTheTrip', '$applicationInitiator', '$jobTitle', '$subdivision', '$initiatorPhone', '$carClass', '$numberOfPassengers', '$namePassengers', '$passengersPhone', '$idDisp')";
+      $this->pdo->exec($sql);
+    }
+
+
+
+
+
+
+
+
+
+
     ////////////////////////////////
 
     public function writeMemo(string $table_name, int $date, int $user_id, string $tema, string $text, string $signs, int $typeMemo) {

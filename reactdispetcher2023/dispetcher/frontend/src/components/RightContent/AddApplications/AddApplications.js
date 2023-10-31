@@ -1,8 +1,135 @@
+import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput";
+import AddRowNameDate from "../AreCommon/AddRowNameDate/AddRowNameDate";
+import AddRowNameTime from "../AreCommon/AddRowNameTime/AddRowNameTime";
+import { useState, useEffect } from "react";
+import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate";
+import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
+import ButtonDownloadFile from "../AreCommon/ButtonDownloadFile/ButtonDownloadFile";
+import { useDispatch, useSelector } from 'react-redux';
+import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore } from "../../store/reduser";
+import { url } from '../../../core/core';
+import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
+
 export default function AddApplications() {
+  const [dataInput, setDataInput] = useState({})
+  const [arrGroup, setArrGroup] = useState([])
+  const [valueInput, setValueInput] = useState('');
+  let activRight = useSelector(activRightContent)
+  let userData = useSelector(userDataStore)
+  const dispatch = useDispatch()
+  
+
+  useEffect(() => {
+    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0}))
+  }, [])
+
+  function cancellation() { // переход в disp
+    dispatch(setActiveRow(activRight.applications))
+    dispatch(setSelectSubdivision([]))
+  }
+
+  function dataInputBack() {
+    setDataInput(n => ({...n, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id}))
+    
+    if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
+      
+      setDataInput(dataInput => {
+        console.log(dataInput)
+        fetch(url.urlBack1, {
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify({dataInputApplications: dataInput})
+        
+          })
+          .then(data => {
+            return data.text()
+          })
+          .then(data => {
+            if(data != 'null') {
+              console.log(data)
+            } else {
+              console.log('ок')
+                // dispatch(setUpdateLeftContent(Math.random()))
+                // dispatch(setSelectSubdivision([]))
+                // dispatch(setActiveRow(activRight.applications))
+            }
+      
+          })
+          .catch((er) => {
+            console.log(er)
+          })
+      })
+
+    } else {
+      alert('Верно заполните поля с *')
+    }
+  }
+
+
+  function dataInputOnChange(event, inputData = false) { // данные из всех input
+    if(!inputData) {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+      setDataInput(n => ({...n, [name]: value.trim()}))
+    } else {
+      setDataInput(n => {
+        setValueInput('')
+
+        return ({...n, [inputData[0]]: (inputData[1]).trim()})
+      })
+    }
+  }
+
+  function dataInputOnChangeDate(data, name) {
+    setDataInput(n => ({...n, [name]: data.trim()}))
+  }
 
   return(
     <>
-    <div>AddApplications</div>
+      <div className="addApplications-wrap">
+        <div className="addDisp-wrap addApplications-margin">
+          <AddRowNameDate dataName={'Дата подачи*'} name={'dateOfApplication'} dataInputOnChange={dataInputOnChangeDate} defaultValue={''}/>
+          <AddRowNameTime dataName={'Время подачи*'} name={'submissionTime'} dataInputOnChange={dataInputOnChangeDate} defaultValue={''}/>
+          <AddRowNameInput dataName={'Адрес подачи*'} placeholder={''} name={'submissionAddress'} dataInputOnChange={dataInputOnChange}/>
+          <AddRowNameInput dataName={'Адрес прибытия*'} placeholder={''} name={'arrivalAddress'} dataInputOnChange={dataInputOnChange} type={'text'}/>
+          <AddRowNameSelect dataName={'Поездка с ожиданием*'} placeholder={'Выберите значение'} name={'rideWithAnticipation'} dataInputOnChange={dataInputOnChange} arrData={['Да', 'Нет']}/>
+          <AddRowNameInput dataName={'Водитель, тел'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'driverPhone'} dataInputOnChange={dataInputOnChange} readOnli={true}/>
+          <AddRowNameInput dataName={'Марка, модель'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'marc'} dataInputOnChange={dataInputOnChange} readOnli={true}/>
+          <AddRowNameInput dataName={'Государственный номер'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'gossNumber'} dataInputOnChange={dataInputOnChange} readOnli={true} />
+          <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} />
+        </div>
+        <div className="addDisp-wrap">
+          <AddRowNameInput dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChange} defaultValue={1}/>
+          <AddRowNameSelect dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']}/>
+          <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userName}/>
+          <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.jobTitle}/>
+          <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userSubdivision}/>
+          <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.telephone}/>
+          <AddRowNameSelect dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']}/>
+          <AddRowNameInput dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChange} defaultValue={0}/>
+          <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={'namePassengers'} dataInputOnChange={dataInputOnChange} />
+          <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={'passengersPhone'} dataInputOnChange={dataInputOnChange} />
+        </div>
+      </div>
+      <div className="addApplications-file">
+        <div className="addApplications-file-one">
+          Прикрепите сопроводительный документ
+        </div>
+        <div className="addApplications-file-two">
+          DOC или PDF, размер файла не более 10 МБ
+        </div>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={() => {}}/>
+      </div>
+      <div className="addDisp-panell-button addApplications-flex">
+        <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/>
+        <div className="addDisp-delimiter addApplications-delimiter"></div>
+        <ButtonCancellation name={'Отмена'} cancellation={cancellation}/>
+      </div>
     </>
+    
+    
   )
 }
