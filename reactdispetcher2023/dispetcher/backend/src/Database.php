@@ -152,11 +152,17 @@
       $query->execute([$dispAuto, $idDisp]);
     }
 
-    //Вернуть машины текущего диспетчера
+    //Вернуть машины подразделения текущего диспетчера
     public function getAutoData(string $table_name, string $where, array $values = []) : array{
-      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE $where";
+      $sql = 'SELECT `userSubdivision` FROM '.$this->getTableName('users')." WHERE $where";
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      $result = $result[0]['userSubdivision'];
+
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `autoSubdivision` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$result]);
       $result = $query->fetchAll(PDO::FETCH_ASSOC);
       if($result) return $result;
       return [];
@@ -182,7 +188,21 @@
       $this->pdo->exec($sql);
     }
 
+    //Вернуть заявки подразделения текущего диспетчера или пользователя
+    public function getApplicationsData(string $table_name, string $where, array $values = []) : array{
+      $sql = 'SELECT `userSubdivision` FROM '.$this->getTableName('users')." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      $result = $result[0]['userSubdivision'];
 
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `subdivision` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$result]);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
 
 
 

@@ -30,11 +30,11 @@ export default function AddApplications() {
 
   function dataInputBack() {
     setDataInput(n => ({...n, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id}))
-    
+
     if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
       
       setDataInput(dataInput => {
-        console.log(dataInput)
+        
         fetch(url.urlBack1, {
           method: 'POST',
           header: {
@@ -50,10 +50,9 @@ export default function AddApplications() {
             if(data != 'null') {
               console.log(data)
             } else {
-              console.log('ок')
-                // dispatch(setUpdateLeftContent(Math.random()))
-                // dispatch(setSelectSubdivision([]))
-                // dispatch(setActiveRow(activRight.applications))
+                dispatch(setUpdateLeftContent(Math.random()))
+                dispatch(setSelectSubdivision([]))
+                dispatch(setActiveRow(activRight.applications))
             }
       
           })

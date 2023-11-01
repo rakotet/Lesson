@@ -1,0 +1,170 @@
+.applicationsUnloadingData-margin-checkbox {
+  display: flex;
+  align-items: center;
+  margin-right: 23px;
+
+  input {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.applicationsUnloadingData-namber {
+  display: flex;
+  align-items: center;
+  width: 75px;
+
+  div {
+    margin-left: 10px;
+    height: 14px;
+    color: #0078a8;
+    width: fit-content;
+    border-bottom: 1px solid #0078a8;
+  }
+}
+
+.applicationsUnloadingData-namber:hover {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.applicationsUnloadingData-margin {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.applicationsUnloadingData-dateOfApplication {
+  display: flex;
+  align-items: center;
+  width: 120px;
+  
+  div {
+    padding-right: 30px;
+  }
+}
+
+.applicationsUnloadingData-timeOfUseOfTransport {
+  display: flex;
+  align-items: center;
+  width: 188px;
+  
+  div {
+    padding-right: 30px;
+  }
+}
+
+.applicationsUnloadingData-travelTime {
+  display: flex;
+  align-items: center;
+  width: 80px;
+  
+  div {
+    padding-right: 30px;
+  }
+}
+
+.applicationsUnloadingData-status {
+  display: flex;
+  align-items: center;
+  width: 110px !important;
+  
+  div {
+    padding-right: 30px;
+  }
+}
+
+.applicationsUnloadingData-driverPhone {
+  display: flex;
+  align-items: center;
+  width: 140px;
+  
+  div {
+    padding-right: 10px;
+  }
+
+  .applicationsUnloadingData-driverPhone-flex {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.applicationsUnloadingData-auto {
+  display: flex;
+  align-items: center;
+  width: 135px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-view {
+  display: flex;
+  align-items: center;
+  width: 125px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-applicationInitiator {
+  display: flex;
+  align-items: center;
+  width: 135px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-passengerPhone {
+  display: flex;
+  align-items: center;
+  width: 135px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-shippingAddress {
+  display: flex;
+  align-items: center;
+  width: 145px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-arrivalAddress {
+  display: flex;
+  align-items: center;
+  width: 155px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-purposeOfTheTrip {
+  display: flex;
+  align-items: center;
+  width: 115px;
+  
+  div {
+    padding-right: 10px;
+  }
+}
+
+.applicationsUnloadingData-comment {
+  display: flex;
+  align-items: center;
+  width: 100px;
+  
+  div {
+    padding-right: 5px;
+  }
+}

@@ -166,8 +166,10 @@ export default function LeftContent({collapseData, hideRow}) {
   return(
     <>
       <div className="leftContent-wrapper">
+       <div className="leftContent-wrapper-menu">
         <h3 className={hideRow ? '' : 'leftContent-hide'}>Сервис диспетчеризации</h3>
-        {getRow()}
+          {getRow()}
+       </div>
         <div className="leftContent-bottom">
           <div></div>
           <div>

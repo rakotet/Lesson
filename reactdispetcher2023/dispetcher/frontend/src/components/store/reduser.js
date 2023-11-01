@@ -59,7 +59,7 @@ const dataSlice = createSlice({
       getDispData: 'getDispData',
       getGroupData: 'getGroupData',
       getAutoData: 'getAutoData',
-      getApplicationsData: 'getApplications',
+      getApplicationsData: 'getApplicationsData',
     },
     selectSubdivision: [],
     dispSelectOne: [],
