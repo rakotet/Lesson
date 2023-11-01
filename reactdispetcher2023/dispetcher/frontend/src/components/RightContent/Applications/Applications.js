@@ -23,13 +23,14 @@ export default function Applications({setTabName}) {
   const [companyCardData, setCompanyCardData] = useState({})
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [ellipsisOpen, setEllipsisOpen] = useState(true)
+  const [refreshData, setRefreshData] = useState(true)
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
   const dispatch = useDispatch()
 
   useEffect(() => {
-  
+    
   }, [])
 
   function clickEllipsis() {
@@ -94,6 +95,11 @@ export default function Applications({setTabName}) {
       })
   }
 
+  function refresh() {
+    setUpdateLeftContent(Math.random())
+    setRefreshData(!refreshData)
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditApplications editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -104,7 +110,7 @@ export default function Applications({setTabName}) {
             <div className="disp-row-menu">
               <ButtonAdd addFunc={addDispFunc}/>
               <div className={ellipsisOpen ? 'applications-rowUp-hide' : 'applications-rowUp'}>
-                <ButtonCustom addFunc={() => {}} buttonImg={'refresh'}/>
+                <ButtonCustom addFunc={refresh} buttonImg={'refresh'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'edit'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'trash'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'cancel'}/>
@@ -125,7 +131,7 @@ export default function Applications({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <ApplicationsRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh}/>
           </div>
         </div>
       </div>

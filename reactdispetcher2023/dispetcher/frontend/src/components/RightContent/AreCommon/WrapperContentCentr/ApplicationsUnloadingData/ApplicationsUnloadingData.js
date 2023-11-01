@@ -1,4 +1,11 @@
-export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp}) {
+import { useEffect, useState } from "react";
+
+export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit}) {
+  const [checkboxData, setCheckboxData] = useState({})
+
+  useEffect(() => {
+    console.log(checkboxData)
+  }, [checkboxData])
 
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
   let date = new Date()
@@ -24,6 +31,25 @@ function dateApplications(number, numberHours, timeOfUseOfTransport) {
   return `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
 }
 
+
+function checkboxDataChange(event, data) { 
+  const target = event.target;
+  const value = target.value;
+  const name = target.name;
+
+  if(checkboxData[`${name}`]) {
+    // console.log('1')
+    // const { [name], ...rest } = checkboxData;
+    // setCheckboxData(rest)
+    setCheckboxData(n => {
+      const { name, ...rest } = checkboxData;
+    })
+  } else {
+    setCheckboxData(n => ({...n, [name]: data}))
+  }
+
+}
+
   return (
     <>
       {data.map((item, index) => {
@@ -31,7 +57,7 @@ function dateApplications(number, numberHours, timeOfUseOfTransport) {
           return(
             <div key={index} className="dispUnloadingData">
               <div className="applicationsUnloadingData-margin-checkbox">
-                <input type="checkbox" name="applicationsUnloadingData-checkbox"/>
+                <input type="checkbox" name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>
               <div className="applicationsUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
                 <div>{index + 1}</div>

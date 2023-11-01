@@ -20,8 +20,8 @@ export default function AddApplications() {
   
 
   useEffect(() => {
-    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0}))
-  }, [])
+    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id}))
+  }, [userData])
 
   function cancellation() { // переход в disp
     dispatch(setActiveRow(activRight.applications))
@@ -29,37 +29,32 @@ export default function AddApplications() {
   }
 
   function dataInputBack() {
-    setDataInput(n => ({...n, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id}))
-
     if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
       
-      setDataInput(dataInput => {
-        
-        fetch(url.urlBack1, {
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify({dataInputApplications: dataInput})
-        
-          })
-          .then(data => {
-            return data.text()
-          })
-          .then(data => {
-            if(data != 'null') {
-              console.log(data)
-            } else {
-                dispatch(setUpdateLeftContent(Math.random()))
-                dispatch(setSelectSubdivision([]))
-                dispatch(setActiveRow(activRight.applications))
-            }
+      fetch(url.urlBack1, {
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({dataInputApplications: dataInput})
       
-          })
-          .catch((er) => {
-            console.log(er)
-          })
-      })
+        })
+        .then(data => {
+          return data.text()
+        })
+        .then(data => {
+          if(data != 'null') {
+            console.log(data)
+          } else {
+              dispatch(setUpdateLeftContent(Math.random()))
+              dispatch(setSelectSubdivision([]))
+              dispatch(setActiveRow(activRight.applications))
+          }
+    
+        })
+        .catch((er) => {
+          console.log(er)
+        })
 
     } else {
       alert('Верно заполните поля с *')
