@@ -69,6 +69,28 @@
     if(!isset($dataFront['dataInputApplications']['namePassengers'])) $dataFront['dataInputApplications']['namePassengers'] = '';
     if(!isset($dataFront['dataInputApplications']['passengersPhone'])) $dataFront['dataInputApplications']['passengersPhone'] = '';
 
-    echo json_encode($db->addApplications('applications', $dataFront['dataInputApplications']['dateOfApplication'], $dataFront['dataInputApplications']['submissionTime'], $dataFront['dataInputApplications']['submissionAddress'], $dataFront['dataInputApplications']['arrivalAddress'], $dataFront['dataInputApplications']['rideWithAnticipation'], $dataFront['dataInputApplications']['comment'], $dataFront['dataInputApplications']['timeOfUseOfTransport'], $dataFront['dataInputApplications']['purposeOfTheTrip'], $dataFront['dataInputApplications']['applicationInitiator'], $dataFront['dataInputApplications']['jobTitle'], $dataFront['dataInputApplications']['subdivision'], $dataFront['dataInputApplications']['initiatorPhone'], $dataFront['dataInputApplications']['carClass'], $dataFront['dataInputApplications']['numberOfPassengers'], $dataFront['dataInputApplications']['namePassengers'], $dataFront['dataInputApplications']['passengersPhone'], $dataFront['dataInputApplications']['idDisp']));
+    echo json_encode($db->addApplications('applications', $dataFront['dataInputApplications']['dateOfApplication'], $dataFront['dataInputApplications']['submissionTime'], $dataFront['dataInputApplications']['submissionAddress'], $dataFront['dataInputApplications']['arrivalAddress'], $dataFront['dataInputApplications']['rideWithAnticipation'], $dataFront['dataInputApplications']['comment'], $dataFront['dataInputApplications']['timeOfUseOfTransport'], $dataFront['dataInputApplications']['purposeOfTheTrip'], $dataFront['dataInputApplications']['applicationInitiator'], $dataFront['dataInputApplications']['jobTitle'], $dataFront['dataInputApplications']['subdivision'], $dataFront['dataInputApplications']['initiatorPhone'], $dataFront['dataInputApplications']['carClass'], $dataFront['dataInputApplications']['numberOfPassengers'], $dataFront['dataInputApplications']['namePassengers'], $dataFront['dataInputApplications']['passengersPhone'], $dataFront['dataInputApplications']['idDisp'], $dataFront['dataInputApplications']['dateOfCreation']));
+  } 
+
+  if(isset($dataFront['updateApplications'])) {
+
+    if(!isset($dataFront['updateApplications']['comment'])) $dataFront['updateApplications']['comment'] = '';
+    if(!isset($dataFront['updateApplications']['namePassengers'])) $dataFront['updateApplications']['namePassengers'] = '';
+    if(!isset($dataFront['updateApplications']['passengersPhone'])) $dataFront['updateApplications']['passengersPhone'] = '';
+
+    echo json_encode($db->updateApplications('applications', 
+    [$dataFront['updateApplications']['dateOfApplication'], 
+    $dataFront['updateApplications']['submissionTime'], 
+    $dataFront['updateApplications']['submissionAddress'], 
+    $dataFront['updateApplications']['arrivalAddress'], 
+    $dataFront['updateApplications']['rideWithAnticipation'], 
+    $dataFront['updateApplications']['comment'], 
+    $dataFront['updateApplications']['timeOfUseOfTransport'], 
+    $dataFront['updateApplications']['purposeOfTheTrip'], 
+    $dataFront['updateApplications']['carClass'], 
+    $dataFront['updateApplications']['numberOfPassengers'], 
+    $dataFront['updateApplications']['namePassengers'], 
+    $dataFront['updateApplications']['passengersPhone'], 
+    $dataFront['updateApplications']['id']]));
   } 
 ?>

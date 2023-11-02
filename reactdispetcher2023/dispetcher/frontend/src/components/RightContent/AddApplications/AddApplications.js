@@ -20,7 +20,20 @@ export default function AddApplications() {
   
 
   useEffect(() => {
-    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id}))
+    let dateFull = new Date()
+    let day = String(dateFull.getDate())
+    let month = String(dateFull.getMonth())
+    let hours = String(dateFull.getHours())
+    let minutes = String(dateFull.getMinutes())
+  
+    if(day.length < 2) day = '0' + day
+    if(month.length < 2) month = '0' + month
+    if(hours.length < 2) hours = '0' + hours
+    if(minutes.length < 2) minutes = '0' + minutes
+
+    let date = `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
+
+    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id, dateOfCreation: date}))
   }, [userData])
 
   function cancellation() { // переход в disp

@@ -1,0 +1,72 @@
+.assignAcarCard-wrap {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  width: 100%;
+  height: 140vh;
+  background-color: rgba(19, 18, 18, 0.5);
+  z-index: 1000;
+
+  .assignAcarCard-data {
+    width: 1517px;
+    // height: 550px;
+    height: 800px;
+    background-color: #F5F9FB;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-radius: 10px;
+
+    .assignAcarCard-field {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+
+      .assignAcarCard-row-name-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .assignAcarCard-field-row{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 1470px;
+        
+
+        .assignAcarCard-field-row-menu {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 100%;
+        }
+      }
+
+      .assignAcarCard-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 10px;
+        margin-bottom: 20px;
+
+        span {
+          font-family: Houschka Pro;
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 20px;
+          letter-spacing: 0em;
+          text-align: left;
+          color: #333333;
+        }
+
+        img:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.assignAcarCard-hide {
+  display: none;
+}

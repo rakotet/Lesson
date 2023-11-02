@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import StatusApplications from "./StatusApplications/StatusApplications";
 
-export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit}) {
+export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData}) {
   const [checkboxData, setCheckboxData] = useState({})
-
+  
   useEffect(() => {
-    console.log(checkboxData)
+    setUploadingData(checkboxData)
   }, [checkboxData])
 
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
@@ -38,11 +39,9 @@ function checkboxDataChange(event, data) {
   const name = target.name;
 
   if(checkboxData[`${name}`]) {
-    // console.log('1')
-    // const { [name], ...rest } = checkboxData;
-    // setCheckboxData(rest)
     setCheckboxData(n => {
-      const { name, ...rest } = checkboxData;
+      delete n[`${name}`];
+      return n
     })
   } else {
     setCheckboxData(n => ({...n, [name]: data}))
@@ -57,13 +56,13 @@ function checkboxDataChange(event, data) {
           return(
             <div key={index} className="dispUnloadingData">
               <div className="applicationsUnloadingData-margin-checkbox">
-                <input type="checkbox" name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
+                <input type="checkbox" value={'on'} name={`applicationsUnloadingData-checkbox${index}`} onClick={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>
               <div className="applicationsUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
                 <div>{index + 1}</div>
               </div>
               <div className="applicationsUnloadingData-dateOfApplication" >
-                <div>{item.dateOfApplication}</div>
+                <div>{item.dateOfCreation}</div>
               </div>
               <div className="applicationsUnloadingData-timeOfUseOfTransport">
                 <div>
@@ -75,7 +74,7 @@ function checkboxDataChange(event, data) {
                 <div>{item.timeOfUseOfTransport} ч</div>
               </div>
               <div className="applicationsUnloadingData-status">
-                <div>{item.status}</div>
+                <StatusApplications status={item.status}/>
               </div>
               <div className="applicationsUnloadingData-driverPhone">
                 <div className="applicationsUnloadingData-driverPhone-flex">

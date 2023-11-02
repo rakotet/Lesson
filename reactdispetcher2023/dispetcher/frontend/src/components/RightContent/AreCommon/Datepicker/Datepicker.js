@@ -2,7 +2,7 @@ import img from './images/calendar.png'
 import clean from './images/Vector.png'
 import { useState } from 'react'
 
-export default function Datepicker({placeHolder}) {
+export default function Datepicker({placeHolder, width = false}) {
   const [dateOne, setDateOne] = useState('')
   const [dateTwo, setDateTwo] = useState('')
   const [oneTwo, setOneTwo] = useState(true)
@@ -31,7 +31,7 @@ export default function Datepicker({placeHolder}) {
       {`.datepicker-wrapp input::-webkit-calendar-picker-indicator { background: url(${img}) }`}
     </style>
     <div className="datepicker-wrapp" >
-      <div className="datepicker-calendar">
+      <div className={width ? "datepicker-calendar datepicker-calendar-width" : "datepicker-calendar"}>
         {dateOne == '' ? placeHolder : `${dateOne}-${dateTwo}`}
       </div>
       <div className={dateTwo == '' ? 'datepicker-hide' : 'datepicker-clean'}>

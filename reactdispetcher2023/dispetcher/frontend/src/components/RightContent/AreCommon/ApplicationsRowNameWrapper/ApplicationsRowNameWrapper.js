@@ -14,7 +14,7 @@ export default function ApplicationsRowNameWrapper() {
         <WrapNameRowData name={'Номер'}/>
       </div>
       <div className="applicationsRowNameWrapper-two">
-        <WrapNameRowData name={'Дата подачи'}/>
+        <WrapNameRowData name={'Дата создания'}/>
       </div>
       <div className="applicationsRowNameWrapper-three">
         <WrapNameRowData name={'Время использования'}/>

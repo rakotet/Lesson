@@ -7,7 +7,7 @@ import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
 import AutoUnloadingData from "./AutoUnloadingData/AutoUnloadingData";
 import ApplicationsUnloadingData from "./ApplicationsUnloadingData/ApplicationsUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData, setUploadingData}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
@@ -49,7 +49,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     } else if(actionLk == actionLkUnloading.getAutoData) {
       return <AutoUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
     } else if(actionLk == actionLkUnloading.getApplicationsData) {
-      return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} />
+      return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} />
     }
   }
 

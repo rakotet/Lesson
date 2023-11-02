@@ -3,7 +3,7 @@ import clean from './images/Vector.png'
 import { useState } from 'react'
 
 export default function TimePickerApplications({name, onChange, defaultValue}) {
-  const [dateOne, setDateOne] = useState('')
+  const [dateOne, setDateOne] = useState(defaultValue)
 
   function inputChange(event) {
     let value = event.target.value

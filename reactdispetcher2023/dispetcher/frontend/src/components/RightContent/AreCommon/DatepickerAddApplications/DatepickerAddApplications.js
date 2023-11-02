@@ -1,9 +1,13 @@
 import img from './images/calendar.png'
 import clean from './images/Vector.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function DatepickerAddApplications({name, onChange, defaultValue}) {
-  const [dateOne, setDateOne] = useState('')
+  const [dateOne, setDateOne] = useState(defaultValue)
+
+  useEffect(() => {
+
+  }, [])
 
   function inputChange(event) {
     let value = event.target.value

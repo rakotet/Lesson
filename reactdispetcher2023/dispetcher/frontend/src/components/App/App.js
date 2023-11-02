@@ -1,12 +1,14 @@
 import BodyWrapper from "../BodyWrapper/BodyWrapper";
 import Header from "../Header/Header";
+import AssignAcarCard from "../RightContent/AssignAcarCard/AssignAcarCard";
 
 function App() {
 
   return (
     <>
-     <Header />
-     <BodyWrapper />
+      <AssignAcarCard />
+      <Header />
+      <BodyWrapper />
     </>
   );
 }

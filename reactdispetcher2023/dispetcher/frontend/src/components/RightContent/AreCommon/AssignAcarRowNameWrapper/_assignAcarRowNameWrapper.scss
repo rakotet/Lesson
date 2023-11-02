@@ -1,0 +1,60 @@
+%right-assignAcarRowNameWrapper-row-name-wrapper {
+  width: 100%;
+  
+}
+
+%right-assignAcarRowNameWrapperRowNameWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: aliceblue;
+  background: #FFFFFF;
+  margin-top: 20px;
+  margin-right: 30px;
+  margin-bottom: 2px;
+  padding-left: 15px;
+  padding-right: 25px;
+}
+
+.assignAcarRowNameWrapper-row-name-wrapper {
+  @extend %right-assignAcarRowNameWrapper-row-name-wrapper;
+}
+
+.assignAcarRowNameWrapper {
+  @extend %right-assignAcarRowNameWrapperRowNameWrapper;
+  justify-content: flex-start;
+  margin-left: 10px;
+}
+
+.assignAcarRowNameWrapper-one {
+  width: 100px;
+}
+
+.assignAcarRowNameWrapper-two {
+  width: 165px;
+}
+
+.assignAcarRowNameWrapper-three {
+  width: 150px;
+}
+
+.assignAcarRowNameWrapper-four {
+  width: 635px;
+}
+
+.assignAcarRowNameWrapper-five {
+  width: 130px;
+}
+
+.assignAcarRowNameWrapper-six {
+  width: 130px;
+}
+
+.assignAcarRowNameWrapper-seven {
+  width: 85px;
+}
+

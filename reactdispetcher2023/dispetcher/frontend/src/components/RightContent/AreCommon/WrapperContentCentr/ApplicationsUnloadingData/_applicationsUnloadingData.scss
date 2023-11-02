@@ -37,10 +37,10 @@
 .applicationsUnloadingData-dateOfApplication {
   display: flex;
   align-items: center;
-  width: 120px;
+  width: 125px;
   
   div {
-    padding-right: 30px;
+    padding-right: 0;
   }
 }
 
@@ -72,6 +72,7 @@
   div {
     padding-right: 30px;
   }
+
 }
 
 .applicationsUnloadingData-driverPhone {
@@ -168,3 +169,5 @@
     padding-right: 5px;
   }
 }
+
+@import './StatusApplications/statusApplications';

@@ -24,6 +24,7 @@ export default function Applications({setTabName}) {
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [ellipsisOpen, setEllipsisOpen] = useState(true)
   const [refreshData, setRefreshData] = useState(true)
+  const [uploadingData, setUploadingData] = useState({})
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
@@ -100,9 +101,22 @@ export default function Applications({setTabName}) {
     setRefreshData(!refreshData)
   }
 
+  function editApplications() {
+    let lengthData = Object.keys(uploadingData).length
+    
+    if(lengthData == 1) {
+      for(let key in uploadingData) {
+        editDisp(uploadingData[key])
+      }
+
+    } else alert('Выберете один чекбокс')
+  }
+
+  
+
   return(
     <>
-      {dispCardEdit ? '' : <EditApplications editDisp={editDisp} companyCardData={companyCardData}/>}
+      {dispCardEdit ? '' : <EditApplications editDisp={editDisp} companyCardData={companyCardData} setUploadingData={setUploadingData}/>}
       <ApplicationsCard dispCardOpen={dispCardOpen} dispCardOpenHide={dispCardOpenHide} dispCardData={companyCardData}/>
       <div className={dispCardEdit ? '' : 'disp-wrapper-hide' }>
         <div className={dispCardOpen ? 'disp-wrapper' : 'disp-wrapper-hide' }>
@@ -111,7 +125,7 @@ export default function Applications({setTabName}) {
               <ButtonAdd addFunc={addDispFunc}/>
               <div className={ellipsisOpen ? 'applications-rowUp-hide' : 'applications-rowUp'}>
                 <ButtonCustom addFunc={refresh} buttonImg={'refresh'}/>
-                <ButtonCustom addFunc={() => {}} buttonImg={'edit'}/>
+                <ButtonCustom addFunc={editApplications} buttonImg={'edit'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'trash'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'cancel'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'downLoad'}/>
@@ -131,7 +145,7 @@ export default function Applications({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <ApplicationsRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} />
           </div>
         </div>
       </div>

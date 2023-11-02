@@ -64,7 +64,8 @@ const dataSlice = createSlice({
     selectSubdivision: [],
     dispSelectOne: [],
     dispSelectTwo: ['', []],
-    updateLeftContent: ''
+    updateLeftContent: '',
+    assignAcar: false
 
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
@@ -85,11 +86,14 @@ const dataSlice = createSlice({
     }, 
     setUpdateLeftContent(state, data) {
       state.updateLeftContent = data.payload
+    },
+    setAssignAcar(state, data) {
+      state.assignAcar = data.payload
     }
   },
 })
 
-export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent} = dataSlice.actions
+export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -101,5 +105,6 @@ export const selectSubdivision = state => state.dataStore.selectSubdivision
 export const dispSelectOne = state => state.dataStore.dispSelectOne
 export const dispSelectTwo = state => state.dataStore.dispSelectTwo
 export const updateLeftContent = state => state.dataStore.updateLeftContent
+export const assignAcarData = state => state.dataStore.assignAcar
 
 export default dataSlice.reducer
