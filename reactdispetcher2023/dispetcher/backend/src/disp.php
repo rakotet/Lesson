@@ -129,4 +129,8 @@
   if(isset($dataFront['getAssignACar'])) {
     echo json_encode($db->getAutoData('auto', '`id` = ?', [$dataFront['getAssignACar']]));
   } 
+
+  if(isset($dataFront['theCarIsBusyAtThisTime'])) {
+    echo json_encode($db->theCarIsBusyAtThisTime('auto', [$dataFront['theCarIsBusyAtThisTime']]));
+  } 
 ?>

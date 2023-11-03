@@ -212,6 +212,24 @@
       $query->execute($values);
     }
 
+    //Обновить время занятости авто
+    public function theCarIsBusyAtThisTime(string $table_name, array $values = []) {
+      // $sql = 'UPDATE '.$this->getTableName($table_name).' SET `dateOfApplication` = ?, `submissionTime` = ?, `submissionAddress` = ?, `arrivalAddress` = ?, `rideWithAnticipation` = ?, `comment` = ?, `timeOfUseOfTransport` = ?, `purposeOfTheTrip` = ?, `carClass` = ?, `numberOfPassengers` = ?, `namePassengers` = ?, `passengersPhone` = ?, `driverPhone` = ?, `marc` = ?, `gossNumber` = ?, `view` = ?, `status` = ? WHERE `id` = ?';
+      // $query = $this->pdo->prepare($sql);
+      // $query->execute($values);
+      return $values;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

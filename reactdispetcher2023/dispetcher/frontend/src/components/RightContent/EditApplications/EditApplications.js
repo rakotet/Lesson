@@ -25,7 +25,10 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     // console.log('EditApplications')
     
     if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
-      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view})
+
+      
+
+      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, data: ''}})
 
     } else {
       // setDataInput({...companyCardData, driverPhone: '', telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber})
@@ -43,6 +46,31 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
     if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
       
+      if(dataInput.theCarIsBusyAtThisTime) {
+        fetch(url.urlBack1, {
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify({theCarIsBusyAtThisTime: dataInput.theCarIsBusyAtThisTime})
+        
+          })
+          .then(data => {
+            return data.text()
+          })
+          .then(data => {
+            if(data != 'null') {
+              console.log(data)
+            } else {
+              
+            }
+      
+          })
+          .catch((er) => {
+            console.log(er)
+          })
+      }
+
       fetch(url.urlBack1, {
         method: 'POST',
         header: {
