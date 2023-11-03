@@ -6,30 +6,43 @@ import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate";
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
 import ButtonDownloadFile from "../AreCommon/ButtonDownloadFile/ButtonDownloadFile";
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore, setAssignAcar } from "../../store/reduser";
+import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore, setAssignAcar, setApplicationsToassignAcar, assignAcarClickAutoData, setAssignAcarClickAuto } from "../../store/reduser";
 import { url } from '../../../core/core';
 import AddRowNameSelectAuto from "../AreCommon/AddRowNameSelectAuto/AddRowNameSelectAuto";
 
 export default function EditApplications({editDisp, companyCardData, setUploadingData}) {
+  let activRight = useSelector(activRightContent)
+  let userData = useSelector(userDataStore)
+  let assignAcarClickAuto = useSelector(assignAcarClickAutoData)
+  const dispatch = useDispatch()
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
   const [valueInput, setValueInput] = useState('');
-  let activRight = useSelector(activRightContent)
-  let userData = useSelector(userDataStore)
-  const dispatch = useDispatch()
 
+  
   useEffect(() => {
+    // console.log(assignAcarClickAuto)
+    // console.log('EditApplications')
+    
+    if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
+      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view})
 
-    setDataInput(companyCardData)
-  }, [])
+    } else {
+      // setDataInput({...companyCardData, driverPhone: '', telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber})
+      setDataInput(companyCardData)
+    }
+
+  }, [assignAcarClickAuto])
 
   function cancellation() { // переход в disp
     editDisp()
+    dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
   }
 
   function dataInputBack() {
 
     if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
+      
       fetch(url.urlBack1, {
         method: 'POST',
         header: {
@@ -47,6 +60,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
           } else {
             setUploadingData([{...dataInput}])
             cancellation()
+            dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
           }
     
         })
@@ -81,6 +95,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
   function assignAcar() {
     dispatch(setAssignAcar(true))
+    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: companyCardData.dateOfApplication, submissionTime: companyCardData.submissionTime, timeOfUseOfTransport: companyCardData.timeOfUseOfTransport}}))
   }
 
   return(
@@ -92,9 +107,9 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
           <AddRowNameInput dataName={'Адрес подачи*'} placeholder={''} name={'submissionAddress'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.submissionAddress}/>
           <AddRowNameInput dataName={'Адрес прибытия*'} placeholder={''} name={'arrivalAddress'} dataInputOnChange={dataInputOnChange} type={'text'} defaultValue={companyCardData.arrivalAddress}/>
           <AddRowNameSelectAuto dataName={'Поездка с ожиданием*'} placeholder={'Выберите значение'} name={'rideWithAnticipation'} dataInputOnChange={dataInputOnChange} arrData={['Да', 'Нет']} defaultValue={companyCardData.rideWithAnticipation}/>
-          <AddRowNameInput dataName={'Водитель, тел'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'driverPhone'} dataInputOnChange={dataInputOnChange} readOnli={true}/>
-          <AddRowNameInput dataName={'Марка, модель'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'marc'} dataInputOnChange={dataInputOnChange} readOnli={true}/>
-          <AddRowNameInput dataName={'Государственный номер'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'gossNumber'} dataInputOnChange={dataInputOnChange} readOnli={true} />
+          <AddRowNameInput dataName={'Водитель, тел'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'driverPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={dataInput.driverPhone}/>
+          <AddRowNameInput dataName={'Марка, модель'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'marc'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={dataInput.marc}/>
+          <AddRowNameInput dataName={'Государственный номер'} placeholder={'Заполняется автоматически при подборе автомобиля'} name={'gossNumber'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={dataInput.gossNumber}/>
           <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.comment}/>
         </div>
         <div className="addDisp-wrap">

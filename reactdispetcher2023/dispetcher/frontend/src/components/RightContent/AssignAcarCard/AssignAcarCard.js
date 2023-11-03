@@ -1,6 +1,6 @@
 import img from './image/x.png'
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, assignAcarData, setAssignAcar } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, assignAcarData, setAssignAcar, applicationsToassignAcarData, setAssignAcarClickAuto } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import { url } from "../../../core/core"
 import SearchData from "../AreCommon/Search/SearchData"
@@ -11,16 +11,55 @@ import AssignAcarRowNameWrapper from "../AreCommon/AssignAcarRowNameWrapper/Assi
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 
 export default function AssignAcarCard() {
+  const [showMoreActiv, setShowMoreActiv] = useState(10)
+  const [dateOfApplication, setDateOfApplication] = useState('')
+  const [submissionTime, setSubmissionTime] = useState('')
+  const [timeOfUseOfTransport, setTimeOfUseOfTransport] = useState('')
 
   const dispatch = useDispatch()
   let assignAcar = useSelector(assignAcarData)
+  let applicationsToassignAcarDate = useSelector(applicationsToassignAcarData)
+  let actionLk = useSelector(actionLkData)
+
+  let endTime = dateApplications(dateOfApplication, submissionTime, timeOfUseOfTransport)
 
   useEffect(() => {
+    setDateOfApplication(applicationsToassignAcarDate.date.dateOfApplication)
+    setSubmissionTime(applicationsToassignAcarDate.date.submissionTime)
+    setTimeOfUseOfTransport(applicationsToassignAcarDate.date.timeOfUseOfTransport)
+  }, [assignAcar, applicationsToassignAcarDate])
 
-  }, [assignAcar])
+  function dateApplications(number, numberHours, timeOfUseOfTransport) {
+    let date = new Date()
+    date.setFullYear(number[6] + number[7] + number[8] + number[9]);
+    date.setMonth(number[3] + number[4]);
+    date.setDate(number[0] + number[1]);
+    date.setHours(numberHours[0] + numberHours[1]);
+    date.setMinutes(0);
+    let timeOfUse = timeOfUseOfTransport * 3600000
+    let dateTime = date.getTime()
+    let dateFull = new Date(timeOfUse + dateTime)
+  
+    let day = String(dateFull.getDate())
+    let month = String(dateFull.getMonth())
+    let hours = String(dateFull.getHours())
+    let minutes = String(dateFull.getMinutes())
+  
+    if(day.length < 2) day = '0' + day
+    if(month.length < 2) month = '0' + month
+    if(hours.length < 2) hours = '0' + hours
+    if(minutes.length < 2) minutes = '0' + minutes
+  
+    return `${hours}:00`
+  }
 
   function close() {
     dispatch(setAssignAcar(false))
+  }
+
+  function clickAuto(data) {
+    dispatch(setAssignAcar(false))
+    dispatch(setAssignAcarClickAuto(data))
   }
 
   return(
@@ -30,7 +69,7 @@ export default function AssignAcarCard() {
           <div className="assignAcarCard-row">
             <div>
               <span>
-                {`Выберите авто для работы с заявкой на ${'08.09.2023'} с  ${'10:00'} по ${'12:00'}`}
+                {`Выберите авто для работы с заявкой на ${dateOfApplication} с ${submissionTime} по ${endTime}`}
               </span>
             </div>
             <div>
@@ -44,12 +83,12 @@ export default function AssignAcarCard() {
               <Datepicker placeHolder={'Свободные авто за период'} width={true}/>
             </div>
             <div>
-              <ListDataNumber setShowMoreActiv={() => {}}/>
+              <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
             </div>
           </div>
           <div className="assignAcarCard-row-name-wrapper">
-            <AssignAcarRowNameWrapper />
-            {/* <WrapperContentCentr label="Записей не найдено. Добавьте нового автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/> */}
+            <AssignAcarRowNameWrapper dateOfApplication={dateOfApplication}/>
+            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto}/>
           </div>
         </div>
       </div>

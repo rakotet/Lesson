@@ -6,7 +6,7 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import ApplicationsCard from "./ApplicationsCard/ApplicationsCard"
 import EditApplications from "../EditApplications/EditApplications"
@@ -31,7 +31,7 @@ export default function Applications({setTabName}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    
+    dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
   }, [])
 
   function clickEllipsis() {

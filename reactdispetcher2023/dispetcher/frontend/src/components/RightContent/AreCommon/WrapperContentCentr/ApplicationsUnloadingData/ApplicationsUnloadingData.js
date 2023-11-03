@@ -78,18 +78,18 @@ function checkboxDataChange(event, data) {
               </div>
               <div className="applicationsUnloadingData-driverPhone">
                 <div className="applicationsUnloadingData-driverPhone-flex">
-                  <div></div>
-                  <div></div>
+                  <div>{item.driverPhone.split('-')[0]}</div>
+                  <div>{item.driverPhone.split('-')[1]}</div>
                 </div>
               </div>
               <div className="applicationsUnloadingData-auto">
                 <div className="applicationsUnloadingData-driverPhone-flex">
-                  <div></div>
-                  <div></div>
+                  <div>{item.marc}</div>
+                  <div>{item.gossNumber}</div>
                 </div>
               </div>
               <div className="applicationsUnloadingData-view">
-                <div></div>
+                <div>{item.view}</div>
               </div>
               <div className="applicationsUnloadingData-applicationInitiator">
                 <div className="applicationsUnloadingData-driverPhone-flex">

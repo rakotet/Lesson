@@ -36,7 +36,12 @@
   border-bottom-right-radius: 10px;
 }
 
+.wrapperContentCentr-activ-data-margin {
+  margin-left: 10px
+}
+
 @import './GroupUnloadingData/groupUnloadingData';
 @import './DispUnloadingData/dispUnloadingData';
 @import './AutoUnloadingData/autoUnloadingData';
 @import './ApplicationsUnloadingData/applicationsUnloadingData';
+@import './AssignAcarUnloadingData/assignAcarUnloadingData';

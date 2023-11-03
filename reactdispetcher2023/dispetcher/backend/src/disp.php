@@ -69,7 +69,25 @@
     if(!isset($dataFront['dataInputApplications']['namePassengers'])) $dataFront['dataInputApplications']['namePassengers'] = '';
     if(!isset($dataFront['dataInputApplications']['passengersPhone'])) $dataFront['dataInputApplications']['passengersPhone'] = '';
 
-    echo json_encode($db->addApplications('applications', $dataFront['dataInputApplications']['dateOfApplication'], $dataFront['dataInputApplications']['submissionTime'], $dataFront['dataInputApplications']['submissionAddress'], $dataFront['dataInputApplications']['arrivalAddress'], $dataFront['dataInputApplications']['rideWithAnticipation'], $dataFront['dataInputApplications']['comment'], $dataFront['dataInputApplications']['timeOfUseOfTransport'], $dataFront['dataInputApplications']['purposeOfTheTrip'], $dataFront['dataInputApplications']['applicationInitiator'], $dataFront['dataInputApplications']['jobTitle'], $dataFront['dataInputApplications']['subdivision'], $dataFront['dataInputApplications']['initiatorPhone'], $dataFront['dataInputApplications']['carClass'], $dataFront['dataInputApplications']['numberOfPassengers'], $dataFront['dataInputApplications']['namePassengers'], $dataFront['dataInputApplications']['passengersPhone'], $dataFront['dataInputApplications']['idDisp'], $dataFront['dataInputApplications']['dateOfCreation']));
+    echo json_encode($db->addApplications('applications', 
+    $dataFront['dataInputApplications']['dateOfApplication'], 
+    $dataFront['dataInputApplications']['submissionTime'], 
+    $dataFront['dataInputApplications']['submissionAddress'], 
+    $dataFront['dataInputApplications']['arrivalAddress'], 
+    $dataFront['dataInputApplications']['rideWithAnticipation'], 
+    $dataFront['dataInputApplications']['comment'], 
+    $dataFront['dataInputApplications']['timeOfUseOfTransport'], 
+    $dataFront['dataInputApplications']['purposeOfTheTrip'], 
+    $dataFront['dataInputApplications']['applicationInitiator'], 
+    $dataFront['dataInputApplications']['jobTitle'], 
+    $dataFront['dataInputApplications']['subdivision'], 
+    $dataFront['dataInputApplications']['initiatorPhone'],
+     $dataFront['dataInputApplications']['carClass'], 
+     $dataFront['dataInputApplications']['numberOfPassengers'], 
+     $dataFront['dataInputApplications']['namePassengers'], 
+     $dataFront['dataInputApplications']['passengersPhone'], 
+     $dataFront['dataInputApplications']['idDisp'], 
+     $dataFront['dataInputApplications']['dateOfCreation']));
   } 
 
   if(isset($dataFront['updateApplications'])) {
@@ -77,6 +95,15 @@
     if(!isset($dataFront['updateApplications']['comment'])) $dataFront['updateApplications']['comment'] = '';
     if(!isset($dataFront['updateApplications']['namePassengers'])) $dataFront['updateApplications']['namePassengers'] = '';
     if(!isset($dataFront['updateApplications']['passengersPhone'])) $dataFront['updateApplications']['passengersPhone'] = '';
+
+    if(!isset($dataFront['updateApplications']['driverPhone'])) $dataFront['updateApplications']['driverPhone'] = null;
+    if(!isset($dataFront['updateApplications']['marc'])) $dataFront['updateApplications']['marc'] = null;
+    if(!isset($dataFront['updateApplications']['gossNumber'])) $dataFront['updateApplications']['gossNumber'] = null;
+    if(!isset($dataFront['updateApplications']['view'])) $dataFront['updateApplications']['view'] = null;
+
+    if((isset($dataFront['updateApplications']['driverPhone'])) && (isset($dataFront['updateApplications']['marc'])) && (isset($dataFront['updateApplications']['gossNumber'])) && (isset($dataFront['updateApplications']['view']))) {
+      $dataFront['updateApplications']['status'] = 'Назначена';
+    }
 
     echo json_encode($db->updateApplications('applications', 
     [$dataFront['updateApplications']['dateOfApplication'], 
@@ -91,6 +118,15 @@
     $dataFront['updateApplications']['numberOfPassengers'], 
     $dataFront['updateApplications']['namePassengers'], 
     $dataFront['updateApplications']['passengersPhone'], 
+    $dataFront['updateApplications']['driverPhone'], 
+    $dataFront['updateApplications']['marc'], 
+    $dataFront['updateApplications']['gossNumber'], 
+    $dataFront['updateApplications']['view'], 
+    $dataFront['updateApplications']['status'], 
     $dataFront['updateApplications']['id']]));
+  } 
+
+  if(isset($dataFront['getAssignACar'])) {
+    echo json_encode($db->getAutoData('auto', '`id` = ?', [$dataFront['getAssignACar']]));
   } 
 ?>

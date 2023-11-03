@@ -60,12 +60,15 @@ const dataSlice = createSlice({
       getGroupData: 'getGroupData',
       getAutoData: 'getAutoData',
       getApplicationsData: 'getApplicationsData',
+      getAssignACar: 'getAssignACar'
     },
     selectSubdivision: [],
     dispSelectOne: [],
     dispSelectTwo: ['', []],
     updateLeftContent: '',
-    assignAcar: false
+    assignAcar: false,
+    applicationsToassignAcar: {date: {dateOfApplication: '', submissionTime: '', timeOfUseOfTransport: ''}},
+    assignAcarClickAuto: {driver: '', telephone: '', marc: '', gossNumber: ''}
 
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
@@ -89,11 +92,17 @@ const dataSlice = createSlice({
     },
     setAssignAcar(state, data) {
       state.assignAcar = data.payload
-    }
+    },
+    setApplicationsToassignAcar(state, data) {
+      state.applicationsToassignAcar = data.payload
+    },
+    setAssignAcarClickAuto(state, data) {
+      state.assignAcarClickAuto = data.payload
+    },
   },
 })
 
-export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar} = dataSlice.actions
+export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -106,5 +115,7 @@ export const dispSelectOne = state => state.dataStore.dispSelectOne
 export const dispSelectTwo = state => state.dataStore.dispSelectTwo
 export const updateLeftContent = state => state.dataStore.updateLeftContent
 export const assignAcarData = state => state.dataStore.assignAcar
+export const applicationsToassignAcarData = state => state.dataStore.applicationsToassignAcar
+export const assignAcarClickAutoData = state => state.dataStore.assignAcarClickAuto
 
 export default dataSlice.reducer

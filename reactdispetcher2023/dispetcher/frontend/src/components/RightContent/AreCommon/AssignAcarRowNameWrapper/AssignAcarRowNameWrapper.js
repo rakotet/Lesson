@@ -1,6 +1,6 @@
 import WrapNameRowData from "../WrapNameRowData/WrapNameRowData"
 
-export default function AssignAcarRowNameWrapper() {
+export default function AssignAcarRowNameWrapper({dateOfApplication}) {
   return(
     <div className="assignAcarRowNameWrapper">
       <div className="assignAcarRowNameWrapper-one">
@@ -13,7 +13,7 @@ export default function AssignAcarRowNameWrapper() {
         <WrapNameRowData name={'Водитель, тел.'}/>
       </div>
       <div className="assignAcarRowNameWrapper-four">
-        <WrapNameRowData name={`Свободное время на ${'08.09.2023'}`}/>
+        <WrapNameRowData name={`Свободное время на ${dateOfApplication}`}/>
       </div>
       <div className="assignAcarRowNameWrapper-five">
         <WrapNameRowData name={'Год выпуска'}/>
