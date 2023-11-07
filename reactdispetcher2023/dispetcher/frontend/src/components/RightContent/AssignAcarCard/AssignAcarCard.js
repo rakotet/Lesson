@@ -59,7 +59,7 @@ export default function AssignAcarCard() {
 
   function clickAuto(data) {
     dispatch(setAssignAcar(false))
-    dispatch(setAssignAcarClickAuto(data))
+    dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[String(submissionTime)]: endTime}}}))
   }
 
   return(

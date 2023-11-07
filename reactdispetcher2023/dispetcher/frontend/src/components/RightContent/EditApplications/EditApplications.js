@@ -26,9 +26,9 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     
     if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
 
-      
 
-      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, data: ''}})
+
+      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign}})
 
     } else {
       // setDataInput({...companyCardData, driverPhone: '', telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber})
@@ -40,6 +40,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
   function cancellation() { // переход в disp
     editDisp()
     dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
+    setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
   }
 
   function dataInputBack() {
@@ -61,6 +62,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
           .then(data => {
             if(data != 'null') {
               console.log(data)
+              console.log(JSON.parse(data))
             } else {
               
             }
@@ -89,6 +91,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
             setUploadingData([{...dataInput}])
             cancellation()
             dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
+            setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
           }
     
         })

@@ -143,21 +143,21 @@ export default function LeftContent({collapseData, hideRow}) {
     } else if(userArr.type == roleUsersData.disp) {
       return (
         <>
-          <RowData name={nameRow.auto} count={202} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
-          <RowData name={nameRow.applications} count={2} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.auto} count={0} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.applications} count={0} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.user) {
       return (
         <>
-          <RowData name={nameRow.myApplications} count={202} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
-          <RowData name={nameRow.myTemplates} count={2} active={isActiveMytemplates} click={handleClickMytemplates} hide={'rowData-hide'} hideRow={hideRow}/>
+          <RowData name={nameRow.myApplications} count={0} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
+          <RowData name={nameRow.myTemplates} count={0} active={isActiveMytemplates} click={handleClickMytemplates} hide={'rowData-hide'} hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.sa) {
       return (
         <>
-          <RowData name={nameRow.admins} count={202} active={isActiveAdmins} click={handleClickAdmins} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.admins} count={0} active={isActiveAdmins} click={handleClickAdmins} hide='' hideRow={hideRow}/>
         </>
       )
     }

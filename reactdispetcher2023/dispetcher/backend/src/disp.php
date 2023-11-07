@@ -103,6 +103,8 @@
 
     if((isset($dataFront['updateApplications']['driverPhone'])) && (isset($dataFront['updateApplications']['marc'])) && (isset($dataFront['updateApplications']['gossNumber'])) && (isset($dataFront['updateApplications']['view']))) {
       $dataFront['updateApplications']['status'] = 'Назначена';
+    } else {
+      $dataFront['updateApplications']['status'] = 'Новая';
     }
 
     echo json_encode($db->updateApplications('applications', 

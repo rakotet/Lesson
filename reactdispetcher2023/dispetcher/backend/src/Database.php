@@ -214,10 +214,29 @@
 
     //Обновить время занятости авто
     public function theCarIsBusyAtThisTime(string $table_name, array $values = []) {
-      // $sql = 'UPDATE '.$this->getTableName($table_name).' SET `dateOfApplication` = ?, `submissionTime` = ?, `submissionAddress` = ?, `arrivalAddress` = ?, `rideWithAnticipation` = ?, `comment` = ?, `timeOfUseOfTransport` = ?, `purposeOfTheTrip` = ?, `carClass` = ?, `numberOfPassengers` = ?, `namePassengers` = ?, `passengersPhone` = ?, `driverPhone` = ?, `marc` = ?, `gossNumber` = ?, `view` = ?, `status` = ? WHERE `id` = ?';
-      // $query = $this->pdo->prepare($sql);
-      // $query->execute($values);
-      return $values;
+      $id = $values[0]['id'];
+      $dateAssign = json_encode($values[0]['dateAssign'], JSON_UNESCAPED_UNICODE);
+
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$id]);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      $result = $result[0];
+
+    
+      
+      if($result['freeTime'] != null) {
+        $result = json_decode($result['freeTime'], true);
+
+        //return [$result, $values[0]['dateAssign']];
+        
+
+      } else {
+        $sql = 'UPDATE '.$this->getTableName($table_name).' SET `freeTime` = ? WHERE `id` = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$dateAssign, $id]);
+      }
+
     }
 
 
