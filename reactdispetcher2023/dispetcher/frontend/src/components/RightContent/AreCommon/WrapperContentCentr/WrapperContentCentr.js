@@ -8,7 +8,7 @@ import AutoUnloadingData from "./AutoUnloadingData/AutoUnloadingData";
 import ApplicationsUnloadingData from "./ApplicationsUnloadingData/ApplicationsUnloadingData";
 import AssignAcarUnloadingData from "./AssignAcarUnloadingData/AssignAcarUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto, arrAssign}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
@@ -38,6 +38,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   }
 
   useEffect(() => {
+    
     fetchBack()
   }, [backDisp, showMoreActiv, updateLeft, refreshData, assignAcar])
 
@@ -53,7 +54,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     } else if(actionLk == actionLkUnloading.getApplicationsData) {
       return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} />
     } else if(actionLk == actionLkUnloading.getAssignACar) {
-      return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto}/>
+      return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign}/>
     }
   }
 

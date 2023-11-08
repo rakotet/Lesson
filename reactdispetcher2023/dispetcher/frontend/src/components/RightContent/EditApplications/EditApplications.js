@@ -61,8 +61,53 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
           })
           .then(data => {
             if(data != 'null') {
-              console.log(data)
-              console.log(JSON.parse(data))
+              //console.log(data)
+              data = JSON.parse(data)
+              //console.log(data)
+              
+              if(data) {
+                let freeTime = JSON.parse(data.freeTime)
+                let thisTime = dataInput.theCarIsBusyAtThisTime.dateAssign
+                let counter = 0
+
+                for(let key in freeTime) {
+                  if(counter != 0) break
+                  for(let key2 in thisTime) {
+                    if(key2 == key) {
+                      let obj = {...freeTime[`${key}`], ...thisTime[`${key2}`]}
+                      freeTime = {...freeTime, [key]: obj}
+                      counter++
+                    }
+                  }
+                }
+
+                if(counter == 0) {
+                  freeTime = {...freeTime, ...thisTime}
+                }
+
+                fetch(url.urlBack1, {
+                  method: 'POST',
+                  header: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                  },
+                  body: JSON.stringify({freeTime: [dataInput.theCarIsBusyAtThisTime.id, freeTime]})
+                
+                  })
+                  .then(data => {
+                    return data.text()
+                  })
+                  .then(data => {
+                    if(data != 'null') {
+                      console.log(data)
+
+                    }
+              
+                  })
+                  .catch((er) => {
+                    console.log(er)
+                  })
+              }
+            
             } else {
               
             }

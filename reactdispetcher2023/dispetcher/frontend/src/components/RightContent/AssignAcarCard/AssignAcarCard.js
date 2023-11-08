@@ -15,6 +15,7 @@ export default function AssignAcarCard() {
   const [dateOfApplication, setDateOfApplication] = useState('')
   const [submissionTime, setSubmissionTime] = useState('')
   const [timeOfUseOfTransport, setTimeOfUseOfTransport] = useState('')
+  const [reload, setReload] = useState(true)
 
   const dispatch = useDispatch()
   let assignAcar = useSelector(assignAcarData)
@@ -24,10 +25,11 @@ export default function AssignAcarCard() {
   let endTime = dateApplications(dateOfApplication, submissionTime, timeOfUseOfTransport)
 
   useEffect(() => {
+    
     setDateOfApplication(applicationsToassignAcarDate.date.dateOfApplication)
     setSubmissionTime(applicationsToassignAcarDate.date.submissionTime)
     setTimeOfUseOfTransport(applicationsToassignAcarDate.date.timeOfUseOfTransport)
-  }, [assignAcar, applicationsToassignAcarDate])
+  }, [assignAcar, applicationsToassignAcarDate, reload])
 
   function dateApplications(number, numberHours, timeOfUseOfTransport) {
     let date = new Date()
@@ -55,11 +57,13 @@ export default function AssignAcarCard() {
 
   function close() {
     dispatch(setAssignAcar(false))
+    setReload(!reload)
   }
 
   function clickAuto(data) {
     dispatch(setAssignAcar(false))
-    dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[String(submissionTime)]: endTime}}}))
+    dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
+    setReload(!reload)
   }
 
   return(
@@ -88,7 +92,7 @@ export default function AssignAcarCard() {
           </div>
           <div className="assignAcarCard-row-name-wrapper">
             <AssignAcarRowNameWrapper dateOfApplication={dateOfApplication}/>
-            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto}/>
+            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto} arrAssign={[dateOfApplication, submissionTime, endTime]}/>
           </div>
         </div>
       </div>

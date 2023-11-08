@@ -135,4 +135,8 @@
   if(isset($dataFront['theCarIsBusyAtThisTime'])) {
     echo json_encode($db->theCarIsBusyAtThisTime('auto', [$dataFront['theCarIsBusyAtThisTime']]));
   } 
+
+  if(isset($dataFront['freeTime'])) {
+    echo json_encode($db->freeTime('auto', [$dataFront['freeTime'][0], $dataFront['freeTime'][1]]));
+  } 
 ?>
