@@ -24,6 +24,8 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
 
   useEffect(() => {
     console.log('AssignAcarUnloadingData')
+    console.log(data)
+    console.log('----------')
 
     for(let g = 0; g < data.length; g++) {
       let googs = true
@@ -104,7 +106,7 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
             }
           }
           
-          //console.log(strEnd)
+          console.log(strEnd)
   
           item.freeTimeStr = strEnd
           item.goog = googs

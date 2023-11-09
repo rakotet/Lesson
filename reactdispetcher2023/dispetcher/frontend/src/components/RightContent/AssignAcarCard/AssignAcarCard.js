@@ -66,6 +66,10 @@ export default function AssignAcarCard() {
     dispatch(setUpdateLeftContent(Math.random()))
     dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
     setReload(!reload)
+
+    setTimeout(() => {
+      document.querySelector('.buttonCreate-wrap').click()
+    }, 500)
   }
 
   return(
