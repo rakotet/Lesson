@@ -16,6 +16,15 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   let assignAcar = useSelector(assignAcarData)
   let dispId = useSelector(userDataStore)
 
+  function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
   function fetchBack() {
     fetch(url.urlBack1, {
       method: 'POST',
@@ -29,16 +38,18 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
         return data.text()
       })
       .then(data => {
-        data = JSON.parse(data)
-        setArrGroup(n => [...data])
+        if(IsJsonString(data)) {
+          data = JSON.parse(data)
+          setArrGroup(n => [...data])
+        }
       })
       .catch((er) => {
-        console.log(er)
+        //console.log(er)
       })
   }
 
   useEffect(() => {
-    
+    // console.log('WrapperContentCentr')
     fetchBack()
   }, [backDisp, showMoreActiv, updateLeft, refreshData, assignAcar])
 

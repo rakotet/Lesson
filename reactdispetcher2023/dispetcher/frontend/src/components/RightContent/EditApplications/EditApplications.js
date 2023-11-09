@@ -21,23 +21,18 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
   
   useEffect(() => {
-    // console.log(assignAcarClickAuto)
-    // console.log('EditApplications')
     
     if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
-
-
 
       setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign}})
 
     } else {
-      // setDataInput({...companyCardData, driverPhone: '', telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber})
       setDataInput(companyCardData)
     }
 
   }, [assignAcarClickAuto])
 
-  function cancellation() { // переход в disp
+  function cancellation() { 
     editDisp()
     dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
     setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
@@ -45,104 +40,127 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
   function dataInputBack() {
 
-    if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
+    if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport >= 1)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
+
+      let numberDate = dataInput.dateOfApplication
+      let dateOf = new Date()
+      let dateToday = new Date()
+      dateOf.setFullYear(numberDate[6] + numberDate[7] + numberDate[8] + numberDate[9]);
+      dateOf.setMonth((Number(numberDate[3] + numberDate[4])) - 1);
+      dateOf.setDate(numberDate[0] + numberDate[1]);
+      let dateTime = dateOf.getTime() >= dateToday.getTime()
+
+      let submissionTime = dataInput.submissionTime
+      submissionTime = Number(submissionTime[0] + submissionTime[1])
+
       
-      if(dataInput.theCarIsBusyAtThisTime) {
-        fetch(url.urlBack1, {
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify({theCarIsBusyAtThisTime: dataInput.theCarIsBusyAtThisTime})
-        
-          })
-          .then(data => {
-            return data.text()
-          })
-          .then(data => {
-            if(data != 'null') {
-              //console.log(data)
-              data = JSON.parse(data)
-              //console.log(data)
-              
-              if(data) {
-                let freeTime = JSON.parse(data.freeTime)
-                let thisTime = dataInput.theCarIsBusyAtThisTime.dateAssign
-                let counter = 0
-
-                for(let key in freeTime) {
-                  if(counter != 0) break
-                  for(let key2 in thisTime) {
-                    if(key2 == key) {
-                      let obj = {...freeTime[`${key}`], ...thisTime[`${key2}`]}
-                      freeTime = {...freeTime, [key]: obj}
-                      counter++
-                    }
-                  }
-                }
-
-                if(counter == 0) {
-                  freeTime = {...freeTime, ...thisTime}
-                }
-
-                fetch(url.urlBack1, {
-                  method: 'POST',
-                  header: {
-                    'content-type': 'application/x-www-form-urlencoded',
-                  },
-                  body: JSON.stringify({freeTime: [dataInput.theCarIsBusyAtThisTime.id, freeTime]})
-                
-                  })
-                  .then(data => {
-                    return data.text()
-                  })
-                  .then(data => {
-                    if(data != 'null') {
-                      console.log(data)
-
-                    }
-              
-                  })
-                  .catch((er) => {
-                    console.log(er)
-                  })
-              }
+      if(dateTime) {
+        if(submissionTime >= 9 && submissionTime <= 20) {
+         
+          if(dataInput.theCarIsBusyAtThisTime) {
+            fetch(url.urlBack1, {
+              method: 'POST',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+              },
+              body: JSON.stringify({theCarIsBusyAtThisTime: dataInput.theCarIsBusyAtThisTime})
             
-            } else {
-              
-            }
-      
-          })
-          .catch((er) => {
-            console.log(er)
-          })
-      }
-
-      fetch(url.urlBack1, {
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify({updateApplications: dataInput})
-      
-        })
-        .then(data => {
-          return data.text()
-        })
-        .then(data => {
-          if(data != 'null') {
-            console.log(data)
-          } else {
-            setUploadingData([{...dataInput}])
-            cancellation()
-            dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
-            setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
+              })
+              .then(data => {
+                return data.text()
+              })
+              .then(data => {
+                if(data != 'null') {
+                  //console.log(data)
+                  data = JSON.parse(data)
+                  //console.log(data)
+                  
+                  if(data) {
+                    let freeTime = JSON.parse(data.freeTime)
+                    let thisTime = dataInput.theCarIsBusyAtThisTime.dateAssign
+                    let counter = 0
+    
+                    for(let key in freeTime) {
+                      if(counter != 0) break
+                      for(let key2 in thisTime) {
+                        if(key2 == key) {
+                          let obj = {...freeTime[`${key}`], ...thisTime[`${key2}`]}
+                          freeTime = {...freeTime, [key]: obj}
+                          counter++
+                        }
+                      }
+                    }
+    
+                    if(counter == 0) {
+                      freeTime = {...freeTime, ...thisTime}
+                    }
+    
+                    fetch(url.urlBack1, {
+                      method: 'POST',
+                      header: {
+                        'content-type': 'application/x-www-form-urlencoded',
+                      },
+                      body: JSON.stringify({freeTime: [dataInput.theCarIsBusyAtThisTime.id, freeTime]})
+                    
+                      })
+                      .then(data => {
+                        return data.text()
+                      })
+                      .then(data => {
+                        if(data != 'null') {
+                          console.log(data)
+    
+                        }
+                  
+                      })
+                      .catch((er) => {
+                        console.log(er)
+                      })
+                  }
+                
+                } else {
+                  
+                }
+          
+              })
+              .catch((er) => {
+                console.log(er)
+              })
           }
     
-        })
-        .catch((er) => {
-          console.log(er)
-        })
+          fetch(url.urlBack1, {
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({updateApplications: dataInput})
+          
+            })
+            .then(data => {
+              return data.text()
+            })
+            .then(data => {
+              if(data != 'null') {
+                console.log(data)
+              } else {
+                setUploadingData([{...dataInput}])
+                cancellation()
+                dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
+                setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
+              }
+        
+            })
+            .catch((er) => {
+              console.log(er)
+            })
+          
+        } else {
+          alert('Верно заполните поле "Время подачи"')
+        }
+        
+      } else {
+        alert('Верно заполните поле "Дата подачи"')
+      }
 
     } else {
       alert('Верно заполните поля с *')
@@ -171,7 +189,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
   function assignAcar() {
     dispatch(setAssignAcar(true))
-    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: companyCardData.dateOfApplication, submissionTime: companyCardData.submissionTime, timeOfUseOfTransport: companyCardData.timeOfUseOfTransport}}))
+    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport}}))
   }
 
   return(

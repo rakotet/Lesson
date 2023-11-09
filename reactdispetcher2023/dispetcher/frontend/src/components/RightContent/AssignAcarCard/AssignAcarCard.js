@@ -1,6 +1,6 @@
 import img from './image/x.png'
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, assignAcarData, setAssignAcar, applicationsToassignAcarData, setAssignAcarClickAuto } from "../../store/reduser";
+import { setUpdateLeftContent, setActiveRow, actionLkData, nameRowData, updateLeftContent, assignAcarData, setAssignAcar, applicationsToassignAcarData, setAssignAcarClickAuto } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import { url } from "../../../core/core"
 import SearchData from "../AreCommon/Search/SearchData"
@@ -57,11 +57,13 @@ export default function AssignAcarCard() {
 
   function close() {
     dispatch(setAssignAcar(false))
+    dispatch(setUpdateLeftContent(Math.random()))
     setReload(!reload)
   }
 
   function clickAuto(data) {
     dispatch(setAssignAcar(false))
+    dispatch(setUpdateLeftContent(Math.random()))
     dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
     setReload(!reload)
   }

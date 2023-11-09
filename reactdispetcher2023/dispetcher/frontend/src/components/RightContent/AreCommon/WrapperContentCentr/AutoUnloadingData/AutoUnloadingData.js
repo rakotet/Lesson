@@ -30,10 +30,10 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
                 </div>
               </div>
               <div className="autoUnloadingData-freeTimeToday">
-                <div>{item.freeTimeToday == null ? 'Свободен' : item.freeTimeToday}</div>
+                <div>{item.freeTimeToday == null ? '' : item.freeTimeToday}</div>
               </div>
               <div className="autoUnloadingData-freeTimeTomorrow">
-                <div>{item.freeTimeTomorrow == null ? 'Свободен' : item.freeTimeTomorrow}</div>
+                <div>{item.freeTimeTomorrow == null ? '' : item.freeTimeTomorrow}</div>
               </div>
               <div className="autoUnloadingData-yearOfIssue">
                 <div>{item.yearOfIssue}</div>

@@ -1,19 +1,34 @@
 import { useEffect, useState } from 'react'
+import { updateLeftContent, setUpdateLeftContent } from "../../../../../components/store/reduser";
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssign}) {
-  //console.log(data)
+  const [dataArr, setDataArr] = useState(data)
+  const dispatch = useDispatch()
+  let update= useSelector(updateLeftContent)
 
+  let sTime = Number(arrAssign[1][0] + arrAssign[1][1])
+  let doTime = Number(arrAssign[2][0] + arrAssign[2][1])
   let suitableAuto = []
-  //let timeObj = {9:10, 10:11, 11:12, 12:13, 13:14, 14:15, 15:16, 16:17, 17:18, 18:19, 19:20, 20:21}
-
   let timeArr = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
+  function getNumber(num) {
+    if(num.length != 2) {
+      return `0${num}:00`
+    }
+
+    return `${num}:00`
+  }
+
+  
+
   useEffect(() => {
-    // console.log('AssignAcarUnloadingData')
+    console.log('AssignAcarUnloadingData')
 
     for(let g = 0; g < data.length; g++) {
+      let googs = true
       let item = data[g]
-
+  
       if(item.freeTime) {
         item['free'] = JSON.parse(item['freeTime'])
   
@@ -21,83 +36,132 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
           let obj = item['free'][arrAssign[0]]
           let str = ''
           let counter = 0
-
+  
           for(let key in obj) {
-            
             for(let i = 0; i < timeArr.length; i++) {
-             
               if(timeArr[i] == Number(key[0] + key[1])) {
                 let ch = ((Number(obj[key][0] + obj[key][1])) - (Number(key[0] + key[1])))
                 let count = 0
-
+  
                 for(let w = i; count < ch; w++) {
                   timeArr[w] = false
                   count++
                 }
-
+  
                 break
               }
             }
           }
-
-          // console.log(timeArr)
-
+  
           for(let q = 0; q < timeArr.length; q++) {
             if(counter == 0) {
-              if(timeArr[q]) {
-                str += timeArr[q] + ' - '
+              if(timeArr[q] && timeArr[q] != 21) {
+                str += timeArr[q] + '-'
                 counter = 1
               }
-
-
             } else {
               if(!timeArr[q]) {
                 counter = 0
-                str += (timeArr[(q - 1)] + 1) + '; '
+                str += (timeArr[(q - 1)] + 1) + ';'
+              } else if(q == (timeArr.length - 1)) {
+                str += 21 + ';'
               }
-
             }
           }
-
-          str += '21;'
-
-          console.log(str)
-            
+  
+          let arrStr = str.split(';')
+          let arrCount = 0
+          let index = 999
+          let strEnd = ''
+  
+          for(let a = 0; a < arrStr.length; a++) {
+            if(arrStr[a] != '') {
+              let ar = arrStr[a].split('-')
+  
+              if(sTime >= ar[0] && doTime <= ar[1]) {
+                //console.log(ar[0] + ' - ' + ar[1])
+                arrCount++
+                index = a
+                break
+              }
+            }
+          }
+  
+          if(arrCount == 0) {
+            //console.log('no')
+            googs = false
+          }
+  
+          for(let z = 0; z < arrStr.length; z++) {
+            if(arrStr[z] != '') {
+              if(z != index) {
+                let ar = arrStr[z].split('-')
+                strEnd += getNumber(ar[0]) + ' - ' + getNumber(ar[1]) + '; '
+              } else {
+                let ar = arrStr[z].split('-')
+                strEnd += '<span>' + getNumber(ar[0]) + ' - ' + getNumber(ar[1]) + '; </span>'
+              }
+            }
+          }
           
-          item.freeTimeFF = str
-          suitableAuto.push(item)
+          //console.log(strEnd)
+  
+          item.freeTimeStr = strEnd
+          item.goog = googs
+          //setDataArr(n => ([...n, item]))
+          setDataArr(n => ([...new Set(n)]))
+          //suitableAuto.push(item)
   
         } else {
-          suitableAuto.push(item)
+          //suitableAuto.push(item)
+          item.freeTime = null
+          item.goog = googs
+          //setDataArr(n => ([...n, item]))
+          setDataArr(n => ([...new Set(n)]))
         }
-
+  
       } else {
-        suitableAuto.push(item)
+        //suitableAuto.push(item)
+        //setDataArr(n => ([...n, item]))
+        item.goog = googs
+        setDataArr(n => ([...new Set(n)]))
       }
     }
-
     
     
-  }, [])
+  }, [update])
   
   
-  // console.log(suitableAuto)
+  console.log(dataArr)
 
   return (
     <>
-      {data.map((item, index) => {
+      {dataArr.map((item, index) => {
         if(index < count) {
           return(
             <div key={index} className="dispUnloadingData">
               <div className="assignAcarUnloadingData-namber" >
                 <div>{index + 1}</div>
               </div>
-              <div className="assignAcarUnloadingData-auto" onClick={() => clickAuto(data[`${index}`])}>
-                <div>
-                  <div className='assignAcarUnloadingData-margin'>{item.marc}</div>
-                  <div>{item.gossNumber}</div>
+             {
+              item.goog ? 
+                <div className="assignAcarUnloadingData-auto" onClick={() => {
+                  clickAuto(data[`${index}`])
+                  setDataArr([])
+                  dispatch(setUpdateLeftContent(Math.random()))
+                }}>
+                  <div>
+                    <div className='assignAcarUnloadingData-margin'>{item.marc}</div>
+                    <div>{item.gossNumber}</div>
+                  </div>
+                </div> :
+                <div className="assignAcarUnloadingData-auto-noHover" >
+                  <div>
+                    <div className='assignAcarUnloadingData-margin'>{item.marc}</div>
+                    <div>{item.gossNumber}</div>
+                  </div>
                 </div>
-              </div>
+              }
               <div className="assignAcarUnloadingData-telephone">
               <div>
                   <div className='assignAcarUnloadingData-margin'>{item.driver}</div>
@@ -105,7 +169,10 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
                 </div>
               </div>
               <div className="assignAcarUnloadingData-freeTimeToday">
-                <div>{item.freeTime == null ? 'Свободен весь день' : item.freeTime}</div>
+                <div>{item.freeTime == null ? 
+                  <div className='assignAcarUnloadingData-green'><span>09:00 - 21:00</span></div> : 
+                  <div className='assignAcarUnloadingData-green' dangerouslySetInnerHTML={{__html: item.freeTimeStr}}></div>}
+                </div>
               </div>
               <div className="assignAcarUnloadingData-yearOfIssue">
                 <div>{item.yearOfIssue}</div>

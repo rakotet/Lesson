@@ -27,6 +27,10 @@ export default function Auto({setTabName}) {
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
 
+  useEffect(() => {
+    dispatch(setUpdateLeftContent(Math.random()))
+  }, [])
+
   function addAutoFunc() {
     dispatch(setActiveRow(activRight.addAuto))
   }

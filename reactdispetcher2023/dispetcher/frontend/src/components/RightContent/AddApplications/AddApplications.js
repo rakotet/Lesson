@@ -42,32 +42,55 @@ export default function AddApplications() {
   }
 
   function dataInputBack() {
-    if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport != 0)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
+    if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport >= 1)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
+
+      let numberDate = dataInput.dateOfApplication
+      let dateOf = new Date()
+      let dateToday = new Date()
+      dateOf.setFullYear(numberDate[6] + numberDate[7] + numberDate[8] + numberDate[9]);
+      dateOf.setMonth((Number(numberDate[3] + numberDate[4])) - 1);
+      dateOf.setDate(numberDate[0] + numberDate[1]);
+      let dateTime = dateOf.getTime() >= dateToday.getTime()
+
+      let submissionTime = dataInput.submissionTime
+      submissionTime = Number(submissionTime[0] + submissionTime[1])
+
       
-      fetch(url.urlBack1, {
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify({dataInputApplications: dataInput})
-      
-        })
-        .then(data => {
-          return data.text()
-        })
-        .then(data => {
-          if(data != 'null') {
-            console.log(data)
-          } else {
-              dispatch(setUpdateLeftContent(Math.random()))
-              dispatch(setSelectSubdivision([]))
-              dispatch(setActiveRow(activRight.applications))
-          }
-    
-        })
-        .catch((er) => {
-          console.log(er)
-        })
+      if(dateTime) {
+        if(submissionTime >= 9 && submissionTime <= 20) {
+         
+          fetch(url.urlBack1, {
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({dataInputApplications: dataInput})
+          
+            })
+            .then(data => {
+              return data.text()
+            })
+            .then(data => {
+              if(data != 'null') {
+                console.log(data)
+              } else {
+                  dispatch(setUpdateLeftContent(Math.random()))
+                  dispatch(setSelectSubdivision([]))
+                  dispatch(setActiveRow(activRight.applications))
+              }
+        
+            })
+            .catch((er) => {
+              console.log(er)
+            })
+          
+        } else {
+          alert('Верно заполните поле "Время подачи"')
+        }
+        
+      } else {
+        alert('Верно заполните поле "Дата подачи"')
+      }
 
     } else {
       alert('Верно заполните поля с *')
