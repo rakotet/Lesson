@@ -189,7 +189,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
   function assignAcar() {
     dispatch(setAssignAcar(true))
-    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport}}))
+    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber}}))
   }
 
   return(

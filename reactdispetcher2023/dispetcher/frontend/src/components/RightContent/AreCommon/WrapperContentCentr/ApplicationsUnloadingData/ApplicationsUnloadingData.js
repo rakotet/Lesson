@@ -13,9 +13,9 @@ export default function ApplicationsUnloadingData({data, count, dispCardOpenHide
     
   }, [checkboxData])
 
-  // useEffect(() => {
-  //   setCheckboxData(cancelApplications)
-  // }, [cancelApplications])
+  useEffect(() => {
+    setUploadingData(cancelApplications)
+  }, [cancelApplications])
 
 
 function dateApplications(number, numberHours, timeOfUseOfTransport) {

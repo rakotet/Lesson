@@ -23,7 +23,7 @@ export default function AssignAcarCard() {
   let actionLk = useSelector(actionLkData)
 
   let endTime = dateApplications(dateOfApplication, submissionTime, timeOfUseOfTransport)
-
+console.log(applicationsToassignAcarDate)
   useEffect(() => {
     
     setDateOfApplication(applicationsToassignAcarDate.date.dateOfApplication)
@@ -55,6 +55,30 @@ export default function AssignAcarCard() {
     return `${hours}:00`
   }
 
+  function deleteTimeAfterAuto(item) {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({deleteTimeAfterAuto: item})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null') {
+          console.log(data)
+        } else {
+          
+        }
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
   function close() {
     dispatch(setAssignAcar(false))
     dispatch(setUpdateLeftContent(Math.random()))
@@ -63,6 +87,7 @@ export default function AssignAcarCard() {
 
   function clickAuto(data) {
     dispatch(setAssignAcar(false))
+    //deleteTimeAfterAuto()
     dispatch(setUpdateLeftContent(Math.random()))
     dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
     setReload(!reload)

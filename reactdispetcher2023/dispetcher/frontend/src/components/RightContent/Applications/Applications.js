@@ -6,7 +6,7 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj, cancelApplicationsObj } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import ApplicationsCard from "./ApplicationsCard/ApplicationsCard"
 import EditApplications from "../EditApplications/EditApplications"
@@ -29,11 +29,12 @@ export default function Applications({setTabName}) {
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
+  let cancelApplications = useSelector(cancelApplicationsObj)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
-  }, [])
+  }, [cancelApplications])
 
   function clickEllipsis() {
     setEllipsisOpen(!ellipsisOpen)
@@ -122,6 +123,8 @@ export default function Applications({setTabName}) {
   }
 
   function trashAppYes(gossNumber, item) {
+    console.log(item)
+    console.log('-------')
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -212,7 +215,7 @@ export default function Applications({setTabName}) {
   }
 
   function editApplications() {
-    console.log(uploadingData)
+    
     let lengthData = Object.keys(uploadingData).length
     
     if(lengthData == 1) {
@@ -236,6 +239,7 @@ export default function Applications({setTabName}) {
   }
 
   function trashApplications() {
+    // console.log(uploadingData)
     let lengthData = Object.keys(uploadingData).length
     
     if(lengthData >= 1) {
@@ -249,17 +253,17 @@ export default function Applications({setTabName}) {
         } else {
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
 
-          trashAppNo(uploadingData[key])
-          setUploadingData(n => {
-            delete n[key]
-            return n
-          })
+          // trashAppNo(uploadingData[key])
+          // setUploadingData(n => {
+          //   delete n[key]
+          //   return n
+          // })
         }
         
       }
+
+      
     } else alert('Выберете хотя бы один чекбокс')
-    
-    //console.log(uploadingData)
     
   }
 

@@ -53,11 +53,12 @@ export default function CancelApplications() {
     if(textAreaDate.trim() != '') {
       for(let key in cancelApplicationsDataObj) {
         toBack([textAreaDate.trim(), 'Отклонена', cancelApplicationsDataObj[key]['id']])
-        //dispatch(setCancelApplicationsObj({...cancelApplicationsDataObj[key], status: "Отклонена"}))
+        
+        dispatch(setCancelApplicationsObj({...cancelApplicationsDataObj[key], status: "Отклонена"}))
       }
 
       dispatch(setCancelApplications(false))
-    } alert('Введите причину отмены')
+    } 
   }
 
   return(
