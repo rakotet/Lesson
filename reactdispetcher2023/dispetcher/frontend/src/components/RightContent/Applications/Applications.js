@@ -6,7 +6,7 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import ApplicationsCard from "./ApplicationsCard/ApplicationsCard"
 import EditApplications from "../EditApplications/EditApplications"
@@ -24,6 +24,7 @@ export default function Applications({setTabName}) {
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [ellipsisOpen, setEllipsisOpen] = useState(true)
   const [refreshData, setRefreshData] = useState(true)
+  const [cancelData, setCancelData] = useState(false)
   const [uploadingData, setUploadingData] = useState({})
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
@@ -88,12 +89,121 @@ export default function Applications({setTabName}) {
         if(data != 'null') {
           console.log(data)
         } else {
-          dispatch(setUpdateLeftContent(item.id))
+          dispatch(setUpdateLeftContent(Math.random()))
         }
       })
       .catch((er) => {
         console.log(er)
       })
+  }
+
+  function trashAppNo(item) {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({trashApplications: item.id})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null') {
+          console.log(data)
+        } else {
+          dispatch(setUpdateLeftContent(Math.random()))
+        }
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
+  function trashAppYes(gossNumber, item) {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({trashApplicationsYes: gossNumber})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null') {
+          data = JSON.parse(JSON.parse(data))
+
+          for(let key in data) {
+            for(let key2 in item) {
+              if(key == key2) {
+                for(let key3 in item[key2]) {
+                  for(let key4 in data[key]) {
+                    if(key3 == key4) {
+                      delete data[key][key4]
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          fetch(url.urlBack1, {
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({trashApplicationsYesFreeTime: [JSON.stringify(data), gossNumber]})
+          
+            })
+            .then(data => {
+              return data.text()
+            })
+            .then(data => {
+              if(data != 'null') {
+                console.log(data)
+              } else {
+                
+              }
+            })
+            .catch((er) => {
+              console.log(er)
+            })
+
+        } else {
+          
+        }
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
+  function dateApplications(number, numberHours, timeOfUseOfTransport) {
+    let date = new Date()
+    date.setFullYear(number[6] + number[7] + number[8] + number[9]);
+    date.setMonth(number[3] + number[4]);
+    date.setDate(number[0] + number[1]);
+    date.setHours(numberHours[0] + numberHours[1]);
+    date.setMinutes(0);
+    let timeOfUse = timeOfUseOfTransport * 3600000
+    let dateTime = date.getTime()
+    let dateFull = new Date(timeOfUse + dateTime)
+  
+    let day = String(dateFull.getDate())
+    let month = String(dateFull.getMonth())
+    let hours = String(dateFull.getHours())
+    let minutes = String(dateFull.getMinutes())
+  
+    if(day.length < 2) day = '0' + day
+    if(month.length < 2) month = '0' + month
+    if(hours.length < 2) hours = '0' + hours
+    if(minutes.length < 2) minutes = '0' + minutes
+  
+    return `${hours}:00}`
   }
 
   function refresh() {
@@ -102,14 +212,64 @@ export default function Applications({setTabName}) {
   }
 
   function editApplications() {
+    console.log(uploadingData)
     let lengthData = Object.keys(uploadingData).length
     
     if(lengthData == 1) {
       for(let key in uploadingData) {
-        editDisp(uploadingData[key])
+        let numberDate = uploadingData[key]['dateOfApplication']
+        let dateOf = new Date()
+        let dateToday = new Date()
+        dateOf.setFullYear(numberDate[6] + numberDate[7] + numberDate[8] + numberDate[9]);
+        dateOf.setMonth((Number(numberDate[3] + numberDate[4])) - 1);
+        dateOf.setDate(numberDate[0] + numberDate[1]);
+        let dateTime = dateOf.getTime() >= dateToday.getTime()
+
+        if(dateTime) {
+          if(uploadingData[key]['status'] == 'Новая' || uploadingData[key]['status'] == 'Назначена') {
+            editDisp(uploadingData[key])
+          } else alert('Нельзя редактировать отмененные заявки')
+        } else alert('Нельзя редактировать прошедшие заявки')
       }
 
-    } else alert('Выберете один чекбокс')
+    } else alert('Выберете хотя бы один чекбокс')
+  }
+
+  function trashApplications() {
+    let lengthData = Object.keys(uploadingData).length
+    
+    if(lengthData >= 1) {
+      for(let key in uploadingData) {
+        if(/*uploadingData[key]['status'] != 'Назначена'*/ false) {
+          trashAppNo(uploadingData[key])
+          setUploadingData(n => {
+            delete n[key]
+            return n
+          })
+        } else {
+          trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
+
+          trashAppNo(uploadingData[key])
+          setUploadingData(n => {
+            delete n[key]
+            return n
+          })
+        }
+        
+      }
+    } else alert('Выберете хотя бы один чекбокс')
+    
+    //console.log(uploadingData)
+    
+  }
+
+  function cancelFunc() {
+    let lengthData = Object.keys(uploadingData).length
+    if(lengthData >= 1) {
+      dispatch(setCancelApplicationsObj(uploadingData))
+      dispatch(setCancelApplications(true))
+
+    } else alert('Выберете хотя бы один чекбокс')
   }
 
   
@@ -126,8 +286,8 @@ export default function Applications({setTabName}) {
               <div className={ellipsisOpen ? 'applications-rowUp-hide' : 'applications-rowUp'}>
                 <ButtonCustom addFunc={refresh} buttonImg={'refresh'}/>
                 <ButtonCustom addFunc={editApplications} buttonImg={'edit'}/>
-                <ButtonCustom addFunc={() => {}} buttonImg={'trash'}/>
-                <ButtonCustom addFunc={() => {}} buttonImg={'cancel'}/>
+                <ButtonCustom addFunc={trashApplications} buttonImg={'trash'}/>
+                <ButtonCustom addFunc={cancelFunc} buttonImg={'cancel'}/>
                 <ButtonCustom addFunc={() => {}} buttonImg={'downLoad'}/>
               </div>
               <Ellipsis handleClick={clickEllipsis}/>

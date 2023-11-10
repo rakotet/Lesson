@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
 import StatusApplications from "./StatusApplications/StatusApplications";
+import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData}) {
   const [checkboxData, setCheckboxData] = useState({})
+  let cancelApplications = useSelector(cancelApplicationsObj)
   
   useEffect(() => {
+    // console.log('ApplicationsUnloadingData')
     setUploadingData(checkboxData)
+    
   }, [checkboxData])
+
+  // useEffect(() => {
+  //   setCheckboxData(cancelApplications)
+  // }, [cancelApplications])
+
 
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
   let date = new Date()
@@ -40,8 +50,10 @@ function checkboxDataChange(event, data) {
 
   if(checkboxData[`${name}`]) {
     setCheckboxData(n => {
-      delete n[`${name}`];
-      return n
+      let nev = {...n};
+      delete nev[`${name}`];
+
+      return nev;
     })
   } else {
     setCheckboxData(n => ({...n, [name]: data}))
@@ -56,7 +68,7 @@ function checkboxDataChange(event, data) {
           return(
             <div key={index} className="dispUnloadingData">
               <div className="applicationsUnloadingData-margin-checkbox">
-                <input type="checkbox" value={'on'} name={`applicationsUnloadingData-checkbox${index}`} onClick={() => checkboxDataChange(event, data[`${index}`])}/>
+                <input type="checkbox" defaultChecked={false} name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>
               <div className="applicationsUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
                 <div>{index + 1}</div>

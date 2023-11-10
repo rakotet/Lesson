@@ -67,6 +67,8 @@ const dataSlice = createSlice({
     dispSelectTwo: ['', []],
     updateLeftContent: '',
     assignAcar: false,
+    cancelApplications: false,
+    cancelApplicationsObj: {},
     applicationsToassignAcar: {date: {dateOfApplication: '', submissionTime: '', timeOfUseOfTransport: ''}},
     assignAcarClickAuto: {driver: '', telephone: '', marc: '', gossNumber: ''}
 
@@ -93,6 +95,12 @@ const dataSlice = createSlice({
     setAssignAcar(state, data) {
       state.assignAcar = data.payload
     },
+    setCancelApplications(state, data) {
+      state.cancelApplications = data.payload
+    },
+    setCancelApplicationsObj(state, data) {
+      state.cancelApplicationsObj = data.payload
+    },
     setApplicationsToassignAcar(state, data) {
       state.applicationsToassignAcar = data.payload
     },
@@ -102,7 +110,7 @@ const dataSlice = createSlice({
   },
 })
 
-export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto} = dataSlice.actions
+export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto, setCancelApplications, setCancelApplicationsObj} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -115,6 +123,8 @@ export const dispSelectOne = state => state.dataStore.dispSelectOne
 export const dispSelectTwo = state => state.dataStore.dispSelectTwo
 export const updateLeftContent = state => state.dataStore.updateLeftContent
 export const assignAcarData = state => state.dataStore.assignAcar
+export const cancelApplicationsData = state => state.dataStore.cancelApplications
+export const cancelApplicationsObj = state => state.dataStore.cancelApplicationsObj
 export const applicationsToassignAcarData = state => state.dataStore.applicationsToassignAcar
 export const assignAcarClickAutoData = state => state.dataStore.assignAcarClickAuto
 

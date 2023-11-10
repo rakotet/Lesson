@@ -69,7 +69,7 @@ export default function AssignAcarCard() {
 
     setTimeout(() => {
       document.querySelector('.buttonCreate-wrap').click()
-    }, 500)
+    }, 100)
   }
 
   return(

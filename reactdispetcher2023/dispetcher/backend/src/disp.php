@@ -139,4 +139,20 @@
   if(isset($dataFront['freeTime'])) {
     echo json_encode($db->freeTime('auto', [$dataFront['freeTime'][0], $dataFront['freeTime'][1]]));
   } 
+
+  if(isset($dataFront['trashApplications'])) {
+    echo json_encode($db->trashApplications('applications', '`id` = ?', [$dataFront['trashApplications']]));
+  } 
+
+  if(isset($dataFront['trashApplicationsYes'])) {
+    echo json_encode($db->trashApplicationsYes('auto', '`gossNumber` = ?', [$dataFront['trashApplicationsYes']]));
+  } 
+
+  if(isset($dataFront['trashApplicationsYesFreeTime'])) {
+    echo json_encode($db->trashApplicationsYesFreeTime('auto', $dataFront['trashApplicationsYesFreeTime']));
+  } 
+
+  if(isset($dataFront['cancelApplications'])) {
+    echo json_encode($db->cancelApplications('applications', $dataFront['cancelApplications']));
+  } 
 ?>

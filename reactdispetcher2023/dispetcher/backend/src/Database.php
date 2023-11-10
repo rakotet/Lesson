@@ -248,13 +248,35 @@
       $query->execute([json_encode($obj), $id]);
     }
 
+    //Удалить заявку
+    public function trashApplications(string $table_name, string $where, array $values = []) {
+      $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
 
+    //Вернуть занятое время авто
+    public function trashApplicationsYes(string $table_name, string $where, array $values = []) {
+      $sql = 'SELECT `freeTime` FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $result[0]['freeTime'];
+    }
 
+    //Обновить время машины после удаления заявки
+    public function trashApplicationsYesFreeTime(string $table_name, array $values = []) {
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `freeTime` = ? WHERE `gossNumber` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
 
-
-
-
-
+    //Отменить заявку
+    public function cancelApplications(string $table_name, array $values = []) {
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `reasonForDeviation` = ?, `status` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
 
 
 

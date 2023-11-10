@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { activeRowStore, nameRowData, activRightContent } from "../store/reduser";
+import { activeRowStore, nameRowData, activRightContent, cancelApplicationsData } from "../store/reduser";
 import { useEffect, useState } from 'react';
 import Disp from './Disp/Disp';
 import Group from './Group/Group';
@@ -18,6 +18,7 @@ export default function RightContent() {
   let activeData = useSelector(activeRowStore)
   let nameRow = useSelector(nameRowData)
   let activRightContentData = useSelector(activRightContent)
+  let cancelApplications = useSelector(cancelApplicationsData)
 
   useEffect(() => {
     if(activeData == activRightContentData.disp) {

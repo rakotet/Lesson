@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { url } from '../../../../core/core';
-import { actionLkData, updateLeftContent, userDataStore, assignAcarData } from "../../../store/reduser";
+import { actionLkData, updateLeftContent, userDataStore, assignAcarData, cancelApplicationsData } from "../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
@@ -15,6 +15,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   let updateLeft = useSelector(updateLeftContent)
   let assignAcar = useSelector(assignAcarData)
   let dispId = useSelector(userDataStore)
+  let cancelApplications = useSelector(cancelApplicationsData)
 
   function IsJsonString(str) {
     try {
@@ -49,7 +50,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   }
 
   useEffect(() => {
-    // console.log('WrapperContentCentr')
+    //console.log('WrapperContentCentr')
     fetchBack()
   }, [backDisp, showMoreActiv, updateLeft, refreshData, assignAcar])
 
