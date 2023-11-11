@@ -59,7 +59,7 @@ export default function AddDisp() {
 
   function dataInputBack() {
     let lengthDataInput = Object.keys(dataInput).length
-    if(lengthDataInput == 8) {
+    if(lengthDataInput == 9) {
       let count = 0
       for(let key in dataInput) {
         if(dataInput[key] == '') count++
@@ -141,6 +141,7 @@ export default function AddDisp() {
 
   return(
     <div className="addDisp-wrap">
+      <AddRowNameSelect dataName={'Тип'} placeholder={'Выберите тип'} name={'userType'} dataInputOnChange={dataInputOnChange} arrData={['Диспетчер', 'Пользователь']}/>
       <AddRowNameInput dataName={'Фамилия Имя Отчество'} placeholder={'Введите ФИО'} name={'userName'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Должность'} placeholder={'Введите должность'} name={'jobTitle'} dataInputOnChange={dataInputOnChange}/>
       <AddRowNameInput dataName={'Телефон'} placeholder={'Введите телефон'} name={'telephone'} dataInputOnChange={dataInputOnChange} type={'tel'}/>

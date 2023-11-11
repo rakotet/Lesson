@@ -8,7 +8,7 @@ import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContent
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj, cancelApplicationsObj } from "../../store/reduser";
 import { useState, useEffect } from "react"
-import MyApplicationsCard from "./MyApplicationsCard/MyApplicationsCard"
+import ApplicationsCard from "../Applications/ApplicationsCard/ApplicationsCard"
 import EditMyApplications from "../EditMyApplications/EditMyApplications"
 import Datepicker from "../AreCommon/Datepicker/Datepicker"
 import { url } from "../../../core/core"
@@ -297,7 +297,7 @@ export default function MyApplications({setTabName}) {
   return(
     <>
       {dispCardEdit ? '' : <EditMyApplications editDisp={editDisp} companyCardData={companyCardData} setUploadingData={setUploadingData}/>}
-      <MyApplicationsCard dispCardOpen={dispCardOpen} dispCardOpenHide={dispCardOpenHideTwo} dispCardData={companyCardData}/>
+      <ApplicationsCard dispCardOpen={dispCardOpen} dispCardOpenHide={dispCardOpenHideTwo} dispCardData={companyCardData}/>
       <div className={dispCardEdit ? '' : 'disp-wrapper-hide' }>
         <div className={dispCardOpen ? 'disp-wrapper' : 'disp-wrapper-hide' }>
           <div className="disp-row">

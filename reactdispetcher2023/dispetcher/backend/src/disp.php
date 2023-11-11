@@ -16,7 +16,12 @@
   }
 
   if(isset($dataFront['dataInputDisp'])) {
-    echo json_encode($db->addDisp('users', $dataFront['dataInputDisp']['userName'], $dataFront['dataInputDisp']['jobTitle'], $dataFront['dataInputDisp']['telephone'], $dataFront['dataInputDisp']['userGroup'], $dataFront['dataInputDisp']['userSubdivision'], $dataFront['dataInputDisp']['login'], md5($dataFront['dataInputDisp']['password'].SECRET), $dataFront['dataInputDisp']['email'], '2'));
+    if($dataFront['dataInputDisp']['userType'] == 'Диспетчер') {
+      $dataFront['dataInputDisp']['userType'] = '2';
+    } elseif($dataFront['dataInputDisp']['userType'] == 'Пользователь') {
+      $dataFront['dataInputDisp']['userType'] = '3';
+    }
+    echo json_encode($db->addDisp('users', $dataFront['dataInputDisp']['userName'], $dataFront['dataInputDisp']['jobTitle'], $dataFront['dataInputDisp']['telephone'], $dataFront['dataInputDisp']['userGroup'], $dataFront['dataInputDisp']['userSubdivision'], $dataFront['dataInputDisp']['login'], md5($dataFront['dataInputDisp']['password'].SECRET), $dataFront['dataInputDisp']['email'], $dataFront['dataInputDisp']['userType']));
   }
 
   if(isset($dataFront['getGroupData'])) {

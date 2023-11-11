@@ -1,7 +1,7 @@
 import ButtonCancellation from "../../AreCommon/ButtonCancellation/ButtonCancellation"
 
 export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCardData}) {
-  console.log(dispCardData)
+  
   let submissionTime = dispCardData.submissionTime
   let timeOfUseOfTransport = dispCardData.timeOfUseOfTransport
   let itog
