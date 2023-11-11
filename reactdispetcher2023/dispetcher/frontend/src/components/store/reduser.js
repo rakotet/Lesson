@@ -77,7 +77,8 @@ const dataSlice = createSlice({
     cancelApplications: false,
     cancelApplicationsObj: {},
     applicationsToassignAcar: {date: {dateOfApplication: '', submissionTime: '', timeOfUseOfTransport: ''}},
-    assignAcarClickAuto: {driver: '', telephone: '', marc: '', gossNumber: ''}
+    assignAcarClickAuto: {driver: '', telephone: '', marc: '', gossNumber: ''},
+    wrapperContentCentrUpdate: ''
 
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
@@ -114,10 +115,13 @@ const dataSlice = createSlice({
     setAssignAcarClickAuto(state, data) {
       state.assignAcarClickAuto = data.payload
     },
+    setWrapperContentCentrUpdate(state, data) {
+      state.wrapperContentCentrUpdate = data.payload
+    },
   },
 })
 
-export const {setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto, setCancelApplications, setCancelApplicationsObj} = dataSlice.actions
+export const {setWrapperContentCentrUpdate, setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto, setCancelApplications, setCancelApplicationsObj} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -134,5 +138,6 @@ export const cancelApplicationsData = state => state.dataStore.cancelApplication
 export const cancelApplicationsObj = state => state.dataStore.cancelApplicationsObj
 export const applicationsToassignAcarData = state => state.dataStore.applicationsToassignAcar
 export const assignAcarClickAutoData = state => state.dataStore.assignAcarClickAuto
+export const wrapperContentCentrUpdateData = state => state.dataStore.wrapperContentCentrUpdate
 
 export default dataSlice.reducer

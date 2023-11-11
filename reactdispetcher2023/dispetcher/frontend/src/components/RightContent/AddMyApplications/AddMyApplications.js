@@ -33,7 +33,7 @@ export default function AddMyApplications() {
 
     let date = `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
 
-    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id, dateOfCreation: date}))
+    setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id, dateOfCreation: date, emailUserCreate: userData.email}))
   }, [userData])
 
   function cancellation() { // переход в disp

@@ -29,7 +29,7 @@
   } 
 
   if(isset($dataFront['getDispData'])) {
-    echo json_encode($db->getDisp('users', '`type` = ?', [2]));
+    echo json_encode($db->getDisp('users', '`type` IN (?, ?)', [2, 3]));
   } 
 
   if(isset($dataFront['updateDisp'])) {
@@ -96,7 +96,8 @@
      $dataFront['dataInputApplications']['namePassengers'], 
      $dataFront['dataInputApplications']['passengersPhone'], 
      $dataFront['dataInputApplications']['idDisp'], 
-     $dataFront['dataInputApplications']['dateOfCreation']));
+     $dataFront['dataInputApplications']['dateOfCreation'],
+     $dataFront['dataInputApplications']['emailUserCreate']));
   } 
 
   if(isset($dataFront['updateApplications'])) {

@@ -1,6 +1,35 @@
 <?php
   require_once 'Config.php';
 
+  require_once "./lib/vendor/autoload.php"; 
+  use PHPMailer\PHPMailer\PHPMailer;
+
+  function mailUser($topic, $htmlBody, $email) {
+    $mail = new PHPMailer;
+    $mail->CharSet = "utf-8";
+    $mail->SMTPDebug = 3;
+    $mail->isSMTP();
+    $mail->Host = "smtp-mail.outlook.com";
+    $mail->SMTPAuth = true;
+    $mail->Username = "disp8634@outlook.com";
+    $mail->Password = "Piligrim34";
+    $mail->SMTPSecure = "tls";
+    $mail->Port = 587;
+    $mail->From = "disp8634@outlook.com";
+    $mail->FromName = "Диспетчеризация";
+    $mail->addAddress("$email", "");
+    $mail->isHTML(true);
+    $mail->Subject = "$topic";
+    $mail->Body = "<i>$htmlBody</i>";
+    $mail->AltBody = "Текстовая версия письма";
+  
+    if(!$mail->send()) {
+      echo "Ошибка: " . $mail->ErrorInfo;
+    }  else {
+      echo "Сообщение успешно отправлено";
+     }
+  }
+
   class Database {
 
     private static $db;
@@ -183,8 +212,8 @@
     }
 
     //Добавить заявку от диспетчера
-    public function addApplications(string $table_name, string $dateOfApplication , string $submissionTime, string $submissionAddress, string $arrivalAddress, string $rideWithAnticipation, string $comment, string $timeOfUseOfTransport, string $purposeOfTheTrip, string $applicationInitiator, string $jobTitle, string $subdivision, string $initiatorPhone, string $carClass, string $numberOfPassengers, string $namePassengers, string $passengersPhone, string $idDisp, string $dateOfCreation) {
-      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`dateOfApplication`, `submissionTime`, `submissionAddress`, `arrivalAddress`, `rideWithAnticipation`, `comment`, `timeOfUseOfTransport`, `purposeOfTheTrip`, `applicationInitiator`, `jobTitle`, `subdivision`, `initiatorPhone`, `carClass`, `numberOfPassengers`, `namePassengers`, `passengersPhone`, `idDisp`, `dateOfCreation`) VALUES ('$dateOfApplication', '$submissionTime', '$submissionAddress', '$arrivalAddress', '$rideWithAnticipation', '$comment', '$timeOfUseOfTransport', '$purposeOfTheTrip', '$applicationInitiator', '$jobTitle', '$subdivision', '$initiatorPhone', '$carClass', '$numberOfPassengers', '$namePassengers', '$passengersPhone', '$idDisp', '$dateOfCreation')";
+    public function addApplications(string $table_name, string $dateOfApplication , string $submissionTime, string $submissionAddress, string $arrivalAddress, string $rideWithAnticipation, string $comment, string $timeOfUseOfTransport, string $purposeOfTheTrip, string $applicationInitiator, string $jobTitle, string $subdivision, string $initiatorPhone, string $carClass, string $numberOfPassengers, string $namePassengers, string $passengersPhone, string $idDisp, string $dateOfCreation, string $emailUserCreate) {
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`dateOfApplication`, `submissionTime`, `submissionAddress`, `arrivalAddress`, `rideWithAnticipation`, `comment`, `timeOfUseOfTransport`, `purposeOfTheTrip`, `applicationInitiator`, `jobTitle`, `subdivision`, `initiatorPhone`, `carClass`, `numberOfPassengers`, `namePassengers`, `passengersPhone`, `idDisp`, `dateOfCreation`, `emailUserCreate`) VALUES ('$dateOfApplication', '$submissionTime', '$submissionAddress', '$arrivalAddress', '$rideWithAnticipation', '$comment', '$timeOfUseOfTransport', '$purposeOfTheTrip', '$applicationInitiator', '$jobTitle', '$subdivision', '$initiatorPhone', '$carClass', '$numberOfPassengers', '$namePassengers', '$passengersPhone', '$idDisp', '$dateOfCreation', '$emailUserCreate')";
       $this->pdo->exec($sql);
     }
 
@@ -222,19 +251,25 @@
       $query->execute($values);
     }
 
+
     //Вернуть время занятости авто
     public function theCarIsBusyAtThisTime(string $table_name, array $values = []) {
       $id = $values[0]['id'];
       $dateAssign = json_encode($values[0]['dateAssign']);
-      $dateAssignArr = $values[0]['dateAssign'];
+      $driverPhone = $values[0]['driverPhone'];
+      $emailUserCreate = $values[0]['emailUserCreate'];
+      $gossNumber = $values[0]['gossNumber'];
+      $marc = $values[0]['marc'];
+      $submissionTime = $values[0]['submissionTime'];
+      $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
+
+      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00ч</p>", $emailUserCreate);
 
       $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` = ?";
       $query = $this->pdo->prepare($sql);
       $query->execute([$id]);
       $result = $query->fetchAll(PDO::FETCH_ASSOC);
       $result = $result[0];
-
-    
       
       if($result['freeTime'] != null) {
         return $result;

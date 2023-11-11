@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { url } from '../../../../core/core';
-import { actionLkData, updateLeftContent, userDataStore, assignAcarData, cancelApplicationsData, setUpdateLeftContent } from "../../../store/reduser";
+import { actionLkData, updateLeftContent, userDataStore, assignAcarData, cancelApplicationsData, setUpdateLeftContent, wrapperContentCentrUpdateData, setWrapperContentCentrUpdate } from "../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
@@ -16,7 +16,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   let updateLeft = useSelector(updateLeftContent)
   let assignAcar = useSelector(assignAcarData)
   let dispId = useSelector(userDataStore)
-  let cancelApplications = useSelector(cancelApplicationsData)
+  let wrapperContentCentrUpdate = useSelector(wrapperContentCentrUpdateData)
 
   function IsJsonString(str) {
     try {
@@ -53,14 +53,16 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   }
 
   useEffect(() => {
-    console.log('WrapperContentCentr')
+    //console.log('WrapperContentCentr')
     fetchBack()
 
-    setTimeout(() => {
-      dispatch(setUpdateLeftContent(Math.random()))
-    }, 2000)
+    if(actionLk == actionLkUnloading.getApplicationsData || actionLk == actionLkUnloading.getMyApplicationsData) {
+      setTimeout(() => {
+        dispatch(setWrapperContentCentrUpdate(Math.random()))
+      }, 3000)
+    }
 
-  }, [backDisp, showMoreActiv, updateLeft, refreshData, assignAcar])
+  }, [backDisp, showMoreActiv, updateLeft, refreshData, assignAcar, wrapperContentCentrUpdate])
 
   //console.log(arrGroup)
 

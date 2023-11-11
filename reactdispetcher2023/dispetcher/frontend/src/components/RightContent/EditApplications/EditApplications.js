@@ -24,7 +24,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     
     if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
 
-      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign}})
+    setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign, emailUserCreate: companyCardData.emailUserCreate, driverPhone: dataInput.driverPhone, marc: dataInput.marc, gossNumber: dataInput.gossNumber, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport}})
 
     } else {
       setDataInput(companyCardData)

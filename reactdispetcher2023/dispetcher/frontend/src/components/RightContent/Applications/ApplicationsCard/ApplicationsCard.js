@@ -24,6 +24,15 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
           <h4>СТАТУС</h4>
           <div className="applicationsCard-name">{dispCardData.status}</div>
         </div>
+        {
+          dispCardData.reasonForDeviation != null 
+          ?
+          <div className="applicationsCard-group">
+            <h4>Причина отклонения</h4>
+            <div className="applicationsCard-name">{dispCardData.reasonForDeviation}</div>
+          </div> 
+          : ''
+        }
       </div>
 
       <div className="applicationsCard">
@@ -77,7 +86,7 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
       <div className="applicationsCard">
         <div className="applicationsCard-group">
           <h4>Сотрудник подавший заявку</h4>
-          <div className="applicationsCard-name">{dispCardData.applicationInitiator}</div>
+          <div className="applicationsCard-name">{dispCardData.applicationInitiator} {dispCardData.emailUserCreate}</div>
         </div>
         <div className="applicationsCard-group">
           <h4>Должность</h4>
