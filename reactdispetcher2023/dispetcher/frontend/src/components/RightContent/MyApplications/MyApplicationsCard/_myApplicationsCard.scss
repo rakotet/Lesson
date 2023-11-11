@@ -1,16 +1,15 @@
-%applicationsCard-element {
+%dispCard-element {
   display: flex;
   flex-direction: column;
   width: 220px;
   margin-right: 30px;
 }
 
-
-.applicationsCard {
+.dispCard {
   display: flex;
   flex-direction: row;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 
   h5 {
     font-family: Houschka Pro;
@@ -31,10 +30,10 @@
     text-align: left;
     color: #42474F;
     text-transform: uppercase;
-    margin-top: 20px;
+    margin-top: 40px;
   }
 
-  .applicationsCard-name {
+  .dispCard-name {
     font-family: Houschka Pro;
     font-size: 16px;
     font-weight: 500;
@@ -45,15 +44,15 @@
     margin-top: 10px
   }
 
-  .applicationsCard-group {
-    @extend %applicationsCard-element;
+  .dispCard-group {
+    @extend %companyCard-element;
   }
 
-  .applicationsCard-subdivision {
-    // @extend %companyCard-element;
+  .dispCard-subdivision {
+    @extend %companyCard-element;
   }
 }
 
-.applicationsCard-hide {
+.dispCard-hide {
   display: none;
 }

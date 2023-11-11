@@ -63,6 +63,10 @@
     echo json_encode($db->getApplicationsData('applications', '`id` = ?', [$dataFront['getApplicationsData']]));
   } 
 
+  if(isset($dataFront['getMyApplicationsData'])) {
+    echo json_encode($db->getMyApplicationsData('applications', [$dataFront['getMyApplicationsData']]));
+  } 
+
   if(isset($dataFront['dataInputApplications'])) {
 
     if(!isset($dataFront['dataInputApplications']['comment'])) $dataFront['dataInputApplications']['comment'] = '';

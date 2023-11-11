@@ -23,7 +23,7 @@ export default function AssignAcarCard() {
   let actionLk = useSelector(actionLkData)
 
   let endTime = dateApplications(dateOfApplication, submissionTime, timeOfUseOfTransport)
-console.log(applicationsToassignAcarDate)
+//console.log(applicationsToassignAcarDate)
   useEffect(() => {
     
     setDateOfApplication(applicationsToassignAcarDate.date.dateOfApplication)
@@ -92,9 +92,9 @@ console.log(applicationsToassignAcarDate)
     dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
     setReload(!reload)
 
-    setTimeout(() => {
-      document.querySelector('.buttonCreate-wrap').click()
-    }, 100)
+    // setTimeout(() => {
+    //   document.querySelector('.buttonCreate-wrap').click()
+    // }, 100)
   }
 
   return(

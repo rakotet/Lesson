@@ -6,6 +6,7 @@ import GroupUnloadingData from "./GroupUnloadingData/GroupUnloadingData";
 import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
 import AutoUnloadingData from "./AutoUnloadingData/AutoUnloadingData";
 import ApplicationsUnloadingData from "./ApplicationsUnloadingData/ApplicationsUnloadingData";
+import MyApplicationsUnloadingData from "./MyApplicationsUnloadingData/MyApplicationsUnloadingData";
 import AssignAcarUnloadingData from "./AssignAcarUnloadingData/AssignAcarUnloadingData";
 
 export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto, arrAssign}) {
@@ -67,7 +68,9 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
       return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} />
     } else if(actionLk == actionLkUnloading.getAssignACar) {
       return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign}/>
-    }
+    } else if(actionLk == actionLkUnloading.getMyApplicationsData) {
+      return <MyApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} />
+    } 
   }
 
   return(

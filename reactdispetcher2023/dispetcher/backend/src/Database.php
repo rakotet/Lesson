@@ -204,6 +204,16 @@
       return [];
     }
 
+    //Вернуть заявки текущего  пользователя
+    public function getMyApplicationsData(string $table_name, array $values = []) : array{
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
 
     //Обновить заявку от диспетчера
     public function updateApplications(string $table_name, array $values = []) {

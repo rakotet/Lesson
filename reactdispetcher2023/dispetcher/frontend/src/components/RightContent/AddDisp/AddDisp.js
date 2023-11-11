@@ -23,6 +23,7 @@ export default function AddDisp() {
     for(let i = 0; i < arrData.length; i++) {
       group.push(arrData[i].nameGroup)
     }
+    group = [...new Set(group)]
   }
 
   function backDataGroup() {

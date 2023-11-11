@@ -12,6 +12,7 @@ import AddDisp from './AddDisp/AddDisp';
 import AddGroup from './AddGroup/AddGroup';
 import AddAuto from './AddAuto/AddAuto';
 import AddApplications from './AddApplications/AddApplications';
+import AddMyApplications from './AddMyApplications/AddMyApplications';
 
 export default function RightContent() {
   const [tabName, setTabName] = useState('')
@@ -47,6 +48,8 @@ export default function RightContent() {
       setTabName(nameRow.addAuto)
     } else if(activeData == activRightContentData.addApplications) {
       setTabName(nameRow.addApplications)
+    } else if(activeData == activRightContentData.addMyApplications) {
+      setTabName(nameRow.addMyApplications)
     } 
 
   }, [activeData])
@@ -71,7 +74,7 @@ export default function RightContent() {
       )
     } else if(activeData == activRightContentData.myApplications) {
       return(
-        <MyApplications />
+        <MyApplications setTabName={setTabName}/>
       )
     } else if(activeData == activRightContentData.myTemplates) {
       return(
@@ -96,6 +99,10 @@ export default function RightContent() {
     } else if(activeData == activRightContentData.addApplications) {
       return(
         <AddApplications />
+      )
+    } else if(activeData == activRightContentData.addMyApplications) {
+      return(
+        <AddMyApplications />
       )
     } 
   }

@@ -62,6 +62,12 @@ export default function Applications({setTabName}) {
     else setTabName(nameRowDataLabel.applications)
   }
 
+  function dispCardOpenHideTwo(data = {}) {
+    setDispCardOpen(!dispCardOpen)
+    if(dispCardOpen) setTabName(nameRowDataLabel.applicationsCard)
+    else setTabName(nameRowDataLabel.applications)
+  }
+
   function companyCardDataSend(data = {}) {
     setCompanyCardData(data)
   }
@@ -123,8 +129,6 @@ export default function Applications({setTabName}) {
   }
 
   function trashAppYes(gossNumber, item) {
-    console.log(item)
-    console.log('-------')
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -185,7 +189,7 @@ export default function Applications({setTabName}) {
       })
   }
 
-  function dateApplications(number, numberHours, timeOfUseOfTransport) {
+  function dateApplications(number = '', numberHours = '', timeOfUseOfTransport = '') {
     let date = new Date()
     date.setFullYear(number[6] + number[7] + number[8] + number[9]);
     date.setMonth(number[3] + number[4]);
@@ -214,8 +218,9 @@ export default function Applications({setTabName}) {
     setRefreshData(!refreshData)
   }
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
   function editApplications() {
-    
     let lengthData = Object.keys(uploadingData).length
     
     if(lengthData == 1) {
@@ -238,12 +243,13 @@ export default function Applications({setTabName}) {
     } else alert('Выберете хотя бы один чекбокс')
   }
 
-  function trashApplications() {
+  async function trashApplications() {
     // console.log(uploadingData)
     let lengthData = Object.keys(uploadingData).length
     
     if(lengthData >= 1) {
       for(let key in uploadingData) {
+        await delay(100)
         if(/*uploadingData[key]['status'] != 'Назначена'*/ false) {
           trashAppNo(uploadingData[key])
           setUploadingData(n => {
@@ -251,13 +257,19 @@ export default function Applications({setTabName}) {
             return n
           })
         } else {
-          trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
+          try {
+            trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
 
-          // trashAppNo(uploadingData[key])
-          // setUploadingData(n => {
-          //   delete n[key]
-          //   return n
-          // })
+          } catch(er) {
+            console.log(er)
+          }
+
+          trashAppNo(uploadingData[key])
+          setUploadingData(n => {
+            let nev = {...n};
+            delete nev[key]
+            return nev
+          })
         }
         
       }
@@ -281,7 +293,7 @@ export default function Applications({setTabName}) {
   return(
     <>
       {dispCardEdit ? '' : <EditApplications editDisp={editDisp} companyCardData={companyCardData} setUploadingData={setUploadingData}/>}
-      <ApplicationsCard dispCardOpen={dispCardOpen} dispCardOpenHide={dispCardOpenHide} dispCardData={companyCardData}/>
+      <ApplicationsCard dispCardOpen={dispCardOpen} dispCardOpenHide={dispCardOpenHideTwo} dispCardData={companyCardData}/>
       <div className={dispCardEdit ? '' : 'disp-wrapper-hide' }>
         <div className={dispCardOpen ? 'disp-wrapper' : 'disp-wrapper-hide' }>
           <div className="disp-row">

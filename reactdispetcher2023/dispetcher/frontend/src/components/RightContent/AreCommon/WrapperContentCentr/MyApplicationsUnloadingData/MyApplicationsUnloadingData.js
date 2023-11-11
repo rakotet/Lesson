@@ -3,7 +3,7 @@ import StatusApplications from "./StatusApplications/StatusApplications";
 import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData}) {
+export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
   
@@ -103,12 +103,12 @@ function checkboxDataChange(event, data) {
               <div className="applicationsUnloadingData-view">
                 <div>{item.view}</div>
               </div>
-              <div className="applicationsUnloadingData-applicationInitiator">
+              {/* <div className="applicationsUnloadingData-applicationInitiator">
                 <div className="applicationsUnloadingData-driverPhone-flex">
                   <div>{item.applicationInitiator}</div>
                   <div>{item.initiatorPhone}</div>
                 </div>
-              </div>
+              </div> */}
               <div className="applicationsUnloadingData-passengerPhone">
                 <div className="applicationsUnloadingData-driverPhone-flex">
                   <div>{item.namePassengers}</div>
