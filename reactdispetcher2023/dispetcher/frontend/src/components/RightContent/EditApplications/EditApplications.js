@@ -71,7 +71,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
               })
               .then(data => {
                 if(data != 'null') {
-                  //console.log(data)
+                  console.log(data)
                   data = JSON.parse(data)
                   //console.log(data)
                   

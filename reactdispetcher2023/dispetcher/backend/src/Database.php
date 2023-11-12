@@ -1,7 +1,8 @@
 <?php
   require_once 'Config.php';
 
-  require_once "./lib/vendor/autoload.php"; 
+  require_once "lib/vendor/autoload.php"; 
+  //use PHPMailer\PHPMailer\PHPMailer;
   use PHPMailer\PHPMailer\PHPMailer;
 
   function mailUser($topic, $htmlBody, $email) {
@@ -263,7 +264,7 @@
       $submissionTime = $values[0]['submissionTime'];
       $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
 
-      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00ч</p>", $emailUserCreate);
+      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
 
       $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` = ?";
       $query = $this->pdo->prepare($sql);
@@ -280,6 +281,18 @@
         $query->execute([$dateAssign, $id]);
       }
 
+    }
+
+     //Отправить пользователю на почту назначенное авто
+     public function mailToAutoUser(string $table_name, array $values = []) {
+      $driverPhone = $values[0]['driverPhone'];
+      $emailUserCreate = $values[0]['emailUserCreate'];
+      $gossNumber = $values[0]['gossNumber'];
+      $marc = $values[0]['marc'];
+      $submissionTime = $values[0]['submissionTime'];
+      $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
+
+      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
     }
 
 
