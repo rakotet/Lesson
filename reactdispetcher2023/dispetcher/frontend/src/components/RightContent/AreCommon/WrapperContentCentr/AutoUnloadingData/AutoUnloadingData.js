@@ -14,10 +14,10 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
         if(index < count) {
           return(
             <div key={index} className="dispUnloadingData">
-              <div className="autoUnloadingData-namber" >
+              <div className="autoUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
                 <div>{index + 1}</div>
               </div>
-              <div className="autoUnloadingData-auto" onClick={() => dispCardOpenHide(data[`${index}`])}>
+              <div className="autoUnloadingData-auto">
                 <div>
                   <div className='autoUnloadingData-margin'>{item.marc}</div>
                   <div>{(item.gossNumber).toUpperCase()}</div>

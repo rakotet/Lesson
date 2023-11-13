@@ -7,15 +7,19 @@
     $mail->CharSet = "utf-8";
     $mail->SMTPDebug = 3;
     $mail->isSMTP();
-    $mail->Host = "smtp-mail.outlook.com";
+    // $mail->Host = "smtp-mail.outlook.com";
+    $mail->Host = "smtp.gmail.com";
     $mail->SMTPAuth = true;
-    $mail->Username = "disp8634@outlook.com";
-    $mail->Password = "Piligrim34";
+    // $mail->Username = "disp8634@outlook.com";
+    // $mail->Password = "Piligrim34";
+    $mail->Username = "rakotet@gmail.com";
+    $mail->Password = "ivcx hbxg clhx bypu";
     $mail->SMTPSecure = "tls";
     $mail->Port = 587;
-    $mail->From = "disp8634@outlook.com";
+    // $mail->From = "disp8634@outlook.com";
+    $mail->From = "rakotet@gmail.com";
     $mail->FromName = "Диспетчеризация";
-    $mail->addAddress("rakotet@gmail.com", "Имя получателя");
+    $mail->addAddress("it@volgad.ru", "");
     $mail->isHTML(true);
     $mail->Subject = "$topic";
     $mail->Body = "<i>$htmlBody</i>";
@@ -29,5 +33,5 @@
   }
 
   
-
+  mailUser('Тестовое письмо', 'Тест');
 ?>

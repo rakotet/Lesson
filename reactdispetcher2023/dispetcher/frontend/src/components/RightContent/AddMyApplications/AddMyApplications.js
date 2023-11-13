@@ -6,7 +6,7 @@ import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate";
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
 import ButtonDownloadFile from "../AreCommon/ButtonDownloadFile/ButtonDownloadFile";
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore } from "../../store/reduser";
+import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore, setNoticeOfApplicationData } from "../../store/reduser";
 import { url } from '../../../core/core';
 import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
 
@@ -77,6 +77,7 @@ export default function AddMyApplications() {
                   dispatch(setUpdateLeftContent(Math.random()))
                   dispatch(setSelectSubdivision([]))
                   dispatch(setActiveRow(activRight.myApplications))
+                  dispatch(setNoticeOfApplicationData(true))
               }
         
             })

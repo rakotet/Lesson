@@ -14,10 +14,10 @@ export default function DispUnloadingData({data, count, dispCardOpenHide, setDis
         if(index < count) {
           return(
             <div key={index} className="dispUnloadingData">
-              <div className="dispUnloadingData-namber">
+              <div className="dispUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
                 <div>{index + 1}</div>
               </div>
-              <div className="dispUnloadingData-name" onClick={() => dispCardOpenHide(data[`${index}`])}>
+              <div className="dispUnloadingData-name">
                 <div>{item.userName}</div>
               </div>
               <div className="dispUnloadingData-jobTitle">

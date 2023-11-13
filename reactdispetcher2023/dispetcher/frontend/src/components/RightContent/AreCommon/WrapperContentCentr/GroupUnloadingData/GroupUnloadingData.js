@@ -6,8 +6,8 @@ export default function GroupUnloadingData({data, count, companyCardOpenHide}) {
       {data.map((item, index) => {
         if(index < count) {
           return(
-            <div key={index} className="groupUnloadingData" onClick={() => companyCardOpenHide(data[`${index}`])}>
-              <div className="groupUnloadingData-namber">
+            <div key={index} className="groupUnloadingData" >
+              <div className="groupUnloadingData-namber" onClick={() => companyCardOpenHide(data[`${index}`])}>
                 <div>{index + 1}</div>
               </div>
               <div className="groupUnloadingData-group">

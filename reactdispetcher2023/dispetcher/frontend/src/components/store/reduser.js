@@ -28,7 +28,7 @@ const dataSlice = createSlice({
       addApplications: 'Создать заявку',
       addMyApplications: 'Создать заявку',
       applicationsCard: 'Карточка заявки',
-      MyApplicationsCard: 'Карточка заявки',
+      myApplicationsCard: 'Карточка заявки',
       editApplications: 'Редактирование заявки',
       editMyApplications: 'Редактирование заявки'
     },
@@ -51,7 +51,7 @@ const dataSlice = createSlice({
       addApplications: 'addApplications',
       addMyApplications: 'addMyApplications',
       applicationsCard: 'applicationsCard',
-      MyApplicationsCard: 'MyApplicationsCard',
+      myApplicationsCard: 'myApplicationsCard',
       editApplications: 'editApplications',
       editMyApplications: 'editMyApplications'
     },
@@ -78,7 +78,8 @@ const dataSlice = createSlice({
     cancelApplicationsObj: {},
     applicationsToassignAcar: {date: {dateOfApplication: '', submissionTime: '', timeOfUseOfTransport: ''}},
     assignAcarClickAuto: {driver: '', telephone: '', marc: '', gossNumber: ''},
-    wrapperContentCentrUpdate: ''
+    wrapperContentCentrUpdate: '',
+    noticeOfApplicationData: false,
 
   },
   reducers: { // набор ф-й для работы с данными хранилища, напрямую обращаться к этим данным не получится
@@ -118,10 +119,13 @@ const dataSlice = createSlice({
     setWrapperContentCentrUpdate(state, data) {
       state.wrapperContentCentrUpdate = data.payload
     },
+    setNoticeOfApplicationData(state, data) {
+      state.noticeOfApplicationData = data.payload
+    },
   },
 })
 
-export const {setWrapperContentCentrUpdate, setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto, setCancelApplications, setCancelApplicationsObj} = dataSlice.actions
+export const {setWrapperContentCentrUpdate, setDataStore, setActiveRow, setSelectSubdivision, setDispSelectOne, setDispSelectTwo, setUpdateLeftContent, setAssignAcar, setApplicationsToassignAcar, setAssignAcarClickAuto, setCancelApplications, setCancelApplicationsObj, setNoticeOfApplicationData} = dataSlice.actions
 
 export const userDataStore = state => state.dataStore.userData
 export const activeRowStore = state => state.dataStore.activeRow
@@ -139,5 +143,6 @@ export const cancelApplicationsObj = state => state.dataStore.cancelApplications
 export const applicationsToassignAcarData = state => state.dataStore.applicationsToassignAcar
 export const assignAcarClickAutoData = state => state.dataStore.assignAcarClickAuto
 export const wrapperContentCentrUpdateData = state => state.dataStore.wrapperContentCentrUpdate
+export const noticeOfApplication = state => state.dataStore.noticeOfApplicationData
 
 export default dataSlice.reducer

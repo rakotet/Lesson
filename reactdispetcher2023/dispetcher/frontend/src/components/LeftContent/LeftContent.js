@@ -16,6 +16,9 @@ export default function LeftContent({collapseData, hideRow}) {
   const [isActiveAdmins, setActiveAdmins] = useState(true);
   const [numberDisp, setNumberDisp] = useState(0);
   const [numberGroup, setNumberGroup] = useState(0);
+  const [numberAuto, setNumberAuto] = useState(0);
+  const [numberApplications, setNumberApplications] = useState(0);
+  const [numberMyApplications, setNumberMyApplications] = useState(0);
 
   let activeRow = useSelector(activeRowStore)
   let userArr = useSelector(userDataStore)
@@ -33,9 +36,12 @@ export default function LeftContent({collapseData, hideRow}) {
       dispatch(setActiveRow(activRight.disp))
 
     } else if(userArr.type == roleUsersData.disp) {
+      getNumber('getAutoNumber', setNumberAuto)
+      getNumber('getApplicationsNumber', setNumberApplications)
       dispatch(setActiveRow(activRight.auto))
 
     } else if(userArr.type == roleUsersData.user) {
+      getNumber('getMyApplicationsNumber', setNumberMyApplications)
       dispatch(setActiveRow(activRight.myApplications))
 
     } else if(userArr.type == roleUsersData.sa) {
@@ -51,27 +57,31 @@ export default function LeftContent({collapseData, hideRow}) {
       getNumber('getGroupNumber', setNumberGroup)
 
     } else if(userArr.type == roleUsersData.disp) {
+      getNumber('getAutoData', setNumberAuto, userArr.id)
+      getNumber('getApplicationsData', setNumberApplications, userArr.id)
 
     } else if(userArr.type == roleUsersData.user) {
+      getNumber('getMyApplicationsData', setNumberMyApplications, userArr.id)
 
     } else if(userArr.type == roleUsersData.sa) {
 
     }
   }, [updateLeft])
 
-  function getNumber(parametr, setNumberDisp) {
+  function getNumber(parametr, setNumberDisp, data = true) {
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({[parametr]: true})
+      body: JSON.stringify({[parametr]: data})
     
       })
       .then(data => {
         return data.text()
       })
       .then(data => {
+        // console.log(data)
         data = JSON.parse(data)
         setNumberDisp(data.length)
       })
@@ -143,14 +153,14 @@ export default function LeftContent({collapseData, hideRow}) {
     } else if(userArr.type == roleUsersData.disp) {
       return (
         <>
-          <RowData name={nameRow.auto} count={0} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
-          <RowData name={nameRow.applications} count={0} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.auto} count={numberAuto} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.applications} count={numberApplications} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow}/>
         </>
       )
     } else if(userArr.type == roleUsersData.user) {
       return (
         <>
-          <RowData name={nameRow.myApplications} count={0} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
+          <RowData name={nameRow.myApplications} count={numberMyApplications} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
           <RowData name={nameRow.myTemplates} count={0} active={isActiveMytemplates} click={handleClickMytemplates} hide={'rowData-hide'} hideRow={hideRow}/>
         </>
       )

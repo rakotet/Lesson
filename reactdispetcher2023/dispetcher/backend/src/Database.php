@@ -10,18 +10,18 @@
     $mail->CharSet = "utf-8";
     $mail->SMTPDebug = 3;
     $mail->isSMTP();
-    $mail->Host = "smtp-mail.outlook.com";
+    $mail->Host = "smtp.gmail.com";
     $mail->SMTPAuth = true;
-    $mail->Username = "disp8634@outlook.com";
-    $mail->Password = "Piligrim34";
+    $mail->Username = "rakotet@gmail.com";
+    $mail->Password = "ivcx hbxg clhx bypu";
     $mail->SMTPSecure = "tls";
     $mail->Port = 587;
-    $mail->From = "disp8634@outlook.com";
+    $mail->From = "rakotet@gmail.com";
     $mail->FromName = "Диспетчеризация";
     $mail->addAddress("$email", "");
     $mail->isHTML(true);
     $mail->Subject = "$topic";
-    $mail->Body = "<i>$htmlBody</i>";
+    $mail->Body = "<b>$htmlBody</b>";
     $mail->AltBody = "Текстовая версия письма";
   
     if(!$mail->send()) {
@@ -236,7 +236,7 @@
 
     //Вернуть заявки текущего  пользователя
     public function getMyApplicationsData(string $table_name, array $values = []) : array{
-      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` = ?";
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `idDisp` = ?";
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
       $result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -284,7 +284,7 @@
     }
 
      //Отправить пользователю на почту назначенное авто
-     public function mailToAutoUser(string $table_name, array $values = []) {
+     public function mailToAutoUser(array $values = []) {
       $driverPhone = $values[0]['driverPhone'];
       $emailUserCreate = $values[0]['emailUserCreate'];
       $gossNumber = $values[0]['gossNumber'];
@@ -293,6 +293,14 @@
       $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
 
       mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
+    }
+
+    //Отправить пользователю на почту причину отмены заявки
+    public function mailToCancel(array $values = []) {
+      $mess = $values[0];
+      $email = $values[3];
+
+      mailUser('Ваша заявка отклонена ', "<p>Ваша заявка отклонена, по причине - $mess", $email);
     }
 
 
@@ -333,7 +341,7 @@
     public function cancelApplications(string $table_name, array $values = []) {
       $sql = 'UPDATE '.$this->getTableName($table_name).' SET `reasonForDeviation` = ?, `status` = ? WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);
-      $query->execute($values);
+      $query->execute([$values[0], $values[1], $values[2]]);
     }
 
 

@@ -37,7 +37,7 @@
   } 
 
   if(isset($dataFront['getDispNumber'])) {
-    echo json_encode($db->getDispNumber('users', '`type` = ?', [2]));
+    echo json_encode($db->getDispNumber('users', '`type` IN (?, ?)', [2, 3]));
   } 
 
   if(isset($dataFront['getGroupNumber'])) {
@@ -144,7 +144,7 @@
 
   if(isset($dataFront['theCarIsBusyAtThisTime'])) {
     echo json_encode($db->theCarIsBusyAtThisTime('auto', [$dataFront['theCarIsBusyAtThisTime']]));
-    echo json_encode($db->mailToAutoUser('auto', [$dataFront['theCarIsBusyAtThisTime']]));
+    echo json_encode($db->mailToAutoUser([$dataFront['theCarIsBusyAtThisTime']]));
   } 
 
   if(isset($dataFront['freeTime'])) {
@@ -165,5 +165,6 @@
 
   if(isset($dataFront['cancelApplications'])) {
     echo json_encode($db->cancelApplications('applications', $dataFront['cancelApplications']));
+    echo json_encode($db->mailToCancel($dataFront['cancelApplications']));
   } 
 ?>

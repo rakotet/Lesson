@@ -58,6 +58,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
         if(submissionTime >= 9 && submissionTime <= 20) {
          
           if(dataInput.theCarIsBusyAtThisTime) {
+            console.log(dataInput.theCarIsBusyAtThisTime)
             fetch(url.urlBack1, {
               method: 'POST',
               header: {

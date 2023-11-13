@@ -97,7 +97,7 @@ export default function Disp({setTabName}) {
               <ButtonAdd addFunc={addDispFunc}/>
               <SearchData />
               <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={['test1','test2','test3','test4','test5']} name={'dispGroup'} dataInputOnChange={dataInputOnChange}/>
-              <SelectData namePlaceholder={'Выбрать категорию'} nameArr={['test1','test2','test3']} name={'dispCategory'} dataInputOnChange={dataInputOnChange}/>
+              {/* <SelectData namePlaceholder={'Выбрать категорию'} nameArr={['test1','test2','test3']} name={'dispCategory'} dataInputOnChange={dataInputOnChange}/> */}
               <DownloadReport />
             </div>
             <div>
