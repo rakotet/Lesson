@@ -41,7 +41,7 @@ export default function LeftContent({collapseData, hideRow}) {
       dispatch(setActiveRow(activRight.auto))
 
     } else if(userArr.type == roleUsersData.user) {
-      getNumber('getMyApplicationsNumber', setNumberMyApplications)
+      //getNumber('getMyApplicationsNumber', setNumberMyApplications)
       dispatch(setActiveRow(activRight.myApplications))
 
     } else if(userArr.type == roleUsersData.sa) {
@@ -61,7 +61,7 @@ export default function LeftContent({collapseData, hideRow}) {
       getNumber('getApplicationsData', setNumberApplications, userArr.id)
 
     } else if(userArr.type == roleUsersData.user) {
-      getNumber('getMyApplicationsData', setNumberMyApplications, userArr.id)
+      //getNumber('getMyApplicationsData', setNumberMyApplications, userArr.id)
 
     } else if(userArr.type == roleUsersData.sa) {
 
@@ -160,7 +160,7 @@ export default function LeftContent({collapseData, hideRow}) {
     } else if(userArr.type == roleUsersData.user) {
       return (
         <>
-          <RowData name={nameRow.myApplications} count={numberMyApplications} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
+          <RowData name={nameRow.myApplications} count={0} active={isActiveMyApplications} click={handleClickMyApplications} hide={'rowData-hide'} hideRow={hideRow}/>
           <RowData name={nameRow.myTemplates} count={0} active={isActiveMytemplates} click={handleClickMytemplates} hide={'rowData-hide'} hideRow={hideRow}/>
         </>
       )

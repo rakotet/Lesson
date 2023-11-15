@@ -1,4 +1,9 @@
 import ButtonCancellation from "../../AreCommon/ButtonCancellation/ButtonCancellation"
+import SearchData from '../../AreCommon/Search/SearchData'
+import Datepicker from "../../AreCommon/Datepicker/Datepicker"
+import DownloadReport from "../../AreCommon/DownloadReport/DownloadReport"
+import ListDataNumber from "../../AreCommon/ListDataNumber/ListDataNumber"
+import AutoCardRowNameWrapper from "../../AreCommon/AutoCardRowNameWrapper/AutoCardRowNameWrapper"
 
 export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData}) {
   return(
@@ -24,6 +29,29 @@ export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData})
         </div>
       </div>
       <ButtonCancellation name={'Назад'} cancellation={dispCardOpenHide}/>
+      
+      <div className="autoCard-history-wrap">
+        <h3>История автотранспорта</h3>
+        <div className='disp-wrapper'>
+          <div className="disp-row">
+            <div className="disp-row-menu">
+              <SearchData margin={false}/>
+              <div className="autoCard-margin">
+               <Datepicker placeHolder={'Период создания'} />
+              </div>
+              <Datepicker placeHolder={'Период подачи'} />
+              <DownloadReport />
+            </div>
+            <div>
+              <ListDataNumber setShowMoreActiv={10}/>
+            </div>
+          </div>
+          <div className="disp-row-name-wrapper">
+            <AutoCardRowNameWrapper />
+            {/* <WrapperContentCentr label="Записей не найдено. Добавьте нового автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/> */}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

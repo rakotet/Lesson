@@ -66,7 +66,7 @@ function checkboxDataChange(event, data) {
       {data.map((item, index) => {
         if(index < count) {
           return(
-            <div key={index} className="dispUnloadingData">
+            <div key={index} className="dispUnloadingData myApplicationsUnloadingData-row">
               <div className="applicationsUnloadingData-margin-checkbox">
                 <input type="checkbox" defaultChecked={false} name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>

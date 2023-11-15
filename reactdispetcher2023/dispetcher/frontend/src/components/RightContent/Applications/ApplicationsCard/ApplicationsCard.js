@@ -1,3 +1,7 @@
+import imgBlue from './images/blue.png';
+import imgRed from './images/red.png';
+import imgGreen from './images/green.png';
+
 import ButtonCancellation from "../../AreCommon/ButtonCancellation/ButtonCancellation"
 
 export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCardData}) {
@@ -7,6 +11,16 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
   let itog
   if(submissionTime) {
     itog = Number(submissionTime[0] + submissionTime[1]) + Number(timeOfUseOfTransport)
+  }
+
+  function status(data) {
+    if(data == 'Новая') {
+      return imgBlue
+    } else if(data == 'Отклонена') {
+      return imgRed
+    } else if(data == 'Назначена') {
+      return imgGreen
+    }
   }
 
   return(
@@ -22,7 +36,9 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
         </div>
         <div className="applicationsCard-group">
           <h4>СТАТУС</h4>
-          <div className="applicationsCard-name">{dispCardData.status}</div>
+          <div className="applicationsCard-name">
+            <img src={status(dispCardData.status)}/><p>{dispCardData.status}</p>
+          </div>
         </div>
         {
           dispCardData.reasonForDeviation != null 

@@ -1,55 +1,55 @@
 import WrapNameRowData from "../WrapNameRowData/WrapNameRowData"
 
-export default function MyApplicationsRowNameWrapper() {
+export default function AutoCardRowNameWrapper() {
   return(
-    <div className="myApplicationsRowNameWrapper">
+    <div className="applicationsRowNameWrapper">
       {/* <div className="applicationsRowNameWrapper-input">
         <input type="checkbox" name="applicationsRowNameWrapper-checkbox" id="cb1"/>
         <label htmlFor="cb1"></label>
       </div> */}
-      <div className="myApplicationsRowNameWrapper-zero">
+      <div className="applicationsRowNameWrapper-zero">
         <div></div>
       </div>
-      <div className="myApplicationsRowNameWrapper-one">
+      <div className="applicationsRowNameWrapper-one">
         <WrapNameRowData name={'Номер'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-two">
+      <div className="applicationsRowNameWrapper-two">
         <WrapNameRowData name={'Дата создания'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-three">
+      <div className="applicationsRowNameWrapper-three">
         <WrapNameRowData name={'Время использования'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-four">
+      <div className="applicationsRowNameWrapper-four">
         <WrapNameRowData name={'Время в пути'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-five">
+      {/* <div className="applicationsRowNameWrapper-five">
         <WrapNameRowData name={'Статус'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-six">
+      <div className="applicationsRowNameWrapper-six">
         <WrapNameRowData name={'Водитель, тел.'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-seven">
+      <div className="applicationsRowNameWrapper-seven">
         <WrapNameRowData name={'Автотранспорт'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-eight">
+      <div className="applicationsRowNameWrapper-eight">
         <WrapNameRowData name={'Вид'}/>
-      </div>
-      {/* <div className="applicationsRowNameWrapper-nine">
-        <WrapNameRowData name={'Создатель, тел.'}/>
       </div> */}
-      <div className="myApplicationsRowNameWrapper-ten">
+      <div className="applicationsRowNameWrapper-nine">
+        <WrapNameRowData name={'Создатель, тел.'}/>
+      </div>
+      <div className="applicationsRowNameWrapper-ten">
         <WrapNameRowData name={'Пассажир, тел.'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-eleven">
+      <div className="applicationsRowNameWrapper-eleven">
         <WrapNameRowData name={'Адрес отправки'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-twelve">
+      <div className="applicationsRowNameWrapper-twelve">
         <WrapNameRowData name={'Адрес назначения'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-thirteen">
+      <div className="applicationsRowNameWrapper-thirteen">
         <WrapNameRowData name={'Цель поездки'}/>
       </div>
-      <div className="myApplicationsRowNameWrapper-fourteen">
+      <div className="applicationsRowNameWrapper-fourteen">
         <WrapNameRowData name={'Комментарий'}/>
       </div>
     </div>

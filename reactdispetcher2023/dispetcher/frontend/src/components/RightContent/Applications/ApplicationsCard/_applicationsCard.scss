@@ -35,6 +35,9 @@
   }
 
   .applicationsCard-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     font-family: Houschka Pro;
     font-size: 16px;
     font-weight: 500;
@@ -42,7 +45,13 @@
     letter-spacing: 0em;
     text-align: left;
     color: #333333;
-    margin-top: 10px
+    margin-top: 10px;
+
+    img {
+      width: 10px;
+      height: 10px;
+      margin-right: 10px
+    }
   }
 
   .applicationsCard-group {

@@ -29,6 +29,7 @@
 @import './AddApplications/addApplications';
 @import './EditApplications/editApplications';
 @import './AreCommon/ApplicationsRowNameWrapper/applicationsRowNameWrapper';
+@import './AreCommon/MyApplicationsRowNameWrapper/myApplicationsRowNameWrapper';
 @import './AreCommon/Ellipsis/ellipsis';
 @import './AreCommon/ButtonCustom/buttonCustom';
 @import './AreCommon/ButtonDownloadFile/buttonDownloadFile';
@@ -55,5 +56,20 @@
     text-align: left;
     color: #333333;
     margin-bottom: 30px;
+  }
+
+  .rightContent-label-row {
+    display: flex;
+    flex-direction: row;
+    
+    img {
+      width: 119px;
+      height: 24px;
+      margin-left: 65px;
+    }
+
+    img:hover {
+      cursor: pointer;
+    }
   }
 }

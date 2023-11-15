@@ -119,7 +119,7 @@ export default function CancelApplications() {
       })
       .then(data => {
         if(data != 'null') {
-          console.log(data)
+          //console.log(data)
         } else {
           
         }

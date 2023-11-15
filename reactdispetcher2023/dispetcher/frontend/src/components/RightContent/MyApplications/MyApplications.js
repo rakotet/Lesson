@@ -58,14 +58,14 @@ export default function MyApplications({setTabName}) {
   function dispCardOpenHide(data = {}) {
     companyCardDataSend(data)
     setDispCardOpen(!dispCardOpen)
-    if(dispCardOpen) setTabName(nameRowDataLabel.MyApplicationsCard)
+    if(dispCardOpen) setTabName(nameRowDataLabel.myApplicationsCard)
     else setTabName(nameRowDataLabel.myApplications)
   }
 
   function dispCardOpenHideTwo(data = {}) {
     companyCardDataSend(data)
     setDispCardOpen(!dispCardOpen)
-    if(dispCardOpen) setTabName(nameRowDataLabel.MyApplicationsCard)
+    if(dispCardOpen) setTabName(nameRowDataLabel.myApplicationsCard)
     else setTabName(nameRowDataLabel.myApplications)
   }
 
@@ -323,7 +323,7 @@ export default function MyApplications({setTabName}) {
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
             </div>
           </div>
-          <div className="disp-row-name-wrapper">
+          <div className="disp-row-name-wrapper myApplications-row-name-wrapper">
             <MyApplicationsRowNameWrapper />
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} />
           </div>

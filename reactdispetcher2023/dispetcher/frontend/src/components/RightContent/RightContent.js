@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { activeRowStore, nameRowData, activRightContent, cancelApplicationsData } from "../store/reduser";
 import { useEffect, useState } from 'react';
+import print from './images/print.png';
 import Disp from './Disp/Disp';
 import Group from './Group/Group';
 import Auto from './Auto/Auto';
@@ -109,7 +110,10 @@ export default function RightContent() {
 
   return(
     <div className="rightContent">
-      <h3>{tabName}</h3>
+      <div className="rightContent-label-row">
+        <h3>{tabName}</h3>
+        {tabName == 'Карточка заявки' ? <img src={print}/> : ''}
+      </div>
       {getContentRight()}
     </div>
   )
