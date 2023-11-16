@@ -75,7 +75,7 @@
   }
 
   .dispUnloadingData-action {
-    width: 50px;
+    width: 60px;
 
     div {
       padding-right: 0;
@@ -93,6 +93,16 @@
     }
 
     img:hover {
+      cursor: pointer;
+    }
+
+    svg {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+
+    svg:hover {
       cursor: pointer;
     }
   }

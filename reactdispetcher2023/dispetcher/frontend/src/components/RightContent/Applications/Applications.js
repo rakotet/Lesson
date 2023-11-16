@@ -249,29 +249,22 @@ export default function Applications({setTabName}) {
     
     if(lengthData >= 1) {
       for(let key in uploadingData) {
-        await delay(100)
-        if(/*uploadingData[key]['status'] != 'Назначена'*/ false) {
-          trashAppNo(uploadingData[key])
-          setUploadingData(n => {
-            delete n[key]
-            return n
-          })
-        } else {
-          try {
-            trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
+        try {
+          await delay(300)
+          trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
 
-          } catch(er) {
-            console.log(er)
-          }
-
-          trashAppNo(uploadingData[key])
-          setUploadingData(n => {
-            let nev = {...n};
-            delete nev[key]
-            return nev
-          })
+        } catch(er) {
+          console.log(er)
         }
-        
+
+        await delay(100)
+
+        trashAppNo(uploadingData[key])
+        setUploadingData(n => {
+          let nev = {...n};
+          delete nev[key]
+          return nev
+        })
       }
 
       
@@ -288,7 +281,9 @@ export default function Applications({setTabName}) {
     } else alert('Выберете хотя бы один чекбокс')
   }
 
-  
+  function downLoad() {
+    
+  }
 
   return(
     <>
@@ -304,7 +299,7 @@ export default function Applications({setTabName}) {
                 <ButtonCustom addFunc={editApplications} buttonImg={'edit'}/>
                 <ButtonCustom addFunc={trashApplications} buttonImg={'trash'}/>
                 <ButtonCustom addFunc={cancelFunc} buttonImg={'cancel'}/>
-                <ButtonCustom addFunc={() => {}} buttonImg={'downLoad'}/>
+                <ButtonCustom addFunc={downLoad} buttonImg={'downLoad'}/>
               </div>
               <Ellipsis handleClick={clickEllipsis}/>
               {ellipsisOpen ? <SearchData /> : ''}

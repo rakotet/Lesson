@@ -257,14 +257,6 @@
     public function theCarIsBusyAtThisTime(string $table_name, array $values = []) {
       $id = $values[0]['id'];
       $dateAssign = json_encode($values[0]['dateAssign']);
-      $driverPhone = $values[0]['driverPhone'];
-      $emailUserCreate = $values[0]['emailUserCreate'];
-      $gossNumber = $values[0]['gossNumber'];
-      $marc = $values[0]['marc'];
-      $submissionTime = $values[0]['submissionTime'];
-      $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
-
-      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
 
       $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `id` = ?";
       $query = $this->pdo->prepare($sql);

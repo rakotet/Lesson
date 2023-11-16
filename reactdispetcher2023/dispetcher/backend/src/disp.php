@@ -144,7 +144,10 @@
 
   if(isset($dataFront['theCarIsBusyAtThisTime'])) {
     echo json_encode($db->theCarIsBusyAtThisTime('auto', [$dataFront['theCarIsBusyAtThisTime']]));
-    echo json_encode($db->mailToAutoUser([$dataFront['theCarIsBusyAtThisTime']]));
+  } 
+
+  if(isset($dataFront['mailToAutoUser'])) {
+    echo json_encode($db->mailToAutoUser([$dataFront['mailToAutoUser']]));
   } 
 
   if(isset($dataFront['freeTime'])) {
@@ -165,6 +168,9 @@
 
   if(isset($dataFront['cancelApplications'])) {
     echo json_encode($db->cancelApplications('applications', $dataFront['cancelApplications']));
-    echo json_encode($db->mailToCancel($dataFront['cancelApplications']));
+  } 
+
+  if(isset($dataFront['mailToCancel'])) {
+    echo json_encode($db->mailToCancel($dataFront['mailToCancel']));
   } 
 ?>

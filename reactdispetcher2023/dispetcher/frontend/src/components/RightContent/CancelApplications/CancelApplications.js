@@ -1,4 +1,5 @@
 import img from './image/x.png'
+import snake from './image/snake.gif'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCancelApplications, cancelApplicationsObj, setActiveRow, activRightContent, setCancelApplicationsObj} from "../../store/reduser";
 import { useState, useEffect } from "react"
@@ -7,6 +8,7 @@ import ButtonCreate from '../AreCommon/ButtonCreate/ButtonCreate'
 
 export default function CancelApplications() {
   const [textAreaDate, setTextAreaDate] = useState('')
+  const [download, setDownload] = useState(true)
   let uploadingData = useSelector(cancelApplicationsObj)
   let activRight = useSelector(activRightContent)
   const dispatch = useDispatch()
@@ -44,7 +46,7 @@ export default function CancelApplications() {
   }
 
   async function trashAppYes(gossNumber, item) {
-    await delay(100)
+    // await delay(100)
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -127,6 +129,28 @@ export default function CancelApplications() {
       .catch((er) => {
         console.log(er)
       })
+
+      fetch(url.urlBack1, {
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({mailToCancel: data})
+      
+        })
+        .then(data => {
+          return data.text()
+        })
+        .then(data => {
+          if(data != 'null') {
+            //console.log(data)
+          } else {
+            
+          }
+        })
+        .catch((er) => {
+          console.log(er)
+        })
   }
 
   function changeTextArea(event)  {
@@ -138,12 +162,16 @@ export default function CancelApplications() {
   }
 
   async function dataInputBack() {
+    let arr = []
     if(textAreaDate.trim() != '') {
+      setDownload(!download)
+
       for(let key in uploadingData) {
+        await delay(100)
         toBack([textAreaDate.trim(), 'Отклонена', uploadingData[key]['id'], uploadingData[key]['emailUserCreate']])
         dispatch(setCancelApplicationsObj({...uploadingData[key], status: "Отклонена"}))
-        await delay(100)
         try {
+          await delay(300)
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
 
         } catch(er) {
@@ -151,9 +179,12 @@ export default function CancelApplications() {
         }
       }
 
+
+      setDownload(!download)
       dispatch(setCancelApplications(false))
-    } 
-  }
+      
+    } else alert('Введите причину')
+  } 
 
   return(
     <div className="cancelApplications-wrap">
@@ -165,11 +196,11 @@ export default function CancelApplications() {
               <img src={img} alt="" onClick={close}/>
             </div>
           </div>
-          <div>
-            <textarea style={{resize: "none"}} onChange={changeTextArea}></textarea>
+          <div className="cancelApplications-textarea">
+            {download ? <textarea style={{resize: "none"}} onChange={changeTextArea}></textarea> : <img src={snake}/>}
           </div>
           <div className='cancelApplications-field-button'>
-            <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/>
+            {download ? <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/> : ''}
           </div>
         </div>
       </div>

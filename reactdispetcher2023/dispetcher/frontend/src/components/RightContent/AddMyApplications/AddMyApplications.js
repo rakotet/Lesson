@@ -8,6 +8,7 @@ import ButtonDownloadFile from "../AreCommon/ButtonDownloadFile/ButtonDownloadFi
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore, setNoticeOfApplicationData } from "../../store/reduser";
 import { url } from '../../../core/core';
+import dateApplicationsHours from "../../../core/dateApplicationsHours";
 import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
 
 export default function AddMyApplications() {
@@ -55,35 +56,38 @@ export default function AddMyApplications() {
       let submissionTime = dataInput.submissionTime
       submissionTime = Number(submissionTime[0] + submissionTime[1])
 
+      let cancelTime = dateApplicationsHours(dataInput.dateOfApplication, dataInput.submissionTime, dataInput.timeOfUseOfTransport)
+
       
       if(dateTime) {
         if(submissionTime >= 9 && submissionTime <= 20) {
-         
-          fetch(url.urlBack1, {
-            method: 'POST',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded',
-            },
-            body: JSON.stringify({dataInputApplications: dataInput})
+          if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
+            fetch(url.urlBack1, {
+              method: 'POST',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+              },
+              body: JSON.stringify({dataInputApplications: dataInput})
+            
+              })
+              .then(data => {
+                return data.text()
+              })
+              .then(data => {
+                if(data != 'null') {
+                  console.log(data)
+                } else {
+                    dispatch(setUpdateLeftContent(Math.random()))
+                    dispatch(setSelectSubdivision([]))
+                    dispatch(setActiveRow(activRight.myApplications))
+                    dispatch(setNoticeOfApplicationData(true))
+                }
           
-            })
-            .then(data => {
-              return data.text()
-            })
-            .then(data => {
-              if(data != 'null') {
-                console.log(data)
-              } else {
-                  dispatch(setUpdateLeftContent(Math.random()))
-                  dispatch(setSelectSubdivision([]))
-                  dispatch(setActiveRow(activRight.myApplications))
-                  dispatch(setNoticeOfApplicationData(true))
-              }
-        
-            })
-            .catch((er) => {
-              console.log(er)
-            })
+              })
+              .catch((er) => {
+                console.log(er)
+              })
+          } else alert('Транспорт не может закончить работу после 21:00')
           
         } else {
           alert('Верно заполните поле "Время подачи"')

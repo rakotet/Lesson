@@ -23,9 +23,9 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
   
 
   useEffect(() => {
-    // console.log('AssignAcarUnloadingData')
-    // console.log(data)
-    // console.log('----------')
+    console.log('AssignAcarUnloadingData')
+    console.log(data)
+    console.log('----------')
 
     for(let g = 0; g < data.length; g++) {
       let googs = true
@@ -107,10 +107,13 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
           }
           
           // console.log(strEnd)
+
+          if(strEnd == '') strEnd = 'Занят весь день'
   
           item.freeTimeStr = strEnd
           item.goog = googs
-          //setDataArr(n => ([...n, item]))
+          console.log(1)
+          console.log(item)
           setDataArr(n => ([...new Set(n)]))
           //suitableAuto.push(item)
   
@@ -118,7 +121,8 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
           //suitableAuto.push(item)
           item.freeTime = null
           item.goog = googs
-          //setDataArr(n => ([...n, item]))
+          console.log(2)
+          console.log(item)
           setDataArr(n => ([...new Set(n)]))
         }
   
@@ -126,6 +130,8 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
         //suitableAuto.push(item)
         //setDataArr(n => ([...n, item]))
         item.goog = googs
+        console.log(3)
+        console.log(item)
         setDataArr(n => ([...new Set(n)]))
       }
     }
@@ -171,8 +177,10 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
                 </div>
               </div>
               <div className="assignAcarUnloadingData-freeTimeToday">
-                <div>{item.freeTime == null ? 
-                  <div className='assignAcarUnloadingData-green'><span>09:00 - 21:00</span></div> : 
+                <div>{item.freeTime == null 
+                  ? 
+                  <div className='assignAcarUnloadingData-green'><span>09:00 - 21:00</span></div> 
+                  : 
                   <div className='assignAcarUnloadingData-green' dangerouslySetInnerHTML={{__html: item.freeTimeStr}}></div>}
                 </div>
               </div>
