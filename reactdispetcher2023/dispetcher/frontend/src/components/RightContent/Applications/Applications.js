@@ -6,7 +6,7 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj, cancelApplicationsObj } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj, cancelApplicationsObj, cancelApplicationsData } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import ApplicationsCard from "./ApplicationsCard/ApplicationsCard"
 import EditApplications from "../EditApplications/EditApplications"
@@ -30,6 +30,7 @@ export default function Applications({setTabName}) {
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
   let cancelApplications = useSelector(cancelApplicationsObj)
+  let cancelApplicationsOpen = useSelector(cancelApplicationsData)
   let updateLeftContentData = useSelector(updateLeftContent)
   const dispatch = useDispatch()
 
@@ -290,7 +291,7 @@ export default function Applications({setTabName}) {
           <div className="disp-row-name-wrapper">
             <ApplicationsRowNameWrapper />
             {
-            dispCardEdit ? 
+            (dispCardEdit && cancelApplicationsOpen == false) ? 
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
             : ''
             }

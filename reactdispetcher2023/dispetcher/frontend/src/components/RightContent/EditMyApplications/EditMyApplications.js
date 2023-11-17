@@ -22,14 +22,7 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
 
   
   useEffect(() => {
-    
-    if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
-
-      setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign}})
-
-    } else {
-      setDataInput(companyCardData)
-    }
+    setDataInput(companyCardData)
 
   }, [assignAcarClickAuto])
 
@@ -57,80 +50,9 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
 
       let cancelTime = dateApplicationsHours(dataInput.dateOfApplication, dataInput.submissionTime, dataInput.timeOfUseOfTransport)
 
-      
       if(dateTime) {
         if(submissionTime >= 9 && submissionTime <= 20) {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
-            if(dataInput.theCarIsBusyAtThisTime) {
-              fetch(url.urlBack1, {
-                method: 'POST',
-                header: {
-                  'content-type': 'application/x-www-form-urlencoded',
-                },
-                body: JSON.stringify({theCarIsBusyAtThisTime: dataInput.theCarIsBusyAtThisTime})
-              
-                })
-                .then(data => {
-                  return data.text()
-                })
-                .then(data => {
-                  if(data != 'null') {
-                    //console.log(data)
-                    data = JSON.parse(data)
-                    //console.log(data)
-                    
-                    if(data) {
-                      let freeTime = JSON.parse(data.freeTime)
-                      let thisTime = dataInput.theCarIsBusyAtThisTime.dateAssign
-                      let counter = 0
-      
-                      for(let key in freeTime) {
-                        if(counter != 0) break
-                        for(let key2 in thisTime) {
-                          if(key2 == key) {
-                            let obj = {...freeTime[`${key}`], ...thisTime[`${key2}`]}
-                            freeTime = {...freeTime, [key]: obj}
-                            counter++
-                          }
-                        }
-                      }
-      
-                      if(counter == 0) {
-                        freeTime = {...freeTime, ...thisTime}
-                      }
-      
-                      fetch(url.urlBack1, {
-                        method: 'POST',
-                        header: {
-                          'content-type': 'application/x-www-form-urlencoded',
-                        },
-                        body: JSON.stringify({freeTime: [dataInput.theCarIsBusyAtThisTime.id, freeTime]})
-                      
-                        })
-                        .then(data => {
-                          return data.text()
-                        })
-                        .then(data => {
-                          if(data != 'null') {
-                            console.log(data)
-      
-                          }
-                    
-                        })
-                        .catch((er) => {
-                          console.log(er)
-                        })
-                    }
-                  
-                  } else {
-                    
-                  }
-            
-                })
-                .catch((er) => {
-                  console.log(er)
-                })
-            }
       
             fetch(url.urlBack1, {
               method: 'POST',
@@ -191,11 +113,6 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
 
   function dataInputOnChangeDate(data, name) {
     setDataInput(n => ({...n, [name]: data.trim()}))
-  }
-
-  function assignAcar() {
-    dispatch(setAssignAcar(true))
-    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber}}))
   }
 
   return(

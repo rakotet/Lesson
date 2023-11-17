@@ -6,7 +6,7 @@ import SearchData from "../AreCommon/Search/SearchData"
 import SelectData from "../AreCommon/SelectData/SelectData"
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 import { useDispatch, useSelector } from 'react-redux';
-import { setNoticeOfApplicationData, activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj, cancelApplicationsObj } from "../../store/reduser";
+import { setNoticeOfApplicationData, activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent, setAssignAcarClickAuto, setCancelApplications,setCancelApplicationsObj, cancelApplicationsObj, cancelApplicationsData } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import ApplicationsCard from "../Applications/ApplicationsCard/ApplicationsCard"
 import EditMyApplications from "../EditMyApplications/EditMyApplications"
@@ -30,6 +30,7 @@ export default function MyApplications({setTabName}) {
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
   let cancelApplications = useSelector(cancelApplicationsObj)
+  let cancelApplicationsOpen = useSelector(cancelApplicationsData)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -217,6 +218,7 @@ export default function MyApplications({setTabName}) {
   function refresh() {
     setUpdateLeftContent(Math.random())
     setRefreshData(!refreshData)
+    location.reload() 
   }
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -331,7 +333,7 @@ export default function MyApplications({setTabName}) {
           <div className="disp-row-name-wrapper myApplications-row-name-wrapper">
             <MyApplicationsRowNameWrapper />
             {
-            dispCardEdit ?
+            (dispCardEdit && cancelApplicationsOpen == false) ?
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
             : ''
             }
