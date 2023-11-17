@@ -159,11 +159,7 @@
   } 
 
   if(isset($dataFront['trashApplicationsYes'])) {
-    echo json_encode($db->trashApplicationsYes('auto', '`gossNumber` = ?', [$dataFront['trashApplicationsYes']]));
-  } 
-
-  if(isset($dataFront['trashApplicationsYesFreeTime'])) {
-    echo json_encode($db->trashApplicationsYesFreeTime('auto', $dataFront['trashApplicationsYesFreeTime']));
+    echo json_encode($db->trashApplicationsYes('auto', '`gossNumber` = ?', $dataFront['trashApplicationsYes']));
   } 
 
   if(isset($dataFront['cancelApplications'])) {

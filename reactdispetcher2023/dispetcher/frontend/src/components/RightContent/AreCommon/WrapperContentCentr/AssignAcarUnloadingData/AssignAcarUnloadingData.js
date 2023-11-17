@@ -3,14 +3,9 @@ import { updateLeftContent, setUpdateLeftContent } from "../../../../../componen
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssign}) {
-  const [dataArr, setDataArr] = useState(data)
+  const [dataArr, setDataArr] = useState([])
   const dispatch = useDispatch()
   let update= useSelector(updateLeftContent)
-
-  let sTime = Number(arrAssign[1][0] + arrAssign[1][1])
-  let doTime = Number(arrAssign[2][0] + arrAssign[2][1])
-  let suitableAuto = []
-  let timeArr = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
   function getNumber(num) {
     if(num.length != 2) {
@@ -20,21 +15,20 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
     return `${num}:00`
   }
 
-  // console.log(data)
-  // console.log('----------')
-
   useEffect(() => {
-    // console.log('AssignAcarUnloadingData')
-    // console.log(data)
-    // console.log('----------')
+    
+    let suitableAuto = []
   
+    suitableAuto = data.map(itemData => {
+      let sTime = Number(arrAssign[1][0] + arrAssign[1][1])
+      let doTime = Number(arrAssign[2][0] + arrAssign[2][1])
+      let timeArr = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
-    for(let g = 0; g < data.length; g++) {
       let googs = true
-      let item = data[g]
+      let item = {...itemData}
   
       if(item.freeTime) {
-        item['free'] = JSON.parse(item['freeTime'])
+        item = {...item, free: JSON.parse(itemData['freeTime'])}
   
         if(item['free'][arrAssign[0]]) {
           let obj = item['free'][arrAssign[0]]
@@ -83,7 +77,6 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
               let ar = arrStr[a].split('-')
   
               if(sTime >= ar[0] && doTime <= ar[1]) {
-                //console.log(ar[0] + ' - ' + ar[1])
                 arrCount++
                 index = a
                 break
@@ -92,7 +85,6 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
           }
   
           if(arrCount == 0) {
-            //console.log('no')
             googs = false
           }
   
@@ -108,48 +100,30 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
             }
           }
           
-          // console.log(strEnd)
-
           if(strEnd == '') strEnd = 'Занят весь день'
-
-          // console.log(strEnd)
   
           item.freeTimeStr = strEnd
           item.goog = googs
-          strEnd = ''
-          // console.log(1)
-          // console.log(item)
-
-          //setDataArr(n => ([...new Set(n)]))
-          //setDataArr(n => ([...new Set(n)]))
-          //suitableAuto.push(item)
+          return item
   
         } else {
-          //suitableAuto.push(item)
           item.freeTime = null
           item.goog = googs
-          // console.log(2)
-          // console.log(item)
-
-          setDataArr(n => ([...new Set(n)]))
+          return item
         }
   
       } else {
-        //suitableAuto.push(item)
-        //setDataArr(n => ([...n, item]))
+        item.freeTime = null
         item.goog = googs
-        // console.log(3)
-        // console.log(item)
-
-        setDataArr(n => ([...new Set(n)]))
+        return item
       }
-    }
+    })
+
+    setDataArr(suitableAuto)
     
     
   }, [update])
   
-  
-  // console.log(dataArr)
 
   return (
     <>

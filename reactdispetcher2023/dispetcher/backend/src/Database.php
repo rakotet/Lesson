@@ -2,7 +2,7 @@
   require_once 'Config.php';
 
   require_once "lib/vendor/autoload.php"; 
-  //use PHPMailer\PHPMailer\PHPMailer;
+  
   use PHPMailer\PHPMailer\PHPMailer;
 
   function mailUser($topic, $htmlBody, $email) {
@@ -313,20 +313,37 @@
       $query->execute($values);
     }
 
-    //Вернуть занятое время авто
+    //Обновить время машины после удаления заявки
     public function trashApplicationsYes(string $table_name, string $where, array $values = []) {
+      $item = $values[1];
+
       $sql = 'SELECT `freeTime` FROM '.$this->getTableName($table_name)." WHERE $where";
       $query = $this->pdo->prepare($sql);
-      $query->execute($values);
+      $query->execute([$values[0]]);
       $result = $query->fetchAll(PDO::FETCH_ASSOC);
-      return $result[0]['freeTime'];
-    }
 
-    //Обновить время машины после удаления заявки
-    public function trashApplicationsYesFreeTime(string $table_name, array $values = []) {
-      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `freeTime` = ? WHERE `gossNumber` = ?';
-      $query = $this->pdo->prepare($sql);
-      $query->execute($values);
+      if($result) {
+        $result = $result[0]['freeTime'];
+        $data = json_decode($result, true); 
+  
+        foreach ($data as $key => $value) {
+          foreach ($item as $key2 => $value2) {
+            if($key == $key2) {
+              foreach ($item[$key2] as $key3 => $value3) {
+                foreach ($data[$key] as $key4 => $value4) {
+                  if($key3 == $key4) {
+                    unset($data[$key][$key4]);
+                  }
+                }
+              }
+            }
+          }
+        }
+  
+        $sql = 'UPDATE '.$this->getTableName($table_name).' SET `freeTime` = ? WHERE `gossNumber` = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([json_encode($data), $values[0]]);
+      }
     }
 
     //Отменить заявку

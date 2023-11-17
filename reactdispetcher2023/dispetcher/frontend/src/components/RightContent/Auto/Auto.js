@@ -117,7 +117,7 @@ export default function Auto({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <AutoRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте нового автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
           </div>
         </div>
       </div>

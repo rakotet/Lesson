@@ -129,12 +129,14 @@ export default function Applications({setTabName}) {
   }
 
   function trashAppYes(gossNumber, item) {
+    // console.log(JSON.stringify({trashApplicationsYes: [gossNumber, item]}))
+
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({trashApplicationsYes: gossNumber})
+      body: JSON.stringify({trashApplicationsYes: [gossNumber, item]})
     
       })
       .then(data => {
@@ -142,47 +144,8 @@ export default function Applications({setTabName}) {
       })
       .then(data => {
         if(data != 'null') {
-          data = JSON.parse(JSON.parse(data))
-
-          for(let key in data) {
-            for(let key2 in item) {
-              if(key == key2) {
-                for(let key3 in item[key2]) {
-                  for(let key4 in data[key]) {
-                    if(key3 == key4) {
-                      delete data[key][key4]
-                    }
-                  }
-                }
-              }
-            }
-          }
-          
-          fetch(url.urlBack1, {
-            method: 'POST',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded',
-            },
-            body: JSON.stringify({trashApplicationsYesFreeTime: [JSON.stringify(data), gossNumber]})
-          
-            })
-            .then(data => {
-              return data.text()
-            })
-            .then(data => {
-              if(data != 'null') {
-                console.log(data)
-              } else {
-                
-              }
-            })
-            .catch((er) => {
-              console.log(er)
-            })
-
-        } else {
-          
-        }
+          console.log(data)
+        } 
       })
       .catch((er) => {
         console.log(er)
@@ -250,14 +213,12 @@ export default function Applications({setTabName}) {
     if(lengthData >= 1) {
       for(let key in uploadingData) {
         try {
-          await delay(300)
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
+          await delay(200)
 
         } catch(er) {
           console.log(er)
         }
-
-        await delay(100)
 
         trashAppNo(uploadingData[key])
         setUploadingData(n => {
