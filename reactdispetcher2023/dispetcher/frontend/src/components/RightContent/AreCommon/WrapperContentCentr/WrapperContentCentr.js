@@ -9,7 +9,7 @@ import ApplicationsUnloadingData from "./ApplicationsUnloadingData/ApplicationsU
 import MyApplicationsUnloadingData from "./MyApplicationsUnloadingData/MyApplicationsUnloadingData";
 import AssignAcarUnloadingData from "./AssignAcarUnloadingData/AssignAcarUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto, arrAssign}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto, arrAssign, dispCardEditNoUpdatePage}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
@@ -56,7 +56,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     //console.log('WrapperContentCentr')
     fetchBack()
 
-    if(actionLk == actionLkUnloading.getApplicationsData || actionLk == actionLkUnloading.getMyApplicationsData) {
+    if((actionLk == actionLkUnloading.getApplicationsData || actionLk == actionLkUnloading.getMyApplicationsData) && (dispCardEditNoUpdatePage)) {
       setTimeout(() => {
         dispatch(setWrapperContentCentrUpdate(Math.random()))
       }, 3000)

@@ -316,7 +316,7 @@ export default function Applications({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <ApplicationsRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} />
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
           </div>
         </div>
       </div>

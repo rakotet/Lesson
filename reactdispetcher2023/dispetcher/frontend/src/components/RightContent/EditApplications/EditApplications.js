@@ -56,13 +56,13 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
       let cancelTime = dateApplicationsHours(dataInput.dateOfApplication, dataInput.submissionTime, dataInput.timeOfUseOfTransport)
 
+      //console.log(dataInput)
       
       if(dateTime) {
         if(submissionTime >= 9 && submissionTime <= 20) {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
             if(dataInput.theCarIsBusyAtThisTime) {
 
-              // console.log(dataInput.theCarIsBusyAtThisTime)
 
               fetch(url.urlBack1, {
                 method: 'POST',
