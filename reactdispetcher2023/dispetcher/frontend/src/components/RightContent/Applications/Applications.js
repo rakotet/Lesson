@@ -212,9 +212,9 @@ export default function Applications({setTabName}) {
     
     if(lengthData >= 1) {
       for(let key in uploadingData) {
+        await delay(200)
         try {
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
-          await delay(200)
 
         } catch(er) {
           console.log(er)

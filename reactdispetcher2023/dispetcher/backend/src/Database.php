@@ -343,6 +343,9 @@
         $sql = 'UPDATE '.$this->getTableName($table_name).' SET `freeTime` = ? WHERE `gossNumber` = ?';
         $query = $this->pdo->prepare($sql);
         $query->execute([json_encode($data), $values[0]]);
+        
+      } else {
+        print_r($result);
       }
     }
 

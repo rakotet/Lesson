@@ -46,6 +46,9 @@ export default function CancelApplications() {
   }
 
   function trashAppYes(gossNumber, item) {
+    console.log(gossNumber)
+    console.log(item)
+    console.log('---------')
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -122,16 +125,17 @@ export default function CancelApplications() {
   }
 
   async function dataInputBack() {
-    let arr = []
+    console.log('--------')
+    console.log(uploadingData)
     if(textAreaDate.trim() != '') {
       setDownload(!download)
 
       for(let key in uploadingData) {
+        await delay(200)
         toBack([textAreaDate.trim(), 'Отклонена', uploadingData[key]['id'], uploadingData[key]['emailUserCreate']])
         dispatch(setCancelApplicationsObj({...uploadingData[key], status: "Отклонена"}))
         try {
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
-          await delay(200)
 
         } catch(er) {
           console.log(er)
