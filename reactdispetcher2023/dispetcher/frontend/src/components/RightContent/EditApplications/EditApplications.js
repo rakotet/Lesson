@@ -221,6 +221,10 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber}}))
   }
 
+  function testApp() {
+    console.log(dataInput)
+  }
+
   return(
     <>
       <div className="addApplications-wrap">
@@ -255,7 +259,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={() => {}}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={testApp}/>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
         <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack} img={false}/>

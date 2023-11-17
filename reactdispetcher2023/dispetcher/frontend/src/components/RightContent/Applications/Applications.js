@@ -30,11 +30,16 @@ export default function Applications({setTabName}) {
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
   let cancelApplications = useSelector(cancelApplicationsObj)
+  let updateLeftContentData = useSelector(updateLeftContent)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
   }, [cancelApplications])
+
+  useEffect(() => {
+
+  }, [updateLeftContentData])
 
   function clickEllipsis() {
     setEllipsisOpen(!ellipsisOpen)
@@ -179,6 +184,7 @@ export default function Applications({setTabName}) {
   function refresh() {
     setUpdateLeftContent(Math.random())
     setRefreshData(!refreshData)
+    location.reload() 
   }
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -186,6 +192,8 @@ export default function Applications({setTabName}) {
   function editApplications() {
     let lengthData = Object.keys(uploadingData).length
     
+    // console.log(lengthData)
+
     if(lengthData == 1) {
       for(let key in uploadingData) {
         let numberDate = uploadingData[key]['dateOfApplication']
@@ -203,6 +211,8 @@ export default function Applications({setTabName}) {
         } else alert('Нельзя редактировать прошедшие заявки')
       }
 
+    } else if(lengthData > 1) {
+      alert('Выберете только один чекбокс')
     } else alert('Выберете хотя бы один чекбокс')
   }
 
@@ -212,6 +222,8 @@ export default function Applications({setTabName}) {
     
     if(lengthData >= 1) {
       for(let key in uploadingData) {
+        // console.log(uploadingData[key])
+        // console.log('---------')
         await delay(200)
         try {
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
@@ -243,7 +255,7 @@ export default function Applications({setTabName}) {
   }
 
   function downLoad() {
-    
+    console.log(uploadingData)
   }
 
   return(
@@ -277,7 +289,11 @@ export default function Applications({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <ApplicationsRowNameWrapper />
+            {
+            dispCardEdit ? 
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
+            : ''
+            }
           </div>
         </div>
       </div>

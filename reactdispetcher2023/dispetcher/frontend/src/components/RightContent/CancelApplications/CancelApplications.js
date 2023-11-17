@@ -46,9 +46,9 @@ export default function CancelApplications() {
   }
 
   function trashAppYes(gossNumber, item) {
-    console.log(gossNumber)
-    console.log(item)
-    console.log('---------')
+    // console.log(gossNumber)
+    // console.log(item)
+    // console.log('---------')
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -125,8 +125,8 @@ export default function CancelApplications() {
   }
 
   async function dataInputBack() {
-    console.log('--------')
-    console.log(uploadingData)
+    // console.log('--------')
+    // console.log(uploadingData)
     if(textAreaDate.trim() != '') {
       setDownload(!download)
 

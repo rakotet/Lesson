@@ -241,44 +241,46 @@ export default function MyApplications({setTabName}) {
         } else alert('Нельзя редактировать прошедшие заявки')
       }
 
+    } else if(lengthData > 1) {
+      alert('Выберете только один чекбокс')
     } else alert('Выберете хотя бы один чекбокс')
   }
 
-  async function trashApplications() {
-    // console.log(uploadingData)
-    let lengthData = Object.keys(uploadingData).length
+  // async function trashApplications() {
+  //   // console.log(uploadingData)
+  //   let lengthData = Object.keys(uploadingData).length
     
-    if(lengthData >= 1) {
-      for(let key in uploadingData) {
-        await delay(100)
-        if(/*uploadingData[key]['status'] != 'Назначена'*/ false) {
-          trashAppNo(uploadingData[key])
-          setUploadingData(n => {
-            delete n[key]
-            return n
-          })
-        } else {
-          try {
-            trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
+  //   if(lengthData >= 1) {
+  //     for(let key in uploadingData) {
+  //       await delay(100)
+  //       if(/*uploadingData[key]['status'] != 'Назначена'*/ false) {
+  //         trashAppNo(uploadingData[key])
+  //         setUploadingData(n => {
+  //           delete n[key]
+  //           return n
+  //         })
+  //       } else {
+  //         try {
+  //           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
 
-          } catch(er) {
-            console.log(er)
-          }
+  //         } catch(er) {
+  //           console.log(er)
+  //         }
 
-          trashAppNo(uploadingData[key])
-          setUploadingData(n => {
-            let nev = {...n};
-            delete nev[key]
-            return nev
-          })
-        }
+  //         trashAppNo(uploadingData[key])
+  //         setUploadingData(n => {
+  //           let nev = {...n};
+  //           delete nev[key]
+  //           return nev
+  //         })
+  //       }
         
-      }
+  //     }
 
       
-    } else alert('Выберете хотя бы один чекбокс')
+  //   } else alert('Выберете хотя бы один чекбокс')
     
-  }
+  // }
 
   
 
@@ -292,6 +294,9 @@ export default function MyApplications({setTabName}) {
     } else alert('Выберете хотя бы один чекбокс')
   }
 
+  function testApp() {
+    console.log(uploadingData)
+  }
   
 
   return(
@@ -308,7 +313,7 @@ export default function MyApplications({setTabName}) {
                 <ButtonCustom addFunc={editApplications} buttonImg={'edit'}/>
                 {/* <ButtonCustom addFunc={trashApplications} buttonImg={'trash'}/> */}
                 <ButtonCustom addFunc={cancelFunc} buttonImg={'cancel'}/>
-                <ButtonCustom addFunc={() => {}} buttonImg={'downLoad'}/>
+                <ButtonCustom addFunc={testApp} buttonImg={'downLoad'}/>
               </div>
               <Ellipsis handleClick={clickEllipsis}/>
               {ellipsisOpen ? <SearchData /> : ''}
@@ -325,7 +330,11 @@ export default function MyApplications({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper myApplications-row-name-wrapper">
             <MyApplicationsRowNameWrapper />
+            {
+            dispCardEdit ?
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
+            : ''
+            }
           </div>
         </div>
       </div>
