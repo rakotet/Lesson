@@ -15,6 +15,7 @@ import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
 export default function AddMyApplications() {
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
+  const [arrPassengers, setArrPassengers] = useState([])
   const [valueInput, setValueInput] = useState('');
   let activRight = useSelector(activRightContent)
   let userData = useSelector(userDataStore)
@@ -36,6 +37,8 @@ export default function AddMyApplications() {
     let date = `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
 
     setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id, dateOfCreation: date, emailUserCreate: userData.email}))
+
+    
   }, [userData])
 
   function cancellation() { // переход в disp
@@ -105,7 +108,6 @@ export default function AddMyApplications() {
 
 
   function dataInputOnChange(event, inputData = false) { // данные из всех input
-    console.log(event)
     if(!inputData) {
       const target = event.target;
       const value = target.value;
@@ -126,6 +128,7 @@ export default function AddMyApplications() {
 
   function test() {
     console.log(dataInput)
+    //console.log(arrPassengers)
   }
 
   return(
@@ -143,17 +146,25 @@ export default function AddMyApplications() {
           <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} />
         </div>
         <div className="addDisp-wrap">
-          <AddRowNameInput dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChange} defaultValue={1}/>
+          <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={12} value={1} setArrPassengers={() => {}}/>
           <AddRowNameSelect dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']}/>
           <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userName}/>
           <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.jobTitle}/>
           <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userSubdivision}/>
           <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.telephone}/>
           <AddRowNameSelect dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']}/>
-          {/* <AddRowNameInput dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChange} defaultValue={0}/> */}
-          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0}/>
-          <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={'namePassengers'} dataInputOnChange={dataInputOnChange} />
-          <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={'passengersPhone'} dataInputOnChange={dataInputOnChange} />
+          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={5} value={0} setArrPassengers={setArrPassengers}/>
+          {
+            arrPassengers.map((item, index) => {
+              return (
+                <div key={index}>
+                  <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={`namePassengers-${index + 1}`} dataInputOnChange={dataInputOnChange} />
+                  <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={`passengersPhone-${index + 1}`} dataInputOnChange={dataInputOnChange} />
+                </div>
+              )
+            })
+          }
+          
         </div>
       </div>
       <div className="addApplications-file">

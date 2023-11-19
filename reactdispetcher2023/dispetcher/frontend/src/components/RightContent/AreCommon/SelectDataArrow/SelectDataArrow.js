@@ -2,12 +2,12 @@ import { useState, useEffect } from "react"
 import imgUp from './image/up.png'
 import imgDown from './image/down.png'
 
-export default function SelectDataArrow({namePlaceholder, name = '', margin = true, dataInputOnChange}) {
-  const [valueInput, setValueInput] = useState(0);
+export default function SelectDataArrow({namePlaceholder, name = '', margin = true, dataInputOnChange, number, value, setArrPassengers}) {
+  const [valueInput, setValueInput] = useState(value);
 
   function handleClickUp() {
     setValueInput(n => {
-      if((n + 1) > 5) {
+      if((n + 1) > number) {
         return 0
       } else {
         return n + 1
@@ -26,6 +26,13 @@ export default function SelectDataArrow({namePlaceholder, name = '', margin = tr
   }
 
   useEffect(() => {
+    let arr = []
+    for(let i = 0; i < valueInput; i++) {
+      arr.push(i)
+    }
+
+    setArrPassengers(arr)
+
     dataInputOnChange(String(valueInput), name)
   }, [valueInput])
 

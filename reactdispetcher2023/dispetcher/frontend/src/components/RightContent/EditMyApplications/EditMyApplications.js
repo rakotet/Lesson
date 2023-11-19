@@ -1,4 +1,5 @@
 import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput";
+import AddRowNameInputArrow from "../AreCommon/AddRowNameInputArrow/AddRowNameInputArrow";
 import AddRowNameDate from "../AreCommon/AddRowNameDate/AddRowNameDate";
 import AddRowNameTime from "../AreCommon/AddRowNameTime/AddRowNameTime";
 import { useState, useEffect } from "react";
@@ -115,6 +116,10 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
     setDataInput(n => ({...n, [name]: data.trim()}))
   }
 
+  function test() {
+    console.log(dataInput)
+  }
+
   return(
     <>
       <div className="addApplications-wrap">
@@ -130,14 +135,14 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
           <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.comment}/>
         </div>
         <div className="addDisp-wrap">
-          <AddRowNameInput dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.timeOfUseOfTransport}/>
+        <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={12} value={companyCardData.timeOfUseOfTransport}/>
           <AddRowNameSelectAuto dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']} defaultValue={companyCardData.purposeOfTheTrip}/>
           <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.applicationInitiator}/>
           <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.jobTitle}/>
           <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.subdivision}/>
           <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.initiatorPhone}/>
           <AddRowNameSelectAuto dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']} defaultValue={companyCardData.carClass}/>
-          <AddRowNameInput dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.numberOfPassengers}/>
+          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={5} value={companyCardData.numberOfPassengers}/>
           <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={'namePassengers'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.namePassengers}/>
           <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={'passengersPhone'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.passengersPhone}/>
         </div>
@@ -149,12 +154,12 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={() => {}}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={test}/>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
         <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack} img={false}/>
         <div className="addDisp-delimiter addApplications-delimiter"></div>
-        <ButtonCancellation name={'Сохранить как шаблон'} cancellation={() => {}} width={true}/>
+        <ButtonCancellation name={'Сохранить как шаблон'} cancellation={test} width={true}/>
         <div className="addDisp-delimiter addApplications-delimiter"></div>
         <ButtonCancellation name={'Отмена'} cancellation={cancellation}/>
       </div>

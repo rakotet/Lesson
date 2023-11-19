@@ -1,4 +1,5 @@
 import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput";
+import AddRowNameInputArrow from "../AreCommon/AddRowNameInputArrow/AddRowNameInputArrow";
 import AddRowNameDate from "../AreCommon/AddRowNameDate/AddRowNameDate";
 import AddRowNameTime from "../AreCommon/AddRowNameTime/AddRowNameTime";
 import { useState, useEffect } from "react";
@@ -15,6 +16,7 @@ export default function AddApplications() {
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
   const [valueInput, setValueInput] = useState('');
+  const [arrPassengers, setArrPassengers] = useState([])
   let activRight = useSelector(activRightContent)
   let userData = useSelector(userDataStore)
   const dispatch = useDispatch()
@@ -136,16 +138,24 @@ export default function AddApplications() {
           <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} />
         </div>
         <div className="addDisp-wrap">
-          <AddRowNameInput dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChange} defaultValue={1}/>
+        <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={12} value={1} setArrPassengers={() => {}}/>
           <AddRowNameSelect dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']}/>
           <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userName}/>
           <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.jobTitle}/>
           <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userSubdivision}/>
           <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.telephone}/>
           <AddRowNameSelect dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']}/>
-          <AddRowNameInput dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChange} defaultValue={0}/>
-          <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={'namePassengers'} dataInputOnChange={dataInputOnChange} />
-          <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={'passengersPhone'} dataInputOnChange={dataInputOnChange} />
+          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={5} value={0} setArrPassengers={setArrPassengers}/>
+          {
+            arrPassengers.map((item, index) => {
+              return (
+                <div key={index}>
+                  <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={`namePassengers-${index + 1}`} dataInputOnChange={dataInputOnChange} />
+                  <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={`passengersPhone-${index + 1}`} dataInputOnChange={dataInputOnChange} />
+                </div>
+              )
+            })
+          }
         </div>
       </div>
       <div className="addApplications-file">
