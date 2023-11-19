@@ -25,10 +25,10 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     
     if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
 
-    setDataInput({...companyCardData, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign, emailUserCreate: companyCardData.emailUserCreate, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, submissionTime: companyCardData.submissionTime, timeOfUseOfTransport: companyCardData.timeOfUseOfTransport}})
+    setDataInput({...dataInput, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, telephone: assignAcarClickAuto.telephone, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, view: assignAcarClickAuto.view, theCarIsBusyAtThisTime: {id: assignAcarClickAuto.id, dateAssign: assignAcarClickAuto.dateAssign, emailUserCreate: dataInput.emailUserCreate, driverPhone: `${assignAcarClickAuto.driver} - ${assignAcarClickAuto.telephone}`, marc: assignAcarClickAuto.marc, gossNumber: assignAcarClickAuto.gossNumber, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport}})
 
     } else {
-      setDataInput(companyCardData)
+      setDataInput({...companyCardData})
     }
 
   }, [assignAcarClickAuto])
@@ -40,6 +40,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
   }
 
   function dataInputBack() {
+    let saveApplicationCounter = false
 
     if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport >= 1)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
 
@@ -63,6 +64,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
             if(dataInput.theCarIsBusyAtThisTime) {
 
+              saveApplicationCounter = true
 
               fetch(url.urlBack1, {
                 method: 'POST',
@@ -156,31 +158,38 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
                 })
             }
       
-            fetch(url.urlBack1, {
-              method: 'POST',
-              header: {
-                'content-type': 'application/x-www-form-urlencoded',
-              },
-              body: JSON.stringify({updateApplications: dataInput})
+            if(((dataInput.dateOfApplication == companyCardData.dateOfApplication && dataInput.submissionTime == companyCardData.submissionTime && dataInput.timeOfUseOfTransport == companyCardData.timeOfUseOfTransport) || saveApplicationCounter == true) || companyCardData.status == 'Новая') {
+
+              fetch(url.urlBack1, {
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify({updateApplications: dataInput})
+              
+                })
+                .then(data => {
+                  return data.text()
+                })
+                .then(data => {
+                  if(data != 'null') {
+                    console.log(data)
+                  } else {
+                    setUploadingData([{...dataInput}])
+                    cancellation()
+                    dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
+                    setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
+                  }
             
-              })
-              .then(data => {
-                return data.text()
-              })
-              .then(data => {
-                if(data != 'null') {
-                  console.log(data)
-                } else {
-                  setUploadingData([{...dataInput}])
-                  cancellation()
-                  dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
-                  setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
-                }
-          
-              })
-              .catch((er) => {
-                console.log(er)
-              })
+                })
+                .catch((er) => {
+                  console.log(er)
+                })
+            } else {
+              alert('После изменения времени использования, нужно назначить автомобиль')
+            }
+            
+
           } else alert('Транспорт не может закончить работу после 21:00')
 
         } else {
@@ -218,11 +227,12 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
   function assignAcar() {
     dispatch(setAssignAcar(true))
-    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber}}))
+    dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber, old: {dateOfApplication: companyCardData.dateOfApplication, submissionTime: companyCardData.submissionTime, timeOfUseOfTransport: companyCardData.timeOfUseOfTransport, gossNumber: companyCardData.gossNumber}}}))
   }
 
   function testApp() {
     console.log(dataInput)
+    
   }
 
   return(

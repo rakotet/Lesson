@@ -1,0 +1,20 @@
+.selectDataArrow-margin {
+  margin: 0;
+
+  .selectDataArrow-img-wrap {
+    position: absolute;
+    width: 40px;
+    right: -5px;
+
+    .selectDataArrow-img {
+      position: relative;
+      width: 10px !important;
+      height: 6px !important;
+    }
+    
+    .selectDataArrow-img-margin {
+      margin-bottom: 3px !important;
+    }
+  }
+}
+

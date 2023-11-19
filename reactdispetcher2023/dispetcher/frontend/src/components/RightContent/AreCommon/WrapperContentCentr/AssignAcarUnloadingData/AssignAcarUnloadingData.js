@@ -16,6 +16,8 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
   }
 
   useEffect(() => {
+    // console.log(arrAssign)
+    // console.log(data)
     
     let suitableAuto = []
   
@@ -29,7 +31,7 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
   
       if(item.freeTime) {
         item = {...item, free: JSON.parse(itemData['freeTime'])}
-  
+        
         if(item['free'][arrAssign[0]]) {
           let obj = item['free'][arrAssign[0]]
           let str = ''

@@ -14,6 +14,7 @@ import Datepicker from "../AreCommon/Datepicker/Datepicker"
 import { url } from "../../../core/core"
 import Ellipsis from "../AreCommon/Ellipsis/Ellipsis"
 import ButtonCustom from "../AreCommon/ButtonCustom/ButtonCustom"
+import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function MyApplications({setTabName}) {
   const [dataInput, setDataInput] = useState({})
@@ -106,122 +107,12 @@ export default function MyApplications({setTabName}) {
       })
   }
 
-  function trashAppNo(item) {
-    fetch(url.urlBack1, {
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify({trashApplications: item.id})
-    
-      })
-      .then(data => {
-        return data.text()
-      })
-      .then(data => {
-        if(data != 'null') {
-          console.log(data)
-        } else {
-          dispatch(setUpdateLeftContent(Math.random()))
-        }
-      })
-      .catch((er) => {
-        console.log(er)
-      })
-  }
-
-  function trashAppYes(gossNumber, item) {
-    fetch(url.urlBack1, {
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify({trashApplicationsYes: gossNumber})
-    
-      })
-      .then(data => {
-        return data.text()
-      })
-      .then(data => {
-        if(data != 'null') {
-          data = JSON.parse(JSON.parse(data))
-
-          for(let key in data) {
-            for(let key2 in item) {
-              if(key == key2) {
-                for(let key3 in item[key2]) {
-                  for(let key4 in data[key]) {
-                    if(key3 == key4) {
-                      delete data[key][key4]
-                    }
-                  }
-                }
-              }
-            }
-          }
-          
-          fetch(url.urlBack1, {
-            method: 'POST',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded',
-            },
-            body: JSON.stringify({trashApplicationsYesFreeTime: [JSON.stringify(data), gossNumber]})
-          
-            })
-            .then(data => {
-              return data.text()
-            })
-            .then(data => {
-              if(data != 'null') {
-                console.log(data)
-              } else {
-                
-              }
-            })
-            .catch((er) => {
-              console.log(er)
-            })
-
-        } else {
-          
-        }
-      })
-      .catch((er) => {
-        console.log(er)
-      })
-  }
-
-  function dateApplications(number = '', numberHours = '', timeOfUseOfTransport = '') {
-    let date = new Date()
-    date.setFullYear(number[6] + number[7] + number[8] + number[9]);
-    date.setMonth(number[3] + number[4]);
-    date.setDate(number[0] + number[1]);
-    date.setHours(numberHours[0] + numberHours[1]);
-    date.setMinutes(0);
-    let timeOfUse = timeOfUseOfTransport * 3600000
-    let dateTime = date.getTime()
-    let dateFull = new Date(timeOfUse + dateTime)
-  
-    let day = String(dateFull.getDate())
-    let month = String(dateFull.getMonth())
-    let hours = String(dateFull.getHours())
-    let minutes = String(dateFull.getMinutes())
-  
-    if(day.length < 2) day = '0' + day
-    if(month.length < 2) month = '0' + month
-    if(hours.length < 2) hours = '0' + hours
-    if(minutes.length < 2) minutes = '0' + minutes
-  
-    return `${hours}:00}`
-  }
-
   function refresh() {
     setUpdateLeftContent(Math.random())
     setRefreshData(!refreshData)
     location.reload() 
   }
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   function editApplications() {
     let lengthData = Object.keys(uploadingData).length
@@ -248,44 +139,7 @@ export default function MyApplications({setTabName}) {
     } else alert('Выберете хотя бы один чекбокс')
   }
 
-  // async function trashApplications() {
-  //   // console.log(uploadingData)
-  //   let lengthData = Object.keys(uploadingData).length
-    
-  //   if(lengthData >= 1) {
-  //     for(let key in uploadingData) {
-  //       await delay(100)
-  //       if(/*uploadingData[key]['status'] != 'Назначена'*/ false) {
-  //         trashAppNo(uploadingData[key])
-  //         setUploadingData(n => {
-  //           delete n[key]
-  //           return n
-  //         })
-  //       } else {
-  //         try {
-  //           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
-
-  //         } catch(er) {
-  //           console.log(er)
-  //         }
-
-  //         trashAppNo(uploadingData[key])
-  //         setUploadingData(n => {
-  //           let nev = {...n};
-  //           delete nev[key]
-  //           return nev
-  //         })
-  //       }
-        
-  //     }
-
-      
-  //   } else alert('Выберете хотя бы один чекбокс')
-    
-  // }
-
   
-
   function cancelFunc() {
     let lengthData = Object.keys(uploadingData).length
     if(lengthData >= 1) {
@@ -294,6 +148,10 @@ export default function MyApplications({setTabName}) {
       
 
     } else alert('Выберете хотя бы один чекбокс')
+  }
+
+  function showMoreActivClick() {
+    setShowMoreActiv(n => n * 2)
   }
 
   function testApp() {
@@ -337,6 +195,9 @@ export default function MyApplications({setTabName}) {
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
             : ''
             }
+          </div>
+          <div>
+            <ShowMore label={'Показать еще'} click={showMoreActivClick}/>
           </div>
         </div>
       </div>

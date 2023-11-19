@@ -15,6 +15,9 @@ export default function AssignAcarCard() {
   const [dateOfApplication, setDateOfApplication] = useState('')
   const [submissionTime, setSubmissionTime] = useState('')
   const [timeOfUseOfTransport, setTimeOfUseOfTransport] = useState('')
+  const [dateOfApplicationOld, setDateOfApplicationOld] = useState('')
+  const [submissionTimeOld, setSubmissionTimeOld] = useState('')
+  const [timeOfUseOfTransportOld, setTimeOfUseOfTransportOld] = useState('')
   const [reload, setReload] = useState(true)
 
   const dispatch = useDispatch()
@@ -23,12 +26,16 @@ export default function AssignAcarCard() {
   let actionLk = useSelector(actionLkData)
 
   let endTime = dateApplications(dateOfApplication, submissionTime, timeOfUseOfTransport)
-//console.log(applicationsToassignAcarDate)
+  let endTimeOld = dateApplications(dateOfApplicationOld, submissionTimeOld, timeOfUseOfTransportOld)
+
   useEffect(() => {
     
     setDateOfApplication(applicationsToassignAcarDate.date.dateOfApplication)
     setSubmissionTime(applicationsToassignAcarDate.date.submissionTime)
     setTimeOfUseOfTransport(applicationsToassignAcarDate.date.timeOfUseOfTransport)
+    setDateOfApplicationOld(applicationsToassignAcarDate.date.old.dateOfApplication)
+    setSubmissionTimeOld(applicationsToassignAcarDate.date.old.submissionTime)
+    setTimeOfUseOfTransportOld(applicationsToassignAcarDate.date.old.timeOfUseOfTransport)
   }, [assignAcar, applicationsToassignAcarDate, reload])
 
   function dateApplications(number, numberHours, timeOfUseOfTransport) {
@@ -55,23 +62,56 @@ export default function AssignAcarCard() {
     return `${hours}:00`
   }
 
-  
-
   function close() {
     dispatch(setAssignAcar(false))
     dispatch(setUpdateLeftContent(Math.random()))
     setReload(!reload)
   }
 
-  function clickAuto(data) {
-    dispatch(setAssignAcar(false))
-    dispatch(setUpdateLeftContent(Math.random()))
-    dispatch(setAssignAcarClickAuto({...data, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
-    setReload(!reload)
+  function clickAuto(dataAuto) {
+    if(applicationsToassignAcarDate.date.gossNumber) {
+    
+      fetch(url.urlBack1, {
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({trashApplicationsYes: [applicationsToassignAcarDate.date.gossNumber, {[dateOfApplicationOld]: {[submissionTimeOld]: endTimeOld}}]})
+      
+        })
+        .then(data => {
+          return data.text()
+        })
+        .then(data => {
+          if(data != 'null') {
+            console.log(data)
+          } else {
+            dispatch(setAssignAcar(false))
+            dispatch(setUpdateLeftContent(Math.random()))
+            dispatch(setAssignAcarClickAuto({...dataAuto, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
+            setReload(!reload)
 
-    // setTimeout(() => {
-    //   document.querySelector('.buttonCreate-wrap').click()
-    // }, 100)
+
+            setTimeout(() => {
+              document.querySelector('.buttonCreate-wrap').click()
+            }, 50)
+          }
+        })
+        .catch((er) => {
+          console.log(er)
+        })
+    } else {
+      dispatch(setAssignAcar(false))
+      dispatch(setUpdateLeftContent(Math.random()))
+      dispatch(setAssignAcarClickAuto({...dataAuto, dateAssign: {[dateOfApplication]: {[submissionTime]: endTime}}}))
+      setReload(!reload)
+
+
+      setTimeout(() => {
+        document.querySelector('.buttonCreate-wrap').click()
+      }, 50)
+    }
+
   }
 
   return(

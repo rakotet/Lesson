@@ -11,6 +11,7 @@ import { useState, useEffect } from "react"
 import DispCard from "./DispCard/DispCard"
 import EditDisp from "../EditDisp/EditDisp"
 import { url } from "../../../core/core"
+import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Disp({setTabName}) {
   const [dataInput, setDataInput] = useState({})
@@ -86,6 +87,10 @@ export default function Disp({setTabName}) {
       })
   }
 
+  function showMoreActivClick() {
+    setShowMoreActiv(n => n * 2)
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditDisp editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -107,6 +112,9 @@ export default function Disp({setTabName}) {
           <div className="disp-row-name-wrapper">
             <DispRowNameWrapper />
             <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
+          </div>
+          <div>
+            <ShowMore label={'Показать еще'} click={showMoreActivClick}/>
           </div>
         </div>
       </div>

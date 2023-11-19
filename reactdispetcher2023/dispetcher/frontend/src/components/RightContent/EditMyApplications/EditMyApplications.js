@@ -22,7 +22,7 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
 
   
   useEffect(() => {
-    setDataInput(companyCardData)
+    setDataInput({...companyCardData})
 
   }, [assignAcarClickAuto])
 

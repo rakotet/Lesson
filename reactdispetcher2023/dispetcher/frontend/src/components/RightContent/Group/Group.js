@@ -10,7 +10,7 @@ import { useState, useEffect } from "react"
 import CompanyCard from "./CompanyCard/CompanyCard"
 
 export default function Group({setTabName}) {
-  const [showMoreActiv, setShowMoreActiv] = useState(8)
+  const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [companyCardOpen, setCompanyCardOpen] = useState(true)
   const [companyCardData, setCompanyCardData] = useState({})
   let activRight = useSelector(activRightContent)

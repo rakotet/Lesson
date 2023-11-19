@@ -13,6 +13,7 @@ import Datepicker from "../AreCommon/Datepicker/Datepicker"
 import TimePicker from "../AreCommon/TimePicker/TimePicker"
 import EditAuto from "../EditAuto/EditAuto"
 import AutoCard from "./AutoCard/AutoCard"
+import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Auto({setTabName}) {
   const [dataInput, setDataInput] = useState({})
@@ -96,6 +97,10 @@ export default function Auto({setTabName}) {
       })
   }
 
+  function showMoreActivClick() {
+    setShowMoreActiv(n => n * 2)
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditAuto editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -118,6 +123,9 @@ export default function Auto({setTabName}) {
           <div className="disp-row-name-wrapper">
             <AutoRowNameWrapper />
             <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
+          </div>
+          <div>
+            <ShowMore label={'Показать еще'} click={showMoreActivClick}/>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput";
+import AddRowNameInputArrow from "../AreCommon/AddRowNameInputArrow/AddRowNameInputArrow";
 import AddRowNameDate from "../AreCommon/AddRowNameDate/AddRowNameDate";
 import AddRowNameTime from "../AreCommon/AddRowNameTime/AddRowNameTime";
 import { useState, useEffect } from "react";
@@ -104,6 +105,7 @@ export default function AddMyApplications() {
 
 
   function dataInputOnChange(event, inputData = false) { // данные из всех input
+    console.log(event)
     if(!inputData) {
       const target = event.target;
       const value = target.value;
@@ -120,6 +122,10 @@ export default function AddMyApplications() {
 
   function dataInputOnChangeDate(data, name) {
     setDataInput(n => ({...n, [name]: data.trim()}))
+  }
+
+  function test() {
+    console.log(dataInput)
   }
 
   return(
@@ -144,7 +150,8 @@ export default function AddMyApplications() {
           <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userSubdivision}/>
           <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.telephone}/>
           <AddRowNameSelect dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']}/>
-          <AddRowNameInput dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChange} defaultValue={0}/>
+          {/* <AddRowNameInput dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChange} defaultValue={0}/> */}
+          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0}/>
           <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={'namePassengers'} dataInputOnChange={dataInputOnChange} />
           <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={'passengersPhone'} dataInputOnChange={dataInputOnChange} />
         </div>
@@ -156,7 +163,7 @@ export default function AddMyApplications() {
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={() => {}}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={test}/>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
         <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/>

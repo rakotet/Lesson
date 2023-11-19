@@ -14,6 +14,7 @@ import Datepicker from "../AreCommon/Datepicker/Datepicker"
 import { url } from "../../../core/core"
 import Ellipsis from "../AreCommon/Ellipsis/Ellipsis"
 import ButtonCustom from "../AreCommon/ButtonCustom/ButtonCustom"
+import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Applications({setTabName}) {
   const [dataInput, setDataInput] = useState({})
@@ -26,6 +27,7 @@ export default function Applications({setTabName}) {
   const [refreshData, setRefreshData] = useState(true)
   const [cancelData, setCancelData] = useState(false)
   const [uploadingData, setUploadingData] = useState({})
+  const [trashReload, setTrashReload] = useState(true)
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
@@ -136,7 +138,7 @@ export default function Applications({setTabName}) {
 
   function trashAppYes(gossNumber, item) {
     // console.log(JSON.stringify({trashApplicationsYes: [gossNumber, item]}))
-
+    
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -218,14 +220,14 @@ export default function Applications({setTabName}) {
   }
 
   async function trashApplications() {
-    // console.log(uploadingData)
     let lengthData = Object.keys(uploadingData).length
     
     if(lengthData >= 1) {
+      setTrashReload(false)
+
       for(let key in uploadingData) {
-        // console.log(uploadingData[key])
-        // console.log('---------')
         await delay(200)
+
         try {
           trashAppYes(uploadingData[key]['gossNumber'], {[uploadingData[key]['dateOfApplication']] : {[uploadingData[key]['submissionTime']] : dateApplications(uploadingData[key]['dateOfApplication'], uploadingData[key]['submissionTime'], uploadingData[key]['timeOfUseOfTransport'])}})
 
@@ -239,6 +241,8 @@ export default function Applications({setTabName}) {
           delete nev[key]
           return nev
         })
+
+        setTrashReload(true)
       }
 
       
@@ -253,6 +257,10 @@ export default function Applications({setTabName}) {
       dispatch(setCancelApplications(true))
 
     } else alert('Выберете хотя бы один чекбокс')
+  }
+
+  function showMoreActivClick() {
+    setShowMoreActiv(n => n * 2)
   }
 
   function downLoad() {
@@ -291,12 +299,17 @@ export default function Applications({setTabName}) {
           <div className="disp-row-name-wrapper">
             <ApplicationsRowNameWrapper />
             {
-            (dispCardEdit && cancelApplicationsOpen == false) ? 
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
-            : ''
+            trashReload 
+            ?
+             ((dispCardEdit && cancelApplicationsOpen == false) ? 
+             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
+             : '') 
+            : 
+             ''
             }
           </div>
-        </div>
+            <ShowMore label={'Показать еще'} click={showMoreActivClick}/>
+          </div>
       </div>
     </>
   )
