@@ -1,14 +1,10 @@
 import WrapNameRowData from "../WrapNameRowData/WrapNameRowData"
 
-export default function MyApplicationsRowNameWrapper() {
+export default function MyApplicationsRowNameWrapper({checkNumber}) {
   return(
     <div className="myApplicationsRowNameWrapper">
-      {/* <div className="applicationsRowNameWrapper-input">
-        <input type="checkbox" name="applicationsRowNameWrapper-checkbox" id="cb1"/>
-        <label htmlFor="cb1"></label>
-      </div> */}
       <div className="myApplicationsRowNameWrapper-zero">
-        <div></div>
+        <div>{checkNumber}</div>
       </div>
       <div className="myApplicationsRowNameWrapper-one">
         <WrapNameRowData name={'Номер'}/>
@@ -34,9 +30,6 @@ export default function MyApplicationsRowNameWrapper() {
       <div className="myApplicationsRowNameWrapper-eight">
         <WrapNameRowData name={'Вид'}/>
       </div>
-      {/* <div className="applicationsRowNameWrapper-nine">
-        <WrapNameRowData name={'Создатель, тел.'}/>
-      </div> */}
       <div className="myApplicationsRowNameWrapper-ten">
         <WrapNameRowData name={'Пассажир, тел.'}/>
       </div>

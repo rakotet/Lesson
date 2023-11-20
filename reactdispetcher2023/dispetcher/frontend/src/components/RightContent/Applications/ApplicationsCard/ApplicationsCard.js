@@ -23,6 +23,29 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
     }
   }
 
+  let arr = []
+  let namePassengers = {}
+  let passengersPhone = {}
+
+  if(dispCardData.namePassengers) {
+    namePassengers = JSON.parse(dispCardData.namePassengers)
+  }
+
+  if(dispCardData.passengersPhone) {
+    passengersPhone = JSON.parse(dispCardData.passengersPhone)
+  }
+
+  let lengthDataInput = Object.keys(namePassengers).length
+
+  if(lengthDataInput) {
+    for(let key in namePassengers) {
+      let oneStr = key.split('-')
+      oneStr = oneStr[1]
+
+      arr.push(`${namePassengers[`${key}`]}:${passengersPhone[`passengersPhone-${oneStr}`]}`)
+    }
+  }
+
   return(
     <div className={dispCardOpen ? 'applicationsCard-hide' : ''}>
       <div className="applicationsCard">
@@ -123,14 +146,25 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
           <h4>Количество пассажиров</h4>
           <div className="applicationsCard-name">{dispCardData.numberOfPassengers}</div>
         </div>
-        <div className="applicationsCard-group">
-          <h4>ФИО пассажира</h4>
-          <div className="applicationsCard-name">{dispCardData.namePassengers}</div>
-        </div>
-        <div className="applicationsCard-group">
-          <h4>Сотовый телефон</h4>
-          <div className="applicationsCard-name">{dispCardData.passengersPhone}</div>
-        </div>
+        {
+          arr.map((item, index) => {
+
+            return(
+              <div key={index}>
+                <div className="applicationsCard-group">
+                  <h4>ФИО пассажира {index + 1}</h4>
+                  <div className="applicationsCard-name">{item.split(':')[0]}</div>
+                </div>
+                <div className="applicationsCard-group">
+                  <h4>Сотовый телефон</h4>
+                  <div className="applicationsCard-name">{item.split(':')[1]}</div>
+                </div>
+              </div>
+            )
+          })
+        }
+        
+
       </div>
 
       <div className="applicationsCard">

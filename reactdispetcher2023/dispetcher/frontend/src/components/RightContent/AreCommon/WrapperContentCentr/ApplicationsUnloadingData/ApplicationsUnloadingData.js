@@ -65,6 +65,28 @@ function checkboxDataChange(event, data) {
     <>
       {data.map((item, index) => {
         if(index < count) {
+          let arr = []
+          let namePassengers = {}
+          let passengersPhone = {}
+
+          if(item.namePassengers) {
+            namePassengers = JSON.parse(item.namePassengers)
+          }
+
+          if(item.passengersPhone) {
+            passengersPhone = JSON.parse(item.passengersPhone)
+          }
+
+          let lengthDataInput = Object.keys(namePassengers).length
+
+          if(lengthDataInput) {
+            for(let key in namePassengers) {
+              let oneStr = key.split('-')
+              oneStr = oneStr[1]
+  
+              arr.push(`${namePassengers[`${key}`]}:${passengersPhone[`passengersPhone-${oneStr}`]}`)
+            }
+          }
           return(
             <div key={index} className="dispUnloadingData">
               <div className="applicationsUnloadingData-margin-checkbox">
@@ -109,12 +131,42 @@ function checkboxDataChange(event, data) {
                   <div>{item.initiatorPhone}</div>
                 </div>
               </div>
+
               <div className="applicationsUnloadingData-passengerPhone">
                 <div className="applicationsUnloadingData-driverPhone-flex">
-                  <div>{item.namePassengers}</div>
-                  <div>{item.passengersPhone}</div>
+                  { arr.length > 0 ?
+                    arr.map((itemObj, ind) => {
+                      return (
+                        <div key={ind}>
+                          <div>{itemObj.split(':')[0]}</div>
+                          <div>{itemObj.split(':')[1]}</div>
+                        </div>
+                      )
+                    })
+                    : <><div></div><div></div></>
+                  }
                 </div>
               </div>
+
+              {/* { arr.length > 0 ?
+              arr.map((itemObj, ind) => {
+                return (
+                  <div key={ind} className="applicationsUnloadingData-passengerPhone">
+                    <div className="applicationsUnloadingData-driverPhone-flex">
+                      <div>{itemObj.split(':')[0]}</div>
+                      <div>{itemObj.split(':')[1]}</div>
+                    </div>
+                  </div>
+                )
+              })
+              :
+              <div className="applicationsUnloadingData-passengerPhone">
+                <div className="applicationsUnloadingData-driverPhone-flex">
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+             } */}
               <div className="applicationsUnloadingData-shippingAddress">
                 <div>{item.submissionAddress}</div>
               </div>

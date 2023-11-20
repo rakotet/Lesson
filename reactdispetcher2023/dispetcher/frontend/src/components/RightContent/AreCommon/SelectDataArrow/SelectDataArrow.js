@@ -3,11 +3,11 @@ import imgUp from './image/up.png'
 import imgDown from './image/down.png'
 
 export default function SelectDataArrow({namePlaceholder, name = '', margin = true, dataInputOnChange, number, value, setArrPassengers}) {
-  const [valueInput, setValueInput] = useState(value);
+  const [valueInput, setValueInput] = useState(Number(value));
 
   function handleClickUp() {
     setValueInput(n => {
-      if((n + 1) > number) {
+      if((n + 1) > Number(number)) {
         return 0
       } else {
         return n + 1

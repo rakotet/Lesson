@@ -297,7 +297,7 @@ export default function Applications({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper">
-            <ApplicationsRowNameWrapper />
+            <ApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
             {
             trashReload 
             ?

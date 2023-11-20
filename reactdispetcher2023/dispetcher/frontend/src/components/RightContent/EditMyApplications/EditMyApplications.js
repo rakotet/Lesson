@@ -20,9 +20,34 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
   const [valueInput, setValueInput] = useState('');
+  const [arrPassengers, setArrPassengers] = useState([])
 
   
   useEffect(() => {
+
+    let namePassengers = {}
+    let passengersPhone = {}
+
+    if(companyCardData.namePassengers) {
+      namePassengers = JSON.parse(companyCardData.namePassengers)
+
+      for(let key in namePassengers) {
+        companyCardData[key] = namePassengers[key]
+      }
+
+      delete companyCardData.namePassengers
+    }
+
+    if(companyCardData.passengersPhone) {
+      passengersPhone = JSON.parse(companyCardData.passengersPhone)
+
+      for(let key in passengersPhone) {
+        companyCardData[key] = passengersPhone[key]
+      }
+
+      delete companyCardData.passengersPhone
+    }
+
     setDataInput({...companyCardData})
 
   }, [assignAcarClickAuto])
@@ -32,6 +57,30 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
     dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
     setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
     dispatch(setActiveRow(activRight.myApplications))
+  }
+
+  function dataInputJson() {
+    for(let key in dataInput) {
+      let val = key.split('-')
+      val = val[0]
+
+      if(val == 'namePassengers' && key != 'namePassengers') {
+        dataInput.namePassengers = {...dataInput.namePassengers, [key]: dataInput[`${key}`]}
+        
+
+      } else if(val == 'passengersPhone' && key != 'passengersPhone') {
+        dataInput.passengersPhone = {...dataInput.passengersPhone, [key]: dataInput[`${key}`]}
+      }
+    }
+
+    for(let key in dataInput) {
+      if(key == 'namePassengers') {
+        dataInput.namePassengers = JSON.stringify(dataInput['namePassengers'])
+
+      } else if(key == 'passengersPhone') {
+        dataInput.passengersPhone = JSON.stringify(dataInput['passengersPhone'])
+      }
+    }
   }
 
   function dataInputBack() {
@@ -54,6 +103,8 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
       if(dateTime) {
         if(submissionTime >= 9 && submissionTime <= 20) {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
+
+            dataInputJson()
       
             fetch(url.urlBack1, {
               method: 'POST',
@@ -135,16 +186,26 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
           <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.comment}/>
         </div>
         <div className="addDisp-wrap">
-        <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={12} value={companyCardData.timeOfUseOfTransport}/>
+        <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={12} value={companyCardData.timeOfUseOfTransport} setArrPassengers={() => {}}/>
           <AddRowNameSelectAuto dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']} defaultValue={companyCardData.purposeOfTheTrip}/>
           <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.applicationInitiator}/>
           <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.jobTitle}/>
           <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.subdivision}/>
           <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.initiatorPhone}/>
           <AddRowNameSelectAuto dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']} defaultValue={companyCardData.carClass}/>
-          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={5} value={companyCardData.numberOfPassengers}/>
-          <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={'namePassengers'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.namePassengers}/>
-          <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={'passengersPhone'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.passengersPhone}/>
+          <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={5} value={companyCardData.numberOfPassengers} setArrPassengers={setArrPassengers}/>
+          {
+            arrPassengers.map((item, index) => {
+
+
+              return (
+                <div key={index}>
+                  <AddRowNameInput dataName={'ФИО пассажира'} placeholder={''} name={`namePassengers-${index + 1}`} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData[`namePassengers-${index + 1}`]}/>
+                  <AddRowNameInput dataName={'Телефон пассажира'} placeholder={''} name={`passengersPhone-${index + 1}`} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData[`passengersPhone-${index + 1}`]}/>
+                </div>
+              )
+            })
+          }
         </div>
       </div>
       <div className="addApplications-file">

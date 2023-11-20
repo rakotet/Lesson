@@ -171,7 +171,6 @@ export default function MyApplications({setTabName}) {
               <div className={ellipsisOpen ? 'applications-rowUp-hide' : 'applications-rowUp'}>
                 <ButtonCustom addFunc={refresh} buttonImg={'refresh'}/>
                 <ButtonCustom addFunc={editApplications} buttonImg={'edit'}/>
-                {/* <ButtonCustom addFunc={trashApplications} buttonImg={'trash'}/> */}
                 <ButtonCustom addFunc={cancelFunc} buttonImg={'cancel'}/>
                 <ButtonCustom addFunc={testApp} buttonImg={'downLoad'}/>
               </div>
@@ -189,7 +188,7 @@ export default function MyApplications({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper myApplications-row-name-wrapper">
-            <MyApplicationsRowNameWrapper />
+            <MyApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
             {
             (dispCardEdit && cancelApplicationsOpen == false) ?
             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>

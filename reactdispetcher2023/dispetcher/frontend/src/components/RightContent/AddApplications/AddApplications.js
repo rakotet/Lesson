@@ -44,6 +44,30 @@ export default function AddApplications() {
     dispatch(setSelectSubdivision([]))
   }
 
+  function dataInputJson() {
+    for(let key in dataInput) {
+      let val = key.split('-')
+      val = val[0]
+
+      if(val == 'namePassengers' && key != 'namePassengers') {
+        dataInput.namePassengers = {...dataInput.namePassengers, [key]: dataInput[`${key}`]}
+        
+
+      } else if(val == 'passengersPhone' && key != 'passengersPhone') {
+        dataInput.passengersPhone = {...dataInput.passengersPhone, [key]: dataInput[`${key}`]}
+      }
+    }
+
+    for(let key in dataInput) {
+      if(key == 'namePassengers') {
+        dataInput.namePassengers = JSON.stringify(dataInput['namePassengers'])
+
+      } else if(key == 'passengersPhone') {
+        dataInput.passengersPhone = JSON.stringify(dataInput['passengersPhone'])
+      }
+    }
+  }
+
   function dataInputBack() {
     if(((dataInput.dateOfApplication != undefined) && (dataInput.dateOfApplication != '')) && ((dataInput.submissionTime != undefined) && (dataInput.submissionTime != '')) && ((dataInput.submissionAddress != undefined) && (dataInput.submissionAddress != '')) && ((dataInput.arrivalAddress != undefined) && (dataInput.arrivalAddress != '')) && ((dataInput.rideWithAnticipation != undefined) && (dataInput.rideWithAnticipation != '')) && ((dataInput.timeOfUseOfTransport != undefined) && (dataInput.timeOfUseOfTransport != '') && (dataInput.timeOfUseOfTransport >= 1)) && ((dataInput.purposeOfTheTrip != undefined) && (dataInput.purposeOfTheTrip != '')) && ((dataInput.carClass != undefined) && (dataInput.carClass != '')) && (isNaN(Number(dataInput.timeOfUseOfTransport)) != true) && (isNaN(Number(dataInput.numberOfPassengers)) != true)) {
 
@@ -59,11 +83,13 @@ export default function AddApplications() {
       submissionTime = Number(submissionTime[0] + submissionTime[1])
 
       let cancelTime = dateApplicationsHours(dataInput.dateOfApplication, dataInput.submissionTime, dataInput.timeOfUseOfTransport)
-
       
       if(dateTime) {
         if(submissionTime >= 9 && submissionTime <= 20) {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
+
+            dataInputJson()
+            
             fetch(url.urlBack1, {
               method: 'POST',
               header: {
