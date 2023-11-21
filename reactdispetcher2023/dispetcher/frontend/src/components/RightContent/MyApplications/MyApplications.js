@@ -27,6 +27,7 @@ export default function MyApplications({setTabName}) {
   const [refreshData, setRefreshData] = useState(true)
   const [cancelData, setCancelData] = useState(false)
   const [uploadingData, setUploadingData] = useState({})
+  // const [dataApplications, setDataApplications] = useState([])
   let activRight = useSelector(activRightContent)
   let actionLk = useSelector(actionLkData)
   let nameRowDataLabel = useSelector(nameRowData)
@@ -191,7 +192,7 @@ export default function MyApplications({setTabName}) {
             <MyApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
             {
             (dispCardEdit && cancelApplicationsOpen == false) ?
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} />
             : ''
             }
           </div>

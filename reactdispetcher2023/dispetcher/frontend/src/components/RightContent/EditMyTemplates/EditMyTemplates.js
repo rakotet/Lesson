@@ -12,7 +12,7 @@ import { url } from '../../../core/core';
 import dateApplicationsHours from "../../../core/dateApplicationsHours";
 import AddRowNameSelectAuto from "../AreCommon/AddRowNameSelectAuto/AddRowNameSelectAuto";
 
-export default function EditMyApplications({editDisp, companyCardData, setUploadingData}) {
+export default function EditMyTemplates({editDisp, companyCardData, setUploadingData}) {
   let activRight = useSelector(activRightContent)
   let userData = useSelector(userDataStore)
   let assignAcarClickAuto = useSelector(assignAcarClickAutoData)
@@ -22,7 +22,8 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
   const [valueInput, setValueInput] = useState('');
   const [arrPassengers, setArrPassengers] = useState([])
   const [fileData, setFileData] = useState(null);
-  let createTemp = false
+  let createApp = false
+
   
   useEffect(() => {
 
@@ -57,7 +58,7 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
     editDisp()
     dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
     setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
-    dispatch(setActiveRow(activRight.myApplications))
+    dispatch(setActiveRow(activRight.myTemplates))
   }
 
   function dataInputJson() {
@@ -106,15 +107,15 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
             dataInputJson()
 
-            if(createTemp) {
-              createTemp = false
+            if(createApp) {
+              createApp = false
 
               fetch(url.urlBack1, {
                 method: 'POST',
                 header: {
                   'content-type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify({dataInputTemplates: dataInput})
+                body: JSON.stringify({dataInputApplications: dataInput})
               
                 })
                 .then(data => {
@@ -124,13 +125,11 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
                   if(data != 'null') {
                     console.log(data)
                   } else {
-                      dispatch(setUpdateLeftContent(Math.random()))
-                      dispatch(setSelectSubdivision([]))
-                      dispatch(setActiveRow(activRight.myApplications))
-                      editDisp()
-                      dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
-                      setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
-                      setUploadingData([{...dataInput}])
+                    setUploadingData([{...dataInput}])
+                    editDisp()
+                    dispatch(setAssignAcarClickAuto({driver: '', telephone: '', marc: '', gossNumber: ''}))
+                    setDataInput({...dataInput, theCarIsBusyAtThisTime: {}})
+                    dispatch(setActiveRow(activRight.myTemplates))
                   }
             
                 })
@@ -144,7 +143,7 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
                   header: {
                     'content-type': 'application/x-www-form-urlencoded',
                   },
-                  body: JSON.stringify({updateApplications: dataInput})
+                  body: JSON.stringify({updateTemplates: dataInput})
                 
                   })
                   .then(data => {
@@ -165,7 +164,7 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
                     console.log(er)
                   })
             }
-      
+            
           } else alert('Транспорт не может закончить работу после 21:00')
           
         } else {
@@ -201,8 +200,8 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
     setDataInput(n => ({...n, [name]: data.trim()}))
   }
 
-  function createTemplates() {
-    createTemp = true
+  function createApplication() {
+    createApp = true
     dataInputBack()
   }
 
@@ -295,9 +294,9 @@ export default function EditMyApplications({editDisp, companyCardData, setUpload
         </div>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
-        <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack} img={false}/>
+        <ButtonCreate name={'Отправить'} dataInputBack={createApplication} img={false}/>
         <div className="addDisp-delimiter addApplications-delimiter"></div>
-        <ButtonCancellation name={'Сохранить как шаблон'} cancellation={createTemplates} width={true}/>
+        <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack} img={false}/>
         <div className="addDisp-delimiter addApplications-delimiter"></div>
         <ButtonCancellation name={'Отмена'} cancellation={cancellation}/>
       </div>

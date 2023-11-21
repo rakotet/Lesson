@@ -218,6 +218,12 @@
       $this->pdo->exec($sql);
     }
 
+    //Добавить шаблон
+    public function addTemplates(string $table_name, string $dateOfApplication , string $submissionTime, string $submissionAddress, string $arrivalAddress, string $rideWithAnticipation, string $comment, string $timeOfUseOfTransport, string $purposeOfTheTrip, string $applicationInitiator, string $jobTitle, string $subdivision, string $initiatorPhone, string $carClass, string $numberOfPassengers, string $namePassengers, string $passengersPhone, string $idDisp, string $dateOfCreation, string $emailUserCreate) {
+      $sql = 'INSERT INTO '.$this->getTableName($table_name)." (`dateOfApplication`, `submissionTime`, `submissionAddress`, `arrivalAddress`, `rideWithAnticipation`, `comment`, `timeOfUseOfTransport`, `purposeOfTheTrip`, `applicationInitiator`, `jobTitle`, `subdivision`, `initiatorPhone`, `carClass`, `numberOfPassengers`, `namePassengers`, `passengersPhone`, `idDisp`, `dateOfCreation`, `emailUserCreate`) VALUES ('$dateOfApplication', '$submissionTime', '$submissionAddress', '$arrivalAddress', '$rideWithAnticipation', '$comment', '$timeOfUseOfTransport', '$purposeOfTheTrip', '$applicationInitiator', '$jobTitle', '$subdivision', '$initiatorPhone', '$carClass', '$numberOfPassengers', '$namePassengers', '$passengersPhone', '$idDisp', '$dateOfCreation', '$emailUserCreate')";
+      $this->pdo->exec($sql);
+    }
+
     //Вернуть заявки подразделения текущего диспетчера или пользователя
     public function getApplicationsData(string $table_name, string $where, array $values = []) : array{
       $sql = 'SELECT `userSubdivision` FROM '.$this->getTableName('users')." WHERE $where";
@@ -244,9 +250,26 @@
       return [];
     }
 
+    //Вернуть шаблоны текущего  пользователя
+    public function getMyTemplates(string $table_name, array $values = []) : array{
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `idDisp` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
 
     //Обновить заявку от диспетчера
     public function updateApplications(string $table_name, array $values = []) {
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `dateOfApplication` = ?, `submissionTime` = ?, `submissionAddress` = ?, `arrivalAddress` = ?, `rideWithAnticipation` = ?, `comment` = ?, `timeOfUseOfTransport` = ?, `purposeOfTheTrip` = ?, `carClass` = ?, `numberOfPassengers` = ?, `namePassengers` = ?, `passengersPhone` = ?, `driverPhone` = ?, `marc` = ?, `gossNumber` = ?, `view` = ?, `status` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
+    //Обновить шаблон
+    public function updateTemplates(string $table_name, array $values = []) {
       $sql = 'UPDATE '.$this->getTableName($table_name).' SET `dateOfApplication` = ?, `submissionTime` = ?, `submissionAddress` = ?, `arrivalAddress` = ?, `rideWithAnticipation` = ?, `comment` = ?, `timeOfUseOfTransport` = ?, `purposeOfTheTrip` = ?, `carClass` = ?, `numberOfPassengers` = ?, `namePassengers` = ?, `passengersPhone` = ?, `driverPhone` = ?, `marc` = ?, `gossNumber` = ?, `view` = ?, `status` = ? WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
@@ -308,6 +331,13 @@
 
     //Удалить заявку
     public function trashApplications(string $table_name, string $where, array $values = []) {
+      $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
+     //Удалить шаблон
+     public function trashTemplates(string $table_name, string $where, array $values = []) {
       $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
       $query = $this->pdo->prepare($sql);
       $query->execute($values);

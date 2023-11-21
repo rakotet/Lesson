@@ -12,7 +12,7 @@ import { url } from '../../../core/core';
 import dateApplicationsHours from "../../../core/dateApplicationsHours";
 import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
 
-export default function AddMyApplications() {
+export default function AddMyTemplates() {
   const [dataInput, setDataInput] = useState({})
   const [arrGroup, setArrGroup] = useState([])
   const [arrPassengers, setArrPassengers] = useState([])
@@ -43,7 +43,7 @@ export default function AddMyApplications() {
 
 
   function cancellation() { // переход в disp
-    dispatch(setActiveRow(activRight.myApplications))
+    dispatch(setActiveRow(activRight.myTemplates))
     dispatch(setSelectSubdivision([]))
   }
 
@@ -99,7 +99,7 @@ export default function AddMyApplications() {
               header: {
                 'content-type': 'application/x-www-form-urlencoded',
               },
-              body: JSON.stringify({dataInputApplications: dataInput})
+              body: JSON.stringify({dataInputTemplates: dataInput})
             
               })
               .then(data => {
@@ -111,8 +111,8 @@ export default function AddMyApplications() {
                 } else {
                     dispatch(setUpdateLeftContent(Math.random()))
                     dispatch(setSelectSubdivision([]))
-                    dispatch(setActiveRow(activRight.myApplications))
-                    dispatch(setNoticeOfApplicationData(true))
+                    dispatch(setActiveRow(activRight.myTemplates))
+                    // dispatch(setNoticeOfApplicationData(true))
                 }
           
               })
@@ -239,7 +239,7 @@ export default function AddMyApplications() {
         </div>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
-        <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/>
+        <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack} img={false}/>
         <div className="addDisp-delimiter addApplications-delimiter"></div>
         <ButtonCancellation name={'Отмена'} cancellation={cancellation}/>
       </div>

@@ -7,6 +7,7 @@ import DispUnloadingData from "./DispUnloadingData/DispUnloadingData";
 import AutoUnloadingData from "./AutoUnloadingData/AutoUnloadingData";
 import ApplicationsUnloadingData from "./ApplicationsUnloadingData/ApplicationsUnloadingData";
 import MyApplicationsUnloadingData from "./MyApplicationsUnloadingData/MyApplicationsUnloadingData";
+import MyTemplatesUnloadingData from "./MyTemplatesUnloadingData/MyTemplatesUnloadingData";
 import AssignAcarUnloadingData from "./AssignAcarUnloadingData/AssignAcarUnloadingData";
 
 export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto, arrAssign, dispCardEditNoUpdatePage}) {
@@ -53,13 +54,13 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
   }
 
   useEffect(() => {
-    //console.log('WrapperContentCentr')
+    // console.log('WrapperContentCentr')
     fetchBack()
 
     if((actionLk == actionLkUnloading.getApplicationsData || actionLk == actionLkUnloading.getMyApplicationsData) && (dispCardEditNoUpdatePage)) {
       setTimeout(() => {
         dispatch(setWrapperContentCentrUpdate(Math.random()))
-      }, 3000)
+      }, 4000)
     }
 
   }, [backDisp, showMoreActiv, updateLeft, refreshData, assignAcar, wrapperContentCentrUpdate])
@@ -79,6 +80,8 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
       return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign}/>
     } else if(actionLk == actionLkUnloading.getMyApplicationsData) {
       return <MyApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} />
+    } else if(actionLk == actionLkUnloading.getMyTemplates) {
+      return <MyTemplatesUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} />
     } 
   }
 

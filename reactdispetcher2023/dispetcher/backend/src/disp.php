@@ -72,6 +72,10 @@
     echo json_encode($db->getMyApplicationsData('applications', [$dataFront['getMyApplicationsData']]));
   } 
 
+  if(isset($dataFront['getMyTemplates'])) {
+    echo json_encode($db->getMyTemplates('myTemplates', [$dataFront['getMyTemplates']]));
+  } 
+
   if(isset($dataFront['dataInputApplications'])) {
 
     if(!isset($dataFront['dataInputApplications']['comment'])) $dataFront['dataInputApplications']['comment'] = '';
@@ -98,6 +102,34 @@
      $dataFront['dataInputApplications']['idDisp'], 
      $dataFront['dataInputApplications']['dateOfCreation'],
      $dataFront['dataInputApplications']['emailUserCreate']));
+  } 
+
+  if(isset($dataFront['dataInputTemplates'])) {
+
+    if(!isset($dataFront['dataInputTemplates']['comment'])) $dataFront['dataInputTemplates']['comment'] = '';
+    if(!isset($dataFront['dataInputTemplates']['namePassengers'])) $dataFront['dataInputTemplates']['namePassengers'] = '';
+    if(!isset($dataFront['dataInputTemplates']['passengersPhone'])) $dataFront['dataInputTemplates']['passengersPhone'] = '';
+
+    echo json_encode($db->addTemplates('myTemplates', 
+    $dataFront['dataInputTemplates']['dateOfApplication'], 
+    $dataFront['dataInputTemplates']['submissionTime'], 
+    $dataFront['dataInputTemplates']['submissionAddress'], 
+    $dataFront['dataInputTemplates']['arrivalAddress'], 
+    $dataFront['dataInputTemplates']['rideWithAnticipation'], 
+    $dataFront['dataInputTemplates']['comment'], 
+    $dataFront['dataInputTemplates']['timeOfUseOfTransport'], 
+    $dataFront['dataInputTemplates']['purposeOfTheTrip'], 
+    $dataFront['dataInputTemplates']['applicationInitiator'], 
+    $dataFront['dataInputTemplates']['jobTitle'], 
+    $dataFront['dataInputTemplates']['subdivision'], 
+    $dataFront['dataInputTemplates']['initiatorPhone'],
+     $dataFront['dataInputTemplates']['carClass'], 
+     $dataFront['dataInputTemplates']['numberOfPassengers'], 
+     $dataFront['dataInputTemplates']['namePassengers'], 
+     $dataFront['dataInputTemplates']['passengersPhone'], 
+     $dataFront['dataInputTemplates']['idDisp'], 
+     $dataFront['dataInputTemplates']['dateOfCreation'],
+     $dataFront['dataInputTemplates']['emailUserCreate']));
   } 
 
   if(isset($dataFront['updateApplications'])) {
@@ -138,6 +170,44 @@
     $dataFront['updateApplications']['id']]));
   } 
 
+  if(isset($dataFront['updateTemplates'])) {
+
+    if(!isset($dataFront['updateTemplates']['comment'])) $dataFront['updateTemplates']['comment'] = '';
+    if(!isset($dataFront['updateTemplates']['namePassengers'])) $dataFront['updateTemplates']['namePassengers'] = '';
+    if(!isset($dataFront['updateTemplates']['passengersPhone'])) $dataFront['updateTemplates']['passengersPhone'] = '';
+
+    if(!isset($dataFront['updateTemplates']['driverPhone'])) $dataFront['updateTemplates']['driverPhone'] = null;
+    if(!isset($dataFront['updateTemplates']['marc'])) $dataFront['updateTemplates']['marc'] = null;
+    if(!isset($dataFront['updateTemplates']['gossNumber'])) $dataFront['updateTemplates']['gossNumber'] = null;
+    if(!isset($dataFront['updateTemplates']['view'])) $dataFront['updateTemplates']['view'] = null;
+
+    if((isset($dataFront['updateTemplates']['driverPhone'])) && (isset($dataFront['updateTemplates']['marc'])) && (isset($dataFront['updateTemplates']['gossNumber'])) && (isset($dataFront['updateTemplates']['view']))) {
+      $dataFront['updateTemplates']['status'] = 'Назначена';
+    } else {
+      $dataFront['updateTemplates']['status'] = 'Новая';
+    }
+
+    echo json_encode($db->updateTemplates('myTemplates', 
+    [$dataFront['updateTemplates']['dateOfApplication'], 
+    $dataFront['updateTemplates']['submissionTime'], 
+    $dataFront['updateTemplates']['submissionAddress'], 
+    $dataFront['updateTemplates']['arrivalAddress'], 
+    $dataFront['updateTemplates']['rideWithAnticipation'], 
+    $dataFront['updateTemplates']['comment'], 
+    $dataFront['updateTemplates']['timeOfUseOfTransport'], 
+    $dataFront['updateTemplates']['purposeOfTheTrip'], 
+    $dataFront['updateTemplates']['carClass'], 
+    $dataFront['updateTemplates']['numberOfPassengers'], 
+    $dataFront['updateTemplates']['namePassengers'], 
+    $dataFront['updateTemplates']['passengersPhone'], 
+    $dataFront['updateTemplates']['driverPhone'], 
+    $dataFront['updateTemplates']['marc'], 
+    $dataFront['updateTemplates']['gossNumber'], 
+    $dataFront['updateTemplates']['view'], 
+    $dataFront['updateTemplates']['status'], 
+    $dataFront['updateTemplates']['id']]));
+  } 
+
   if(isset($dataFront['getAssignACar'])) {
     echo json_encode($db->getAutoData('auto', '`id` = ?', [$dataFront['getAssignACar']]));
   } 
@@ -156,6 +226,10 @@
 
   if(isset($dataFront['trashApplications'])) {
     echo json_encode($db->trashApplications('applications', '`id` = ?', [$dataFront['trashApplications']]));
+  } 
+
+  if(isset($dataFront['trashTemplates'])) {
+    echo json_encode($db->trashTemplates('myTemplates', '`id` = ?', [$dataFront['trashTemplates']]));
   } 
 
   if(isset($dataFront['trashApplicationsYes'])) {

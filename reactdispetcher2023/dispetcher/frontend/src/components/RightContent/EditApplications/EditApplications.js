@@ -21,7 +21,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
   const [arrGroup, setArrGroup] = useState([])
   const [valueInput, setValueInput] = useState('');
   const [arrPassengers, setArrPassengers] = useState([])
-
+  const [fileData, setFileData] = useState(null);
   
   useEffect(() => {
     
@@ -281,6 +281,33 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber, old: {dateOfApplication: companyCardData.dateOfApplication, submissionTime: companyCardData.submissionTime, timeOfUseOfTransport: companyCardData.timeOfUseOfTransport, gossNumber: companyCardData.gossNumber}}}))
   }
 
+  function downloadFiles(event) {
+    let err = true
+    let obj = event.target.files
+    
+    for(let key in obj) {
+     
+      if(obj[key]['size'] >= 10000000) {
+        err = false
+      }
+    }
+
+    if(err) {
+      setFileData(event.target.files)
+    } else alert('Файлы не должны превышать 10мб')
+  }
+
+  function objToArr(obj) {
+    let arr = []
+    for(let key in obj) {
+      if(obj[key]['name']) {
+        arr.push(obj[key]['name'])
+      }
+    }
+
+    return arr
+  }
+
   function testApp() {
     console.log(dataInput)
     
@@ -328,7 +355,18 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={testApp}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles}/>
+        <div className="addApplications-file-wrap">
+          {
+            objToArr(fileData).map((item, index) => {
+              if(item != 'item') {
+                return(
+                  <div className="addApplications-file-wrap-border" key={index}>{item}</div>
+                )
+              }
+            })
+          }
+        </div>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
         <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack} img={false}/>

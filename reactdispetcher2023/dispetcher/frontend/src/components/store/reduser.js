@@ -26,11 +26,13 @@ const dataSlice = createSlice({
       autoCard: 'Карточка автотранспорта',
       editAuto: 'Редактирование автотранспорта',
       addApplications: 'Создать заявку',
+      addMyTemplates: 'Создать шаблон',
       addMyApplications: 'Создать заявку',
       applicationsCard: 'Карточка заявки',
       myApplicationsCard: 'Карточка заявки',
       editApplications: 'Редактирование заявки',
-      editMyApplications: 'Редактирование заявки'
+      editMyApplications: 'Редактирование заявки',
+      editMyTemplates: 'Редактирование шаблона'
     },
     activRightContent: {
       disp: 'disp',
@@ -50,10 +52,12 @@ const dataSlice = createSlice({
       editAuto: 'editAuto',
       addApplications: 'addApplications',
       addMyApplications: 'addMyApplications',
+      addMyTemplates: 'addMyTemplates',
       applicationsCard: 'applicationsCard',
       myApplicationsCard: 'myApplicationsCard',
       editApplications: 'editApplications',
-      editMyApplications: 'editMyApplications'
+      editMyApplications: 'editMyApplications',
+      editMyTemplates: 'editMyTemplates'
     },
     roleUsers: {
       admin: 1,
@@ -67,6 +71,7 @@ const dataSlice = createSlice({
       getAutoData: 'getAutoData',
       getApplicationsData: 'getApplicationsData',
       getMyApplicationsData: 'getMyApplicationsData',
+      getMyTemplates: 'getMyTemplates',
       getAssignACar: 'getAssignACar'
     },
     selectSubdivision: [],

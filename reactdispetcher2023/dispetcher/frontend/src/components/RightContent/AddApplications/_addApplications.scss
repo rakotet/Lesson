@@ -23,9 +23,29 @@
   align-items: center;
   justify-content: center;
   width: 1565px;
-  height: 216px;
+  min-height: 216px;
   border: 1px dashed #DADADA;
   margin-bottom: 20px;
+
+  .addApplications-file-wrap {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Houschka Pro;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #0078A8;
+    margin-top: 10px;
+  }
+
+  .addApplications-file-wrap-border {
+    border-bottom: solid 1px #0078A8;
+  }
 
   .addApplications-file-one {
     font-family: Houschka Pro;

@@ -17,6 +17,7 @@ export default function AddApplications() {
   const [arrGroup, setArrGroup] = useState([])
   const [valueInput, setValueInput] = useState('');
   const [arrPassengers, setArrPassengers] = useState([])
+  const [fileData, setFileData] = useState(null);
   let activRight = useSelector(activRightContent)
   let userData = useSelector(userDataStore)
   const dispatch = useDispatch()
@@ -149,6 +150,33 @@ export default function AddApplications() {
     setDataInput(n => ({...n, [name]: data.trim()}))
   }
 
+  function downloadFiles(event) {
+    let err = true
+    let obj = event.target.files
+    
+    for(let key in obj) {
+     
+      if(obj[key]['size'] >= 10000000) {
+        err = false
+      }
+    }
+
+    if(err) {
+      setFileData(event.target.files)
+    } else alert('Файлы не должны превышать 10мб')
+  }
+
+  function objToArr(obj) {
+    let arr = []
+    for(let key in obj) {
+      if(obj[key]['name']) {
+        arr.push(obj[key]['name'])
+      }
+    }
+
+    return arr
+  }
+
   return(
     <>
       <div className="addApplications-wrap">
@@ -191,7 +219,18 @@ export default function AddApplications() {
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={() => {}}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles}/>
+        <div className="addApplications-file-wrap">
+          {
+            objToArr(fileData).map((item, index) => {
+              if(item != 'item') {
+                return(
+                  <div className="addApplications-file-wrap-border" key={index}>{item}</div>
+                )
+              }
+            })
+          }
+        </div>
       </div>
       <div className="addDisp-panell-button addApplications-flex">
         <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/>
