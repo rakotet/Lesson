@@ -128,11 +128,11 @@ export default function MyTemplates({setTabName}) {
         dateOf.setDate(numberDate[0] + numberDate[1]);
         let dateTime = dateOf.getTime() >= dateToday.getTime()
 
-        if(dateTime) {
+        // if(dateTime) {
           if(uploadingData[key]['status'] == 'Новая') {
             editDisp(uploadingData[key])
           } else alert('Нельзя редактировать отмененные или назначенные заявки')
-        } else alert('Нельзя редактировать прошедшие заявки')
+        // } else alert('Нельзя редактировать прошедшие заявки')
       }
 
     } else if(lengthData > 1) {

@@ -20,6 +20,7 @@ export default function AddMyApplications() {
   const [fileData, setFileData] = useState(null);
   let activRight = useSelector(activRightContent)
   let userData = useSelector(userDataStore)
+  let createTemp = false
   const dispatch = useDispatch()
   
   useEffect(() => {
@@ -91,35 +92,64 @@ export default function AddMyApplications() {
       if(dateTime) {
         if(submissionTime >= 9 && submissionTime <= 20) {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
-
             dataInputJson()
-          
-            fetch(url.urlBack1, {
-              method: 'POST',
-              header: {
-                'content-type': 'application/x-www-form-urlencoded',
-              },
-              body: JSON.stringify({dataInputApplications: dataInput})
-            
-              })
-              .then(data => {
-                return data.text()
-              })
-              .then(data => {
-                if(data != 'null') {
-                  console.log(data)
-                } else {
+
+            if(createTemp) {
+              createTemp = false
+
+              fetch(url.urlBack1, {
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify({dataInputTemplates: dataInput})
+              
+                })
+                .then(data => {
+                  return data.text()
+                })
+                .then(data => {
+                  if(data != 'null') {
+                    console.log(data)
+                  } else {
                     dispatch(setUpdateLeftContent(Math.random()))
                     dispatch(setSelectSubdivision([]))
                     dispatch(setActiveRow(activRight.myApplications))
-                    dispatch(setNoticeOfApplicationData(true))
-                }
+                  }
+            
+                })
+                .catch((er) => {
+                  console.log(er)
+                })
+
+            } else {
+              fetch(url.urlBack1, {
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify({dataInputApplications: dataInput})
+              
+                })
+                .then(data => {
+                  return data.text()
+                })
+                .then(data => {
+                  if(data != 'null') {
+                    console.log(data)
+                  } else {
+                      dispatch(setUpdateLeftContent(Math.random()))
+                      dispatch(setSelectSubdivision([]))
+                      dispatch(setActiveRow(activRight.myApplications))
+                      dispatch(setNoticeOfApplicationData(true))
+                  }
+            
+                })
+                .catch((er) => {
+                  console.log(er)
+                })
+            }
           
-              })
-              .catch((er) => {
-                console.log(er)
-              })
-      
           } else alert('Транспорт не может закончить работу после 21:00')
           
         } else {
@@ -153,6 +183,11 @@ export default function AddMyApplications() {
 
   function dataInputOnChangeDate(data, name) {
     setDataInput(n => ({...n, [name]: data.trim()}))
+  }
+
+  function createTemplates() {
+    createTemp = true
+    dataInputBack()
   }
 
   function downloadFiles(event) {
@@ -240,6 +275,8 @@ export default function AddMyApplications() {
       </div>
       <div className="addDisp-panell-button addApplications-flex">
         <ButtonCreate name={'Отправить'} dataInputBack={dataInputBack} img={false}/>
+        <div className="addDisp-delimiter addApplications-delimiter"></div>
+        <ButtonCancellation name={'Сохранить как шаблон'} cancellation={createTemplates} width={true}/>
         <div className="addDisp-delimiter addApplications-delimiter"></div>
         <ButtonCancellation name={'Отмена'} cancellation={cancellation}/>
       </div>

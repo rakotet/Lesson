@@ -240,6 +240,22 @@
       return [];
     }
 
+    //Вернуть заявки подразделения текущего диспетчера или пользователя для счетчика
+    public function getApplicationsDataNumber(string $table_name, string $where, array $values = []) : array{
+      $sql = 'SELECT `userSubdivision` FROM '.$this->getTableName('users')." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      $result = $result[0]['userSubdivision'];
+
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `subdivision` = ? AND `status` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$result, 'Новая']);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
     //Вернуть заявки текущего  пользователя
     public function getMyApplicationsData(string $table_name, array $values = []) : array{
       $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `idDisp` = ?";

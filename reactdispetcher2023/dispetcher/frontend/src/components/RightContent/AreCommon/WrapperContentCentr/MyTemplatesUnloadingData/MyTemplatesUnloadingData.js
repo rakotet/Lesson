@@ -87,7 +87,7 @@ function checkboxDataChange(event, data) {
               <div className="applicationsUnloadingData-margin-checkbox">
                 <input type="checkbox" defaultChecked={false} name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>
-              <div className="applicationsUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
+              <div className="applicationsUnloadingData-namber" /*onClick={() => dispCardOpenHide(data[`${index}`])}*/>
                 <div>{index + 1}</div>
               </div>
               <div className="applicationsUnloadingData-dateOfApplication" >

@@ -26,7 +26,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
         return false;
     }
     return true;
-}
+  }
 
   function fetchBack() {
     fetch(url.urlBack1, {

@@ -1,11 +1,14 @@
 import edit from './images/Edit.png'
 import trash from './images/Trash.png'
+import freeTimeAuto from '../../../../../core/freeTimeAuto'
 import { useEffect, useState } from 'react'
 
 export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp}) {
+  let arrDateNow = [new Date().toLocaleDateString(), '00:00', '00:00']
+  let arrDateNext = [new Date(new Date().getTime() + 86400000).toLocaleDateString(), '00:00', '00:00']
 
   useEffect(() => {
- 
+   
   }, [])
 
   return (
@@ -30,10 +33,18 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
                 </div>
               </div>
               <div className="autoUnloadingData-freeTimeToday">
-                <div>{item.freeTimeToday == null ? '' : item.freeTimeToday}</div>
+                {
+                  item.freeTime == null || freeTimeAuto(item, arrDateNow) == undefined ? 
+                  <div>09:00 - 21:00</div> :
+                  <div>{freeTimeAuto(item, arrDateNow)}</div>
+                }
               </div>
               <div className="autoUnloadingData-freeTimeTomorrow">
-                <div>{item.freeTimeTomorrow == null ? '' : item.freeTimeTomorrow}</div>
+                {
+                  item.freeTime == null || freeTimeAuto(item, arrDateNext) == undefined ? 
+                  <div>09:00 - 21:00</div> :
+                  <div>{freeTimeAuto(item, arrDateNext)}</div>
+                }
               </div>
               <div className="autoUnloadingData-yearOfIssue">
                 <div>{item.yearOfIssue}</div>

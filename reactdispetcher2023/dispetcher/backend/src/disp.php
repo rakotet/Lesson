@@ -68,6 +68,10 @@
     echo json_encode($db->getApplicationsData('applications', '`id` = ?', [$dataFront['getApplicationsData']]));
   } 
 
+  if(isset($dataFront['getApplicationsDataNumber'])) {
+    echo json_encode($db->getApplicationsDataNumber('applications', '`id` = ?', [$dataFront['getApplicationsDataNumber']]));
+  } 
+
   if(isset($dataFront['getMyApplicationsData'])) {
     echo json_encode($db->getMyApplicationsData('applications', [$dataFront['getMyApplicationsData']]));
   } 

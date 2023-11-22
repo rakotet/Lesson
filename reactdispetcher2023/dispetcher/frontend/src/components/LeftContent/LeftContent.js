@@ -41,7 +41,7 @@ export default function LeftContent({collapseData, hideRow}) {
       dispatch(setActiveRow(activRight.auto))
 
     } else if(userArr.type == roleUsersData.user) {
-      //getNumber('getMyApplicationsNumber', setNumberMyApplications)
+      getNumber('getMyApplicationsNumber', setNumberMyApplications)
       dispatch(setActiveRow(activRight.myApplications))
 
     } else if(userArr.type == roleUsersData.sa) {
@@ -58,10 +58,10 @@ export default function LeftContent({collapseData, hideRow}) {
 
     } else if(userArr.type == roleUsersData.disp) {
       getNumber('getAutoData', setNumberAuto, userArr.id)
-      getNumber('getApplicationsData', setNumberApplications, userArr.id)
+      getNumber('getApplicationsDataNumber', setNumberApplications, userArr.id)
 
     } else if(userArr.type == roleUsersData.user) {
-      //getNumber('getMyApplicationsData', setNumberMyApplications, userArr.id)
+      getNumber('getMyApplicationsData', setNumberMyApplications, userArr.id)
 
     } else if(userArr.type == roleUsersData.sa) {
 
@@ -82,12 +82,23 @@ export default function LeftContent({collapseData, hideRow}) {
       })
       .then(data => {
         // console.log(data)
-        data = JSON.parse(data)
-        setNumberDisp(data.length)
+        if(IsJsonString(data)) {
+          data = JSON.parse(data)
+          setNumberDisp(data.length)
+        }
       })
       .catch((er) => {
         console.log(er)
       })
+  }
+
+  function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
   }
 
   function handleClickDisp() {
