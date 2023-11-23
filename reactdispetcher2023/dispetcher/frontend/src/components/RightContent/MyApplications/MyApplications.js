@@ -146,8 +146,6 @@ export default function MyApplications({setTabName}) {
     if(lengthData >= 1) {
       dispatch(setCancelApplicationsObj(uploadingData))
       dispatch(setCancelApplications(true))
-      
-
     } else alert('Выберете хотя бы один чекбокс')
   }
 
@@ -155,8 +153,55 @@ export default function MyApplications({setTabName}) {
     setShowMoreActiv(n => n * 2)
   }
 
-  function testApp() {
-    console.log(uploadingData)
+  
+  function downLoadWord() {
+    let lengthData = Object.keys(uploadingData).length
+
+    function htmlData() {
+      return (
+        `
+          <div>НОМЕР ЗАЯВКИ - №${uploadingData['applicationsUnloadingData-checkbox0'].id}</div>
+          <div>ДАТА СОЗДАНИЯ ЗАЯВКИ - ${uploadingData['applicationsUnloadingData-checkbox0'].dateOfCreation}</div>
+          <div>СТАТУС - ${uploadingData['applicationsUnloadingData-checkbox0'].status}</div>
+          <div>ДАТА ПОДАЧИ - ${uploadingData['applicationsUnloadingData-checkbox0'].dateOfApplication}</div>
+          <div>ВРЕМЯ ПОДАЧИ - ${uploadingData['applicationsUnloadingData-checkbox0'].submissionTime}</div>
+          <div>ВРЕМЯ ИСПОЛЬЗОВАНИЯ (ЧАСЫ) - ${uploadingData['applicationsUnloadingData-checkbox0'].timeOfUseOfTransport}Ч</div>
+          <div>АДРЕС ПОДАЧИ - ${uploadingData['applicationsUnloadingData-checkbox0'].submissionAddress}</div>
+          <div>АДРЕС ПРИБЫТИЯ - ${uploadingData['applicationsUnloadingData-checkbox0'].arrivalAddress}</div>
+          <div>ПОЕЗДКА С ОЖИДАНИЕМ - ${uploadingData['applicationsUnloadingData-checkbox0'].rideWithAnticipation}</div>
+          <div>ЦЕЛЬ ПОЕЗДКИ - ${uploadingData['applicationsUnloadingData-checkbox0'].purposeOfTheTrip}</div>
+          <div>СОТРУДНИК ПОДАВШИЙ ЗАЯВКУ - ${uploadingData['applicationsUnloadingData-checkbox0'].applicationInitiator} ${uploadingData['applicationsUnloadingData-checkbox0'].emailUserCreate}</div>
+          <div>ДОЛЖНОСТЬ - ${uploadingData['applicationsUnloadingData-checkbox0'].jobTitle}</div>
+          <div>ПОДРАЗДЕЛЕНИЕ - ${uploadingData['applicationsUnloadingData-checkbox0'].subdivision}</div>
+          <div>СОТОВЫЙ ТЕЛЕФОН - ${uploadingData['applicationsUnloadingData-checkbox0'].initiatorPhone}</div>
+          <div>КОЛИЧЕСТВО ПАССАЖИРОВ - ${uploadingData['applicationsUnloadingData-checkbox0'].numberOfPassengers}</div>
+          <div>ВОДИТЕЛЬ, ТЕЛ. - ${uploadingData['applicationsUnloadingData-checkbox0'].driverPhone != null ? uploadingData['applicationsUnloadingData-checkbox0'].driverPhone : 'Не назначен'}</div>
+          <div>КОММЕНТАРИЙ - ${uploadingData['applicationsUnloadingData-checkbox0'].comment}</div>
+        `
+      )
+    }
+
+    if(lengthData == 1) {
+      let header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+      "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+      "xmlns='http://www.w3.org/TR/REC-html40'>"+
+      "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+      let footer = "</body></html>";
+      let sourceHTML = header+htmlData()+footer;
+
+      let source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+      let fileDownload = document.createElement("a");
+      document.body.appendChild(fileDownload);
+      fileDownload.href = source;
+      fileDownload.download = 'document.doc';
+      fileDownload.click();
+      document.body.removeChild(fileDownload);
+      
+    } else if(lengthData > 1) {
+      alert('Выберите только один чекбокс')
+    } else {
+      alert('Выберите хотя бы один чекбокс')
+    }
   }
   
 
@@ -173,7 +218,7 @@ export default function MyApplications({setTabName}) {
                 <ButtonCustom addFunc={refresh} buttonImg={'refresh'}/>
                 <ButtonCustom addFunc={editApplications} buttonImg={'edit'}/>
                 <ButtonCustom addFunc={cancelFunc} buttonImg={'cancel'}/>
-                <ButtonCustom addFunc={testApp} buttonImg={'downLoad'}/>
+                <ButtonCustom addFunc={downLoadWord} buttonImg={'downLoad'}/>
               </div>
               <Ellipsis handleClick={clickEllipsis}/>
               {ellipsisOpen ? <SearchData /> : ''}
