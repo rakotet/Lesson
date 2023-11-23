@@ -173,6 +173,12 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
                       if(counter == 0) {
                         freeTime = {...freeTime, ...thisTime}
                       }
+
+                      for(let key in freeTime) {
+                        if(Object.keys(freeTime[key]).length == 0) {
+                          delete freeTime[key]
+                        }
+                      }
       
                       fetch(url.urlBack1, {
                         method: 'POST',

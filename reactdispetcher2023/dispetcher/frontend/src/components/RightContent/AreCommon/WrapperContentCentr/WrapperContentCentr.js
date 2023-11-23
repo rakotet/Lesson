@@ -60,6 +60,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     if((actionLk == actionLkUnloading.getApplicationsData || actionLk == actionLkUnloading.getMyApplicationsData) && (dispCardEditNoUpdatePage)) {
       setTimeout(() => {
         dispatch(setWrapperContentCentrUpdate(Math.random()))
+        dispatch(setUpdateLeftContent(Math.random()))
       }, 4000)
     }
 

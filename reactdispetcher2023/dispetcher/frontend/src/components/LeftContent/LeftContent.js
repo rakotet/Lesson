@@ -37,7 +37,7 @@ export default function LeftContent({collapseData, hideRow}) {
 
     } else if(userArr.type == roleUsersData.disp) {
       getNumber('getAutoNumber', setNumberAuto)
-      getNumber('getApplicationsNumber', setNumberApplications)
+      getNumber('getApplicationsDataNumber', setNumberApplications)
       dispatch(setActiveRow(activRight.auto))
 
     } else if(userArr.type == roleUsersData.user) {
@@ -52,6 +52,7 @@ export default function LeftContent({collapseData, hideRow}) {
   }, [userArr])
 
   useEffect(() => {
+    // console.log('left')
     if(userArr.type == roleUsersData.admin) {
       getNumber('getDispNumber', setNumberDisp)
       getNumber('getGroupNumber', setNumberGroup)
@@ -165,7 +166,7 @@ export default function LeftContent({collapseData, hideRow}) {
       return (
         <>
           <RowData name={nameRow.auto} count={numberAuto} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
-          <RowData name={nameRow.applications} count={numberApplications} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow}/>
+          <RowData name={nameRow.applications} count={numberApplications} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow} newApplication={true}/>
         </>
       )
     } else if(userArr.type == roleUsersData.user) {

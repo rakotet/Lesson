@@ -1,4 +1,5 @@
 .rowData {
+  // position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -12,6 +13,12 @@
 
   img:hover {
     cursor: pointer;
+  }
+
+  .rowData-svg {
+    position: absolute;
+    left: 36px;
+    top: 183px;
   }
 
   .rowData-name {
@@ -45,6 +52,10 @@
     border-radius: 5px;
     gap: 10px;
 
+  }
+
+  .rowData-new {
+    background: #EF4056 !important;
   }
 
   .rowData-hide {

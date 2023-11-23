@@ -15,7 +15,7 @@ import adminsActivImg from "./images/admins-activ.png";
 import { useSelector } from 'react-redux';
 import { nameRowData } from "../../store/reduser";
 
-export default function RowData({name, count, active, click, hide = '', hideRow}) {
+export default function RowData({name, count, active, click, hide = '', hideRow, newApplication = false}) {
   let nameRow = useSelector(nameRowData)
 
   let img;
@@ -36,14 +36,19 @@ export default function RowData({name, count, active, click, hide = '', hideRow}
 
   return(
     <div className="rowData">
+      <div className={newApplication && !hideRow && count > 0 ? "rowData-svg" : "rowData-hide"}>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="5" cy="5" r="5" fill="#EF4056"/>
+        </svg>
+      </div>
       <img src={img} alt="" onClick={click}></img>
       <div className={`rowData-name ${active ? 'rowData-name-active' : 'rowData-name-noActive'} ${hideRow ? '' : 'leftContent-hide'}`} onClick={click}>
         {name}
       </div>
       <div className={`rowData-count-wrapp ${hide} ${hideRow ? '' : 'leftContent-hide'}`}>
         <div></div>
-        <div className="rowData-count">
-          {count}
+        <div className={newApplication && count > 0 ? "rowData-count rowData-new" : "rowData-count"}>
+          {count > 0 && newApplication ? `+${count}` : count}
         </div>
       </div>
     </div>
