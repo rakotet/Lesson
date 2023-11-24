@@ -2,6 +2,16 @@
   header("Access-Control-Allow-Origin: *");
   require_once "./Base.php";
 
+  if(isset($_FILES['upload_files'])) {
+    foreach($_FILES['upload_files']['error'] as $key => $error) {
+      if($error == 0) {
+        $dist = '../page/files/'.$_FILES['upload_files']['name'][$key];
+        $success_multi = move_uploaded_file($_FILES['upload_files']['tmp_name'][$key], $dist);
+      }
+    }
+  }
+
+
   $dataFront = trim(file_get_contents("php://input"));
   $dataFront = json_decode($dataFront, true);
   
@@ -83,6 +93,7 @@
   if(isset($dataFront['dataInputApplications'])) {
 
     if(!isset($dataFront['dataInputApplications']['comment'])) $dataFront['dataInputApplications']['comment'] = '';
+    if(!isset($dataFront['dataInputApplications']['filesNameFront'])) $dataFront['dataInputApplications']['filesNameFront'] = '';
     if(!isset($dataFront['dataInputApplications']['namePassengers'])) $dataFront['dataInputApplications']['namePassengers'] = '';
     if(!isset($dataFront['dataInputApplications']['passengersPhone'])) $dataFront['dataInputApplications']['passengersPhone'] = '';
 
@@ -105,12 +116,14 @@
      $dataFront['dataInputApplications']['passengersPhone'], 
      $dataFront['dataInputApplications']['idDisp'], 
      $dataFront['dataInputApplications']['dateOfCreation'],
-     $dataFront['dataInputApplications']['emailUserCreate']));
+     $dataFront['dataInputApplications']['emailUserCreate'],
+     $dataFront['dataInputApplications']['filesNameFront']));
   } 
 
   if(isset($dataFront['dataInputTemplates'])) {
 
     if(!isset($dataFront['dataInputTemplates']['comment'])) $dataFront['dataInputTemplates']['comment'] = '';
+    if(!isset($dataFront['dataInputTemplates']['filesNameFront'])) $dataFront['dataInputTemplates']['filesNameFront'] = '';
     if(!isset($dataFront['dataInputTemplates']['namePassengers'])) $dataFront['dataInputTemplates']['namePassengers'] = '';
     if(!isset($dataFront['dataInputTemplates']['passengersPhone'])) $dataFront['dataInputTemplates']['passengersPhone'] = '';
 
@@ -133,7 +146,8 @@
      $dataFront['dataInputTemplates']['passengersPhone'], 
      $dataFront['dataInputTemplates']['idDisp'], 
      $dataFront['dataInputTemplates']['dateOfCreation'],
-     $dataFront['dataInputTemplates']['emailUserCreate']));
+     $dataFront['dataInputTemplates']['emailUserCreate'],
+     $dataFront['dataInputTemplates']['filesNameFront']));
   } 
 
   if(isset($dataFront['updateApplications'])) {
@@ -141,6 +155,7 @@
     if(!isset($dataFront['updateApplications']['comment'])) $dataFront['updateApplications']['comment'] = '';
     if(!isset($dataFront['updateApplications']['namePassengers'])) $dataFront['updateApplications']['namePassengers'] = '';
     if(!isset($dataFront['updateApplications']['passengersPhone'])) $dataFront['updateApplications']['passengersPhone'] = '';
+    if(!isset($dataFront['updateApplications']['filesNameFront'])) $dataFront['updateApplications']['filesNameFront'] = '';
 
     if(!isset($dataFront['updateApplications']['driverPhone'])) $dataFront['updateApplications']['driverPhone'] = null;
     if(!isset($dataFront['updateApplications']['marc'])) $dataFront['updateApplications']['marc'] = null;
@@ -170,8 +185,10 @@
     $dataFront['updateApplications']['marc'], 
     $dataFront['updateApplications']['gossNumber'], 
     $dataFront['updateApplications']['view'], 
-    $dataFront['updateApplications']['status'], 
-    $dataFront['updateApplications']['id']]));
+    $dataFront['updateApplications']['status'],
+    $dataFront['updateApplications']['filesNameFront'], 
+    $dataFront['updateApplications']['id']]
+    ));
   } 
 
   if(isset($dataFront['updateTemplates'])) {
@@ -179,6 +196,7 @@
     if(!isset($dataFront['updateTemplates']['comment'])) $dataFront['updateTemplates']['comment'] = '';
     if(!isset($dataFront['updateTemplates']['namePassengers'])) $dataFront['updateTemplates']['namePassengers'] = '';
     if(!isset($dataFront['updateTemplates']['passengersPhone'])) $dataFront['updateTemplates']['passengersPhone'] = '';
+    if(!isset($dataFront['updateTemplates']['filesNameFront'])) $dataFront['updateTemplates']['filesNameFront'] = '';
 
     if(!isset($dataFront['updateTemplates']['driverPhone'])) $dataFront['updateTemplates']['driverPhone'] = null;
     if(!isset($dataFront['updateTemplates']['marc'])) $dataFront['updateTemplates']['marc'] = null;
@@ -208,7 +226,8 @@
     $dataFront['updateTemplates']['marc'], 
     $dataFront['updateTemplates']['gossNumber'], 
     $dataFront['updateTemplates']['view'], 
-    $dataFront['updateTemplates']['status'], 
+    $dataFront['updateTemplates']['status'],
+    $dataFront['updateTemplates']['filesNameFront'],  
     $dataFront['updateTemplates']['id']]));
   } 
 

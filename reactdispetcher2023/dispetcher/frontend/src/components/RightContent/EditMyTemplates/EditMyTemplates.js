@@ -26,6 +26,11 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
 
   
   useEffect(() => {
+    // console.log(companyCardData)
+
+    if(companyCardData.dirFiles) {
+      setFileData(JSON.parse(companyCardData.dirFiles))
+    }
 
     let namePassengers = {}
     let passengersPhone = {}
@@ -50,7 +55,7 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
       delete companyCardData.passengersPhone
     }
 
-    setDataInput({...companyCardData})
+    setDataInput({...companyCardData, filesNameFront: companyCardData.dirFiles})
 
   }, [assignAcarClickAuto])
 
@@ -106,6 +111,8 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
         if(submissionTime >= 9 && submissionTime <= 20) {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
             dataInputJson()
+
+            document.getElementById('buttonDownloadFileSubmit').click()
 
             if(createApp) {
               createApp = false
@@ -205,6 +212,37 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
     dataInputBack()
   }
 
+  function sub(event) {
+    event.preventDefault()
+
+    let form = new FormData(document.getElementById('formElem'))
+    // form.append('dataFileFront', document.getElementById('formElem'))
+    // form.append('dir', numberDir)
+
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'multipart/form-data',
+      },
+      body: form
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null' && data != '') {
+          console.log(data)
+        } else {
+            
+        }
+  
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
   function downloadFiles(event) {
     let err = true
     let obj = event.target.files
@@ -218,6 +256,20 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
 
     if(err) {
       setFileData(event.target.files)
+      setDataInput(n => {
+        let arr = {}
+        let obj = event.target.files
+        let count = 0
+        for(let key in obj) {
+          count++
+          if(obj[key]['name'] && obj[key]['name'] != 'item') {
+            arr[count] = {'name': obj[key]['name']}
+          }
+        }
+
+        return {...n, filesNameFront: JSON.stringify(arr)}
+      })
+
     } else alert('Файлы не должны превышать 10мб')
   }
 
@@ -280,7 +332,7 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles} sub={sub}/>
         <div className="addApplications-file-wrap">
           {
             objToArr(fileData).map((item, index) => {

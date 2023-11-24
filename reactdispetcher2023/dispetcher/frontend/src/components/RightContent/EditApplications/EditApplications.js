@@ -24,6 +24,9 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
   const [fileData, setFileData] = useState(null);
   
   useEffect(() => {
+    if(companyCardData.dirFiles) {
+      setFileData(JSON.parse(companyCardData.dirFiles))
+    }
     
     if((assignAcarClickAuto.driver != undefined && assignAcarClickAuto.telephone != undefined) && (assignAcarClickAuto.driver != '' && assignAcarClickAuto.telephone != '')) {
 
@@ -53,7 +56,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
         delete companyCardData.passengersPhone
       }
 
-      setDataInput({...companyCardData})
+      setDataInput({...companyCardData, filesNameFront: companyCardData.dirFiles})
     }
 
   }, [assignAcarClickAuto])
@@ -216,6 +219,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
             if(((dataInput.dateOfApplication == companyCardData.dateOfApplication && dataInput.submissionTime == companyCardData.submissionTime && dataInput.timeOfUseOfTransport == companyCardData.timeOfUseOfTransport) || saveApplicationCounter == true) || companyCardData.status == 'Новая') {
 
               dataInputJson()
+              document.getElementById('buttonDownloadFileSubmit').click()
 
               fetch(url.urlBack1, {
                 method: 'POST',
@@ -287,6 +291,37 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
     dispatch(setApplicationsToassignAcar({date: {dateOfApplication: dataInput.dateOfApplication, submissionTime: dataInput.submissionTime, timeOfUseOfTransport: dataInput.timeOfUseOfTransport, gossNumber: dataInput.gossNumber, old: {dateOfApplication: companyCardData.dateOfApplication, submissionTime: companyCardData.submissionTime, timeOfUseOfTransport: companyCardData.timeOfUseOfTransport, gossNumber: companyCardData.gossNumber}}}))
   }
 
+  function sub(event) {
+    event.preventDefault()
+
+    let form = new FormData(document.getElementById('formElem'))
+    // form.append('dataFileFront', document.getElementById('formElem'))
+    // form.append('dir', numberDir)
+
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'multipart/form-data',
+      },
+      body: form
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null' && data != '') {
+          console.log(data)
+        } else {
+            
+        }
+  
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
   function downloadFiles(event) {
     let err = true
     let obj = event.target.files
@@ -300,6 +335,20 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
     if(err) {
       setFileData(event.target.files)
+      setDataInput(n => {
+        let arr = {}
+        let obj = event.target.files
+        let count = 0
+        for(let key in obj) {
+          count++
+          if(obj[key]['name'] && obj[key]['name'] != 'item') {
+            arr[count] = {'name': obj[key]['name']}
+          }
+        }
+
+        return {...n, filesNameFront: JSON.stringify(arr)}
+      })
+
     } else alert('Файлы не должны превышать 10мб')
   }
 
@@ -361,7 +410,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles} sub={sub}/>
         <div className="addApplications-file-wrap">
           {
             objToArr(fileData).map((item, index) => {

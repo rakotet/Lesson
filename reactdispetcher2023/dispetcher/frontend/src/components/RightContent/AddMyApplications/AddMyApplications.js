@@ -18,6 +18,7 @@ export default function AddMyApplications() {
   const [arrPassengers, setArrPassengers] = useState([])
   const [valueInput, setValueInput] = useState('');
   const [fileData, setFileData] = useState(null);
+  const numberDir = Math.floor(Math.random() * 100000)
   let activRight = useSelector(activRightContent)
   let userData = useSelector(userDataStore)
   let createTemp = false
@@ -94,6 +95,8 @@ export default function AddMyApplications() {
           if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
             dataInputJson()
 
+            document.getElementById('buttonDownloadFileSubmit').click()
+
             if(createTemp) {
               createTemp = false
 
@@ -123,6 +126,7 @@ export default function AddMyApplications() {
                 })
 
             } else {
+
               fetch(url.urlBack1, {
                 method: 'POST',
                 header: {
@@ -190,6 +194,37 @@ export default function AddMyApplications() {
     dataInputBack()
   }
 
+  function sub(event) {
+    event.preventDefault()
+
+    let form = new FormData(document.getElementById('formElem'))
+    // form.append('dataFileFront', document.getElementById('formElem'))
+    // form.append('dir', numberDir)
+
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'multipart/form-data',
+      },
+      body: form
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        if(data != 'null' && data != '') {
+          console.log(data)
+        } else {
+            
+        }
+  
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
+
   function downloadFiles(event) {
     let err = true
     let obj = event.target.files
@@ -203,6 +238,20 @@ export default function AddMyApplications() {
 
     if(err) {
       setFileData(event.target.files)
+      setDataInput(n => {
+        let arr = {}
+        let obj = event.target.files
+        let count = 0
+        for(let key in obj) {
+          count++
+          if(obj[key]['name'] && obj[key]['name'] != 'item') {
+            arr[count] = {'name': obj[key]['name']}
+          }
+        }
+
+        return {...n, filesNameFront: JSON.stringify(arr)}
+      })
+
     } else alert('Файлы не должны превышать 10мб')
   }
 
@@ -260,7 +309,7 @@ export default function AddMyApplications() {
         <div className="addApplications-file-two">
           DOC или PDF, размер файла не более 10 МБ
         </div>
-        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles}/>
+        <ButtonDownloadFile name={'Выбрать файл'} cancellation={downloadFiles} sub={sub}/>
         <div className="addApplications-file-wrap">
           {
             objToArr(fileData).map((item, index) => {

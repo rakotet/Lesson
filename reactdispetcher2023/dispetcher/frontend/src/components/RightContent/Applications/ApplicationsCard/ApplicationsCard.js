@@ -5,7 +5,7 @@ import imgGreen from './images/green.png';
 import ButtonCancellation from "../../AreCommon/ButtonCancellation/ButtonCancellation"
 
 export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCardData}) {
-  
+  // console.log(dispCardData)
   let submissionTime = dispCardData.submissionTime
   let timeOfUseOfTransport = dispCardData.timeOfUseOfTransport
   let itog
@@ -26,6 +26,18 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
   let arr = []
   let namePassengers = {}
   let passengersPhone = {}
+  let arrDir = []
+
+  if(dispCardData.dirFiles) {
+    let dirFiles = JSON.parse(dispCardData.dirFiles)
+
+    for(let key in dirFiles) {
+      if(dirFiles[key]['name']) {
+        arrDir.push(dirFiles[key]['name'])
+      }
+    }
+  }
+  
 
   if(dispCardData.namePassengers) {
     namePassengers = JSON.parse(dispCardData.namePassengers)
@@ -200,6 +212,11 @@ export default function ApplicationsCard({dispCardOpen, dispCardOpenHide, dispCa
         <div className="applicationsCard-group">
           <h4>Прикрепленные файлы</h4>
           <div className="applicationsCard-name"></div>
+          {dispCardData.dirFiles != '' && dispCardData.dirFiles != undefined ? arrDir.map((item, index) => {
+            return(
+              <div key={index} className="applicationsCard-name"><a href={'/page/files/' + item}>{item}</a></div>
+            )
+          }) : ''}
         </div>
       </div>
 
