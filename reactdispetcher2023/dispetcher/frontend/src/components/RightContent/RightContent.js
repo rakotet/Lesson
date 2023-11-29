@@ -16,7 +16,7 @@ import AddApplications from './AddApplications/AddApplications';
 import AddMyApplications from './AddMyApplications/AddMyApplications';
 import AddMyTemplates from './AddMyTemplates/AddMyTemplates';
 
-export default function RightContent() {
+export default function RightContent({collapseData}) {
   const [tabName, setTabName] = useState('')
   let activeData = useSelector(activeRowStore)
   let nameRow = useSelector(nameRowData)
@@ -115,11 +115,19 @@ export default function RightContent() {
     } 
   }
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  async function printCard() {
+    collapseData(false)
+    await delay(100)
+    window.print()
+  }
+
   return(
     <div className="rightContent">
       <div className="rightContent-label-row">
         <h3>{tabName}</h3>
-        {tabName == 'Карточка заявки' ? <img src={print}/> : ''}
+        {tabName == 'Карточка заявки' ? <img src={print} onClick={printCard}/> : ''}
       </div>
       {getContentRight()}
     </div>

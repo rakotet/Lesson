@@ -18,6 +18,7 @@ export default function LeftContent({collapseData, hideRow}) {
   const [numberGroup, setNumberGroup] = useState(0);
   const [numberAuto, setNumberAuto] = useState(0);
   const [numberApplications, setNumberApplications] = useState(0);
+  const [newApplication, setNewApplication] = useState(false);
   const [numberMyApplications, setNumberMyApplications] = useState(0);
 
   let activeRow = useSelector(activeRowStore)
@@ -59,7 +60,7 @@ export default function LeftContent({collapseData, hideRow}) {
 
     } else if(userArr.type == roleUsersData.disp) {
       getNumber('getAutoData', setNumberAuto, userArr.id)
-      getNumber('getApplicationsDataNumber', setNumberApplications, userArr.id)
+      getNumber('getApplicationsDataNumber', setNumberApplications, userArr.id, true)
 
     } else if(userArr.type == roleUsersData.user) {
       getNumber('getMyApplicationsData', setNumberMyApplications, userArr.id)
@@ -69,7 +70,7 @@ export default function LeftContent({collapseData, hideRow}) {
     }
   }, [updateLeft])
 
-  function getNumber(parametr, setNumberDisp, data = true) {
+  function getNumber(parametr, setNumberDisp, data = true, app = false) {
     fetch(url.urlBack1, {
       method: 'POST',
       header: {
@@ -85,7 +86,28 @@ export default function LeftContent({collapseData, hideRow}) {
         // console.log(data)
         if(IsJsonString(data)) {
           data = JSON.parse(data)
-          setNumberDisp(data.length)
+          
+          if(app) {
+            let count = 0
+
+            for(let key in data) {
+              if(data[key]['status'] == "Новая") {
+                count++
+              }
+            }
+
+            if(count) {
+              setNewApplication(true)
+              setNumberDisp(count)
+            } else {
+              setNewApplication(false)
+              setNumberDisp(data.length)
+            }
+
+          } else {
+            setNumberDisp(data.length)
+          }
+
         }
       })
       .catch((er) => {
@@ -166,7 +188,7 @@ export default function LeftContent({collapseData, hideRow}) {
       return (
         <>
           <RowData name={nameRow.auto} count={numberAuto} active={isActiveAuto} click={handleClickAuto} hide='' hideRow={hideRow}/>
-          <RowData name={nameRow.applications} count={numberApplications} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow} newApplication={true}/>
+          <RowData name={nameRow.applications} count={numberApplications} active={isActiveApplications} click={handleClickApplications} hide='' hideRow={hideRow} newApplication={newApplication}/>
         </>
       )
     } else if(userArr.type == roleUsersData.user) {

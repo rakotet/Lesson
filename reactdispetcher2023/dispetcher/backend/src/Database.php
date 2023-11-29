@@ -248,9 +248,11 @@
       $result = $query->fetchAll(PDO::FETCH_ASSOC);
       $result = $result[0]['userSubdivision'];
 
-      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `subdivision` = ? AND `status` = ?";
+      //$sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `subdivision` = ? AND `status` = ?";
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE `subdivision` = ?";
       $query = $this->pdo->prepare($sql);
-      $query->execute([$result, 'Новая']);
+      //$query->execute([$result, 'Новая']);
+      $query->execute([$result]);
       $result = $query->fetchAll(PDO::FETCH_ASSOC);
       if($result) return $result;
       return [];

@@ -15,7 +15,7 @@ export default function BodyWrapper() {
         <LeftContent collapseData={collapseClick} hideRow={collapse}/>
       </div>
       <div className="bodyWrapper-right">
-        <RightContent />
+        <RightContent collapseData={collapseClick}/>
       </div>
     </div>
   )
