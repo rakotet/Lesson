@@ -19,7 +19,7 @@ function dateApplications(number, numberHours, timeOfUseOfTransport) {
   date.setMonth(number[3] + number[4]);
   date.setDate(number[0] + number[1]);
   date.setHours(numberHours[0] + numberHours[1]);
-  date.setMinutes(0);
+  date.setMinutes(numberHours[3] + numberHours[4]);
   let timeOfUse = timeOfUseOfTransport * 3600000
   let dateTime = date.getTime()
   let dateFull = new Date(timeOfUse + dateTime)

@@ -108,8 +108,8 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
       let cancelTime = dateApplicationsHours(dataInput.dateOfApplication, dataInput.submissionTime, dataInput.timeOfUseOfTransport)
 
       if(dateTime) {
-        if(submissionTime >= 9 && submissionTime <= 20) {
-          if(cancelTime <= 21 && cancelTime >= 9 && Number(dataInput.timeOfUseOfTransport) <= 12) {
+        if(submissionTime >= 8 && submissionTime <= 20) {
+          if(cancelTime <= 21 && cancelTime >= 8 && Number(dataInput.timeOfUseOfTransport) <= 13) {
             dataInputJson()
 
             document.getElementById('buttonDownloadFileSubmit').click()
@@ -303,7 +303,7 @@ export default function EditMyTemplates({editDisp, companyCardData, setUploading
           <AddRowNameInput dataName={'Введите краткий комментарий к заявке'} placeholder={'Введите текст (до 150 знаков)'} name={'comment'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.comment}/>
         </div>
         <div className="addDisp-wrap">
-        <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={12} value={companyCardData.timeOfUseOfTransport} setArrPassengers={() => {}}/>
+        <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={13} value={companyCardData.timeOfUseOfTransport} setArrPassengers={() => {}} minutes={true}/>
           <AddRowNameSelectAuto dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']} defaultValue={companyCardData.purposeOfTheTrip}/>
           <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.applicationInitiator}/>
           <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={companyCardData.jobTitle}/>

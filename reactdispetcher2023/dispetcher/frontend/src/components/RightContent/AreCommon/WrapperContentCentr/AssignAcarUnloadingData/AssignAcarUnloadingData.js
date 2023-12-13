@@ -24,7 +24,7 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
     suitableAuto = data.map(itemData => {
       let sTime = Number(arrAssign[1][0] + arrAssign[1][1])
       let doTime = Number(arrAssign[2][0] + arrAssign[2][1])
-      let timeArr = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+      let timeArr = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
       let googs = true
       let item = {...itemData}
@@ -164,7 +164,7 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
               <div className="assignAcarUnloadingData-freeTimeToday">
                 <div>{item.freeTime == null 
                   ? 
-                  <div className='assignAcarUnloadingData-green'><span>09:00 - 21:00</span></div> 
+                  <div className='assignAcarUnloadingData-green'><span>08:00 - 21:00</span></div> 
                   : 
                   <div className='assignAcarUnloadingData-green' dangerouslySetInnerHTML={{__html: item.freeTimeStr}}></div>}
                 </div>

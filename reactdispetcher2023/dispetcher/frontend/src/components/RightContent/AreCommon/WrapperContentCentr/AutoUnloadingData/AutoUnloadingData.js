@@ -35,14 +35,14 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
               <div className="autoUnloadingData-freeTimeToday">
                 {
                   item.freeTime == null || freeTimeAuto(item, arrDateNow) == undefined ? 
-                  <div>09:00 - 21:00</div> :
+                  <div>08:00 - 21:00</div> :
                   <div>{freeTimeAuto(item, arrDateNow)}</div>
                 }
               </div>
               <div className="autoUnloadingData-freeTimeTomorrow">
                 {
                   item.freeTime == null || freeTimeAuto(item, arrDateNext) == undefined ? 
-                  <div>09:00 - 21:00</div> :
+                  <div>08:00 - 21:00</div> :
                   <div>{freeTimeAuto(item, arrDateNext)}</div>
                 }
               </div>

@@ -2,25 +2,30 @@ import { useState, useEffect } from "react"
 import imgUp from './image/up.png'
 import imgDown from './image/down.png'
 
-export default function SelectDataArrow({namePlaceholder, name = '', margin = true, dataInputOnChange, number, value, setArrPassengers}) {
+export default function SelectDataArrow({namePlaceholder, name = '', margin = true, dataInputOnChange, number, value, setArrPassengers, minutes}) {
   const [valueInput, setValueInput] = useState(Number(value));
+  let num = 1
+
+  if(minutes) {
+    num = 0.5
+  }
 
   function handleClickUp() {
     setValueInput(n => {
-      if((n + 1) > Number(number)) {
+      if((n + num) > Number(number)) {
         return 0
       } else {
-        return n + 1
+        return n + num
       }
     })
   }
   
   function handleClickDown() {
     setValueInput(n => {
-      if((n - 1) < 1) {
+      if((n - num) < num) {
         return 0
       } else {
-        return n - 1
+        return n - num
       }
     })
   }

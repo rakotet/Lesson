@@ -5,7 +5,7 @@ export default function freeTimeAuto(dataItem, arrAssign) {
     suitableAuto = arrData.map(itemData => {
       let sTime = Number(arrAssign[1][0] + arrAssign[1][1])
       let doTime = Number(arrAssign[2][0] + arrAssign[2][1])
-      let timeArr = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+      let timeArr = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
 
       let googs = true
       let item = {...itemData}
