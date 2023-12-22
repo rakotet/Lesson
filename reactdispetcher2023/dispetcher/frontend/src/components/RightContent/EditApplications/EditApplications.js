@@ -1,7 +1,7 @@
 import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput";
 import AddRowNameInputArrow from "../AreCommon/AddRowNameInputArrow/AddRowNameInputArrow";
 import AddRowNameDate from "../AreCommon/AddRowNameDate/AddRowNameDate";
-import AddRowNameTime from "../AreCommon/AddRowNameTime/AddRowNameTime";
+import AddRowNameSelectTime from "../AreCommon/AddRowNameSelectTime/AddRowNameSelectTime";
 import { useState, useEffect } from "react";
 import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate";
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation";
@@ -9,6 +9,7 @@ import ButtonDownloadFile from "../AreCommon/ButtonDownloadFile/ButtonDownloadFi
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore, setAssignAcar, setApplicationsToassignAcar, assignAcarClickAutoData, setAssignAcarClickAuto } from "../../store/reduser";
 import { url } from '../../../core/core';
+import { arrDate } from '../../../core/core';
 import dateApplicationsHours from "../../../core/dateApplicationsHours";
 import AddRowNameSelectAuto from "../AreCommon/AddRowNameSelectAuto/AddRowNameSelectAuto";
 
@@ -373,7 +374,7 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
       <div className="addApplications-wrap">
         <div className="addDisp-wrap addApplications-margin">
           <AddRowNameDate dataName={'Дата подачи*'} name={'dateOfApplication'} dataInputOnChange={dataInputOnChangeDate} defaultValue={companyCardData.dateOfApplication}/>
-          <AddRowNameTime dataName={'Время подачи*'} name={'submissionTime'} dataInputOnChange={dataInputOnChangeDate} defaultValue={companyCardData.submissionTime}/>
+          <AddRowNameSelectTime dataName={'Время подачи*'} name={'submissionTime'} dataInputOnChange={dataInputOnChange} arrData={arrDate} defaultValue={companyCardData.submissionTime}/>
           <AddRowNameInput dataName={'Адрес подачи*'} placeholder={''} name={'submissionAddress'} dataInputOnChange={dataInputOnChange} defaultValue={companyCardData.submissionAddress}/>
           <AddRowNameInput dataName={'Адрес прибытия*'} placeholder={''} name={'arrivalAddress'} dataInputOnChange={dataInputOnChange} type={'text'} defaultValue={companyCardData.arrivalAddress}/>
           <AddRowNameSelectAuto dataName={'Поездка с ожиданием*'} placeholder={'Выберите значение'} name={'rideWithAnticipation'} dataInputOnChange={dataInputOnChange} arrData={['Да', 'Нет']} defaultValue={companyCardData.rideWithAnticipation}/>
