@@ -43,7 +43,7 @@ const numberMaxWork = 1 // количество одновременных сд�
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)                          ++++++++++++
 const percentPamp = 5 // Процент пампа первой свечи при котором начинаем слежение    ++++++++++++
 const percentImpulsConst = 15 // % импульса при котором начинаем слежение            ++++++++++++
-const percentDamp = 1.5 // Процент дампа при котором начинаем слежение
+const percentDamp = 1 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
 const maxMinus = 7 // максимальный минус в %                                      ++++++++++++
 const maxMinuZaFiba = 0.003 // максимальный минус в % за фиба
@@ -55,7 +55,8 @@ const houlderCandles = 8 // Плечо сделки                             
 const openScrin = false // открывать сделки в браузере
 let go = false // запускать покупку или нет                            ++++++++++++
 const megaVolume = 350 //                                                             ++++++++++++
-let numberMinus = 1 //  0 перезаходим после минуса 2 раза                                                 
+let numberMinus = 1 //  0 перезаходим после минуса 2 раза 
+const site = '<a href="www.bybit.com/trade/usdt/'                                                
 ///////////////////////
 
 candlesOpenPamp(binance, opn, priceSymbolPamp, fs)
@@ -187,13 +188,13 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
         if(timeOpenSymbolDamp[coin][0] === 0) {
           let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - ДАМП - ' + differenceRed + ' цена - ' + closePrice + '\n'
           console.log(mess)
-          mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
-          sendTelega2(mess)
+          mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+          //sendTelega2(mess)
           //opn('https://www.binance.com/ru/futures/' + coin)
           timeOpenSymbolDamp[coin][0] = 1
           setTimeout(() => {
             timeOpenSymbolDamp[coin][0] = 0
-          }, 300000)
+          }, 3000000)
         }
       }
 
@@ -205,7 +206,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
         if(coinPampSearch[coin][0] === 0) {
           let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
           mess += '<b>Зашли по Пампу первой свечи</b>'
-          mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+          mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
           sendTelega2(mess)
           coinPampSearch[coin][0] = 1
           setTimeout(() => {
@@ -219,7 +220,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
         if(coinVolumeSearch[coin][0] === 0) {
           let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
           mess += '<b>Зашли по МЕГА Объему</b> Больше средего в ' + (Number(data[data.length - 1][5]) / meanVolume).toFixed(1) + ' раз.'
-          mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+          mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
           sendTelega2(mess)
           coinVolumeSearch[coin][0] = 1
           setTimeout(() => {
@@ -236,7 +237,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
             let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - <b>БЕЗ сделки</b> Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - counterWork -  ' + counterWork +  ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
             console.log(mess);
-            mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+            mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
             sendTelega2(mess)
 
             coinOpenPamp[coin][8] = 1
@@ -257,7 +258,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
 
             let mess = '\n' + new Date().toLocaleTimeString() + ' - ' + coin + ' - 22Памп 1 свечи + ' + differenceGreen + ' Прпоцент импульса ' + impulsPercent +  ' цена - ' + closePrice + ' - counterWork -  ' + counterWork +  ' - Время начала импульса ' + new Date(timeOpenImpuls).toLocaleTimeString() + '\n'
             console.log(mess);
-            mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+            mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
             sendTelega2(mess)
 
             coinOpenPamp[coin][7] = 1
@@ -282,7 +283,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
         
               fs.appendFileSync("symbolPamp.txt", mess)
 
-              mess += '\n' + '<a href="www.binance.com/ru/futures/' + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
+              mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
               sendTelega2(mess)
 
               futuressHoulder(coin, houlderCandles, binance).then(data => {

@@ -325,7 +325,7 @@
       $submissionTime = $values[0]['submissionTime'];
       $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
 
-      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
+      //mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
     }
 
     //Отправить пользователю на почту причину отмены заявки
@@ -333,7 +333,7 @@
       $mess = $values[0];
       $email = $values[3];
 
-      mailUser('Ваша заявка отклонена ', "<p>Ваша заявка отклонена, по причине - $mess", $email);
+      //mailUser('Ваша заявка отклонена ', "<p>Ваша заявка отклонена, по причине - $mess", $email);
     }
 
 

@@ -4,7 +4,7 @@
 
   session_start(); // запускаем сессию
 
-  define('DB_HOST', '127.0.0.1'); // константы для подключения к базе данных
+  define('DB_HOST', '127.0.0.1');
   define('DB_USER', 'root'); 
   define('DB_PASSWORD', ''); 
   define('DB_NAME', 'disp'); 
