@@ -30,7 +30,7 @@
   }
 
   .groupUnloadingData-group {
-    width: 630px;
+    width: 330px;
     
     div {
       padding-right: 175px;
@@ -46,7 +46,20 @@
   }
 
   .groupUnloadingData-auto {
-    width: 50px;
+    width: 320px;
+  }
+}
+
+.dispUnloadingData-action-svg {
+  
+  svg {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+  }
+
+  svg:hover {
+    cursor: pointer;
   }
 }
 

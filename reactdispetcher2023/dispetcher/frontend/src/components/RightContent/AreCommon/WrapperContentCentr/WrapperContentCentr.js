@@ -70,7 +70,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
 
   function getDataUnloading() {
     if(actionLk == actionLkUnloading.getGroupData) {
-      return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide}/>
+      return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
     } else if(actionLk == actionLkUnloading.getDispData) {
       return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp}/>
     } else if(actionLk == actionLkUnloading.getAutoData) {

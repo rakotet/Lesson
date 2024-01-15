@@ -15,6 +15,9 @@ export default function GroupRowNameWrapper() {
       <div className="groupRowNameWrapper-width-four">
         <WrapNameRowData name={'Кол-во машин'}/>
       </div>
+      <div className="dispRowNameWrapper-seven">
+        <WrapNameRowData name={'Действие'}/>
+      </div>
     </div>
   )
 }
