@@ -28,6 +28,8 @@ export default function AddGroup() {
   }
 
   function dataInputBack() {
+    //console.log(dataInput)
+
     // валидация полей
     let lengthDataInput = Object.keys(dataInput).length
     let lengthSubdivision = 2 * plusSubdivision.length + 2

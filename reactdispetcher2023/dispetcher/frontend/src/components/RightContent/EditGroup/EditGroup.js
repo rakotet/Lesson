@@ -1,7 +1,7 @@
 import AddRowNameInput from "../AreCommon/AddRowNameInput/AddRowNameInput"
 import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellation"
 import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, setUpdateLeftContent } from "../../store/reduser";
 import { setSelectSubdivision, setDispSelectTwo } from "../../store/reduser";
@@ -12,8 +12,24 @@ export default function EditGroup({editDisp, companyCardData}) {
   const [dataInput, setDataInput] = useState({})
   let activRight = useSelector(activRightContent)
   const dispatch = useDispatch()
+  let divisions = {}
+  let arrDivisions = []
 
-  console.log(companyCardData)
+  console.log(dataInput)
+
+  useEffect(() => {
+    divisions = {...JSON.parse(companyCardData.divisions)}
+    
+    for (let key in divisions) {
+      arrDivisions.push(divisions[key])
+    }
+
+    setPlusSubdivision(arrDivisions)
+    arrDivisions = []
+
+    setDataInput({nameGroup: companyCardData.nameGroup, nameGroupSupervisor: companyCardData.supervisor, divisions: {...divisions}})
+
+  }, [])
 
   function addSubdivision() { // массив для количества подразделений
     setPlusSubdivision(n => [...n, 1])
@@ -59,32 +75,34 @@ export default function EditGroup({editDisp, companyCardData}) {
 
         objInputs = {nameGroup, nameGroupSupervisor, divisions: obj}
 
-        fetch(url.urlBack1, {
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify({dataUpdateGroup: objInputs})
-        
-          })
-          .then(data => {
-            return data.text()
-          })
-          .then(data => {
-            if(data != 'null') {
-              alert('Такое предприятие уже существует')
-            } else {
-                // переход в group
-                dispatch(setActiveRow(activRight.group))
-                dispatch(setUpdateLeftContent(objInputs.nameGroup))
-            }
-      
-          })
-          .catch((er) => {
-            console.log(er)
-          })
+        console.log(objInputs)
 
-      } else alert('Заполните все поля!')
+        // fetch(url.urlBack1, {
+        //   method: 'POST',
+        //   header: {
+        //     'content-type': 'application/x-www-form-urlencoded',
+        //   },
+        //   body: JSON.stringify({dataUpdateGroup: objInputs})
+        
+        //   })
+        //   .then(data => {
+        //     return data.text()
+        //   })
+        //   .then(data => {
+        //     if(data != 'null') {
+        //       alert('Такое предприятие уже существует')
+        //     } else {
+        //         // переход в group
+        //         dispatch(setActiveRow(activRight.group))
+        //         dispatch(setUpdateLeftContent(objInputs.nameGroup))
+        //     }
+      
+        //   })
+        //   .catch((er) => {
+        //     console.log(er)
+        //   })
+
+      } else alert('Заполните все поля!1')
 
 
     } else alert('Заполните все поля!')
@@ -93,23 +111,23 @@ export default function EditGroup({editDisp, companyCardData}) {
 
   return(
     <div className="addGroup-wrap">
-      <AddRowNameInput dataName={'Название предприятия'} placeholder={'Введите название'} name={'nameGroup'} dataInputOnChange={dataInputOnChange}/>
-      <AddRowNameInput dataName={'Руководитель'} placeholder={'Введите руководителя'} name={'nameGroupSupervisor'} dataInputOnChange={dataInputOnChange}/>
+      <AddRowNameInput dataName={'Название предприятия'} placeholder={'Введите название'} name={'nameGroup'} dataInputOnChange={dataInputOnChange} defaultValue={dataInput.nameGroup}/>
+      <AddRowNameInput dataName={'Руководитель'} placeholder={'Введите руководителя'} name={'nameGroupSupervisor'} dataInputOnChange={dataInputOnChange} defaultValue={dataInput.nameGroupSupervisor}/>
       <h4>Подразделения</h4>
       {
         plusSubdivision.map((item, index) => {
           return (
             <div key={index}>
               <h4>{index + 1}</h4>
-              <AddRowNameInput key={index} dataName={'Название подразделения'} placeholder={'Введите название'} name={`nameDivisions-${index + 1}`} dataInputOnChange={dataInputOnChange}/>
-              <AddRowNameInput key={index + 1} dataName={'Руководитель'} placeholder={'Введите руководителя'} name={`nameDivisionsSupervisor-${index + 1}`} dataInputOnChange={dataInputOnChange}/>
+              <AddRowNameInput key={index} dataName={'Название подразделения'} placeholder={'Введите название'} name={`nameDivisions-${index + 1}`} dataInputOnChange={dataInputOnChange} defaultValue={item.nameDivisions}/>
+              <AddRowNameInput key={index + 1} dataName={'Руководитель'} placeholder={'Введите руководителя'} name={`nameDivisionsSupervisor-${index + 1}`} dataInputOnChange={dataInputOnChange} defaultValue={item.nameDivisionsSupervisor}/>
             </div>
           )
         })
       }
       <div className="addGroup-add-subdivision" onClick={addSubdivision}>Добавить подразделение</div>
       <div className="addGroup-panell-button">
-        <ButtonCreate name={'Создать'} dataInputBack={dataInputBack}/>
+        <ButtonCreate name={'Сохранить'} dataInputBack={dataInputBack}/>
         <div className="addGroup-delimiter"></div>
         <ButtonCancellation name={'Отмена'} cancellation={cancellation}/>
       </div>
