@@ -15,19 +15,27 @@ export default function EditGroup({editDisp, companyCardData}) {
   let divisions = {}
   let arrDivisions = []
 
-  console.log(dataInput)
+  console.log(companyCardData)
 
   useEffect(() => {
     divisions = {...JSON.parse(companyCardData.divisions)}
+
+    let arr = {}
+    let count = 0
     
     for (let key in divisions) {
       arrDivisions.push(divisions[key])
+
+      count++
+      arr[`nameDivisions-${count}`] = divisions[key]['nameDivisions']
+      arr[`nameDivisionsSupervisor-${count}`] = divisions[key]['nameDivisionsSupervisor']
+      
     }
 
     setPlusSubdivision(arrDivisions)
     arrDivisions = []
 
-    setDataInput({nameGroup: companyCardData.nameGroup, nameGroupSupervisor: companyCardData.supervisor, divisions: {...divisions}})
+    setDataInput({nameGroup: companyCardData.nameGroup, nameGroupSupervisor: companyCardData.supervisor, ...arr})
 
   }, [])
 
@@ -102,7 +110,7 @@ export default function EditGroup({editDisp, companyCardData}) {
         //     console.log(er)
         //   })
 
-      } else alert('Заполните все поля!1')
+      } else alert('Заполните все поля!')
 
 
     } else alert('Заполните все поля!')
