@@ -127,8 +127,22 @@
       $query->execute($values);
     }
 
+    //Обновить предприятие
+    public function dataUpdateGroup(string $table_name, array $values = []) {
+      $sql = 'UPDATE '.$this->getTableName($table_name).' SET `nameGroup` = ?, `supervisor` = ?, `divisions` = ? WHERE `id` = ?';
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
     //Удалить диспетчера
     public function trashDisp(string $table_name, string $where, array $values = []) {
+      $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+    }
+
+    //Удалить предприятие
+    public function trashGroup(string $table_name, string $where, array $values = []) {
       $sql = 'DELETE FROM '.$this->getTableName($table_name)." WHERE $where";
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
@@ -325,7 +339,7 @@
       $submissionTime = $values[0]['submissionTime'];
       $timeOfUseOfTransport = $values[0]['timeOfUseOfTransport'];
 
-      //mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
+      mailUser('Вам назначено авто ', "<p>Вам назначено авто! Водидель - $driverPhone; $marc $gossNumber; c $submissionTime на $timeOfUseOfTransport:00 ч</p>", $emailUserCreate);
     }
 
     //Отправить пользователю на почту причину отмены заявки
@@ -333,7 +347,7 @@
       $mess = $values[0];
       $email = $values[3];
 
-      //mailUser('Ваша заявка отклонена ', "<p>Ваша заявка отклонена, по причине - $mess", $email);
+      mailUser('Ваша заявка отклонена ', "<p>Ваша заявка отклонена, по причине - $mess", $email);
     }
 
 

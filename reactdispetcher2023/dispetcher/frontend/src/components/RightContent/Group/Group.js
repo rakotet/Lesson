@@ -4,11 +4,12 @@ import DownloadReport from "../AreCommon/DownloadReport/DownloadReport"
 import GroupRowNameWrapper from "../AreCommon/GroupRowNameWrapper/GroupRowNameWrapper"
 import WrapperContentCentr from '../AreCommon/WrapperContentCentr/WrapperContentCentr'
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, actionLkData, nameRowData, setSelectSubdivision } from "../../store/reduser";
+import { activRightContent, setActiveRow, actionLkData, nameRowData, setSelectSubdivision, setUpdateLeftContent } from "../../store/reduser";
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
 import { useState, useEffect } from "react"
 import CompanyCard from "./CompanyCard/CompanyCard"
 import EditGroup from "../EditGroup/EditGroup"
+import { url } from "../../../core/core"
 
 export default function Group({setTabName}) {
   const [showMoreActiv, setShowMoreActiv] = useState(10)

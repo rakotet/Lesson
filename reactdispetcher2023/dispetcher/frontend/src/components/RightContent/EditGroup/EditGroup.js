@@ -3,19 +3,19 @@ import ButtonCancellation from "../AreCommon/ButtonCancellation/ButtonCancellati
 import ButtonCreate from "../AreCommon/ButtonCreate/ButtonCreate"
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux';
-import { activRightContent, setActiveRow, setUpdateLeftContent } from "../../store/reduser";
+import { activRightContent, setActiveRow, setUpdateLeftContent, setWrapperContentCentrUpdate } from "../../store/reduser";
 import { setSelectSubdivision, setDispSelectTwo } from "../../store/reduser";
 import { url } from '../../../core/core';
 
 export default function EditGroup({editDisp, companyCardData}) {
   const [plusSubdivision, setPlusSubdivision] = useState([1])
   const [dataInput, setDataInput] = useState({})
+  const [numberAuto, setNumberAuto] = useState({})
   let activRight = useSelector(activRightContent)
   const dispatch = useDispatch()
   let divisions = {}
   let arrDivisions = []
-
-  console.log(companyCardData)
+  let objDivisionAuto = {}
 
   useEffect(() => {
     divisions = {...JSON.parse(companyCardData.divisions)}
@@ -24,6 +24,11 @@ export default function EditGroup({editDisp, companyCardData}) {
     let count = 0
     
     for (let key in divisions) {
+      if(divisions[key]['autoNumber'] && divisions[key]['autoNumber'] != 0) {
+        let obj = {autoNumber: divisions[key]['autoNumber']}
+        objDivisionAuto[key] = {...obj}
+      }
+
       arrDivisions.push(divisions[key])
 
       count++
@@ -32,6 +37,7 @@ export default function EditGroup({editDisp, companyCardData}) {
       
     }
 
+    setNumberAuto({...objDivisionAuto})
     setPlusSubdivision(arrDivisions)
     arrDivisions = []
 
@@ -46,6 +52,7 @@ export default function EditGroup({editDisp, companyCardData}) {
   function cancellation() { // переход в group
     editDisp()
     dispatch(setSelectSubdivision([]))
+    dispatch(setWrapperContentCentrUpdate(Math.random()))
   }
 
   function dataInputOnChange(event) { // данные из всех input
@@ -70,7 +77,7 @@ export default function EditGroup({editDisp, companyCardData}) {
         // отправда данных на сервер
         let objInputs = {...dataInput}
         const {nameGroup, nameGroupSupervisor, ...rest} = objInputs
-        const obj = {}
+        let obj = {}
 
         for(let i = 0; i < Object.keys(rest).length; i++) { // разделение на объекты подразделений
           for(let key in rest) {
@@ -81,34 +88,39 @@ export default function EditGroup({editDisp, companyCardData}) {
           }
         }
 
-        objInputs = {nameGroup, nameGroupSupervisor, divisions: obj}
+        for (let key in obj) {
+          if(numberAuto[key]) {
+            obj[key]['autoNumber'] = numberAuto[key]['autoNumber']
+          }
+        }
 
-        console.log(objInputs)
+        objInputs = {id: companyCardData.id, nameGroup, nameGroupSupervisor, divisions: obj}
 
-        // fetch(url.urlBack1, {
-        //   method: 'POST',
-        //   header: {
-        //     'content-type': 'application/x-www-form-urlencoded',
-        //   },
-        //   body: JSON.stringify({dataUpdateGroup: objInputs})
+        fetch(url.urlBack1, {
+          method: 'POST',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify({dataUpdateGroup: objInputs})
         
-        //   })
-        //   .then(data => {
-        //     return data.text()
-        //   })
-        //   .then(data => {
-        //     if(data != 'null') {
-        //       alert('Такое предприятие уже существует')
-        //     } else {
-        //         // переход в group
-        //         dispatch(setActiveRow(activRight.group))
-        //         dispatch(setUpdateLeftContent(objInputs.nameGroup))
-        //     }
+          })
+          .then(data => {
+            return data.text()
+          })
+          .then(data => {
+            if(data != 'null') {
+              alert('Такое предприятие уже существует')
+            } else {
+                // переход в group
+                dispatch(setActiveRow(activRight.group))
+                dispatch(setUpdateLeftContent(objInputs.nameGroup))
+                cancellation()
+            }
       
-        //   })
-        //   .catch((er) => {
-        //     console.log(er)
-        //   })
+          })
+          .catch((er) => {
+            console.log(er)
+          })
 
       } else alert('Заполните все поля!')
 

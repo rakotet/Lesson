@@ -25,6 +25,10 @@
     echo json_encode($db->addGroup('group', $dataFront['dataInputGroup']['nameGroup'], $dataFront['dataInputGroup']['nameGroupSupervisor'], json_encode($dataFront['dataInputGroup']['divisions'], JSON_UNESCAPED_UNICODE)));
   }
 
+  if(isset($dataFront['dataUpdateGroup'])) {
+    echo json_encode($db->dataUpdateGroup('group', [$dataFront['dataUpdateGroup']['nameGroup'], $dataFront['dataUpdateGroup']['nameGroupSupervisor'], json_encode($dataFront['dataUpdateGroup']['divisions'], JSON_UNESCAPED_UNICODE), $dataFront['dataUpdateGroup']['id']]));
+  }
+
   if(isset($dataFront['dataInputDisp'])) {
     if($dataFront['dataInputDisp']['userType'] == 'Диспетчер') {
       $dataFront['dataInputDisp']['userType'] = '2';
@@ -56,6 +60,10 @@
 
   if(isset($dataFront['trashDisp'])) {
     echo json_encode($db->trashDisp('users', '`id` = ?', [$dataFront['trashDisp']]));
+  } 
+
+  if(isset($dataFront['trashGroup'])) {
+    echo json_encode($db->trashGroup('group', '`id` = ?', [$dataFront['trashGroup']]));
   } 
 
   if(isset($dataFront['getAutoData'])) {
