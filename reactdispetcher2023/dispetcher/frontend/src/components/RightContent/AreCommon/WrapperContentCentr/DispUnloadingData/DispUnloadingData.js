@@ -2,10 +2,30 @@ import edit from './images/Edit.png'
 import trash from './images/Trash.png'
 import { useEffect, useState } from 'react'
 
-export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp}) {
+export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort}) {
+  
+  if(sort.dispGroup && sort.dispGroup != 'Выбрать предприятие') {
+    data = data.map((item, index) => {
+      if(item.userGroup == sort.dispGroup) return item
+    })
+
+    data = data. filter(Boolean)
+  }
+
+  if(sort.searchData && sort.searchData != '') {
+    data = data.map((item, index) => {
+      for(let key in item) {
+        if(key == 'userName' || key == 'jobTitle' || key == 'telephone' || key == 'userGroup') {
+          if(((item[key]).toLowerCase()).includes((sort.searchData).toLowerCase())) return item
+        }
+      }
+    })
+
+    data = data. filter(Boolean)
+  }
 
   useEffect(() => {
- 
+    
   }, [])
 
   return (

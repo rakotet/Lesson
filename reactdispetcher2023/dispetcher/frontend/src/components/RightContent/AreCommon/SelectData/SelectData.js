@@ -14,7 +14,6 @@ export default function SelectData({namePlaceholder, nameArr = [], name = '', ma
     setRotation(!rotation)
   }
 
-
   return(
     <div className={margin ? 'selectData-wrapper' : 'selectData-wrapper selectData-wrapper-margin'} >
       <img src={imgDown} alt="" style={rotation ? {transform: "none"} : {transform: "rotate(180deg)"}} onClick={handleClick}/>

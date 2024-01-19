@@ -42,6 +42,10 @@
     echo json_encode($db->getGroup('group'));
   } 
 
+  if(isset($dataFront['getMarcAuto'])) {
+    echo json_encode($db->getMarcAuto('auto'));
+  } 
+
   if(isset($dataFront['getDispData'])) {
     echo json_encode($db->getDisp('users', '`type` IN (?, ?)', [2, 3]));
   } 

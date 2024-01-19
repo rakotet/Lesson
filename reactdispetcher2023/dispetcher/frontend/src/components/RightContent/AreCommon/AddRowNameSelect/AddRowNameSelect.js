@@ -3,7 +3,7 @@ import { useState } from "react"
 
 export default function AddRowNameSelect({dataName, placeholder, name, dataInputOnChange, arrData}) {
   const [dataGroup, setDataGroup] = useState(arrData)
-
+  
   return(
     <div className="addRowNameInput-wrap">
       <div className="addRowNameInput-name">{dataName}</div>

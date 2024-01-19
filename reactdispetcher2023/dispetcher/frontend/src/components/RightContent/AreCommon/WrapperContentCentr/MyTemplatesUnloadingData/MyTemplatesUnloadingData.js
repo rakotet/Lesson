@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData}) {
+export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
   
@@ -11,6 +11,18 @@ export default function MyApplicationsUnloadingData({data, count, dispCardOpenHi
     setUploadingData(checkboxData)
     
   }, [checkboxData])
+
+  if(sort.searchData && sort.searchData != '') {
+    data = data.map((item, index) => {
+      for(let key in item) {
+        if(key == 'namePassengers' || key == 'passengersPhone' || key == 'submissionAddress' || key == 'arrivalAddress' || key == 'purposeOfTheTrip' || key == 'comment') {
+          if(((item[key] ? item[key] : '').toLowerCase()).includes((sort.searchData).toLowerCase())) return item
+        }
+      }
+    })
+
+    data = data. filter(Boolean)
+  }
 
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
   let date = new Date()

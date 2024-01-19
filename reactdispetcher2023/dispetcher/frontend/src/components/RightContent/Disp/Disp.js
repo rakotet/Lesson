@@ -14,7 +14,8 @@ import { url } from "../../../core/core"
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Disp({setTabName}) {
-  const [dataInput, setDataInput] = useState({})
+  const [dataInput, setDataInput] = useState('')
+  const [groupArr, setGroup] = useState([])
   const [backDisp, setBackDisp] = useState(1)
   const [dispCardOpen, setDispCardOpen] = useState(true)
   const [dispCardEdit, setDispCardEdit] = useState(true)
@@ -26,8 +27,39 @@ export default function Disp({setTabName}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-  
+    backDataGroup()
   }, [])
+
+  function divideArr(arrData) {
+    let group = []
+    for(let i = 0; i < arrData.length; i++) {
+      group.push(arrData[i].nameGroup)
+    }
+    group = [...new Set(group)]
+    group.unshift('Выбрать предприятие')
+    setGroup(group)
+  }
+
+  function backDataGroup() {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({'getGroupData': true})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        data = JSON.parse(data)
+        divideArr(data)
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
 
   function addDispFunc() {
     dispatch(setActiveRow(activRight.addDisp))
@@ -100,9 +132,8 @@ export default function Disp({setTabName}) {
           <div className="disp-row">
             <div className="disp-row-menu">
               <ButtonAdd addFunc={addDispFunc}/>
-              <SearchData />
-              <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={['test1','test2','test3','test4','test5']} name={'dispGroup'} dataInputOnChange={dataInputOnChange}/>
-              {/* <SelectData namePlaceholder={'Выбрать категорию'} nameArr={['test1','test2','test3']} name={'dispCategory'} dataInputOnChange={dataInputOnChange}/> */}
+              <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
+              <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={groupArr} name={'dispGroup'} dataInputOnChange={dataInputOnChange}/>
               <DownloadReport />
             </div>
             <div>
@@ -111,7 +142,7 @@ export default function Disp({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <DispRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

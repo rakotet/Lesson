@@ -18,7 +18,6 @@ export default function AddDisp() {
   let group = []
   let divisions = []
 
-
   function divideArr(arrData) {
     for(let i = 0; i < arrData.length; i++) {
       group.push(arrData[i].nameGroup)

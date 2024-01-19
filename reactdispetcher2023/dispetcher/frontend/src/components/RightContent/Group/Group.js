@@ -99,13 +99,13 @@ export default function Group({setTabName}) {
           <div className="group-row">
             <div className="group-row-menu">
               <ButtonAdd addFunc={addGroupFunc}/>
-              <SearchData />
+              <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
               <DownloadReport />
             </div>
           </div>
           <div className="group-row-name-wrapper">
             <GroupRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={editDisp} trashDisp={trashDisp}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={editDisp} trashDisp={trashDisp} sort={dataInput}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

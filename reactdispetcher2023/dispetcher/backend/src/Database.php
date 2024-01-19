@@ -90,6 +90,16 @@
       return [];
     }
 
+    //Вернуть все машины
+    public function getMarcAuto(string $table_name, array $values = []) : array{
+      $sql = 'SELECT * FROM '.$this->getTableName($table_name);
+      $query = $this->pdo->prepare($sql);
+      $query->execute($values);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      if($result) return $result;
+      return [];
+    }
+
     //Вернуть всеx диспетчеров
     public function getDisp(string $table_name, string $where, array $values = []) : array{
       $sql = 'SELECT * FROM '.$this->getTableName($table_name)." WHERE $where";

@@ -223,7 +223,7 @@ export default function MyTemplates({setTabName}) {
                 <ButtonCustom addFunc={trashTemplates} buttonImg={'trash'}/>
               </div>
               <Ellipsis handleClick={clickEllipsis}/>
-              {ellipsisOpen ? <SearchData /> : ''}
+              {ellipsisOpen ? <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/> : ''}
               <Datepicker placeHolder={'Период создания'}/>
             </div>
             <div>
@@ -236,7 +236,7 @@ export default function MyTemplates({setTabName}) {
             trashReload 
             ?
              ((dispCardEdit && cancelApplicationsOpen == false) ? 
-             <WrapperContentCentr label="Записей не найдено. Добавьте новый шаблон" actionLk={actionLk.getMyTemplates} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit}/>
+             <WrapperContentCentr label="Записей не найдено. Добавьте новый шаблон" actionLk={actionLk.getMyTemplates} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput}/>
              : '') 
             : 
              ''

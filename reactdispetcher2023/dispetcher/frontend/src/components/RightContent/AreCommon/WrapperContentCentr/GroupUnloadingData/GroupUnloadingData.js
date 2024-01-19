@@ -1,5 +1,16 @@
-export default function GroupUnloadingData({data, count, companyCardOpenHide, setDispCardEdit, trashDisp}) {
-  //console.log(data)
+export default function GroupUnloadingData({data, count, companyCardOpenHide, setDispCardEdit, trashDisp, sort}) {
+  
+  if(sort.searchData && sort.searchData != '') {
+    data = data.map((item, index) => {
+      for(let key in item) {
+        if(key == 'supervisor' || key == 'nameGroup') {
+          if(((item[key]).toLowerCase()).includes((sort.searchData).toLowerCase())) return item
+        }
+      }
+    })
+
+    data = data. filter(Boolean)
+  }
 
   return (
     <>

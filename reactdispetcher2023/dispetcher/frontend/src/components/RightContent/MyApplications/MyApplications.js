@@ -221,8 +221,8 @@ export default function MyApplications({setTabName}) {
                 <ButtonCustom addFunc={downLoadWord} buttonImg={'downLoad'}/>
               </div>
               <Ellipsis handleClick={clickEllipsis}/>
-              {ellipsisOpen ? <SearchData /> : ''}
-              <SelectData namePlaceholder={'Выбрать статус'} nameArr={['test1','test2','test3','test4','test5']} name={'statusApplications'} dataInputOnChange={dataInputOnChange}/>
+              {ellipsisOpen ? <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/> : ''}
+              <SelectData namePlaceholder={'Выбрать статус'} nameArr={['Выбрать статус', 'Новая', 'Отклонена', 'Назначена']} name={'statusApplications'} dataInputOnChange={dataInputOnChange}/>
               <Datepicker placeHolder={'Период создания'}/>
               <div className="applications-margin">
                <Datepicker placeHolder={'Период подачи'}/>
@@ -237,7 +237,7 @@ export default function MyApplications({setTabName}) {
             <MyApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
             {
             (dispCardEdit && cancelApplicationsOpen == false) ?
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} />
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput}/>
             : ''
             }
           </div>

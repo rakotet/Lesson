@@ -17,6 +17,7 @@ import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Auto({setTabName}) {
   const [dataInput, setDataInput] = useState({})
+  const [groupArr, setGroup] = useState([])
   const [dispCardOpen, setDispCardOpen] = useState(true)
   const [dispCardEdit, setDispCardEdit] = useState(true)
   const [showMoreActiv, setShowMoreActiv] = useState(10)
@@ -30,7 +31,39 @@ export default function Auto({setTabName}) {
 
   useEffect(() => {
     dispatch(setUpdateLeftContent(Math.random()))
+    backDataGroup()
   }, [])
+
+  function divideArr(arrData) {
+    let group = []
+    for(let i = 0; i < arrData.length; i++) {
+      group.push(arrData[i].marc)
+    }
+    group = [...new Set(group)]
+    group.unshift('Выбрать марку')
+    setGroup(group)
+  }
+
+  function backDataGroup() {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({'getMarcAuto': true})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        data = JSON.parse(data)
+        divideArr(data)
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
 
   function addAutoFunc() {
     dispatch(setActiveRow(activRight.addAuto))
@@ -110,8 +143,8 @@ export default function Auto({setTabName}) {
           <div className="disp-row">
             <div className="disp-row-menu">
               <ButtonAdd addFunc={addAutoFunc}/>
-              <SearchData />
-              <SelectData namePlaceholder={'Выбрать марку'} nameArr={['test1','test2','test3','test4','test5']} name={'autoMarc'} dataInputOnChange={dataInputOnChange}/>
+              <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
+              <SelectData namePlaceholder={'Выбрать марку'} nameArr={groupArr} name={'autoMarc'} dataInputOnChange={dataInputOnChange}/>
               <Datepicker placeHolder={'Свободные авто по дате'} />
               <TimePicker />
               <DownloadReport />
@@ -122,7 +155,7 @@ export default function Auto({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <AutoRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

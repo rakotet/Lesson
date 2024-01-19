@@ -3,9 +3,29 @@ import trash from './images/Trash.png'
 import freeTimeAuto from '../../../../../core/freeTimeAuto'
 import { useEffect, useState } from 'react'
 
-export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp}) {
+export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort}) {
   let arrDateNow = [new Date().toLocaleDateString(), '00:00', '00:00']
   let arrDateNext = [new Date(new Date().getTime() + 86400000).toLocaleDateString(), '00:00', '00:00']
+
+  if(sort.autoMarc && sort.autoMarc != 'Выбрать марку') {
+    data = data.map((item, index) => {
+      if(item.marc == sort.autoMarc) return item
+    })
+
+    data = data. filter(Boolean)
+  }
+
+  if(sort.searchData && sort.searchData != '') {
+    data = data.map((item, index) => {
+      for(let key in item) {
+        if(key == 'marc' || key == 'gossNumber' || key == 'driver' || key == 'telephone' || key == 'yearOfIssue' || key == 'view' || key == 'status') {
+          if(((item[key]).toLowerCase()).includes((sort.searchData).toLowerCase())) return item
+        }
+      }
+    })
+
+    data = data. filter(Boolean)
+  }
 
   useEffect(() => {
    

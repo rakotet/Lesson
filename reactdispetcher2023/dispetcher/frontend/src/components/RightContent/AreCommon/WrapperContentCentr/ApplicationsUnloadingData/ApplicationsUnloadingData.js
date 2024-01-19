@@ -3,19 +3,34 @@ import StatusApplications from "./StatusApplications/StatusApplications";
 import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData}) {
+export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
   
   useEffect(() => {
-    // console.log('ApplicationsUnloadingData')
     setUploadingData(checkboxData)
     
   }, [checkboxData])
 
-  // useEffect(() => {
-  //   setUploadingData(cancelApplications)
-  // }, [cancelApplications])
+  if(sort.statusApplications && sort.statusApplications != 'Выбрать статус') {
+    data = data.map((item, index) => {
+      if(item.status == sort.statusApplications) return item
+    })
+
+    data = data. filter(Boolean)
+  }
+
+  if(sort.searchData && sort.searchData != '') {
+    data = data.map((item, index) => {
+      for(let key in item) {
+        if(key == 'driverPhone' || key == 'marc' || key == 'gossNumber' || key == 'applicationInitiator' || key == 'initiatorPhone' || key == 'namePassengers' || key == 'passengersPhone' || key == 'submissionAddress' || key == 'arrivalAddress' || key == 'purposeOfTheTrip' || key == 'comment') {
+          if(((item[key] ? item[key] : '').toLowerCase()).includes((sort.searchData).toLowerCase())) return item
+        }
+      }
+    })
+
+    data = data. filter(Boolean)
+  }
 
 
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
