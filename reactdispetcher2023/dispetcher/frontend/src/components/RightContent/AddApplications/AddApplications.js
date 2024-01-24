@@ -31,6 +31,11 @@ export default function AddApplications() {
     let hours = String(dateFull.getHours())
     let minutes = String(dateFull.getMinutes())
   
+    // if(Number(month) == 0) {
+    //   month++
+    //   month = String(month)
+    // }
+
     if(day.length < 2) day = '0' + day
     if(month.length < 2) month = '0' + month
     if(hours.length < 2) hours = '0' + hours

@@ -27,7 +27,9 @@
     outline:none;
   }
 
-  input::-webkit-calendar-picker-indicator { cursor: pointer; }
+  input::-webkit-calendar-picker-indicator { 
+    cursor: pointer; 
+  }
 
   .datepicker-calendar {
     display: flex;

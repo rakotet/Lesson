@@ -12,7 +12,7 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
       if(item.marc == sort.autoMarc) return item
     })
 
-    data = data. filter(Boolean)
+    data = data.filter(Boolean)
   }
 
   if(sort.searchData && sort.searchData != '') {
@@ -24,7 +24,66 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
       }
     })
 
-    data = data. filter(Boolean)
+    data = data.filter(Boolean)
+  }
+
+  if(sort.calendarAutoDate && sort.calendarAutoDate != '') {
+    let arrDate = []
+    let todayMilli = Number(new Date().getTime())
+    let todayLastMilli = Number(new Date(sort.calendarAutoDate).getTime())
+
+    if(todayMilli <= Number(new Date(sort.calendarAutoDateOne).getTime())) {
+      todayMilli = Number(new Date(sort.calendarAutoDateOne).getTime())
+    }
+
+    if(/*todayMilli <= todayLastMilli*/ true) {
+      for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+        arrDate.push(new Date(i).toLocaleDateString())
+      }
+
+      if(!(arrDate == [])) {
+        arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+      }
+
+      //console.log(arrDate)
+
+      function notToDay(key, value) {
+        for(let i = 0; i < arrDate.length; i++) {
+          if((key == arrDate[i]) && (Object.keys(value).length)) {
+            return false
+          }
+        }
+
+        return true
+      }
+
+      
+
+      data = data.map((item, index) => {
+        let freeTime = JSON.parse(item.freeTime)
+        
+        if(freeTime) {
+          let lengthObj = Object.keys(freeTime).length
+          let count = 0
+
+          for(let key in freeTime) {
+            if(freeTime[key] && notToDay(key, freeTime[key])) {
+              count++
+            }
+          }
+
+          if(count == lengthObj) {
+            return item
+          }
+
+        } else {
+          return item
+        }
+      })
+    }
+
+    data = data.filter(Boolean)
+    
   }
 
   useEffect(() => {

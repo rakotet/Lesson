@@ -145,7 +145,7 @@ export default function Auto({setTabName}) {
               <ButtonAdd addFunc={addAutoFunc}/>
               <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
               <SelectData namePlaceholder={'Выбрать марку'} nameArr={groupArr} name={'autoMarc'} dataInputOnChange={dataInputOnChange}/>
-              <Datepicker placeHolder={'Свободные авто по дате'} />
+              <Datepicker placeHolder={'Свободные авто по дате'} name={'calendarAutoDate'} dataInputOnChange={dataInputOnChange}/>
               <TimePicker />
               <DownloadReport />
             </div>
