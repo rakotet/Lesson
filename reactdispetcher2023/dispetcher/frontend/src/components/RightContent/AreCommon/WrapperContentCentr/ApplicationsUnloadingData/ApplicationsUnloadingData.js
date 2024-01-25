@@ -34,12 +34,8 @@ export default function ApplicationsUnloadingData({data, count, dispCardOpenHide
 
   if(sort.calendarAppCreate && sort.calendarAppCreate != '') {
     let arrDate = []
-    let todayMilli = Number(new Date().getTime())
+    let todayMilli = Number(new Date(sort.calendarAppCreateOne).getTime())
     let todayLastMilli = Number(new Date(sort.calendarAppCreate).getTime())
-
-    if(todayMilli <= Number(new Date(sort.calendarAppCreateOne).getTime())) {
-      todayMilli = Number(new Date(sort.calendarAppCreateOne).getTime())
-    }
 
     if(/*todayMilli <= todayLastMilli*/ true) {
       for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
@@ -50,8 +46,6 @@ export default function ApplicationsUnloadingData({data, count, dispCardOpenHide
         arrDate.push(new Date(todayLastMilli).toLocaleDateString())
       }
     }
-
-    // console.log(arrDate)
 
     data = data.map((item, index) => {
       for(let i = 0; i < arrDate.length; i++) {
@@ -82,9 +76,11 @@ export default function ApplicationsUnloadingData({data, count, dispCardOpenHide
 
     }
 
-    // data = data.map((item, index) => {
-    //   if(item.status == sort.statusApplications) return item
-    // })
+    data = data.map((item, index) => {
+      for(let i = 0; i < arrDate.length; i++) {
+        if((item.dateOfApplication).includes(arrDate[i])) return item
+      }
+    })
 
     data = data. filter(Boolean)
   }

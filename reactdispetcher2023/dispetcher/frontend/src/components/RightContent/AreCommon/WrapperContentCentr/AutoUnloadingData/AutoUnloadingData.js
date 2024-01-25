@@ -7,6 +7,8 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
   let arrDateNow = [new Date().toLocaleDateString(), '00:00', '00:00']
   let arrDateNext = [new Date(new Date().getTime() + 86400000).toLocaleDateString(), '00:00', '00:00']
 
+  //console.log(sort)
+
   if(sort.autoMarc && sort.autoMarc != 'Выбрать марку') {
     data = data.map((item, index) => {
       if(item.marc == sort.autoMarc) return item
@@ -57,8 +59,6 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
         return true
       }
 
-      
-
       data = data.map((item, index) => {
         let freeTime = JSON.parse(item.freeTime)
         
@@ -83,7 +83,40 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
     }
 
     data = data.filter(Boolean)
-    
+  }
+
+  if(sort.calendarAutoTime && sort.calendarAutoTime != '') {
+    let arrDate = []
+
+    if(sort.calendarAutoDate) {
+      let todayMilli = Number(new Date().getTime())
+      let todayLastMilli = Number(new Date(sort.calendarAutoDate).getTime())
+  
+      if(todayMilli <= Number(new Date(sort.calendarAutoDateOne).getTime())) {
+        todayMilli = Number(new Date(sort.calendarAutoDateOne).getTime())
+      }
+  
+      if(/*todayMilli <= todayLastMilli*/ true) {
+        for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+          arrDate.push(new Date(i).toLocaleDateString())
+        }
+  
+        if(!(arrDate == [])) {
+          arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+        }
+      }
+
+    } else {
+      arrDate.push(new Date().toLocaleDateString())
+    }
+
+    console.log(arrDate)
+
+    // data = data.map((item, index) => {
+    //   if(item.marc == sort.autoMarc) return item
+    // })
+
+    data = data.filter(Boolean)
   }
 
   useEffect(() => {

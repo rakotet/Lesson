@@ -31,17 +31,15 @@ export default function AddApplications() {
     let hours = String(dateFull.getHours())
     let minutes = String(dateFull.getMinutes())
   
-    // if(Number(month) == 0) {
-    //   month++
-    //   month = String(month)
-    // }
+    month = String(Number(month) + 1)
 
     if(day.length < 2) day = '0' + day
     if(month.length < 2) month = '0' + month
     if(hours.length < 2) hours = '0' + hours
     if(minutes.length < 2) minutes = '0' + minutes
 
-    let date = `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
+    //let date = `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
+    let date = `${new Date().toLocaleDateString()} ${hours}:${minutes}`
 
     setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id, dateOfCreation: date, emailUserCreate: userData.email}))
   }, [userData])

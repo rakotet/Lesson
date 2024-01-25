@@ -24,6 +24,30 @@ export default function MyApplicationsUnloadingData({data, count, dispCardOpenHi
     data = data. filter(Boolean)
   }
 
+  if(sort.calendarAppCreate && sort.calendarAppCreate != '') {
+    let arrDate = []
+    let todayMilli = Number(new Date(sort.calendarAppCreateOne).getTime())
+    let todayLastMilli = Number(new Date(sort.calendarAppCreate).getTime())
+
+    if(/*todayMilli <= todayLastMilli*/ true) {
+      for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+        arrDate.push(new Date(i).toLocaleDateString())
+      }
+
+      if(!(arrDate == [])) {
+        arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+      }
+    }
+
+    data = data.map((item, index) => {
+      for(let i = 0; i < arrDate.length; i++) {
+        if((item.dateOfCreation).includes(arrDate[i])) return item
+      }
+    })
+
+    data = data. filter(Boolean)
+  }
+
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
   let date = new Date()
   date.setFullYear(number[6] + number[7] + number[8] + number[9]);

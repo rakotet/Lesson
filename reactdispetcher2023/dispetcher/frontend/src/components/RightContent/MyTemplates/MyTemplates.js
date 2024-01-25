@@ -224,7 +224,7 @@ export default function MyTemplates({setTabName}) {
               </div>
               <Ellipsis handleClick={clickEllipsis}/>
               {ellipsisOpen ? <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/> : ''}
-              <Datepicker placeHolder={'Период создания'}/>
+              <Datepicker placeHolder={'Период создания'} name={'calendarAppCreate'} dataInputOnChange={dataInputOnChange}/>
             </div>
             <div>
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>

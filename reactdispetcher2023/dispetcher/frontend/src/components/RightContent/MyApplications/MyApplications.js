@@ -223,9 +223,9 @@ export default function MyApplications({setTabName}) {
               <Ellipsis handleClick={clickEllipsis}/>
               {ellipsisOpen ? <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/> : ''}
               <SelectData namePlaceholder={'Выбрать статус'} nameArr={['Выбрать статус', 'Новая', 'Отклонена', 'Назначена']} name={'statusApplications'} dataInputOnChange={dataInputOnChange}/>
-              <Datepicker placeHolder={'Период создания'}/>
+              <Datepicker placeHolder={'Период создания'} name={'calendarAppCreate'} dataInputOnChange={dataInputOnChange}/>
               <div className="applications-margin">
-               <Datepicker placeHolder={'Период подачи'}/>
+               <Datepicker placeHolder={'Период подачи'} name={'calendarAppInnings'} dataInputOnChange={dataInputOnChange}/>
               </div>
               <DownloadReport />
             </div>

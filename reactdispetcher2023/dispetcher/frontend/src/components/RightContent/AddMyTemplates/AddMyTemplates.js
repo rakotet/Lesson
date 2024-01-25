@@ -35,7 +35,7 @@ export default function AddMyTemplates() {
     if(hours.length < 2) hours = '0' + hours
     if(minutes.length < 2) minutes = '0' + minutes
 
-    let date = `${day}.${month}.${dateFull.getFullYear()} ${hours}:${minutes}`
+    let date = `${new Date().toLocaleDateString()} ${hours}:${minutes}`
 
     setDataInput(n => ({...n, timeOfUseOfTransport: 1, numberOfPassengers: 0, applicationInitiator: userData.userName, jobTitle: userData.jobTitle, subdivision: userData.userSubdivision, initiatorPhone: userData.telephone, idDisp: userData.id, dateOfCreation: date, emailUserCreate: userData.email}))
 

@@ -6,11 +6,10 @@ export default function Datepicker({placeHolder, width = false, name = '', dataI
   const [dateOne, setDateOne] = useState('')
   const [dateTwo, setDateTwo] = useState('')
   const [oneTwo, setOneTwo] = useState(true)
-  const ref = useRef()
-  const [one, setOne] = useState('')
-  const [two, setTwo] = useState('')
+  const refOne = useRef()
+  //const refTwo = useRef()
 
-  function inputChange(event) {
+  function inputChangeOne(event) {
     let value = event.target.value
     let date = ''
 
@@ -19,41 +18,38 @@ export default function Datepicker({placeHolder, width = false, name = '', dataI
 
       if(oneTwo) {
         setDateOne(date)
-        setOne(value)
         setOneTwo(!oneTwo)
-        ref.current.value = ''
+        refOne.current.value = ''
         dataInputOnChange(event, [(name += 'One'), value])
   
         setTimeout(() => {
-          ref.current.showPicker()
+          refOne.current.showPicker()
         }, 100)
   
       } else {
         setDateTwo(date)
-        setTwo(value)
         setOneTwo(!oneTwo)
-        ref.current.value = ''
+        refOne.current.value = ''
         dataInputOnChange(event, [name, value])
       }
 
     } else {
-      setOne('')
-      setTwo('')
       setDateOne('')
       setDateTwo('')
       setOneTwo(true)
       dataInputOnChange(event, [name, ''])
+      dataInputOnChange(event, [(name += 'One'), ''])
     }
   }
 
   function cleanInput() {
-    ref.current.value = ''
-    setOne('')
-    setTwo('')
+    refOne.current.value = ''
+    //refTwo.current.value = ''
     setDateOne('')
     setDateTwo('')
     setOneTwo(true)
     dataInputOnChange(event, [name, ''])
+    dataInputOnChange(event, [(name += 'One'), ''])
   }
 
   return(
@@ -68,7 +64,8 @@ export default function Datepicker({placeHolder, width = false, name = '', dataI
         <div className={dateTwo == '' ? 'datepicker-hide' : 'datepicker-clean'}>
           <img src={clean} alt="" onClick={cleanInput} />
         </div>
-        <input type="date" name={name} onChange={inputChange} ref={ref} />
+        <input type="date" name={name} onChange={inputChangeOne} ref={refOne}/>
+        {/* <input className="datepicker-data-hide" type="date" name={name} onChange={inputChangeTwo} ref={refTwo}/> */}
       </div>
     </>
     
