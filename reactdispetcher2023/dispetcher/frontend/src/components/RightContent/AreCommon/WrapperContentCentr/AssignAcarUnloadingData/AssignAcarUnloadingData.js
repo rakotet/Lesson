@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { updateLeftContent, setUpdateLeftContent } from "../../../../../components/store/reduser";
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssign}) {
+export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssign, sort}) {
   const [dataArr, setDataArr] = useState([])
   const dispatch = useDispatch()
-  let update= useSelector(updateLeftContent)
+  let update = useSelector(updateLeftContent)
 
   function numberTime(arr, i, value) {
     let count = 0
@@ -18,9 +18,6 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
   }
 
   useEffect(() => {
-    // console.log(arrAssign)
-    // console.log(data)
-    
     let suitableAuto = []
   
     suitableAuto = data.map(itemData => {
@@ -125,10 +122,87 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
       }
     })
 
+    if(sort.autoMarc && sort.autoMarc != 'Выбрать марку') {
+      suitableAuto = suitableAuto.map((item, index) => {
+        if(item.marc == sort.autoMarc) return item
+      })
+  
+      suitableAuto = suitableAuto.filter(Boolean)
+    }
+
+    if(sort.searchData && sort.searchData != '') {
+      suitableAuto = suitableAuto.map((item, index) => {
+        for(let key in item) {
+          if(key == 'marc' || key == 'gossNumber' || key == 'driver' || key == 'telephone' || key == 'yearOfIssue' || key == 'view' || key == 'status') {
+            if(((item[key]).toLowerCase()).includes((sort.searchData).toLowerCase())) return item
+          }
+        }
+      })
+  
+      suitableAuto = suitableAuto.filter(Boolean)
+    }
+
+    if(sort.calendarAutoDate && sort.calendarAutoDate != '') {
+      let arrDate = []
+      let todayMilli = Number(new Date().getTime())
+      let todayLastMilli = Number(new Date(sort.calendarAutoDate).getTime())
+  
+      if(todayMilli <= Number(new Date(sort.calendarAutoDateOne).getTime())) {
+        todayMilli = Number(new Date(sort.calendarAutoDateOne).getTime())
+      }
+  
+      if(/*todayMilli <= todayLastMilli*/ true) {
+        for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+          arrDate.push(new Date(i).toLocaleDateString())
+        }
+  
+        if(!(arrDate == [])) {
+          arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+        }
+  
+        //console.log(arrDate)
+  
+        function notToDay(key, value) {
+          for(let i = 0; i < arrDate.length; i++) {
+            if((key == arrDate[i]) && (Object.keys(value).length)) {
+              return false
+            }
+          }
+  
+          return true
+        }
+  
+        suitableAuto = suitableAuto.map((item, index) => {
+          let freeTime = JSON.parse(item.freeTime)
+          
+          if(freeTime) {
+            let lengthObj = Object.keys(freeTime).length
+            let count = 0
+  
+            for(let key in freeTime) {
+              if(freeTime[key] && notToDay(key, freeTime[key])) {
+                count++
+              }
+            }
+  
+            if(count == lengthObj) {
+              return item
+            }
+  
+          } else {
+            return item
+          }
+        })
+      }
+  
+      suitableAuto = suitableAuto.filter(Boolean)
+    }
+
     setDataArr(suitableAuto)
     
     
-  }, [update])
+  }, [update, sort])
+
   
 
   return (

@@ -11,6 +11,8 @@ import AssignAcarRowNameWrapper from "../AreCommon/AssignAcarRowNameWrapper/Assi
 import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContentCentr"
 
 export default function AssignAcarCard() {
+  const [groupArr, setGroup] = useState([])
+  const [dataInput, setDataInput] = useState({})
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [dateOfApplication, setDateOfApplication] = useState('')
   const [submissionTime, setSubmissionTime] = useState('')
@@ -29,6 +31,7 @@ export default function AssignAcarCard() {
   let endTimeOld = dateApplications(dateOfApplicationOld, submissionTimeOld, timeOfUseOfTransportOld)
 
   useEffect(() => {
+    backDataGroup()
     
     setDateOfApplication(applicationsToassignAcarDate.date.dateOfApplication)
     setSubmissionTime(applicationsToassignAcarDate.date.submissionTime)
@@ -37,6 +40,37 @@ export default function AssignAcarCard() {
     setSubmissionTimeOld(applicationsToassignAcarDate.date.old.submissionTime)
     setTimeOfUseOfTransportOld(applicationsToassignAcarDate.date.old.timeOfUseOfTransport)
   }, [assignAcar, applicationsToassignAcarDate, reload])
+
+  function divideArr(arrData) {
+    let group = []
+    for(let i = 0; i < arrData.length; i++) {
+      group.push(arrData[i].marc)
+    }
+    group = [...new Set(group)]
+    group.unshift('Выбрать марку')
+    setGroup(group)
+  }
+
+  function backDataGroup() {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({'getMarcAuto': true})
+    
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        data = JSON.parse(data)
+        divideArr(data)
+      })
+      .catch((er) => {
+        console.log(er)
+      })
+  }
 
   function dateApplications(number, numberHours, timeOfUseOfTransport) {
     let date = new Date()
@@ -114,6 +148,17 @@ export default function AssignAcarCard() {
 
   }
 
+  function dataInputOnChange(event, inputData = false) { 
+    if(!inputData) {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+      setDataInput(n => ({...n, [name]: value.trim()}))
+    } else {
+      setDataInput(n => ({...n, [inputData[0]]: (inputData[1]).trim()}))
+    }
+  }
+
   return(
     <div className={assignAcar ? "assignAcarCard-wrap" : "assignAcarCard-hide"}>
       <div className="assignAcarCard-data">
@@ -130,9 +175,9 @@ export default function AssignAcarCard() {
           </div>
           <div className="assignAcarCard-field-row">
             <div className="assignAcarCard-field-row-menu">
-              <SearchData />
-              <SelectData namePlaceholder={'Выбрать марку'} nameArr={['test1','test2','test3','test4','test5']} name={'assignAcarCard-search'} dataInputOnChange={() => {}}/>
-              <Datepicker placeHolder={'Свободные авто за период'} width={true}/>
+              <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
+              <SelectData namePlaceholder={'Выбрать марку'} nameArr={groupArr} name={'autoMarc'} dataInputOnChange={dataInputOnChange}/>
+              <Datepicker placeHolder={'Свободные авто за период'} width={true} name={'calendarAutoDate'} dataInputOnChange={dataInputOnChange}/>
             </div>
             <div>
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
@@ -140,7 +185,7 @@ export default function AssignAcarCard() {
           </div>
           <div className="assignAcarCard-row-name-wrapper">
             <AssignAcarRowNameWrapper dateOfApplication={dateOfApplication}/>
-            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto} arrAssign={[dateOfApplication, submissionTime, endTime]}/>
+            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto} arrAssign={[dateOfApplication, submissionTime, endTime]} sort={dataInput}/>
           </div>
         </div>
       </div>

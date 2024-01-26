@@ -54,7 +54,7 @@ export default function TimePicker({name = '', dataInputOnChange = () => {}}) {
       <div className={dateTwo == '' ? 'timepicker-hide' : 'timepicker-clean'}>
         <img src={clean} alt="" onClick={cleanInput} />
       </div>
-      <input type="time" name={name} defaultValue={"08:00"} list="time-list" onChange={inputChange} ref={refOne}/>
+      <input type="time" name={name} defaultValue={"00:00"} list="time-list" onChange={inputChange} ref={refOne}/>
       <datalist id="time-list">
         <option value="08:00"/>
         <option value="08:30"/>

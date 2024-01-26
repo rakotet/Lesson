@@ -78,7 +78,7 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
     } else if(actionLk == actionLkUnloading.getApplicationsData) {
       return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort}/>
     } else if(actionLk == actionLkUnloading.getAssignACar) {
-      return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign}/>
+      return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign} sort={sort}/>
     } else if(actionLk == actionLkUnloading.getMyApplicationsData) {
       return <MyApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort}/>
     } else if(actionLk == actionLkUnloading.getMyTemplates) {
