@@ -17,6 +17,7 @@ import ButtonCustom from "../AreCommon/ButtonCustom/ButtonCustom"
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Applications({setTabName}) {
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [dataInput, setDataInput] = useState({})
   const [backDisp, setBackDisp] = useState(1)
   const [dispCardOpen, setDispCardOpen] = useState(true)
@@ -343,12 +344,12 @@ export default function Applications({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper">
-            <ApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
+            <ApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length} setSwitchArrow={setSwitchArrow}/>
             {
             trashReload 
             ?
              ((dispCardEdit && cancelApplicationsOpen == false) ? 
-             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput}/>
+             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow}/>
              : '') 
             : 
              ''

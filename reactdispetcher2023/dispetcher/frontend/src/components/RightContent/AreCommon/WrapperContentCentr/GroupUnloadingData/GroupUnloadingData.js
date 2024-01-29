@@ -1,4 +1,6 @@
-export default function GroupUnloadingData({data, count, companyCardOpenHide, setDispCardEdit, trashDisp, sort}) {
+import sortName from '../../../../../core/sortName'
+
+export default function GroupUnloadingData({data, count, companyCardOpenHide, setDispCardEdit, trashDisp, sort, switchArrow}) {
   
   if(sort.searchData && sort.searchData != '') {
     data = data.map((item, index) => {
@@ -11,6 +13,26 @@ export default function GroupUnloadingData({data, count, companyCardOpenHide, se
 
     data = data. filter(Boolean)
   }
+
+  if(switchArrow.arrow == 'groupTwo') {
+    data = sortName('nameGroup', true, data)
+  } else if(switchArrow.arrow == 'groupTwo-default') {
+    data = sortName('nameGroup', false, data)
+  }
+
+  if(switchArrow.arrow == 'groupThree') {
+    data = sortName('supervisor', true, data)
+  } else if(switchArrow.arrow == 'groupThree-default') {
+    data = sortName('supervisor', false, data)
+  }
+
+  if(switchArrow.arrow == 'groupFour') {
+    data = sortName('autoNumber', true, data)
+  } else if(switchArrow.arrow == 'groupFour-default') {
+    data = sortName('autoNumber', false, data)
+  }
+
+  //console.log(data)
 
   return (
     <>

@@ -15,6 +15,7 @@ import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Disp({setTabName}) {
   const [dataInput, setDataInput] = useState('')
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [groupArr, setGroup] = useState([])
   const [backDisp, setBackDisp] = useState(1)
   const [dispCardOpen, setDispCardOpen] = useState(true)
@@ -141,8 +142,8 @@ export default function Disp({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper">
-            <DispRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput}/>
+            <DispRowNameWrapper setSwitchArrow={setSwitchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

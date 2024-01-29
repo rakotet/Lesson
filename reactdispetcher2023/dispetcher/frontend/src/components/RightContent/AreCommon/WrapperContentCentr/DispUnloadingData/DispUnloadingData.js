@@ -1,8 +1,9 @@
 import edit from './images/Edit.png'
 import trash from './images/Trash.png'
 import { useEffect, useState } from 'react'
+import sortName from '../../../../../core/sortName'
 
-export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort}) {
+export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort,  switchArrow}) {
   
   if(sort.dispGroup && sort.dispGroup != 'Выбрать предприятие') {
     data = data.map((item, index) => {
@@ -21,12 +22,42 @@ export default function DispUnloadingData({data, count, dispCardOpenHide, setDis
       }
     })
 
-    data = data. filter(Boolean)
+    data = data.filter(Boolean)
   }
 
   useEffect(() => {
     
   }, [])
+
+  if(switchArrow.arrow == 'dispTwo') {
+    data = sortName('userName', true, data)
+  } else if(switchArrow.arrow == 'dispTwo-default') {
+    data = sortName('userName', false, data)
+  }
+
+  if(switchArrow.arrow == 'dispThree') {
+    data = sortName('jobTitle', true, data)
+  } else if(switchArrow.arrow == 'dispThree-default') {
+    data = sortName('jobTitle', false, data)
+  }
+
+  if(switchArrow.arrow == 'dispFour') {
+    data = sortName('telephone', true, data)
+  } else if(switchArrow.arrow == 'dispFour-default') {
+    data = sortName('telephone', false, data)
+  }
+
+  if(switchArrow.arrow == 'dispFive') {
+    data = sortName('userGroup', true, data)
+  } else if(switchArrow.arrow == 'dispFive-default') {
+    data = sortName('userGroup', false, data)
+  }
+
+  if(switchArrow.arrow == 'dispSix') {
+    data = sortName('auto', true, data)
+  } else if(switchArrow.arrow == 'dispSix-default') {
+    data = sortName('auto', false, data)
+  }
 
   return (
     <>

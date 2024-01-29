@@ -10,7 +10,7 @@ import MyApplicationsUnloadingData from "./MyApplicationsUnloadingData/MyApplica
 import MyTemplatesUnloadingData from "./MyTemplatesUnloadingData/MyTemplatesUnloadingData";
 import AssignAcarUnloadingData from "./AssignAcarUnloadingData/AssignAcarUnloadingData";
 
-export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin=false, clickAuto, arrAssign, dispCardEditNoUpdatePage, sort=''}) {
+export default function WrapperContentCentr({label = '', actionLk, count = '', companyCardOpenHide, setDispCardEdit, backDisp ='', showMoreActiv='', trashDisp, refreshData='', setUploadingData, margin = false, clickAuto, arrAssign, dispCardEditNoUpdatePage, sort='', switchArrow = {arrow: ''}}) {
   const [arrGroup, setArrGroup] = useState([])
   const dispatch = useDispatch()
   let actionLkUnloading = useSelector(actionLkData)
@@ -70,19 +70,19 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
 
   function getDataUnloading() {
     if(actionLk == actionLkUnloading.getGroupData) {
-      return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp} sort={sort}/>
+      return <GroupUnloadingData data={arrGroup} count={count} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp} sort={sort} switchArrow={switchArrow}/>
     } else if(actionLk == actionLkUnloading.getDispData) {
-      return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp} sort={sort}/>
+      return <DispUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp} sort={sort} switchArrow={switchArrow}/>
     } else if(actionLk == actionLkUnloading.getAutoData) {
-      return <AutoUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp} sort={sort}/>
+      return <AutoUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} trashDisp={trashDisp} sort={sort} switchArrow={switchArrow}/>
     } else if(actionLk == actionLkUnloading.getApplicationsData) {
-      return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort}/>
+      return <ApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort} switchArrow={switchArrow}/>
     } else if(actionLk == actionLkUnloading.getAssignACar) {
-      return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign} sort={sort}/>
+      return <AssignAcarUnloadingData data={arrGroup} count={count} clickAuto={clickAuto} arrAssign={arrAssign} sort={sort} switchArrow={switchArrow}/>
     } else if(actionLk == actionLkUnloading.getMyApplicationsData) {
-      return <MyApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort}/>
+      return <MyApplicationsUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort} switchArrow={switchArrow}/>
     } else if(actionLk == actionLkUnloading.getMyTemplates) {
-      return <MyTemplatesUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort}/>
+      return <MyTemplatesUnloadingData data={arrGroup} count={count} dispCardOpenHide={companyCardOpenHide} setDispCardEdit={setDispCardEdit} setUploadingData={setUploadingData} sort={sort} switchArrow={switchArrow}/>
     } 
   }
 

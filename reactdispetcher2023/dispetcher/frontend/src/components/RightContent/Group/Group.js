@@ -12,6 +12,7 @@ import EditGroup from "../EditGroup/EditGroup"
 import { url } from "../../../core/core"
 
 export default function Group({setTabName}) {
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [companyCardOpen, setCompanyCardOpen] = useState(true)
   const [companyCardData, setCompanyCardData] = useState({})
@@ -104,8 +105,8 @@ export default function Group({setTabName}) {
             </div>
           </div>
           <div className="group-row-name-wrapper">
-            <GroupRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={editDisp} trashDisp={trashDisp} sort={dataInput}/>
+            <GroupRowNameWrapper setSwitchArrow={setSwitchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={editDisp} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

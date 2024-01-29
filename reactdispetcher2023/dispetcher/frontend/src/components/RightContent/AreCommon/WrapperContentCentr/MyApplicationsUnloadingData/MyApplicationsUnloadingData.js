@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import StatusApplications from "./StatusApplications/StatusApplications";
 import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
+import sortName from '../../../../../core/sortName'
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort}) {
+export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort, switchArrow}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
   
@@ -128,6 +129,80 @@ function checkboxDataChange(event, data) {
   }
 
 }
+
+if(switchArrow.arrow == 'myAppTwo') {
+  data = sortName('dateOfCreation', true, data)
+} else if(switchArrow.arrow == 'myAppTwo-default') {
+  data = sortName('dateOfCreation', false, data)
+}
+
+if(switchArrow.arrow == 'myAppThree') {
+  data = sortName('submissionTime', true, data)
+} else if(switchArrow.arrow == 'myAppThree-default') {
+  data = sortName('submissionTime', false, data)
+}
+
+if(switchArrow.arrow == 'myAppFour') {
+  data = sortName('timeOfUseOfTransport', true, data)
+} else if(switchArrow.arrow == 'myAppFour-default') {
+  data = sortName('timeOfUseOfTransport', false, data)
+}
+
+if(switchArrow.arrow == 'myAppFive') {
+  data = sortName('status', true, data)
+} else if(switchArrow.arrow == 'myAppFive-default') {
+  data = sortName('status', false, data)
+}
+
+if(switchArrow.arrow == 'myAppSix') {
+  data = sortName('driverPhone', true, data)
+} else if(switchArrow.arrow == 'myAppSix-default') {
+  data = sortName('driverPhone', false, data)
+}
+
+if(switchArrow.arrow == 'myAppSeven') {
+  data = sortName('marc', true, data)
+} else if(switchArrow.arrow == 'myAppSeven-default') {
+  data = sortName('marc', false, data)
+}
+
+if(switchArrow.arrow == 'myAppEight') {
+  data = sortName('view', true, data)
+} else if(switchArrow.arrow == 'myAppEight-default') {
+  data = sortName('view', false, data)
+}
+
+if(switchArrow.arrow == 'myAppTen') {
+  data = sortName('namePassengers', true, data)
+} else if(switchArrow.arrow == 'myAppTen-default') {
+  data = sortName('namePassengers', false, data)
+}
+
+if(switchArrow.arrow == 'myAppEleven') {
+  data = sortName('submissionAddress', true, data)
+} else if(switchArrow.arrow == 'myAppEleven-default') {
+  data = sortName('submissionAddress', false, data)
+}
+
+if(switchArrow.arrow == 'myAppTwelve') {
+  data = sortName('arrivalAddress', true, data)
+} else if(switchArrow.arrow == 'myAppTwelve-default') {
+  data = sortName('arrivalAddress', false, data)
+}
+
+if(switchArrow.arrow == 'myAppThirteen') {
+  data = sortName('purposeOfTheTrip', true, data)
+} else if(switchArrow.arrow == 'myAppThirteen-default') {
+  data = sortName('purposeOfTheTrip', false, data)
+}
+
+if(switchArrow.arrow == 'myAppFourteen') {
+  data = sortName('comment', true, data)
+} else if(switchArrow.arrow == 'myAppFourteen-default') {
+  data = sortName('comment', false, data)
+}
+
+//console.log(data)
 
   return (
     <>

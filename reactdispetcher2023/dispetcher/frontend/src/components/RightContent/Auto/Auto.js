@@ -17,6 +17,7 @@ import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Auto({setTabName}) {
   const [dataInput, setDataInput] = useState({})
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [groupArr, setGroup] = useState([])
   const [dispCardOpen, setDispCardOpen] = useState(true)
   const [dispCardEdit, setDispCardEdit] = useState(true)
@@ -154,8 +155,8 @@ export default function Auto({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper">
-            <AutoRowNameWrapper />
-            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput}/>
+            <AutoRowNameWrapper setSwitchArrow={setSwitchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

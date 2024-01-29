@@ -1,11 +1,16 @@
 import triangle from './image/triangle.png'
 import { useState } from 'react'
 
-export default function WrapNameRowData({name}) {
+export default function WrapNameRowData({name, setSwitchArrow = () => {}, arrow={arrow: ''}}) {
   const [rotation, setRotation] = useState(true);
 
   function handleClick() {
     setRotation(!rotation)
+    if(rotation) {
+      setSwitchArrow(arrow)
+    } else {
+      setSwitchArrow({arrow: `${arrow.arrow + '-default'}`})
+    }
   }
 
   return(

@@ -1,9 +1,10 @@
 import edit from './images/Edit.png'
 import trash from './images/Trash.png'
 import freeTimeAuto from '../../../../../core/freeTimeAuto'
+import sortName from '../../../../../core/sortName'
 import { useEffect, useState } from 'react'
 
-export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort}) {
+export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort, switchArrow}) {
   let arrDateNow = [new Date().toLocaleDateString(), '00:00', '00:00']
   let arrDateNext = [new Date(new Date().getTime() + 86400000).toLocaleDateString(), '00:00', '00:00']
 
@@ -193,6 +194,36 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
   useEffect(() => {
    
   }, [])
+
+  if(switchArrow.arrow == 'autoTwo') {
+    data = sortName('marc', true, data)
+  } else if(switchArrow.arrow == 'autoTwo-default') {
+    data = sortName('marc', false, data)
+  }
+
+  if(switchArrow.arrow == 'autoThree') {
+    data = sortName('driver', true, data)
+  } else if(switchArrow.arrow == 'autoThree-default') {
+    data = sortName('driver', false, data)
+  }
+
+  if(switchArrow.arrow == 'autoSix') {
+    data = sortName('yearOfIssue', true, data)
+  } else if(switchArrow.arrow == 'autoSix-default') {
+    data = sortName('yearOfIssue', false, data)
+  }
+
+  if(switchArrow.arrow == 'autoSeven') {
+    data = sortName('view', true, data)
+  } else if(switchArrow.arrow == 'autoSeven-default') {
+    data = sortName('view', false, data)
+  }
+
+  if(switchArrow.arrow == 'autoEight') {
+    data = sortName('status', true, data)
+  } else if(switchArrow.arrow == 'autoEight-default') {
+    data = sortName('status', false, data)
+  }
 
   return (
     <>

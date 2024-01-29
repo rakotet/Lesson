@@ -18,6 +18,7 @@ import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function MyApplications({setTabName}) {
   const [dataInput, setDataInput] = useState({})
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [backDisp, setBackDisp] = useState(1)
   const [dispCardOpen, setDispCardOpen] = useState(true)
   const [dispCardEdit, setDispCardEdit] = useState(true)
@@ -234,10 +235,10 @@ export default function MyApplications({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper myApplications-row-name-wrapper">
-            <MyApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
+            <MyApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length} setSwitchArrow={setSwitchArrow}/>
             {
             (dispCardEdit && cancelApplicationsOpen == false) ?
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow}/>
             : ''
             }
           </div>
