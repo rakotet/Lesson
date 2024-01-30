@@ -12,6 +12,7 @@ import WrapperContentCentr from "../AreCommon/WrapperContentCentr/WrapperContent
 
 export default function AssignAcarCard() {
   const [groupArr, setGroup] = useState([])
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [dataInput, setDataInput] = useState({})
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [dateOfApplication, setDateOfApplication] = useState('')
@@ -184,8 +185,8 @@ export default function AssignAcarCard() {
             </div>
           </div>
           <div className="assignAcarCard-row-name-wrapper">
-            <AssignAcarRowNameWrapper dateOfApplication={dateOfApplication}/>
-            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto} arrAssign={[dateOfApplication, submissionTime, endTime]} sort={dataInput}/>
+            <AssignAcarRowNameWrapper dateOfApplication={dateOfApplication} setSwitchArrow={setSwitchArrow}/>
+            <WrapperContentCentr label="" actionLk={actionLk.getAssignACar} count={showMoreActiv} margin={true} clickAuto={clickAuto} arrAssign={[dateOfApplication, submissionTime, endTime]} sort={dataInput} switchArrow={switchArrow}/>
           </div>
         </div>
       </div>

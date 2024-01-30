@@ -18,6 +18,7 @@ import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function MyTemplates({setTabName}) {
   const [dataInput, setDataInput] = useState({})
+  const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [backDisp, setBackDisp] = useState(1)
   const [dispCardOpen, setDispCardOpen] = useState(true)
   const [dispCardEdit, setDispCardEdit] = useState(true)
@@ -231,12 +232,12 @@ export default function MyTemplates({setTabName}) {
             </div>
           </div>
           <div className="disp-row-name-wrapper myApplications-row-name-wrapper">
-            <MyTemplatesRowNameWrapper checkNumber={Object.keys(uploadingData).length}/>
+            <MyTemplatesRowNameWrapper checkNumber={Object.keys(uploadingData).length} setSwitchArrow={setSwitchArrow}/>
             {
             trashReload 
             ?
              ((dispCardEdit && cancelApplicationsOpen == false) ? 
-             <WrapperContentCentr label="Записей не найдено. Добавьте новый шаблон" actionLk={actionLk.getMyTemplates} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput}/>
+             <WrapperContentCentr label="Записей не найдено. Добавьте новый шаблон" actionLk={actionLk.getMyTemplates} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow}/>
              : '') 
             : 
              ''

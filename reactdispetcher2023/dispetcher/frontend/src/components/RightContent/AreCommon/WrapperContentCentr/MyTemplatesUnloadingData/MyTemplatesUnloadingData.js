@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
+import sortName from '../../../../../core/sortName'
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort}) {
+export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort, switchArrow}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
   
@@ -91,6 +92,42 @@ function checkboxDataChange(event, data) {
 
 }
 
+if(switchArrow.arrow == 'MyTemplatesTwo') {
+  data = sortName('dateOfCreation', true, data)
+} else if(switchArrow.arrow == 'MyTemplatesTwo-default') {
+  data = sortName('dateOfCreation', false, data)
+}
+
+if(switchArrow.arrow == 'MyTemplatesTen') {
+  data = sortName('namePassengers', true, data)
+} else if(switchArrow.arrow == 'MyTemplatesTen-default') {
+  data = sortName('namePassengers', false, data)
+}
+
+if(switchArrow.arrow == 'MyTemplatesEleven') {
+  data = sortName('submissionAddress', true, data)
+} else if(switchArrow.arrow == 'MyTemplatesEleven-default') {
+  data = sortName('submissionAddress', false, data)
+}
+
+if(switchArrow.arrow == 'MyTemplatesTwelve') {
+  data = sortName('arrivalAddress', true, data)
+} else if(switchArrow.arrow == 'MyTemplatesTwelve-default') {
+  data = sortName('arrivalAddress', false, data)
+}
+
+if(switchArrow.arrow == 'MyTemplatesThirteen') {
+  data = sortName('purposeOfTheTrip', true, data)
+} else if(switchArrow.arrow == 'MyTemplatesThirteen-default') {
+  data = sortName('purposeOfTheTrip', false, data)
+}
+
+if(switchArrow.arrow == 'MyTemplatesFourteen') {
+  data = sortName('comment', true, data)
+} else if(switchArrow.arrow == 'MyTemplatesFourteen-default') {
+  data = sortName('comment', false, data)
+}
+
   return (
     <>
       {data.map((item, index) => {
@@ -123,14 +160,14 @@ function checkboxDataChange(event, data) {
               <div className="applicationsUnloadingData-margin-checkbox">
                 <input type="checkbox" defaultChecked={false} name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>
-              <div className="applicationsUnloadingData-namber" /*onClick={() => dispCardOpenHide(data[`${index}`])}*/>
+              <div className="applicationsUnloadingData-namber myTemplatesUnloadin-namber" /*onClick={() => dispCardOpenHide(data[`${index}`])}*/>
                 <div>{index + 1}</div>
               </div>
-              <div className="applicationsUnloadingData-dateOfApplication" >
+              <div className="applicationsUnloadingData-dateOfApplication myTemplatesUnloadin-dateOfApplication">
                 <div>{item.dateOfCreation}</div>
               </div>
 
-              <div className="applicationsUnloadingData-passengerPhone">
+              <div className="applicationsUnloadingData-passengerPhone myTemplatesUnloadin-passengerPhone">
                 <div className="applicationsUnloadingData-driverPhone-flex">
                   { arr.length > 0 ?
                     arr.map((itemObj, ind) => {
@@ -166,16 +203,16 @@ function checkboxDataChange(event, data) {
               </div>
              } */}
               
-              <div className="applicationsUnloadingData-shippingAddress">
+              <div className="applicationsUnloadingData-shippingAddress myTemplatesUnloadin-shippingAddress">
                 <div>{item.submissionAddress}</div>
               </div>
-              <div className="applicationsUnloadingData-arrivalAddress">
+              <div className="applicationsUnloadingData-arrivalAddress myTemplatesUnloadin-arrivalAddress">
                 <div>{item.arrivalAddress}</div>
               </div>
-              <div className="applicationsUnloadingData-purposeOfTheTrip">
+              <div className="applicationsUnloadingData-purposeOfTheTrip myTemplatesUnloadin-purposeOfTheTrip">
                 <div>{item.purposeOfTheTrip}</div>
               </div>
-              <div className="applicationsUnloadingData-comment">
+              <div className="applicationsUnloadingData-comment myTemplatesUnloadin-comment">
                 <div>{item.comment}</div>
               </div>
             </div>

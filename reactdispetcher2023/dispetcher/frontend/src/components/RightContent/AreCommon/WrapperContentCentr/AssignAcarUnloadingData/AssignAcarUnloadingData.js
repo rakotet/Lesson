@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { updateLeftContent, setUpdateLeftContent } from "../../../../../components/store/reduser";
+import sortName from '../../../../../core/sortName'
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssign, sort}) {
+export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssign, sort, switchArrow}) {
   const [dataArr, setDataArr] = useState([])
   const dispatch = useDispatch()
   let update = useSelector(updateLeftContent)
@@ -198,12 +199,40 @@ export default function AssignAcarUnloadingData({data, count, clickAuto, arrAssi
       suitableAuto = suitableAuto.filter(Boolean)
     }
 
+    if(switchArrow.arrow == 'assignAcarTwo') {
+      suitableAuto = sortName('marc', true, suitableAuto)
+    } else if(switchArrow.arrow == 'assignAcarTwo-default') {
+      suitableAuto = sortName('marc', false, suitableAuto)
+    }
+  
+    if(switchArrow.arrow == 'assignAcarThree') {
+      suitableAuto = sortName('driver', true, suitableAuto)
+    } else if(switchArrow.arrow == 'assignAcarThree-default') {
+      suitableAuto = sortName('driver', false, suitableAuto)
+    }
+  
+    if(switchArrow.arrow == 'assignAcarFive') {
+      suitableAuto = sortName('yearOfIssue', true, suitableAuto)
+    } else if(switchArrow.arrow == 'assignAcarFive-default') {
+      suitableAuto = sortName('yearOfIssue', false, suitableAuto)
+    }
+  
+    if(switchArrow.arrow == 'assignAcarSix') {
+      suitableAuto = sortName('view', true, suitableAuto)
+    } else if(switchArrow.arrow == 'assignAcarSix-default') {
+      suitableAuto = sortName('view', false, suitableAuto)
+    }
+  
+    if(switchArrow.arrow == 'assignAcarSeven') {
+      suitableAuto = sortName('status', true, suitableAuto)
+    } else if(switchArrow.arrow == 'assignAcarSeven-default') {
+      suitableAuto = sortName('status', false, suitableAuto)
+    }
+
     setDataArr(suitableAuto)
     
     
-  }, [update, sort])
-
-  
+  }, [update, sort, switchArrow])
 
   return (
     <>
