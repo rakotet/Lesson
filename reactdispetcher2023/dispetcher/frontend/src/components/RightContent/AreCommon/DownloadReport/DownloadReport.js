@@ -1,6 +1,6 @@
-export default function DownloadReport() {
+export default function DownloadReport({clickDownload = () => {}}) {
   return(
-    <div className="downloadReport">
+    <div className="downloadReport" onClick={clickDownload}>
       <span>Выгрузить отчет</span>
     </div>
   )

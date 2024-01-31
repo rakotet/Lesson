@@ -1,6 +1,7 @@
 import sortName from '../../../../../core/sortName'
+import { useEffect } from 'react'
 
-export default function GroupUnloadingData({data, count, companyCardOpenHide, setDispCardEdit, trashDisp, sort, switchArrow}) {
+export default function GroupUnloadingData({data, count, companyCardOpenHide, setDispCardEdit, trashDisp, sort, switchArrow, setDataExcel}) {
   
   if(sort.searchData && sort.searchData != '') {
     data = data.map((item, index) => {
@@ -32,7 +33,9 @@ export default function GroupUnloadingData({data, count, companyCardOpenHide, se
     data = sortName('autoNumber', false, data)
   }
 
-  //console.log(data)
+  useEffect(() => {
+    setDataExcel(n => [...data])
+  }, [])
 
   return (
     <>

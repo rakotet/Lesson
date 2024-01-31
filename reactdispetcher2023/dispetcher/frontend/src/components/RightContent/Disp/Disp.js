@@ -11,10 +11,12 @@ import { useState, useEffect } from "react"
 import DispCard from "./DispCard/DispCard"
 import EditDisp from "../EditDisp/EditDisp"
 import { url } from "../../../core/core"
+import clickTableToExcel from "../../../core/clickTableToExcel"
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Disp({setTabName}) {
   const [dataInput, setDataInput] = useState('')
+  const [dataExcel, setDataExcel] = useState([])
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [groupArr, setGroup] = useState([])
   const [backDisp, setBackDisp] = useState(1)
@@ -124,6 +126,34 @@ export default function Disp({setTabName}) {
     setShowMoreActiv(n => n * 2)
   }
 
+  function htmlTable(arr) {
+    let str = ''
+
+    for(let i = 0; i < arr.length; i++) {
+      str += 
+      `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${arr[i]['userName']}</td>
+        <td>${arr[i]['jobTitle']}</td>
+        <td>${arr[i]['telephone']}</td>
+        <td>${arr[i]['userGroup']}</td>
+        <td>${arr[i]['auto']}</td>
+      </tr>
+      `
+    }
+
+    return (
+      `
+        <table>
+          <tbody>
+           ${str}
+          </tbody>
+        </table>
+      `
+    )
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditDisp editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -135,7 +165,7 @@ export default function Disp({setTabName}) {
               <ButtonAdd addFunc={addDispFunc}/>
               <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
               <SelectData namePlaceholder={'Выбрать предприятие'} nameArr={groupArr} name={'dispGroup'} dataInputOnChange={dataInputOnChange}/>
-              <DownloadReport />
+              <DownloadReport clickDownload={clickTableToExcel('Таблица', 'Таблица.xls', htmlTable, dataExcel)}/>
             </div>
             <div>
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
@@ -143,7 +173,7 @@ export default function Disp({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <DispRowNameWrapper setSwitchArrow={setSwitchArrow}/>
-            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте нового диспетчера" actionLk={actionLk.getDispData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow} setDataExcel={setDataExcel}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

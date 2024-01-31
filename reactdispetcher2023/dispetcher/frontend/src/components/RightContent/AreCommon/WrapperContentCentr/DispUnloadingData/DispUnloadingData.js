@@ -3,8 +3,7 @@ import trash from './images/Trash.png'
 import { useEffect, useState } from 'react'
 import sortName from '../../../../../core/sortName'
 
-export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort,  switchArrow}) {
-  
+export default function DispUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort,  switchArrow, setDataExcel}) {
   if(sort.dispGroup && sort.dispGroup != 'Выбрать предприятие') {
     data = data.map((item, index) => {
       if(item.userGroup == sort.dispGroup) return item
@@ -26,8 +25,18 @@ export default function DispUnloadingData({data, count, dispCardOpenHide, setDis
   }
 
   useEffect(() => {
-    
-  }, [])
+    setDataExcel(n => [...data])
+
+    if(sort.dispGroup && sort.dispGroup != 'Выбрать предприятие') {
+      data = data.map((item, index) => {
+        if(item.userGroup == sort.dispGroup) return item
+      })
+  
+      data = data. filter(Boolean)
+  
+      setDataExcel(n => [...data])
+    }
+  }, [sort.dispGroup])
 
   if(switchArrow.arrow == 'dispTwo') {
     data = sortName('userName', true, data)

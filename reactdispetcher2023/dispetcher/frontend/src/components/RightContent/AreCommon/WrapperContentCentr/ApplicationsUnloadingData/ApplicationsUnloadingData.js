@@ -4,12 +4,13 @@ import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/r
 import sortName from '../../../../../core/sortName'
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort, switchArrow}) {
+export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort, switchArrow, setDataExcel}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
   
   useEffect(() => {
     setUploadingData(checkboxData)
+    setDataExcel(n => [...data])
     
   }, [checkboxData])
 

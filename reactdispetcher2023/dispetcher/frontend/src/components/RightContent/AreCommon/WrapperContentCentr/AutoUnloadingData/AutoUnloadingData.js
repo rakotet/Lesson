@@ -4,11 +4,11 @@ import freeTimeAuto from '../../../../../core/freeTimeAuto'
 import sortName from '../../../../../core/sortName'
 import { useEffect, useState } from 'react'
 
-export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort, switchArrow}) {
+export default function AutoUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, trashDisp, sort, switchArrow, setDataExcel}) {
   let arrDateNow = [new Date().toLocaleDateString(), '00:00', '00:00']
   let arrDateNext = [new Date(new Date().getTime() + 86400000).toLocaleDateString(), '00:00', '00:00']
 
-  //console.log(sort)
+  //console.log(data)
 
   if(sort.autoMarc && sort.autoMarc != 'Выбрать марку') {
     data = data.map((item, index) => {
@@ -192,8 +192,182 @@ export default function AutoUnloadingData({data, count, dispCardOpenHide, setDis
   }
 
   useEffect(() => {
-   
-  }, [])
+    setDataExcel(n => [...data])
+
+    if(sort.autoMarc && sort.autoMarc != 'Выбрать марку') {
+      data = data.map((item, index) => {
+        if(item.marc == sort.autoMarc) return item
+      })
+  
+      data = data.filter(Boolean)
+      setDataExcel(n => [...data])
+    }
+
+    if(sort.calendarAutoDate && sort.calendarAutoDate != '') {
+      let arrDate = []
+      let todayMilli = Number(new Date().getTime())
+      let todayLastMilli = Number(new Date(sort.calendarAutoDate).getTime())
+  
+      if(todayMilli <= Number(new Date(sort.calendarAutoDateOne).getTime())) {
+        todayMilli = Number(new Date(sort.calendarAutoDateOne).getTime())
+      }
+  
+      if(/*todayMilli <= todayLastMilli*/ true) {
+        for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+          arrDate.push(new Date(i).toLocaleDateString())
+        }
+  
+        if(!(arrDate == [])) {
+          arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+        }
+  
+        //console.log(arrDate)
+  
+        function notToDay(key, value) {
+          for(let i = 0; i < arrDate.length; i++) {
+            if((key == arrDate[i]) && (Object.keys(value).length)) {
+              return false
+            }
+          }
+  
+          return true
+        }
+  
+        data = data.map((item, index) => {
+          let freeTime = JSON.parse(item.freeTime)
+          
+          if(freeTime) {
+            let lengthObj = Object.keys(freeTime).length
+            let count = 0
+  
+            for(let key in freeTime) {
+              if(freeTime[key] && notToDay(key, freeTime[key])) {
+                count++
+              }
+            }
+  
+            if(count == lengthObj) {
+              return item
+            }
+  
+          } else {
+            return item
+          }
+        })
+      }
+  
+      data = data.filter(Boolean)
+      setDataExcel(n => [...data])
+    }
+
+    if(sort.calendarAutoTime && sort.calendarAutoTime != '') {
+      let arrDate = []
+  
+      if(sort.calendarAutoDate) {
+        let todayMilli = Number(new Date().getTime())
+        let todayLastMilli = Number(new Date(sort.calendarAutoDate).getTime())
+    
+        if(todayMilli <= Number(new Date(sort.calendarAutoDateOne).getTime())) {
+          todayMilli = Number(new Date(sort.calendarAutoDateOne).getTime())
+        }
+    
+        if(/*todayMilli <= todayLastMilli*/ true) {
+          for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+            arrDate.push(new Date(i).toLocaleDateString())
+          }
+    
+          if(!(arrDate == [])) {
+            arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+          }
+        }
+  
+      } else {
+        arrDate.push(new Date().toLocaleDateString())
+      }
+  
+      arrDate = [...new Set(arrDate)]
+  
+      // console.log(arrDate)
+  
+      const timeArrConst = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00']
+      
+      function returnArr(strOne, strTwo) {
+        let arr = []
+        let flag = false
+  
+        for(let i = 0; i < timeArrConst.length; i++) {
+          if(strOne == timeArrConst[i]) {
+            flag = true
+          }
+    
+          if(flag) {
+            arr.push(timeArrConst[i])
+          }
+    
+          if(strTwo == timeArrConst[i]) {
+            flag = false
+          }
+        }
+  
+        return arr
+      }
+  
+      let arrSearch = returnArr(sort.calendarAutoTimeOne, sort.calendarAutoTime)
+  
+      //console.log(arrSearch)
+  
+      data = data.map((item, index) => {
+        let freeTime = JSON.parse(item.freeTime)
+  
+        if(freeTime) {
+          for(let i = 0; i < arrDate.length; i++) {
+            let count = 0
+  
+            for(let key in freeTime) {
+              if((arrDate[i] == key) && (freeTime[key] != [])) {
+                for(let key2 in freeTime[key]) {
+                  let arrBusy = returnArr(key2, freeTime[key][key2]) 
+  
+                  for(let i = 0; i < (arrBusy.length - 1); i++) {
+                    if(sort.calendarAutoTimeOne == arrBusy[i]) {
+                      count++
+                      break
+                    }
+                  }
+  
+                  for(let i = 1; i < arrBusy.length; i++) {
+                    if(sort.calendarAutoTime == arrBusy[i]) {
+                      count++
+                      break
+                    }
+                  }
+  
+                  for(let i = 1; i < (arrSearch.length - 1); i++) {
+                    for(let i2 = 0; i2 < arrBusy.length; i2++) {
+                      if(arrSearch[i] == arrBusy[i2]) {
+                        count++
+                        break
+                      }
+                    }
+                  }
+                }
+              }
+            }
+  
+            if(count == 0) return item
+          }
+  
+        } else {
+          return item
+        }
+      })
+  
+      data = data.filter(Boolean)
+      setDataExcel(n => [...data])
+    }
+
+
+  }, [sort.autoMarc, sort.calendarAutoDate, sort.calendarAutoTime])
 
   if(switchArrow.arrow == 'autoTwo') {
     data = sortName('marc', true, data)

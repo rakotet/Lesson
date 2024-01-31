@@ -10,9 +10,11 @@ import { useState, useEffect } from "react"
 import CompanyCard from "./CompanyCard/CompanyCard"
 import EditGroup from "../EditGroup/EditGroup"
 import { url } from "../../../core/core"
+import clickTableToExcel from "../../../core/clickTableToExcel"
 
 export default function Group({setTabName}) {
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
+  const [dataExcel, setDataExcel] = useState([])
   const [showMoreActiv, setShowMoreActiv] = useState(10)
   const [companyCardOpen, setCompanyCardOpen] = useState(true)
   const [companyCardData, setCompanyCardData] = useState({})
@@ -91,6 +93,32 @@ export default function Group({setTabName}) {
       })
   }
 
+  function htmlTable(arr) {
+    let str = ''
+
+    for(let i = 0; i < arr.length; i++) {
+      str += 
+      `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${arr[i]['nameGroup']}</td>
+        <td>${arr[i]['supervisor']}</td>
+        <td>${arr[i]['autoNumber']}</td>
+      </tr>
+      `
+    }
+
+    return (
+      `
+        <table>
+          <tbody>
+           ${str}
+          </tbody>
+        </table>
+      `
+    )
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditGroup editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -101,12 +129,12 @@ export default function Group({setTabName}) {
             <div className="group-row-menu">
               <ButtonAdd addFunc={addGroupFunc}/>
               <SearchData dataInputOnChange={dataInputOnChange} name={'searchData'}/>
-              <DownloadReport />
+              <DownloadReport clickDownload={clickTableToExcel('Таблица', 'Таблица.xls', htmlTable, dataExcel)}/>
             </div>
           </div>
           <div className="group-row-name-wrapper">
             <GroupRowNameWrapper setSwitchArrow={setSwitchArrow}/>
-            <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={editDisp} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новое предприятие" actionLk={actionLk.getGroupData} count={showMoreActiv} companyCardOpenHide={companyCardOpenHide} setDispCardEdit={editDisp} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow} setDataExcel={setDataExcel}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>

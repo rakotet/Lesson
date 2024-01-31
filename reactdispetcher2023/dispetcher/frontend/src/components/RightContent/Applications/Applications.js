@@ -15,8 +15,10 @@ import { url } from "../../../core/core"
 import Ellipsis from "../AreCommon/Ellipsis/Ellipsis"
 import ButtonCustom from "../AreCommon/ButtonCustom/ButtonCustom"
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
+import clickTableToExcel from "../../../core/clickTableToExcel"
 
 export default function Applications({setTabName}) {
+  const [dataExcel, setDataExcel] = useState([])
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [dataInput, setDataInput] = useState({})
   const [backDisp, setBackDisp] = useState(1)
@@ -314,6 +316,42 @@ export default function Applications({setTabName}) {
     }
   }
 
+  function htmlTable(arr) {
+    let str = ''
+
+    for(let i = 0; i < arr.length; i++) {
+      str += 
+      `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${arr[i]['dateOfCreation']}</td>
+        <td>${arr[i]['dateOfApplication'] + ' ' + arr[i]['submissionTime']}</td>
+        <td>${arr[i]['timeOfUseOfTransport']}</td>
+        <td>${arr[i]['status']}</td>
+        <td>${arr[i]['driverPhone']}</td>
+        <td>${arr[i]['marc'] + ' ' + arr[i]['gossNumber']}</td>
+        <td>${arr[i]['view']}</td>
+        <td>${arr[i]['applicationInitiator'] + ' ' + arr[i]['initiatorPhone']}</td>
+        <td>${arr[i]['namePassengers'] + ' ' + arr[i]['passengersPhone']}</td>
+        <td>${arr[i]['submissionAddress']}</td>
+        <td>${arr[i]['arrivalAddress']}</td>
+        <td>${arr[i]['purposeOfTheTrip']}</td>
+        <td>${arr[i]['comment']}</td>
+      </tr>
+      `
+    }
+
+    return (
+      `
+        <table>
+          <tbody>
+           ${str}
+          </tbody>
+        </table>
+      `
+    )
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditApplications editDisp={editDisp} companyCardData={companyCardData} setUploadingData={setUploadingData}/>}
@@ -337,7 +375,7 @@ export default function Applications({setTabName}) {
               <div className="applications-margin">
                <Datepicker placeHolder={'Период подачи'} name={'calendarAppInnings'} dataInputOnChange={dataInputOnChange}/>
               </div>
-              <DownloadReport />
+              <DownloadReport clickDownload={clickTableToExcel('Таблица', 'Таблица.xls', htmlTable, dataExcel)}/>
             </div>
             <div>
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
@@ -349,7 +387,7 @@ export default function Applications({setTabName}) {
             trashReload 
             ?
              ((dispCardEdit && cancelApplicationsOpen == false) ? 
-             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow}/>
+             <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow} setDataExcel={setDataExcel}/>
              : '') 
             : 
              ''

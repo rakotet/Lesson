@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, actionLkData, nameRowData, setUpdateLeftContent, updateLeftContent } from "../../store/reduser";
 import { useState, useEffect } from "react"
 import { url } from "../../../core/core"
+import clickTableToExcel from "../../../core/clickTableToExcel"
 import Datepicker from "../AreCommon/Datepicker/Datepicker"
 import TimePicker from "../AreCommon/TimePicker/TimePicker"
 import EditAuto from "../EditAuto/EditAuto"
@@ -16,6 +17,7 @@ import AutoCard from "./AutoCard/AutoCard"
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
 
 export default function Auto({setTabName}) {
+  const [dataExcel, setDataExcel] = useState([])
   const [dataInput, setDataInput] = useState({})
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [groupArr, setGroup] = useState([])
@@ -135,6 +137,34 @@ export default function Auto({setTabName}) {
     setShowMoreActiv(n => n * 2)
   }
 
+  function htmlTable(arr) {
+    let str = ''
+
+    for(let i = 0; i < arr.length; i++) {
+      str += 
+      `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${arr[i]['marc'] + ' ' + arr[i]['gossNumber']}</td>
+        <td>${arr[i]['driver'] + ' ' + arr[i]['telephone']}</td>
+        <td>${arr[i]['yearOfIssue']}</td>
+        <td>${arr[i]['view']}</td>
+        <td>${arr[i]['status']}</td>
+      </tr>
+      `
+    }
+
+    return (
+      `
+        <table>
+          <tbody>
+           ${str}
+          </tbody>
+        </table>
+      `
+    )
+  }
+
   return(
     <>
       {dispCardEdit ? '' : <EditAuto editDisp={editDisp} companyCardData={companyCardData}/>}
@@ -148,7 +178,7 @@ export default function Auto({setTabName}) {
               <SelectData namePlaceholder={'Выбрать марку'} nameArr={groupArr} name={'autoMarc'} dataInputOnChange={dataInputOnChange}/>
               <Datepicker placeHolder={'Свободные авто по дате'} name={'calendarAutoDate'} dataInputOnChange={dataInputOnChange}/>
               <TimePicker name={'calendarAutoTime'} dataInputOnChange={dataInputOnChange}/>
-              <DownloadReport />
+              <DownloadReport clickDownload={clickTableToExcel('Таблица', 'Таблица.xls', htmlTable, dataExcel)}/>
             </div>
             <div>
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
@@ -156,7 +186,7 @@ export default function Auto({setTabName}) {
           </div>
           <div className="disp-row-name-wrapper">
             <AutoRowNameWrapper setSwitchArrow={setSwitchArrow}/>
-            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новый автомобиль" actionLk={actionLk.getAutoData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} sort={dataInput} switchArrow={switchArrow} setDataExcel={setDataExcel}/>
           </div>
           <div>
             <ShowMore label={'Показать еще'} click={showMoreActivClick}/>
