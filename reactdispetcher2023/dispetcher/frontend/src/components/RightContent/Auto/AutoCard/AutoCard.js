@@ -7,6 +7,8 @@ import AutoCardRowNameWrapper from "../../AreCommon/AutoCardRowNameWrapper/AutoC
 import { useState, useEffect } from "react"
 import clickTableToExcel from "../../../../core/clickTableToExcel"
 import AutoCardUnloadingData from "../../AreCommon/WrapperContentCentr/AutoCardUnloadingData/AutoCardUnloadingData"
+import { url } from '../../../../core/core';
+import ShowMore from "../../AreCommon/ShowMore/ShowMore"
 
 export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData}) {
   const [showMoreActiv, setShowMoreActiv] = useState(10)
@@ -14,10 +16,40 @@ export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData})
   const [dataInput, setDataInput] = useState({})
   const [dataExcel, setDataExcel] = useState([])
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
+console.log(arrGroup)
+  function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
 
   useEffect(() => {
+    fetch(url.urlBack1, {
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({storyAuto: dispCardData.gossNumber})
     
-  }, [])
+      })
+      .then(data => {
+        return data.text()
+      })
+      .then(data => {
+        //console.log(data)
+        if(IsJsonString(data)) {
+          data = JSON.parse(data)
+          setArrGroup(n => [...data])
+          
+        }
+      })
+      .catch((er) => {
+        //console.log(er)
+      })
+  }, [dispCardData])
 
   function dataInputOnChange(event, inputData = false) { // данные из всех input
     if(!inputData) {
@@ -82,6 +114,10 @@ export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData})
     )
   }
 
+  function showMoreActivClick() {
+    setShowMoreActiv(n => n * 2)
+  }
+
   return(
     <div className={dispCardOpen ? 'dispCard-hide' : ''}>
       <div className="dispCard">
@@ -128,6 +164,7 @@ export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData})
           </div>
         </div>
       </div>
+      {arrGroup == false ? '' : <ShowMore label={'Показать еще'} click={showMoreActivClick}/>}
     </div>
   )
 }

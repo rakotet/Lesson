@@ -276,7 +276,7 @@ if(switchArrow.arrow == 'appFourteen') {
             }
           }
           return(
-            <div key={index} className="dispUnloadingData">
+            <div key={index} className="dispUnloadingData autoCardUnloadin">
               <div className="applicationsUnloadingData-margin-checkbox">
               </div>
               <div className="applicationsUnloadingData-namber">

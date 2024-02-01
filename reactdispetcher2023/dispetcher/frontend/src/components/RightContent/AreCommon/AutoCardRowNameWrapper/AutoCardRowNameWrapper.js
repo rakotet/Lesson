@@ -1,8 +1,8 @@
 import WrapNameRowData from "../WrapNameRowData/WrapNameRowData"
 
-export default function AutoCardRowNameWrapper(setSwitchArrow = () => {}) {
+export default function AutoCardRowNameWrapper({setSwitchArrow = () => {}}) {
   return(
-    <div className="applicationsRowNameWrapper">
+    <div className="applicationsRowNameWrapper autoCardRowNameWrapper">
       <div className="applicationsRowNameWrapper-zero">
         <div></div>
       </div>

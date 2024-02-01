@@ -49,8 +49,6 @@ export default function WrapperContentCentr({label = '', actionLk, count = '', c
       .catch((er) => {
         //console.log(er)
       })
-
-      
   }
 
   useEffect(() => {

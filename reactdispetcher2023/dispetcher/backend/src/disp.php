@@ -14,6 +14,11 @@
 
   $dataFront = trim(file_get_contents("php://input"));
   $dataFront = json_decode($dataFront, true);
+
+  
+  // if(isset($dataFront['testAuto'])) {
+  //   echo json_encode($db->testAuto());
+  // } 
   
   //$auth_user = $db->getRowByWhere('users', '`login` = ? AND `password` = ?', ['admin', md5('12345aDr71Jfu8')]);
 
@@ -277,5 +282,9 @@
 
   if(isset($dataFront['mailToCancel'])) {
     echo json_encode($db->mailToCancel($dataFront['mailToCancel']));
+  } 
+
+  if(isset($dataFront['storyAuto'])) {
+    echo json_encode($db->storyAuto($dataFront['storyAuto']));
   } 
 ?>

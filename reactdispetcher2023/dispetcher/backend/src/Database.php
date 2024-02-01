@@ -303,11 +303,37 @@
     }
 
 
-    //Обновить заявку от диспетчера
+    // Вернуть историю автомобиля по госномеру
+    public function storyAuto($values) {
+      $sql = 'SELECT * FROM '.$this->getTableName('story_auto')." WHERE `gossNumber` = ?";
+      $query = $this->pdo->prepare($sql);
+      $query->execute([$values]);
+      $result = $query->fetchAll(PDO::FETCH_ASSOC);
+      return $result;
+      
+    }
+
+
+    //Обновить заявку от диспетчера и внести в историю автомобиля
     public function updateApplications(string $table_name, array $values = []) {
       $sql = 'UPDATE '.$this->getTableName($table_name).' SET `dateOfApplication` = ?, `submissionTime` = ?, `submissionAddress` = ?, `arrivalAddress` = ?, `rideWithAnticipation` = ?, `comment` = ?, `timeOfUseOfTransport` = ?, `purposeOfTheTrip` = ?, `carClass` = ?, `numberOfPassengers` = ?, `namePassengers` = ?, `passengersPhone` = ?, `driverPhone` = ?, `marc` = ?, `gossNumber` = ?, `view` = ?, `status` = ?, `dirFiles` = ? WHERE `id` = ?';
       $query = $this->pdo->prepare($sql);
       $query->execute($values);
+
+      if($values[14]) {
+        $sql = 'SELECT `dateOfCreation`, `applicationInitiator`, `initiatorPhone` FROM '.$this->getTableName('applications')." WHERE `id` = ?";
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$values[18]]);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $result = $result[0];
+
+        $dateOfCreation = $result['dateOfCreation'];
+        $applicationInitiator = $result['applicationInitiator'];
+        $initiatorPhone = $result['initiatorPhone'];
+
+        $sql = 'INSERT INTO '.$this->getTableName('story_auto')." (`dateOfCreation`, `dateOfApplication`, `submissionTime`, `submissionAddress`, `arrivalAddress`, `comment`, `timeOfUseOfTransport`, `purposeOfTheTrip`, `applicationInitiator`, `initiatorPhone`, `namePassengers`, `passengersPhone`, `gossNumber`) VALUES ('$dateOfCreation', '$values[0]', '$values[1]', '$values[2]', '$values[3]', '$values[5]', '$values[6]', '$values[7]', '$applicationInitiator', '$initiatorPhone', '$values[10]', '$values[11]', '$values[14]')";
+        $this->pdo->exec($sql);
+      }
     }
 
     //Обновить шаблон
