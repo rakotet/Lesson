@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import StatusApplications from "./StatusApplications/StatusApplications";
 import {cancelApplicationsData, cancelApplicationsObj} from "../../../../store/reduser";
 import sortName from '../../../../../core/sortName'
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function MyApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort, switchArrow, setDataExcel}) {
+export default function AutoCardUnloadingData({data, count, sort, switchArrow, setDataExcel}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
-  
+ 
   useEffect(() => {
-    setUploadingData(checkboxData)
     setDataExcel(n => [...data])
 
     if(sort.statusApplications && sort.statusApplications != 'Выбрать статус') {
@@ -151,6 +149,7 @@ export default function MyApplicationsUnloadingData({data, count, dispCardOpenHi
     data = data. filter(Boolean)
   }
 
+
 function dateApplications(number, numberHours, timeOfUseOfTransport) {
   let date = new Date()
   date.setFullYear(number[6] + number[7] + number[8] + number[9]);
@@ -194,75 +193,57 @@ function checkboxDataChange(event, data) {
 
 }
 
-if(switchArrow.arrow == 'myAppTwo') {
+if(switchArrow.arrow == 'appTwo') {
   data = sortName('dateOfCreation', true, data)
-} else if(switchArrow.arrow == 'myAppTwo-default') {
+} else if(switchArrow.arrow == 'appTwo-default') {
   data = sortName('dateOfCreation', false, data)
 }
 
-if(switchArrow.arrow == 'myAppThree') {
+if(switchArrow.arrow == 'appThree') {
   data = sortName('submissionTime', true, data)
-} else if(switchArrow.arrow == 'myAppThree-default') {
+} else if(switchArrow.arrow == 'appThree-default') {
   data = sortName('submissionTime', false, data)
 }
 
-if(switchArrow.arrow == 'myAppFour') {
+if(switchArrow.arrow == 'appFour') {
   data = sortName('timeOfUseOfTransport', true, data)
-} else if(switchArrow.arrow == 'myAppFour-default') {
+} else if(switchArrow.arrow == 'appFour-default') {
   data = sortName('timeOfUseOfTransport', false, data)
 }
 
-if(switchArrow.arrow == 'myAppFive') {
-  data = sortName('status', true, data)
-} else if(switchArrow.arrow == 'myAppFive-default') {
-  data = sortName('status', false, data)
+if(switchArrow.arrow == 'appNine') {
+  data = sortName('applicationInitiator', true, data)
+} else if(switchArrow.arrow == 'appNine-default') {
+  data = sortName('applicationInitiator', false, data)
 }
 
-if(switchArrow.arrow == 'myAppSix') {
-  data = sortName('driverPhone', true, data)
-} else if(switchArrow.arrow == 'myAppSix-default') {
-  data = sortName('driverPhone', false, data)
-}
-
-if(switchArrow.arrow == 'myAppSeven') {
-  data = sortName('marc', true, data)
-} else if(switchArrow.arrow == 'myAppSeven-default') {
-  data = sortName('marc', false, data)
-}
-
-if(switchArrow.arrow == 'myAppEight') {
-  data = sortName('view', true, data)
-} else if(switchArrow.arrow == 'myAppEight-default') {
-  data = sortName('view', false, data)
-}
-
-if(switchArrow.arrow == 'myAppTen') {
+if(switchArrow.arrow == 'appTen') {
   data = sortName('namePassengers', true, data)
-} else if(switchArrow.arrow == 'myAppTen-default') {
+} else if(switchArrow.arrow == 'appTen-default') {
   data = sortName('namePassengers', false, data)
 }
 
-if(switchArrow.arrow == 'myAppEleven') {
+if(switchArrow.arrow == 'appEleven') {
   data = sortName('submissionAddress', true, data)
-} else if(switchArrow.arrow == 'myAppEleven-default') {
+} else if(switchArrow.arrow == 'appEleven-default') {
   data = sortName('submissionAddress', false, data)
 }
 
-if(switchArrow.arrow == 'myAppTwelve') {
+if(switchArrow.arrow == 'appTwelve') {
   data = sortName('arrivalAddress', true, data)
-} else if(switchArrow.arrow == 'myAppTwelve-default') {
+} else if(switchArrow.arrow == 'appTwelve-default') {
   data = sortName('arrivalAddress', false, data)
 }
 
-if(switchArrow.arrow == 'myAppThirteen') {
+if(switchArrow.arrow == 'appThirteen') {
   data = sortName('purposeOfTheTrip', true, data)
-} else if(switchArrow.arrow == 'myAppThirteen-default') {
+} else if(switchArrow.arrow == 'appThirteen-default') {
   data = sortName('purposeOfTheTrip', false, data)
 }
 
-if(switchArrow.arrow == 'myAppFourteen') {
+if(switchArrow.arrow == 'appFourteen') {
   data = sortName('comment', true, data)
-} else if(switchArrow.arrow == 'myAppFourteen-default') {
+} else if(switchArrow.arrow == 'appFourteen-default') {
   data = sortName('comment', false, data)
 }
 
@@ -294,13 +275,11 @@ if(switchArrow.arrow == 'myAppFourteen') {
               arr.push(`${namePassengers[`${key}`]}:${passengersPhone[`passengersPhone-${oneStr}`]}`)
             }
           }
-
           return(
-            <div key={index} className="dispUnloadingData myApplicationsUnloadingData-row">
+            <div key={index} className="dispUnloadingData">
               <div className="applicationsUnloadingData-margin-checkbox">
-                <input type="checkbox" defaultChecked={false} name={`applicationsUnloadingData-checkbox${index}`} onChange={() => checkboxDataChange(event, data[`${index}`])}/>
               </div>
-              <div className="applicationsUnloadingData-namber" onClick={() => dispCardOpenHide(data[`${index}`])}>
+              <div className="applicationsUnloadingData-namber">
                 <div>{index + 1}</div>
               </div>
               <div className="applicationsUnloadingData-dateOfApplication" >
@@ -315,23 +294,11 @@ if(switchArrow.arrow == 'myAppFourteen') {
               <div className="applicationsUnloadingData-travelTime">
                 <div>{item.timeOfUseOfTransport} ч</div>
               </div>
-              <div className="applicationsUnloadingData-status">
-                <StatusApplications status={item.status}/>
-              </div>
-              <div className="applicationsUnloadingData-driverPhone">
+              <div className="applicationsUnloadingData-applicationInitiator">
                 <div className="applicationsUnloadingData-driverPhone-flex">
-                  <div>{item.driverPhone ? item.driverPhone.split('-')[0] : ''}</div>
-                  <div>{item.driverPhone ? item.driverPhone.split('-')[1] : ''}</div>
+                  <div>{item.applicationInitiator}</div>
+                  <div>{item.initiatorPhone}</div>
                 </div>
-              </div>
-              <div className="applicationsUnloadingData-auto">
-                <div className="applicationsUnloadingData-driverPhone-flex">
-                  <div>{item.marc}</div>
-                  <div>{item.gossNumber}</div>
-                </div>
-              </div>
-              <div className="applicationsUnloadingData-view">
-                <div>{item.view}</div>
               </div>
 
               <div className="applicationsUnloadingData-passengerPhone">
@@ -349,27 +316,6 @@ if(switchArrow.arrow == 'myAppFourteen') {
                   }
                 </div>
               </div>
-
-             {/* { arr.length > 0 ?
-              arr.map((itemObj, ind) => {
-                return (
-                  <div key={ind} className="applicationsUnloadingData-passengerPhone">
-                    <div className="applicationsUnloadingData-driverPhone-flex">
-                      <div>{itemObj.split(':')[0]}</div>
-                      <div>{itemObj.split(':')[1]}</div>
-                    </div>
-                  </div>
-                )
-              })
-              :
-              <div className="applicationsUnloadingData-passengerPhone">
-                <div className="applicationsUnloadingData-driverPhone-flex">
-                  <div></div>
-                  <div></div>
-                </div>
-              </div>
-             } */}
-              
               <div className="applicationsUnloadingData-shippingAddress">
                 <div>{item.submissionAddress}</div>
               </div>

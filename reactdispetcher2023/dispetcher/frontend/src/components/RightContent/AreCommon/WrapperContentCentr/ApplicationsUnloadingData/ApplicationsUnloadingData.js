@@ -7,12 +7,76 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function ApplicationsUnloadingData({data, count, dispCardOpenHide, setDispCardEdit, setUploadingData, sort, switchArrow, setDataExcel}) {
   const [checkboxData, setCheckboxData] = useState({})
   let cancelApplications = useSelector(cancelApplicationsObj)
-  
+ 
   useEffect(() => {
     setUploadingData(checkboxData)
     setDataExcel(n => [...data])
+
+    if(sort.statusApplications && sort.statusApplications != 'Выбрать статус') {
+      data = data.map((item, index) => {
+        if(item.status == sort.statusApplications) return item
+      })
+  
+      data = data. filter(Boolean)
+      setDataExcel(n => [...data])
+    }
+
+    if(sort.calendarAppCreate && sort.calendarAppCreate != '') {
+      let arrDate = []
+      let todayMilli = Number(new Date(sort.calendarAppCreateOne).getTime())
+      let todayLastMilli = Number(new Date(sort.calendarAppCreate).getTime())
+  
+      if(/*todayMilli <= todayLastMilli*/ true) {
+        for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+          arrDate.push(new Date(i).toLocaleDateString())
+        }
+  
+        if(!(arrDate == [])) {
+          arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+        }
+      }
+  
+      data = data.map((item, index) => {
+        for(let i = 0; i < arrDate.length; i++) {
+          if((item.dateOfCreation).includes(arrDate[i])) return item
+        }
+      })
+  
+      data = data. filter(Boolean)
+      setDataExcel(n => [...data])
+    }
+
+    if(sort.calendarAppInnings && sort.calendarAppInnings != '') {
+      let arrDate = []
+      let todayMilli = Number(new Date().getTime())
+      let todayLastMilli = Number(new Date(sort.calendarAppInnings).getTime())
+  
+      if(todayMilli <= Number(new Date(sort.calendarAppInningsOne).getTime())) {
+        todayMilli = Number(new Date(sort.calendarAppInningsOne).getTime())
+      }
+  
+      if(/*todayMilli <= todayLastMilli*/ true) {
+        for(let i = todayMilli; i <= todayLastMilli; i = i + 86400000) {
+          arrDate.push(new Date(i).toLocaleDateString())
+        }
+  
+        if(!(arrDate == [])) {
+          arrDate.push(new Date(todayLastMilli).toLocaleDateString())
+        }
+  
+      }
+  
+      data = data.map((item, index) => {
+        for(let i = 0; i < arrDate.length; i++) {
+          if((item.dateOfApplication).includes(arrDate[i])) return item
+        }
+      })
+  
+      data = data. filter(Boolean)
+      setDataExcel(n => [...data])
+    }
     
-  }, [checkboxData])
+  }, [checkboxData, sort.statusApplications, sort.calendarAppCreate, sort.calendarAppInnings])
 
   if(sort.statusApplications && sort.statusApplications != 'Выбрать статус') {
     data = data.map((item, index) => {

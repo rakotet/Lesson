@@ -15,8 +15,10 @@ import { url } from "../../../core/core"
 import Ellipsis from "../AreCommon/Ellipsis/Ellipsis"
 import ButtonCustom from "../AreCommon/ButtonCustom/ButtonCustom"
 import ShowMore from "../AreCommon/ShowMore/ShowMore"
+import clickTableToExcel from "../../../core/clickTableToExcel"
 
 export default function MyApplications({setTabName}) {
+  const [dataExcel, setDataExcel] = useState([])
   const [dataInput, setDataInput] = useState({})
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
   const [backDisp, setBackDisp] = useState(1)
@@ -205,6 +207,60 @@ export default function MyApplications({setTabName}) {
     }
   }
   
+  function htmlTable(arr) {
+    let str = ''
+
+    function passangers(namePassengers, passengersPhone, numberOfPassengers) {
+      if(namePassengers) {
+        let str = ''
+        let namePass = JSON.parse(namePassengers)
+        let passPhone = ''
+        if(passengersPhone) {
+          passPhone = JSON.parse(passengersPhone)
+        }
+
+        for(let key in namePass) {
+          str += (namePass[key] ? namePass[key] : '') + ' ' + (passPhone[`passengersPhone-${key.toString().slice(-1)}`] ? passPhone[`passengersPhone-${key.toString().slice(-1)}`] : '') + '; '
+        }
+
+        return str
+
+      } else {
+        return '-'
+      }
+    }
+
+    for(let i = 0; i < arr.length; i++) {
+      str += 
+      `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${arr[i]['dateOfCreation']}</td>
+        <td>${arr[i]['dateOfApplication'] + ' - ' + arr[i]['submissionTime']}</td>
+        <td>${arr[i]['timeOfUseOfTransport'] + 'ч'}</td>
+        <td>${arr[i]['status']}</td>
+        <td>${arr[i]['driverPhone'] ? arr[i]['driverPhone'] : '-'}</td>
+        <td>${(arr[i]['marc'] ? arr[i]['marc'] : '') + ' ' + (arr[i]['gossNumber'] ? arr[i]['gossNumber'] : '-')}</td>
+        <td>${arr[i]['view'] ? arr[i]['view'] : '-'}</td>
+        <td>${passangers(arr[i]['namePassengers'], arr[i]['passengersPhone'], arr[i]['numberOfPassengers'])}</td>
+        <td>${arr[i]['submissionAddress']}</td>
+        <td>${arr[i]['arrivalAddress']}</td>
+        <td>${arr[i]['purposeOfTheTrip']}</td>
+        <td>${arr[i]['comment'] ? arr[i]['comment'] : '-'}</td>
+      </tr>
+      `
+    }
+
+    return (
+      `
+        <table>
+          <tbody>
+           ${str}
+          </tbody>
+        </table>
+      `
+    )
+  }
 
   return(
     <>
@@ -228,7 +284,7 @@ export default function MyApplications({setTabName}) {
               <div className="applications-margin">
                <Datepicker placeHolder={'Период подачи'} name={'calendarAppInnings'} dataInputOnChange={dataInputOnChange}/>
               </div>
-              <DownloadReport />
+              <DownloadReport clickDownload={clickTableToExcel('Таблица', 'Таблица.xls', htmlTable, dataExcel)}/>
             </div>
             <div>
               <ListDataNumber setShowMoreActiv={setShowMoreActiv}/>
@@ -238,7 +294,7 @@ export default function MyApplications({setTabName}) {
             <MyApplicationsRowNameWrapper checkNumber={Object.keys(uploadingData).length} setSwitchArrow={setSwitchArrow}/>
             {
             (dispCardEdit && cancelApplicationsOpen == false) ?
-            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow}/>
+            <WrapperContentCentr label="Записей не найдено. Добавьте новую заявку" actionLk={actionLk.getMyApplicationsData} count={showMoreActiv} companyCardOpenHide={dispCardOpenHide} setDispCardEdit={editDisp} backDisp={backDisp} showMoreActiv={showMoreActiv} trashDisp={trashDisp} refreshData={refresh} setUploadingData={setUploadingData} dispCardEditNoUpdatePage={dispCardEdit} sort={dataInput} switchArrow={switchArrow} setDataExcel={setDataExcel}/>
             : ''
             }
           </div>

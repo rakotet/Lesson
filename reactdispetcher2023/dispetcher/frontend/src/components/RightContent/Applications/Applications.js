@@ -319,24 +319,44 @@ export default function Applications({setTabName}) {
   function htmlTable(arr) {
     let str = ''
 
+    function passangers(namePassengers, passengersPhone, numberOfPassengers) {
+      if(namePassengers) {
+        let str = ''
+        let namePass = JSON.parse(namePassengers)
+        let passPhone = ''
+        if(passengersPhone) {
+          passPhone = JSON.parse(passengersPhone)
+        }
+
+        for(let key in namePass) {
+          str += (namePass[key] ? namePass[key] : '') + ' ' + (passPhone[`passengersPhone-${key.toString().slice(-1)}`] ? passPhone[`passengersPhone-${key.toString().slice(-1)}`] : '') + '; '
+        }
+
+        return str
+
+      } else {
+        return '-'
+      }
+    }
+
     for(let i = 0; i < arr.length; i++) {
       str += 
       `
       <tr>
         <td>${i + 1}</td>
         <td>${arr[i]['dateOfCreation']}</td>
-        <td>${arr[i]['dateOfApplication'] + ' ' + arr[i]['submissionTime']}</td>
-        <td>${arr[i]['timeOfUseOfTransport']}</td>
+        <td>${arr[i]['dateOfApplication'] + ' - ' + arr[i]['submissionTime']}</td>
+        <td>${arr[i]['timeOfUseOfTransport'] + 'ч'}</td>
         <td>${arr[i]['status']}</td>
-        <td>${arr[i]['driverPhone']}</td>
-        <td>${arr[i]['marc'] + ' ' + arr[i]['gossNumber']}</td>
-        <td>${arr[i]['view']}</td>
+        <td>${arr[i]['driverPhone'] ? arr[i]['driverPhone'] : '-'}</td>
+        <td>${(arr[i]['marc'] ? arr[i]['marc'] : '') + ' ' + (arr[i]['gossNumber'] ? arr[i]['gossNumber'] : '-')}</td>
+        <td>${arr[i]['view'] ? arr[i]['view'] : '-'}</td>
         <td>${arr[i]['applicationInitiator'] + ' ' + arr[i]['initiatorPhone']}</td>
-        <td>${arr[i]['namePassengers'] + ' ' + arr[i]['passengersPhone']}</td>
+        <td>${passangers(arr[i]['namePassengers'], arr[i]['passengersPhone'], arr[i]['numberOfPassengers'])}</td>
         <td>${arr[i]['submissionAddress']}</td>
         <td>${arr[i]['arrivalAddress']}</td>
         <td>${arr[i]['purposeOfTheTrip']}</td>
-        <td>${arr[i]['comment']}</td>
+        <td>${arr[i]['comment'] ? arr[i]['comment'] : '-'}</td>
       </tr>
       `
     }
