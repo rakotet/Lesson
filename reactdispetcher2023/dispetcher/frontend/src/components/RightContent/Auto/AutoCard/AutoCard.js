@@ -16,7 +16,7 @@ export default function AutoCard({dispCardOpen, dispCardOpenHide, dispCardData})
   const [dataInput, setDataInput] = useState({})
   const [dataExcel, setDataExcel] = useState([])
   const [switchArrow, setSwitchArrow] = useState({arrow: ''})
-console.log(arrGroup)
+
   function IsJsonString(str) {
     try {
         JSON.parse(str);

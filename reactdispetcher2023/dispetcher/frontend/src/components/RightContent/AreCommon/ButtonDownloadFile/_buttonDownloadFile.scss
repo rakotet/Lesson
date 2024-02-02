@@ -1,9 +1,28 @@
 .buttonDownloadFile-wrap {
+  position: relative;
   width: 190px !important;
   height: 40px !important;
 
-  input {
+  input[type=submit] {
     display: none;
+  }
+
+  form, input[type=file] {
+    width: 1565px !important;
+    height: 215px !important;
+    border: 1px solid #0078A8;
+    border-radius: 10px;
+    gap: 10px;
+    background-color: #F5F9FB;
+    position: absolute;
+    opacity: 0;
+    display: block;
+    bottom: -57px;
+    cursor: pointer;
+  }
+
+  input[type=file] {
+    bottom: -1px;
   }
 
   label {
