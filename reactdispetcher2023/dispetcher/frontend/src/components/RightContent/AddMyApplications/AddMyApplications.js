@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activRightContent, setActiveRow, setSelectSubdivision, setUpdateLeftContent, userDataStore, setNoticeOfApplicationData } from "../../store/reduser";
 import { url } from '../../../core/core';
 import { arrDate } from '../../../core/core';
+import { arrPurposeTrip } from '../../../core/core';
+import { arrCarType } from '../../../core/core';
 import dateApplicationsHours from "../../../core/dateApplicationsHours";
 import AddRowNameSelect from "../AreCommon/AddRowNameSelect/AddRowNameSelect";
 
@@ -283,12 +285,12 @@ export default function AddMyApplications() {
         </div>
         <div className="addDisp-wrap">
           <AddRowNameInputArrow dataName={'Время использования транспорта (часы)*'} placeholder={''} name={'timeOfUseOfTransport'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={13} value={1} setArrPassengers={() => {}} minutes={true}/>
-          <AddRowNameSelect dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={['Подписание документа', 'Что то еще']}/>
+          <AddRowNameSelect dataName={'Цель поездки*'} placeholder={'Выберите значение'} name={'purposeOfTheTrip'} dataInputOnChange={dataInputOnChange} arrData={arrPurposeTrip}/>
           <AddRowNameInput dataName={'Инициатор заявки*'} placeholder={''} name={'applicationInitiator'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userName}/>
           <AddRowNameInput dataName={'Должность'} placeholder={''} name={'jobTitle'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.jobTitle}/>
           <AddRowNameInput dataName={'Подразделение'} placeholder={''} name={'subdivision'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.userSubdivision}/>
           <AddRowNameInput dataName={'Телефон инициатора*'} placeholder={''} name={'initiatorPhone'} dataInputOnChange={dataInputOnChange} readOnli={true} defaultValue={userData.telephone}/>
-          <AddRowNameSelect dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={['Бизнес класс', 'Средний класс', 'Низкий класс']}/>
+          <AddRowNameSelect dataName={'Класс (тип) автомобиля*'} placeholder={'Выберите значение'} name={'carClass'} dataInputOnChange={dataInputOnChange} arrData={arrCarType}/>
           <AddRowNameInputArrow dataName={'Количество пассажиров'} placeholder={''} name={'numberOfPassengers'} dataInputOnChange={dataInputOnChangeDate} defaultValue={0} number={5} value={0} setArrPassengers={setArrPassengers}/>
           {
             arrPassengers.map((item, index) => {

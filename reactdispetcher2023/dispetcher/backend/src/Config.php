@@ -5,9 +5,12 @@
   session_start(); // запускаем сессию
 
   define('DB_HOST', '127.0.0.1');
-  define('DB_USER', 'root'); 
-  define('DB_PASSWORD', ''); 
-  define('DB_NAME', 'disp'); 
+  //define('DB_USER', 'root'); 
+  define('DB_USER', 'logistics'); 
+  //define('DB_PASSWORD', ''); 
+  define('DB_PASSWORD', 'bH5hD9bK7vuD1h'); 
+  //define('DB_NAME', 'disp'); 
+  define('DB_NAME', 'logistics'); 
   define('DB_PORT', '3306'); 
   define('DB_PREFIX', 'lib_'); 
 
