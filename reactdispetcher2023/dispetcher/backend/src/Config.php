@@ -1,27 +1,27 @@
 <?php
-  ini_set('error_reporting', E_ALL); // записывать абсолютно все ошибки в лог файл
-  ini_set('display_errors', 1); // отображать все ошибки на экране (после выкладки на хостинг изменить на 0 что бы все ошибки писались в файл но не отображались)
+  ini_set('error_reporting', E_ALL); 
+  ini_set('display_errors', 1); 
 
-  session_start(); // запускаем сессию
+  session_start();
 
   define('DB_HOST', '127.0.0.1');
-  //define('DB_USER', 'root'); 
-  define('DB_USER', 'logistics'); 
-  //define('DB_PASSWORD', ''); 
-  define('DB_PASSWORD', 'bH5hD9bK7vuD1h'); 
-  //define('DB_NAME', 'disp'); 
-  define('DB_NAME', 'logistics'); 
+  define('DB_USER', 'root'); 
+  //define('DB_USER', 'logistics'); 
+  define('DB_PASSWORD', ''); 
+  //define('DB_PASSWORD', 'bH5hD9bK7vuD1h'); 
+  define('DB_NAME', 'disp'); 
+  //define('DB_NAME', 'logistics'); 
   define('DB_PORT', '3306'); 
   define('DB_PREFIX', 'lib_'); 
 
-  define('SECRET', 'aDr71Jfu8'); // секретный ключ который будет добавляться ко всем паролям, что бы не было возможности вычислить их хэш (на реальном проэкте нужно не 123456 а что то вроде dfkdjf478uh)
+  define('SECRET', 'aDr71Jfu8'); 
 
-  define('DATE_FORMAT', 'd.m.Y H:i:s'); // константа формат отображения времени
-  define('DURATION_RENT', 86400 * 14); // две недели в секундах
+  define('DATE_FORMAT', 'd.m.Y H:i:s'); 
+  define('DURATION_RENT', 86400 * 14); 
 
-  define('USER', 0); // константы для определения прав пользователя (что бы не писать 0 и 1 в коде, "Магические числа" )
+  define('USER', 0); 
   define('ADMIN', 1);
 
-  set_include_path(get_include_path().PATH_SEPARATOR.'src'); // путь для автоподключения других наших файлов проэкта
-  spl_autoload_register(); // включаем автоподгрузку файлов
+  set_include_path(get_include_path().PATH_SEPARATOR.'src'); 
+  spl_autoload_register(); 
 ?>

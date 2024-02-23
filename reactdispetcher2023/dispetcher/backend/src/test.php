@@ -1,9 +1,13 @@
 <?php
-  require_once "./Base.php";
-  $str = '{"trashApplicationsYes":["33ва",{"17.11.2023":{"10:00":"11:00}"}}]}';
+  // if (isset($_COOKIE["sso_session"])) {
+  //   echo $_COOKIE["sso_session"];
+  // } else {
+  //   echo 'no';
+  // }
 
-  $arr = json_decode($str, true);
-  //print_r($arr);
+  // $result = file_get_contents('http://sso.eurochem.ru/user_info?login=MatlashevskiiAA@suek.ru');
+  // echo $result;
 
-  echo $db->trashApplicationsYes('auto', '`gossNumber` = ?', $arr['trashApplicationsYes']);
+  $result = file_get_contents('http://sso.eurochem.ru/user_info?login=EmelenchukEN@suek.ru');
+  echo $result;
 ?>
