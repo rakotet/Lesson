@@ -26,6 +26,11 @@
     echo json_encode($db->getDataUser('users', '`id` = ?', [$dataFront['userId']]));
   } 
 
+  if(isset($dataFront['cookies'])) {
+    $result = isset($_COOKIE['sso_session']) ? $_COOKIE['sso_session'] : 'cookiesFalse';
+    echo json_encode($result);
+  } 
+
   if(isset($dataFront['dataInputGroup'])) {
     echo json_encode($db->addGroup('group', $dataFront['dataInputGroup']['nameGroup'], $dataFront['dataInputGroup']['nameGroupSupervisor'], json_encode($dataFront['dataInputGroup']['divisions'], JSON_UNESCAPED_UNICODE)));
   }

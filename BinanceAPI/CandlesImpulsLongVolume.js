@@ -230,7 +230,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
       }
 
       ///////////
-      if((impulsPercent >= 13)) {
+      if((impulsPercent >= 14)) {
         if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
         if(!coinOpenPamp[coin][8]) coinOpenPamp[coin][8] = 0
           if(coinOpenPamp[coin][8] == 0) {

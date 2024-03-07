@@ -3,10 +3,11 @@
 
   $title = 'Авторизация';
 
-  if($auth_user) {
-    header('Location: /page/app');
-  } else {
+  if($auth_user || $cookie_result) {
     $content = 'html/authorization';
+    
+  } else {
+    header("Location: ".SSO);
   }
   
 
