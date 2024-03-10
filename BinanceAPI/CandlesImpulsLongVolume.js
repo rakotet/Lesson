@@ -41,7 +41,7 @@ let i = 0
 /////////////////////// Управление ботом
 const numberMaxWork = 1 // количество одновременных сделок (1 - 5)                   ++++++++++++
 const numberOneTrade = 100 // сумма одной сделки (10 - 1000)                          ++++++++++++
-const percentPamp = 5 // Процент пампа первой свечи при котором начинаем слежение    ++++++++++++
+const percentPamp = 10 // Процент пампа первой свечи при котором начинаем слежение    ++++++++++++
 const percentImpulsConst = 15 // % импульса при котором начинаем слежение            ++++++++++++
 const percentDamp = 1 // Процент дампа при котором начинаем слежение
 const plusProfitPercent = 0.20 // процент от цены входа до первой цели(23) по фибо
@@ -230,7 +230,7 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
       }
 
       ///////////
-      if((impulsPercent >= 5)) {
+      if((impulsPercent >= 14)) {
         if(!coinOpenPamp[coin]) coinOpenPamp[coin] = [0]
         if(!coinOpenPamp[coin][8]) coinOpenPamp[coin][8] = 0
           if(coinOpenPamp[coin][8] == 0) {
