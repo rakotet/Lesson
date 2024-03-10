@@ -1,0 +1,59 @@
+.main {
+  background-color: #1B1B1B;
+}
+
+.navbar-toggler-icon {
+  background-image: url("../image/burger.png");
+}
+
+.list-a {
+  font-family: Noto Sans;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #F4F1E9;
+}
+
+.list-a:hover {
+  color: #bebbb1;
+}
+
+.img-main:hover {
+  cursor: pointer;
+}
+
+.quote-main {
+  width: 310px;
+  font-family: Noto Sans;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #F4F1E9;
+}
+
+
+
+@media (max-width: 1199px) { 
+  .main-hide {
+    display: none !important;
+  }
+
+  .pl-main {
+    padding-left: 0 !important;
+  }
+
+  .pr-main {
+    padding-right: 0 !important;
+    padding-top: 10px;
+    padding-bottom: 0 !important;
+  }
+
+  .pb-main {
+    padding-bottom: 0 !important;
+  }
+}
+
