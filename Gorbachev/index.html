@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link href="./css/style.css" rel="stylesheet">
-  <title>Main</title>
+  <title>Home</title>
 </head>
 <body>
-  <div class="container-fluid main p-0 pt-3">
+  <div class="container-fluid main-bc pt-3">
     <div class="row pb-5">
       <div class="col-2 p-0 d-flex justify-content-center main-hide">
         <a class="navbar-brand" href="/">
@@ -43,24 +43,24 @@
           </div>
         </nav>
       </div>
-      <div class="col-4 col-xl-2 pb-4 pb-main d-flex align-items-center justify-content-end justify-content-xl-center">
+      <div class="col-5 col-xl-2 pb-4 pb-main d-flex align-items-center justify-content-end justify-content-xl-center">
         <div class="px-4 ps-0">
           <img class="img-main" src="./image/search.png" alt="">
         </div>
-        <div>
+        <div class="main-hide">
           <img class="img-main" src="./image/language.png" alt="">
         </div>
       </div>
     </div>
   </div>
 
-  <div class="container-fluid main p-0 pt-3">
-    <div class="d-flex justify-content-center flex-wrap">
-      <div class="d-flex ps-5 justify-content-center flex-grow-1 pl-main">
-        <img class="img-fluid ps-5 pl-main" src="./image/fas_gorbachev.png" alt="">
+  <div class="container-fluid main-bc">
+    <div class="d-flex justify-content-center position-relative flex-wrap">
+      <div class="d-flex justify-content-center w-100 pl-main">
+        <img class="img-fluid pl-main" src="./image/fas_gorbachev.png" alt="">
       </div>
-      <div class="d-flex align-items-end pb-5 pe-5 pr-main">
-        <div class="pb-5 pe-5 pr-main">
+      <div class="d-flex align-items-end pb-5 pe-5 pbm-0 position-absolute position-main bottom-0 end-0">
+        <div class="pb-5 pe-5 pbm-1 position-main">
           <div>
             <p class="quote-main">
               XXI век станет либо веком тотального обострения смертоносного кризиса, либо же веком морального очищения и духовного выздоровления человечества. Его всестороннего возрождения. Убежден, все мы — все разумные политические силы, все духовные и идейные течения, все конфессии — призваны содействовать этому переходу, победе человечности и справедливости. Тому, чтобы XXI век стал веком возрождения, веком Человека.
@@ -73,8 +73,404 @@
       </div>
     </div>
   </div>
+
+  <div class="container-fluid news-bg">
+    <div class="d-flex flex-column">
+      <a class="d-flex flex-row news-one align-items-center" href="">
+        <h1 class="mb-0">НОВОСТИ</h1>
+        <img class="ps-2" src="./image/chevron-right.png" alt="">
+      </a>
+      <div class="d-flex flex-row flex-shrink-0 overflow-auto news-list">
+        <a class="text-decoration-none" href="">
+          <div class="news-card">
+            <h3>16 октября 2023</h3>
+            <h2>Хроника деятельности М.С.Горбачева 1985-1991</h2>
+            <p>В разделе «Хроника деятельности М.С.Горбачева 1985-1991» публикуем события ноября 1985 года</p>
+          </div>
+        </a>
+        <a class="text-decoration-none" href="">
+          <div class="news-card">
+            <h3>23 сентября 2023</h3>
+            <h2>Социал-демократический проект</h2>
+            <p>В разделе Социал-демократический проект публикуем очередную главу «К партии демократического социализма».</p>
+          </div>
+        </a>
+        <a class="text-decoration-none" href="">
+          <div class="news-card">
+            <h3>16 октября 2023</h3>
+            <h2>Второй номер журнала «Горби»</h2>
+            <p>Вышел в свет второй номер журнала «Горби». Его главная тема — «Рейкьявик — 1986».</p>
+          </div>
+        </a>
+        <a class="text-decoration-none" href="">
+          <div class="news-card">
+            <h3>23 сентября 2023</h3>
+            <h2>Социал-демократический проект</h2>
+            <p>В разделе Социал-демократический проект публикуем очередную главу «К партии демократического социализма».</p>
+          </div>
+        </a>
+        <a class="text-decoration-none" href="">
+          <div class="news-card">
+            <h3>16 октября 2023</h3>
+            <h2>Хроника деятельности М.С.Горбачева 1985-1991</h2>
+            <p>В разделе «Хроника деятельности М.С.Горбачева 1985-1991» публикуем события ноября 1985 года</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid p-0">
+    <div class="position-relative three">
+      <img class="three-img" src="./image/three.jpg" alt="">
+      <div class="d-flex w-100 position-absolute top-0 end-0">
+        <div class="row w-100">
+          <div class="col-1 col-xl-6"></div>
+          <div class="col-9 col-xl-6">
+            <h1 class="three-h1">горбачев. перстройка. итоги.</h1>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading1">
+                  <button class="accordion-button three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    гласность
+                  </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Свобода слова. Свобода печати и отмена цензуры. Свобода совести. Свобода собраний. Свобода выезда из страны.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading2">
+                  <button class="accordion-button collapsed three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                    права человека
+                  </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Прекращение преследований за инакомыслие и политические взгляды. Освобождение политических заключенных.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading3">
+                  <button class="accordion-button collapsed three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                    возрождение общественной и политической жизни
+                  </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Демонтаж идейных основ тоталитаризма. Политическая реформа. Отмена монополии КПСС на власть. Появление независимых общественных организаций, неформальных движений и политических партий. Альтернативные выборы.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading4">
+                  <button class="accordion-button collapsed three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                    начало построения правового государства
+                  </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Создание системы разделения властей. Возрождение парламентаризма. Независимость судов.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading5">
+                  <button class="accordion-button collapsed three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                    культурное раскрепощение
+                  </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Возвращение запрещенных произведений искусства и забытых имен. Открытие доступа гражданам и исследователям к архивам.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading6">
+                  <button class="accordion-button collapsed three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                    начало построения правового государства
+                  </button>
+                </h2>
+                <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Начало разгосударствления экономики. Создание компаний и предприятий, независимых от государства. Первые шаги приватизации.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item three-accordion">
+                <h2 class="accordion-header three-accordion" id="heading7">
+                  <button class="accordion-button collapsed three-accordion three-h2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                    новое мышление и прекращение холодной войны
+                  </button>
+                </h2>
+                <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7" data-bs-parent="#accordionExample">
+                  <div class="accordion-body three-accordion three-h3">
+                    Нормализация отношений с США, Европой, Китаем. Вывод войск из Афганистана. Прекращение региональных конфликтов. Предоставление свободы выбора странам Центральной и Восточной Европы. Мирное объединение Германии. Отодвинута угроза ядерной войны. Прекращение гонки вооружений, радикальное сокращение арсеналов ядерного оружия.
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid p-5 four">
+    <a class="d-flex flex-row four-row align-items-center text-decoration-none" href="">
+      <h1 class="three-h1">хроника деятельности горбачева</h1>
+      <img src="./image/Vector1.png" alt="">
+    </a>
+    <div class="d-flex flex-row four-year-list justify-content-between">
+      <div class="four-year">1985</div>
+      <div class="four-year">1986</div>
+      <div class="four-year">1987</div>
+      <div class="four-year">1988</div>
+      <div class="four-year">1989</div>
+      <div class="four-year">1990</div>
+      <div class="four-year">1991</div>
+    </div>
+
+    <div class="slidecontainer">
+      <input type="range" min="1" max="100" value="1" class="slider" id="myRange" disabled>
+    </div>
+
+    <div class="position-relative">
+      <div class="position-absolute top-50 start-100 translate-middle d-flex justify-content-center align-items-center four-item-btn four-item-btn-right four-hide">
+        <img class="four-item-btn-img" src="./image/Vector4.png" alt="">
+      </div>
+      <div class="position-absolute top-50 start-0 translate-middle d-flex justify-content-center align-items-center four-item-btn four-item-btn-left four-hide">
+        <img class="four-item-btn-img" src="./image/Vector5.png" alt="">
+      </div>
+      <div class="d-flex flex-row four-item-list ">
+        <ul class="four-item-list-ul d-flex flex-row" style="margin-left: 0px;">
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame1.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame2.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame3.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame4.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame5.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame1.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="four-item d-flex flex-column flex-shrink-0">
+              <a  href="">
+                <img class="img-fluid" src="./image/4/Frame1.png" alt="">
+              </a>
+              <a class="text-decoration-none" href="">
+                <div class="four-item-h1">
+                  <span>Предисловие</span>
+                </div>
+              </a>
+              <div class="four-item-p">
+                <span>«Он был скромен, но осознавал свое историческое величие!» Беттина Шефер читает отрывки из своей книги "Михаил Горбачев: как он изменил нашу жизнь".</span>
+              </div>
+            </div>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="container-fluid five">
+    <div class="row five-row">
+      <div class="col-12 col-xl-5 order-2 order-xl-1 p-0 five-row">
+        <a href="" class="d-flex position-relative text-decoration-none">
+          <img class="five-img" src="./image/5/2.jpg" alt="">
+          <h2 class="position-absolute bottom-0 end-0">
+            Биография
+          </h2>
+        </a>
+        <a href="" class="d-flex position-relative text-decoration-none">
+          <img class="five-img" src="./image/5/3.png" alt="">
+          <h2 class="position-absolute bottom-0 end-0">
+            Виртуальный музей
+          </h2>
+        </a>
+        <a href="" class="d-flex position-relative text-decoration-none">
+          <img class="five-img" src="./image/5/4.jpg" alt="">
+          <h2 class="position-absolute bottom-0 end-0">
+            Статьи и выступления
+          </h2>
+        </a>
+        <a href="" class="d-flex position-relative text-decoration-none">
+          <img class="five-img" src="./image/5/5.jpg" alt="">
+          <h2 class="position-absolute bottom-0 end-0">
+            Статьи и выступления
+          </h2>
+        </a>
+      </div>
+      <a href="" class="d-flex col-12 col-xl-7 order-1 order-xl-2 p-0 position-relative text-decoration-none five-img-right">
+        <img class="five-img five-img-right" src="./image/5/1.jpg" alt="">
+        <h2 class="position-absolute bottom-0 start-0">
+          Памяти М.С. Горбачева 2.03.1931 – 30.08.2022
+        </h2>
+      </a>
+    </div>
+  </div>
+
+  <div class="container-fluid p-5 six">
+
+    <a class="d-flex flex-row four-row align-items-center text-decoration-none" href="">
+      <div class="three-h1 six-h1">книги михаила горбачева</div>
+      <img src="./image/6/Vector1.png" alt="">
+    </a>
+
+    <div class="d-flex flex-row six-books position-relative" id="carousel">
+      <div class="six-books-wrap">
+        <a class="wwkt" href="">
+          <img src="./image/6/1.png" id="item-1" />
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/3.png" id="item-2" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/5.png" id="item-3" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/7.png" id="item-4" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/9.png" id="item-5" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/6.png" id="item-6" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/7.png" id="item-7" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/8.png" id="item-8" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/9.png" id="item-9" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/1.jpg" id="item-10" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/2.png" id="item-11" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/3.png" id="item-12" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/1.jpg" id="item-13" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/5.png" id="item-14" />
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/8.png" id="item-15" />
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/6.png" id="item-16" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/4.png" id="item-17" /> 
+        </a>
+        <a class="wwkt" href="">
+          <img src="./image/6/2.png" id="item-18" /> 
+        </a>
+      </div>
+    </div>
+  </div>
+
+
   
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" src="js/jquery.waterwheelCarousel.min.js"></script>
+  <script src="./js/home.js"></script>
 </body>
 </html>
