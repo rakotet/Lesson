@@ -148,15 +148,6 @@
   .one-search-row  {
     width: 70%;
   }
-
-  /* .one-col-3 {
-    width: 100%;
-  }
-
-  .one-row {
-    display: flex;
-    flex-direction: column;
-  } */
 }
 
 @media (max-width: 1199px) { 
@@ -193,12 +184,26 @@
   }
 }
 
+.two-sig {
+  left: 70%;
+}
+
+@media (max-width: 1199px) { 
+  .two-sig {
+    left: auto;
+  }
+}
+
 /* */
 
 .news-bg {
   background-color: #F4F1E9;
   padding: 65px !important;
   padding-left: 5% !important;
+}
+
+.news-list {
+  overflow: hidden;
 }
 
 .news-one {
@@ -211,12 +216,11 @@
   height: 48px;
 }
 
-.news-one h1 {
+.news-one-h1 {
   font-family: Molot;
   font-size: 52px;
   font-weight: 400;
   line-height: 61px;
-  letter-spacing: 0em;
   text-align: left;
   color: #1B1B1B;  
 }
@@ -228,11 +232,25 @@
   height: 344px !important;
   padding: 24px;
   padding-top: 32px;
-  margin-right: 25px;
   flex-shrink: 0;
 }
 
-.news-card h3 {
+.news-card-img {
+  margin-right: 25px;
+}
+
+.news-card-img img {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  height: 344px;
+}
+
+.news-card-radius-no {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.news-card-h3 {
   font-family: Noto Sans;
   font-size: 16px;
   font-weight: 500;
@@ -242,7 +260,7 @@
   color: #1B1B1B;
 }
 
-.news-card h2 {
+.news-card-h2 {
   font-family: Noto Sans;
   font-size: 24px;
   font-weight: 700;
@@ -260,6 +278,12 @@
   letter-spacing: 0em;
   text-align: left;
   color: #1B1B1B;
+}
+
+@media (max-width: 1000px) { 
+  .news-list {
+    overflow-x: auto;
+  }
 }
 
 /* */
@@ -421,6 +445,11 @@
   transition-timing-function: ease-in-out;
 }
 
+.four-item img {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
 .four-item:hover {
   transform: scale(1.05);
 }
@@ -463,6 +492,8 @@
 .four-item-p {
   background-color: #B4AB8B;
   padding: 20px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .four-item-p span {
@@ -546,7 +577,7 @@
   object-position: 50% 50% !important;
 }
 
-.five h2 {
+.five-h2 {
   font-family: Noto Sans;
   font-size: 32px;
   font-weight: 700;
@@ -554,6 +585,7 @@
   text-align: left;
   color: #F4F1E9;
   padding: 10px;
+  color: #F4F1E9;
 }
 
 .five-img {
@@ -715,9 +747,14 @@
 }
 
 .six-books-wrap a img {
+  filter: contrast(0.7);
   transition-property: transform;
   transition-duration: 150ms;
   transition-timing-function: ease-in-out;
+}
+
+.carousel-center {
+  filter: contrast(1) !important;
 }
 
 .six-h3 {
@@ -815,6 +852,7 @@
 
 
 .seven-photo-wrap img {
+  filter: contrast(0.7);
   object-fit: cover;
   width: 100%;
   object-position: 20% 10%;
@@ -891,6 +929,7 @@
 
 
 .eight-photo-wrap img {
+  filter: contrast(0.7);
   object-fit: cover;
   width: 100%;
   object-position: 20% 10%;

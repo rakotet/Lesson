@@ -37,25 +37,276 @@ for(let i = 0; i < arrImg.length; i++) {
 //5 блок конец
 
 //Карусель 4 блок
-input.max = listElems.length
+input.max = 7
 let width = 362 
 let count = 1 
 let position = 0 
+let objYearLength = {
+  1985: 0,
+  1986: 0,
+  1987: 0,
+  1988: 0,
+  1989: 0,
+  1990: 0,
+  1991: 0,
+}
+
+let objYearCount = {
+  1985: 0,
+  1986: 0,
+  1987: 0,
+  1988: 0,
+  1989: 0,
+  1990: 0,
+  1991: 0,
+}
+
+let objYearVisibl = false
+
+let fourYearList = document.querySelector('.four-year-list')
+let fourItems = document.querySelectorAll('.four-item')
+fourItems = [...fourItems]
+
+fourItems.map(item => {
+  if(item.dataset.header == 1985) {
+    objYearLength['1985'] += 1 
+  } else if(item.dataset.header == 1986) {
+    objYearLength['1986'] += 1 
+  } else if(item.dataset.header == 1987) {
+    objYearLength['1987'] += 1 
+  } else if(item.dataset.header == 1988) {
+    objYearLength['1988'] += 1 
+  } else if(item.dataset.header == 1989) {
+    objYearLength['1989'] += 1 
+  } else if(item.dataset.header == 1990) {
+    objYearLength['1990'] += 1 
+  } else if(item.dataset.header == 1991) {
+    objYearLength['1991'] += 1 
+  }
+})
+
+fourItems.map(item => {
+  if(item.dataset.header == 1985) {
+    objYearCount['1985'] += 1 
+    if(objYearCount['1985'] == objYearLength['1985']) item.classList.add('last-item-1985')
+  } else if(item.dataset.header == 1986) {
+    objYearCount['1986'] += 1 
+    if(objYearCount['1986'] == objYearLength['1986']) item.classList.add('last-item-1986')
+  } else if(item.dataset.header == 1987) {
+    objYearCount['1987'] += 1 
+    if(objYearCount['1987'] == objYearLength['1987']) item.classList.add('last-item-1987')
+  } else if(item.dataset.header == 1988) {
+    objYearCount['1988'] += 1 
+    if(objYearCount['1988'] == objYearLength['1988']) item.classList.add('last-item-1988')
+  } else if(item.dataset.header == 1989) {
+    objYearCount['1989'] += 1 
+    if(objYearCount['1989'] == objYearLength['1989']) item.classList.add('last-item-1989')
+  } else if(item.dataset.header == 1990) {
+    objYearCount['1990'] += 1 
+    if(objYearCount['1990'] == objYearLength['1990']) item.classList.add('last-item-1990')
+  } else if(item.dataset.header == 1991) {
+    objYearCount['1991'] += 1 
+    if(objYearCount['1991'] == objYearLength['1991']) item.classList.add('last-item-1991')
+  }
+})
+
+//console.log(objYearLength)
+
+function fourHideItem(number) {
+  let fourItems = document.querySelectorAll('.four-item')
+  fourItems = [...fourItems]
+  fourItems.map(item => {
+    if(item.dataset.header == number) {
+      item.classList.remove('one-hide')
+    } else {
+      item.classList.add('one-hide')
+    }
+  })
+
+  list.style.marginLeft = 0
+  position = 0 
+
+}
+
+fourHideItem(1985)
+
+fourYearList.addEventListener('click', (e) => {
+  if(e.target.classList.contains('four-year')) {
+    if(e.target.innerText == 1985) {
+      input.value = 1
+      fourHideItem(1985)
+      objYearVisibl = false
+    }
+    else if(e.target.innerText == 1986) {
+      input.value = 2
+      fourHideItem(1986)
+      objYearVisibl = false
+    }
+    else if(e.target.innerText == 1987) {
+      input.value = 3
+      fourHideItem(1987)
+      objYearVisibl = false
+    }
+    else if(e.target.innerText == 1988) {
+      input.value = 4
+      fourHideItem(1988)
+      objYearVisibl = false
+    }
+    else if(e.target.innerText == 1989) {
+      input.value = 5
+      fourHideItem(1989)
+      objYearVisibl = false
+    }
+    else if(e.target.innerText == 1990) {
+      input.value = 6
+      fourHideItem(1990)
+      objYearVisibl = false
+    }
+    else if(e.target.innerText == 1991) {
+      input.value = 7
+      fourHideItem(1991)
+      objYearVisibl = false
+    }
+  }
+})
+
+
+
+function fourVisibleElem() {
+  // let elem = document.querySelector('#asdf');
+  // let rect = elem.getBoundingClientRect();
+  // let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+
+  let fourElements = document.querySelectorAll('.four-item');
+  fourElements = [...fourElements]
+
+  fourElements.forEach(elem => {
+    let rect = elem.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+
+    if(isVisible && elem.dataset.header == 1985) {
+      input.value = 1
+    } else if(isVisible && elem.dataset.header == 1986) {
+      input.value = 2
+    } else if (isVisible && elem.dataset.header == 1987) {
+      input.value = 3
+    } else if (isVisible && elem.dataset.header == 1988) {
+      input.value = 4
+    } else if (isVisible && elem.dataset.header == 1989) {
+      input.value = 5
+    } else if (isVisible && elem.dataset.header == 1990) {
+      input.value = 6
+    } else if (isVisible && elem.dataset.header == 1991) {
+      input.value = 7
+    }
+
+  })
+
+  setTimeout(() => {
+    fourVisibleElem()
+  }, 500)
+}
+
+function fourVisibleElem2() {
+  let last1985 = document.querySelector('.last-item-1985');
+  let last1986 = document.querySelector('.last-item-1986');
+  let last1987 = document.querySelector('.last-item-1987');
+  let last1988 = document.querySelector('.last-item-1988');
+  let last1989 = document.querySelector('.last-item-1989');
+  let last1990 = document.querySelector('.last-item-1990');
+  let last1991 = document.querySelector('.last-item-1991');
+
+  if(last1985 && !last1985.classList.contains('one-hide')) {
+    let rect = last1985.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1985
+    } else objYearVisibl = false
+  } 
+
+  else if(last1986 && !last1986.classList.contains('one-hide')) {
+    let rect = last1986.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1986
+    } else objYearVisibl = false
+  } 
+
+  else if(last1987 && !last1987.classList.contains('one-hide')) {
+    let rect = last1987.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1987
+    } else objYearVisibl = false
+  } 
+
+  else if(last1988 && !last1988.classList.contains('one-hide')) {
+    let rect = last1988.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1988
+    } else objYearVisibl = false
+  } 
+
+  else if(last1989 && !last1989.classList.contains('one-hide')) {
+    let rect = last1989.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1989
+    } else objYearVisibl = false
+  } 
+
+  else if(last1990 && !last1990.classList.contains('one-hide')) {
+    let rect = last1990.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1990
+    } else objYearVisibl = false
+  } 
+
+  else if(last1991 && !last1991.classList.contains('one-hide')) {
+    let rect = last1991.getBoundingClientRect();
+    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
+    if(isVisible) {
+      objYearVisibl = 1991
+    } else objYearVisibl = false
+  } 
+  
+  else objYearVisibl = false
+
+  //console.log('objYearVisibl - ' + objYearVisibl)
+
+  setTimeout(() => {
+    fourVisibleElem2()
+  }, 500)
+}
+
+fourVisibleElem2()
+  
+
+let click1985 = document.querySelector('.four-year-list .four-year:nth-child(1)')
+let click1986 = document.querySelector('.four-year-list .four-year:nth-child(2)')
+let click1987 = document.querySelector('.four-year-list .four-year:nth-child(3)')
+let click1988 = document.querySelector('.four-year-list .four-year:nth-child(4)')
+let click1989 = document.querySelector('.four-year-list .four-year:nth-child(5)')
+let click1990 = document.querySelector('.four-year-list .four-year:nth-child(6)')
+let click1991 = document.querySelector('.four-year-list .four-year:nth-child(7)')
 
 wrap.querySelector('.four-item-btn-right').onclick = function() {
-  position -= width * count
-  position = Math.max(position, -width * (listElems.length - count));
-  list.style.marginLeft = position + 'px'
-
-  input.value = Number(input.value) + 1
+  if(objYearVisibl == 1985) {
+    click1986.click()
+  } else {
+    position -= width * count
+    position = Math.max(position, -width * (listElems.length - count));
+    list.style.marginLeft = position + 'px'
+  }
+  
 }
 
 wrap.querySelector('.four-item-btn-left').onclick = function() {
   position += width * count
   position = Math.min(position, 0)
   list.style.marginLeft = position + 'px'
-
-  input.value = Number(input.value) - 1 < 1 ? 1 : Number(input.value) - 1
 }
 
 if(Number(window.innerWidth) > 810) {
@@ -71,31 +322,6 @@ if(Number(window.innerWidth) > 810) {
     }
   })
 }
-
-let startXFour = 0;
-let endXFour = 0;
-
-const sliderSixFour = document.querySelector(".four-item-list");
-
-sliderSixFour.addEventListener('touchstart', (e) => {
-  startXFour = e.touches[0].clientX;
-});
-
-sliderSixFour.addEventListener('touchmove', (e) => {
-  endXFour = e.touches[0].clientX;
-});
-
-sliderSixFour.addEventListener('touchend', () => {
-  const diff = startXFour - endXFour;
-
-  if (Math.abs(diff) > 50) { // минимальный порог для свайпа
-    if (diff > 0) {
-      input.value = Number(input.value) + 1
-    } else {
-      input.value = Number(input.value) - 1 < 1 ? 1 : Number(input.value) - 1
-    }
-  }
-})
 
 //Карусель 4 блок конец
 
@@ -117,12 +343,27 @@ if(Number(window.innerWidth) > 1070) {
   })
 }
 
-// window.addEventListener('resize', function(e) {
-//   console.log(window.innerWidth)
-// })
+let sixBooksWrap = document.querySelector('.six-books-wrap')
+let sixH3 = document.querySelector('.six-h3')
+let sixH2 = document.querySelector('.six-h2')
+sixH3.innerHTML = sixBooksWrap.querySelector('#item-1').dataset.header
+sixH2.innerHTML = sixBooksWrap.querySelector('#item-1').dataset.body
+
+function sixItemUpdateLabel() {
+  let sixBooksWrap = document.querySelector('.six-books-wrap')
+  if(sixBooksWrap.querySelector('.carousel-center')) {
+    sixH3.innerHTML = sixBooksWrap.querySelector('.carousel-center').dataset.header
+    sixH2.innerHTML = sixBooksWrap.querySelector('.carousel-center').dataset.body
+  }
+
+  setTimeout(() => {
+    sixItemUpdateLabel()
+  }, 500)
+}
+  
+sixItemUpdateLabel()
 
 
- 
 let currentBook = Number(window.innerWidth)
 let widthBook = 340
 let heightBook = 460
@@ -154,7 +395,7 @@ var carouselSix = $("#carousel").waterwheelCarousel({
   horizonOffset:              0,   // offset each item from the "horizon" by this amount (causes arching) //смещает каждый элемент от «горизонта» на эту величину (вызывает изгиб)
   horizonOffsetMultiplier:    1,   // multipled by horizon offset to increase/decrease offset for each additional item //умножается на смещение горизонта для увеличения/уменьшения смещения для каждого дополнительного элемента
   sizeMultiplier:             0.8, // determines how drastically the size of each item changes //определяет, насколько сильно меняется размер каждого элемента
-  opacityMultiplier:          0.9, // determines how drastically the opacity of each item changes //определяет, насколько сильно меняется непрозрачность каждого элемента
+  opacityMultiplier:          1, // determines how drastically the opacity of each item changes //определяет, насколько сильно меняется непрозрачность каждого элемента
   horizon:                    0,   // how "far in" the horizontal/vertical horizon should be set from the container wall. 0 for auto //насколько «далеко» должен быть установлен горизонтальный/вертикальный горизонт от стенки контейнера. 0 для авто
   flankingItems:              4,   // the number of items visible on either side of the center //количество предметов, видимых по обе стороны от центра                  
 
@@ -212,7 +453,7 @@ sliderSix.addEventListener('touchmove', (e) => {
 sliderSix.addEventListener('touchend', () => {
   const diff = startX - endX;
 
-  if (Math.abs(diff) > 50) { // минимальный порог для свайпа
+  if (Math.abs(diff) > 50) {
     if (diff > 0) {
       carouselSix.next();
     } else {
@@ -220,11 +461,9 @@ sliderSix.addEventListener('touchend', () => {
     }
   }
 })
-
-
 //6 блок конец
 
-//7 блок конец
+//7 блок
 
 let sevenH3 = document.querySelector('.seven-h3')
 let sevenP = document.querySelector('.seven-p')
@@ -275,7 +514,7 @@ var carouselSeven = $("#carousel-photo").waterwheelCarousel({
   horizonOffset:              0,   // offset each item from the "horizon" by this amount (causes arching) //смещает каждый элемент от «горизонта» на эту величину (вызывает изгиб)
   horizonOffsetMultiplier:    1,   // multipled by horizon offset to increase/decrease offset for each additional item //умножается на смещение горизонта для увеличения/уменьшения смещения для каждого дополнительного элемента
   sizeMultiplier:             0.8, // determines how drastically the size of each item changes //определяет, насколько сильно меняется размер каждого элемента
-  opacityMultiplier:          0.9, // determines how drastically the opacity of each item changes //определяет, насколько сильно меняется непрозрачность каждого элемента
+  opacityMultiplier:          1, // determines how drastically the opacity of each item changes //определяет, насколько сильно меняется непрозрачность каждого элемента
   horizon:                    0,   // how "far in" the horizontal/vertical horizon should be set from the container wall. 0 for auto //насколько «далеко» должен быть установлен горизонтальный/вертикальный горизонт от стенки контейнера. 0 для авто
   flankingItems:              2,   // the number of items visible on either side of the center //количество предметов, видимых по обе стороны от центра                  
 
@@ -349,7 +588,7 @@ sliderSeven.addEventListener('touchmove', (e) => {
 sliderSeven.addEventListener('touchend', () => {
   const diff = startXSeven - endXSeven;
 
-  if (Math.abs(diff) > 50) { // минимальный порог для свайпа
+  if (Math.abs(diff) > 50) {
     if (diff > 0) {
       carouselSeven.next();
       setTimeout(()=> {
@@ -427,7 +666,7 @@ var carouselEight = $("#carousel-eight").waterwheelCarousel({
   horizonOffset:              0,   // offset each item from the "horizon" by this amount (causes arching) //смещает каждый элемент от «горизонта» на эту величину (вызывает изгиб)
   horizonOffsetMultiplier:    1,   // multipled by horizon offset to increase/decrease offset for each additional item //умножается на смещение горизонта для увеличения/уменьшения смещения для каждого дополнительного элемента
   sizeMultiplier:             0.8, // determines how drastically the size of each item changes //определяет, насколько сильно меняется размер каждого элемента
-  opacityMultiplier:          0.9, // determines how drastically the opacity of each item changes //определяет, насколько сильно меняется непрозрачность каждого элемента
+  opacityMultiplier:          1, // determines how drastically the opacity of each item changes //определяет, насколько сильно меняется непрозрачность каждого элемента
   horizon:                    0,   // how "far in" the horizontal/vertical horizon should be set from the container wall. 0 for auto //насколько «далеко» должен быть установлен горизонтальный/вертикальный горизонт от стенки контейнера. 0 для авто
   flankingItems:              1,   // the number of items visible on either side of the center //количество предметов, видимых по обе стороны от центра                  
 
@@ -511,7 +750,7 @@ sliderEight.addEventListener('touchmove', (e) => {
 sliderEight.addEventListener('touchend', (e) => {
   const diff = startXEight - endXEight;
 
-  if (Math.abs(diff) > 100 && !e.target.classList.contains('eight-play-btn')) { // минимальный порог для свайпа
+  if (Math.abs(diff) > 100 && !e.target.classList.contains('eight-play-btn')) {
     if (diff > 0) {
       carouselEight.next();
       setTimeout(()=> {
@@ -541,7 +780,6 @@ sliderEight.addEventListener('touchend', (e) => {
 })
 
 eightVideoBtn.addEventListener('click', (e) => {
-  // console.log(e.target)
   let eightWrapData = document.querySelector('.eight-photo-wrap')
   eightWrapData.querySelector('.carousel-center').classList.add('eight-btn-hide')
   eightVideo.classList.remove('eight-btn-hide')
