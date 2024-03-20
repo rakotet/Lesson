@@ -62,6 +62,7 @@ let objYearCount = {
 }
 
 let objYearVisibl = false
+let objYearClickOn = 1958
 
 let fourYearList = document.querySelector('.four-year-list')
 let fourItems = document.querySelectorAll('.four-item')
@@ -110,8 +111,6 @@ fourItems.map(item => {
   }
 })
 
-//console.log(objYearLength)
-
 function fourHideItem(number) {
   let fourItems = document.querySelectorAll('.four-item')
   fourItems = [...fourItems]
@@ -136,76 +135,53 @@ fourYearList.addEventListener('click', (e) => {
       input.value = 1
       fourHideItem(1985)
       objYearVisibl = false
+      objYearClickOn = 1985
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1986) {
       input.value = 2
       fourHideItem(1986)
       objYearVisibl = false
+      objYearClickOn = 1986
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1987) {
       input.value = 3
       fourHideItem(1987)
       objYearVisibl = false
+      objYearClickOn = 1987
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1988) {
       input.value = 4
       fourHideItem(1988)
       objYearVisibl = false
+      objYearClickOn = 1988
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1989) {
       input.value = 5
       fourHideItem(1989)
       objYearVisibl = false
+      objYearClickOn = 1989
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1990) {
       input.value = 6
       fourHideItem(1990)
       objYearVisibl = false
+      objYearClickOn = 1990
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1991) {
       input.value = 7
       fourHideItem(1991)
       objYearVisibl = false
+      objYearClickOn = 1991
+      document.querySelector('.four-item-list').scrollTo({left: 0})
     }
   }
 })
-
-
-
-function fourVisibleElem() {
-  // let elem = document.querySelector('#asdf');
-  // let rect = elem.getBoundingClientRect();
-  // let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
-
-  let fourElements = document.querySelectorAll('.four-item');
-  fourElements = [...fourElements]
-
-  fourElements.forEach(elem => {
-    let rect = elem.getBoundingClientRect();
-    let isVisible = (rect.top >= 0) && (rect.left >= 0) && (rect.right <= window.innerWidth);
-
-    if(isVisible && elem.dataset.header == 1985) {
-      input.value = 1
-    } else if(isVisible && elem.dataset.header == 1986) {
-      input.value = 2
-    } else if (isVisible && elem.dataset.header == 1987) {
-      input.value = 3
-    } else if (isVisible && elem.dataset.header == 1988) {
-      input.value = 4
-    } else if (isVisible && elem.dataset.header == 1989) {
-      input.value = 5
-    } else if (isVisible && elem.dataset.header == 1990) {
-      input.value = 6
-    } else if (isVisible && elem.dataset.header == 1991) {
-      input.value = 7
-    }
-
-  })
-
-  setTimeout(() => {
-    fourVisibleElem()
-  }, 500)
-}
 
 function fourVisibleElem2() {
   let last1985 = document.querySelector('.last-item-1985');
@@ -274,15 +250,12 @@ function fourVisibleElem2() {
   
   else objYearVisibl = false
 
-  //console.log('objYearVisibl - ' + objYearVisibl)
-
   setTimeout(() => {
     fourVisibleElem2()
-  }, 500)
+  }, 100)
 }
 
 fourVisibleElem2()
-  
 
 let click1985 = document.querySelector('.four-year-list .four-year:nth-child(1)')
 let click1986 = document.querySelector('.four-year-list .four-year:nth-child(2)')
@@ -292,14 +265,58 @@ let click1989 = document.querySelector('.four-year-list .four-year:nth-child(5)'
 let click1990 = document.querySelector('.four-year-list .four-year:nth-child(6)')
 let click1991 = document.querySelector('.four-year-list .four-year:nth-child(7)')
 
+function returnNumberFartherRight (year) {
+  let arr = [[1985, click1985, objYearCount['1985']], [1986, click1986, objYearCount['1986']], [1987, click1987, objYearCount['1987']], [1988, click1988, objYearCount['1988']], [1989, click1989, objYearCount['1989']], [1990, click1990, objYearCount['1990']], [1991, click1991, objYearCount['1991']]]
+
+  for(let i = 0; i < arr.length; i++) {
+    if(year == arr[i][0]) {
+      if(arr[i + 1]) {
+        if(arr[i + 1][2] > 0 && i != (arr.length - 1)) {
+          return arr[i + 1][1]
+        } else if(i = (arr.length - 1)) {
+          return arr[0][1]
+        } else {
+          let j = i + 1
+          for(j; j < arr.length; j++) {
+            if(arr[j][2] > 0 && j != (arr.length - 1)) {
+              return arr[j][1]
+            } 
+          }
+  
+          for(let s = 0; s < arr.length; s++) {
+            if(arr[s][2] > 0) {
+              return arr[s][1]
+            } 
+          }
+        }
+      } else {
+        return arr[0][1]
+      }
+    }
+  }
+}
+
 wrap.querySelector('.four-item-btn-right').onclick = function() {
   if(objYearVisibl == 1985) {
-    click1986.click()
+    returnNumberFartherRight(1985).click()
+  } else if(objYearVisibl == 1986) {
+    returnNumberFartherRight(1986).click()
+  } else if(objYearVisibl == 1987) {
+    returnNumberFartherRight(1987).click()
+  } else if(objYearVisibl == 1988) {
+    returnNumberFartherRight(1988).click()
+  } else if(objYearVisibl == 1989) {
+    returnNumberFartherRight(1989).click()
+  } else if(objYearVisibl == 1990) {
+    returnNumberFartherRight(1990).click()
+  } else if(objYearVisibl == 1991) {
+    returnNumberFartherRight(1991).click()
   } else {
     position -= width * count
     position = Math.max(position, -width * (listElems.length - count));
     list.style.marginLeft = position + 'px'
   }
+  
   
 }
 
@@ -307,6 +324,17 @@ wrap.querySelector('.four-item-btn-left').onclick = function() {
   position += width * count
   position = Math.min(position, 0)
   list.style.marginLeft = position + 'px'
+
+  if(position == 0 && input.value != 1) {
+    let count = Number(input.value) - 1
+
+    if(count == 1) click1985.click()
+    if(count == 2) click1986.click()
+    if(count == 3) click1987.click()
+    if(count == 4) click1988.click()
+    if(count == 5) click1989.click()
+    if(count == 6) click1990.click()
+  }
 }
 
 if(Number(window.innerWidth) > 810) {
@@ -322,6 +350,55 @@ if(Number(window.innerWidth) > 810) {
     }
   })
 }
+
+let startXFour = 0;
+let endXFour = 0;
+
+const sliderFour = document.querySelector(".four-item-list");
+
+sliderFour.addEventListener('touchstart', (e) => {
+  startXFour = e.touches[0].clientX;
+});
+
+sliderFour.addEventListener('touchmove', (e) => {
+  endXFour = e.touches[0].clientX;
+});
+
+sliderFour.addEventListener('touchend', () => {
+  const diff = startXFour - endXFour;
+
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) {
+      if(objYearVisibl == 1985) {
+        returnNumberFartherRight(1985).click()
+      } else if(objYearVisibl == 1986) {
+        returnNumberFartherRight(1986).click()
+      } else if(objYearVisibl == 1987) {
+        returnNumberFartherRight(1987).click()
+      } else if(objYearVisibl == 1988) {
+        returnNumberFartherRight(1988).click()
+      } else if(objYearVisibl == 1989) {
+        returnNumberFartherRight(1989).click()
+      } else if(objYearVisibl == 1990) {
+        returnNumberFartherRight(1990).click()
+      } else if(objYearVisibl == 1991) {
+        returnNumberFartherRight(1991).click()
+      }
+
+    } else {
+      if(document.querySelector('.four-item-list').scrollLeft == 0 && input.value != 1) {
+        let count = Number(input.value) - 1
+
+        if(count == 1) click1985.click()
+        if(count == 2) click1986.click()
+        if(count == 3) click1987.click()
+        if(count == 4) click1988.click()
+        if(count == 5) click1989.click()
+        if(count == 6) click1990.click()
+      }
+    }
+  }
+})
 
 //Карусель 4 блок конец
 
