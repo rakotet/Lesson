@@ -202,6 +202,10 @@
   padding-left: 5% !important;
 }
 
+.news-list-wrap {
+  
+}
+
 .news-list {
   overflow: hidden;
 }
@@ -282,11 +286,11 @@
   color: #1B1B1B;
 }
 
-@media (max-width: 1000px) { 
+/* @media (max-width: 1000px) { 
   .news-list {
     overflow-x: auto;
   }
-}
+} */
 
 /* */
 

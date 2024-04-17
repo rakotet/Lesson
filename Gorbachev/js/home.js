@@ -39,12 +39,12 @@ for(let i = 0; i < newsCardH3.length; i++) {
 }
 
 for(let i = 0; i < newsCardP.length; i++) {
-  if((newsCardP[i].innerHTML).length > 140) {
+  if((newsCardP[i].innerHTML).length > 130) {
     let str = ''
     let item = newsCardP[i].innerHTML
 
     for(let i = 0; i < item.length; i++) {
-      if(i < 139) {
+      if(i < 129) {
         str += item[i]
       } else {
         str+= '...'
@@ -55,6 +55,32 @@ for(let i = 0; i < newsCardP.length; i++) {
     newsCardP[i].innerHTML = str
   }
 }
+
+let newsListWrap = document.querySelector('.news-list-wrap')
+let newsListFullElem = document.querySelector('.news-list')
+let newsList = Array.from(document.querySelectorAll('.news-list a'))
+let newsListWrapWidth = Number(newsListWrap.offsetWidth)
+
+let rectFullElem = newsListFullElem.getBoundingClientRect();
+let xPositionFullElem = rectFullElem.left;
+
+let newsListElem = newsList[2].getBoundingClientRect();
+let xPositionNewsList = newsListElem.left;
+
+console.log(xPositionFullElem + Number(newsListFullElem.offsetWidth))
+console.log(xPositionNewsList + Number(newsList[2].offsetWidth))
+
+//let countWidth = 0
+// for(let i = 0; i < newsList.length; i++) {
+//   countWidth += Number(newsList[i].offsetWidth)
+//   if(countWidth <= newsListWrapWidth) {
+//   } else {
+//     newsList[i].classList.add('one-hide')
+//   }
+// }
+
+// console.log(newsListWrapWidth)
+// console.log(countWidth)
 
 //2 блок конец
 
