@@ -214,6 +214,7 @@
 .news-one img {
   width: 48px;
   height: 48px;
+  margin-bottom: 24px;
 }
 
 .news-one-h1 {
@@ -223,6 +224,7 @@
   line-height: 61px;
   text-align: left;
   color: #1B1B1B;  
+  margin-bottom: 24px;
 }
 
 .news-card {
@@ -289,7 +291,10 @@
 /* */
 
 .three {
-  height: 1080px;
+  /* height: 1080px; */
+  background-image: url("../image/three.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .three-img {
@@ -331,6 +336,7 @@
 }
 
 .three-h2 {
+  display: inline !important;
   font-family: Molot !important;
   font-size: 36px !important;
   font-weight: 400 !important;
@@ -341,14 +347,22 @@
   box-shadow: none !important;
 }
 
+.three-h2-img {
+  width: 18px;
+  height: 11px;
+}
+
 .three-h2::after {
-  margin-left: 15px;
+  display: inline-block !important;
+  /* margin-left: 15px; */
   background-image: url("../image/Vector3.png");
+  vertical-align: initial;
 }
 
 .three-h2:not(.collapsed)::after {
   background-image: url("../image/Vector2.png");
   transform: rotate(-180deg);
+  vertical-align: middle;
 }
 
 .three-h3 {
@@ -360,34 +374,52 @@
   color:#F4F1E9;
 }
 
-@media (max-width: 810px) {
-  .three-h1 {
-    font-size: 42px !important;
-    line-height: normal;
-  }
+/* .accordion-item-text {
+  position: relative;
+  display: inline;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease;
+}
 
-  .three-h2 {
-    font-size: 26px !important;
-    line-height: normal;
+.accordion-item-text::after {
+  margin-left: 15px;
+  background-image: url("../image/Vector3.png");
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  content: "";
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  transition: transform .2s ease-in-out;
+} */
+
+@media (max-width: 770px) {
+  .three {
+    background-position: 20% 10%;
+  }
+}
+
+@media (max-width: 500px) {
+  .three {
+    background-position: 25% 10%;
   }
 }
 
 @media (max-width: 650px) {
   .three-h1 {
-    font-size: 25px !important;
-    padding: 0;
+    font-size: 30px !important;
   }
 
   .three-h2 {
-    font-size: 18px !important;
+    font-size: 27px !important;
     padding-bottom: 0;
-    padding-left: 0;
   }
 
   .three-h3 {
     font-size: 14px !important;
-    padding-bottom: 0;
-    padding-left: 0;
   }
 }
 
@@ -395,6 +427,7 @@
 
 .four {
   background-color: #4A4739;
+  padding-left: 5% !important;
 }
 
 .four-row {
@@ -523,7 +556,7 @@
 }
 
 .slider:hover {
-  opacity: 1;
+  /* opacity: 1; */
 }
 
 .slider::-webkit-slider-thumb {
@@ -572,6 +605,19 @@
   overflow: hidden;
 }
 
+.five-row-a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background: rgb(0, 0, 0, 0.5);
+  background: -webkit-gradient(linear, left bottom, left top, from(rgb(0, 0, 0, 0.5)), color-stop(30%, rgb(255, 255, 250, 0)));
+  background: linear-gradient(0deg, rgb(0, 0, 0, 0.5) 0%, rgb(255, 255, 250, 0) 20%);
+}
+
 .five-img-right {
   height: 861px !important;
   object-position: 50% 50% !important;
@@ -614,6 +660,7 @@
 .six {
   background-color: #B4AB8B;
   overflow: hidden;
+  padding-left: 5% !important;
 }
 
 .six-h1 {
@@ -621,7 +668,7 @@
 }
 
 .six-books {
-  height: 581px;
+  height: 697px;
   /* width: 80%;
   margin: 0 auto; */
 }
@@ -738,7 +785,7 @@
 }
 
 .six-books-wrap {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   width: 80%;
   height: 581px;
   transition-property: transform;
@@ -793,11 +840,11 @@
 
 @media (max-width: 1400px) {
   .six-books {
-    height: 400px;
+    height: 520px;
   }
 }
 
-@media (max-width: 1225px) {
+@media (max-width: 600px) {
   .six-books {
     height: 400px;
   }
@@ -821,6 +868,7 @@
 .seven {
   background-color: #F4F1E9;
   overflow: hidden;
+  padding-left: 5% !important;
 }
 
 .seven-wrap {
@@ -844,15 +892,15 @@
 }
 
 .seven-photo-wrap {
-  margin: 0 auto;
-  width: 80%;
-  height: 800px;
+  /* margin: 0 auto;
+  width: 80%; */
+  height: 880px;
 }
 
 
 
 .seven-photo-wrap img {
-  filter: contrast(0.7);
+  filter: contrast(0.6);
   object-fit: cover;
   width: 100%;
   object-position: 20% 10%;
@@ -898,6 +946,7 @@
 .eight {
   background-color: #555346;
   overflow: hidden;
+  padding-left: 5% !important;
 }
 
 .eight-h1 {
@@ -921,8 +970,8 @@
 }
 
 .eight-photo-wrap {
-  margin: 0 auto;
-  width: 80%;
+  /* margin: 0 auto;
+  width: 80%; */
   height: 830px;
 }
 

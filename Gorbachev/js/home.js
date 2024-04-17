@@ -28,6 +28,36 @@ onePanelSearchBtnCancel.addEventListener('click', (e) => {
 
 //1 блок конец
 
+//2 блок
+let newsCardH3 = document.querySelectorAll('.news-card-h3')
+let newsCardP = document.querySelectorAll('.news-card p')
+
+for(let i = 0; i < newsCardH3.length; i++) {
+  if((newsCardH3[i].innerHTML)[0] == '0') {
+    newsCardH3[i].innerHTML = newsCardH3[i].innerHTML.slice(1)
+  }
+}
+
+for(let i = 0; i < newsCardP.length; i++) {
+  if((newsCardP[i].innerHTML).length > 140) {
+    let str = ''
+    let item = newsCardP[i].innerHTML
+
+    for(let i = 0; i < item.length; i++) {
+      if(i < 139) {
+        str += item[i]
+      } else {
+        str+= '...'
+        break
+      }
+    }
+
+    newsCardP[i].innerHTML = str
+  }
+}
+
+//2 блок конец
+
 //5 блок
 let heightImg = (861 / (arrImg.length - 1)).toFixed(1)
 
@@ -337,17 +367,53 @@ wrap.querySelector('.four-item-btn-left').onclick = function() {
   }
 }
 
+function swapCircle() {
+  let wrap = document.querySelector('.four')
+  let input = wrap.querySelector('input')
+
+  let count = Number(input.value)
+  if(count == 1) click1985.click()
+  if(count == 2) click1986.click()
+  if(count == 3) click1987.click()
+  if(count == 4) click1988.click()
+  if(count == 5) click1989.click()
+  if(count == 6) click1990.click()
+  if(count == 7) click1991.click()
+}
+
+input.addEventListener('click', (e) => {
+  swapCircle()
+});
+
+input.addEventListener('touchmove', (e) => {
+  swapCircle()
+});
+
+
 if(Number(window.innerWidth) > 810) {
   wrap.addEventListener('mousemove', function(event) {
     const x = event.clientX; 
+
+    btnArr[0].classList.remove('four-hide')
+    btnArr[1].classList.remove('four-hide')
   
-    if(x <= 100 || (window.innerWidth - x) <= 100) {
-      btnArr[0].classList.remove('four-hide')
-      btnArr[1].classList.remove('four-hide')
-    } else {
-      btnArr[0].classList.add('four-hide')
-      btnArr[1].classList.add('four-hide')
-    }
+    // if(x <= 10000 || (window.innerWidth - x) <= 10000) {
+    //   btnArr[0].classList.remove('four-hide')
+    //   btnArr[1].classList.remove('four-hide')
+    // } else {
+    //     btnArr[0].classList.add('four-hide')
+    //     btnArr[1].classList.add('four-hide')
+    // }
+  })
+
+  document.querySelector('.three').addEventListener('mousemove', function(event) {
+    btnArr[0].classList.add('four-hide')
+    btnArr[1].classList.add('four-hide')
+  })
+
+  document.querySelector('.five').addEventListener('mousemove', function(event) {
+    btnArr[0].classList.add('four-hide')
+    btnArr[1].classList.add('four-hide')
   })
 }
 
@@ -442,9 +508,9 @@ sixItemUpdateLabel()
 
 
 let currentBook = Number(window.innerWidth)
-let widthBook = 340
-let heightBook = 460
-let distanceBook = 230
+let widthBook = 408 - (408 * 0.05)
+let heightBook = 552 - (552 * 0.05)
+let distanceBook = 276 - (276 * 0.05)
 
 const fullScreen = 1980
 let differenceBook = fullScreen - currentBook
@@ -555,20 +621,33 @@ if(Number(window.innerWidth) > 1000) {
   sevenWrap.addEventListener('mousemove', function(event) {
     const x = event.clientX; 
 
-    if(x <= 200 || (window.innerWidth - x) <= 200) {
-      btnArrSeven[0].classList.remove('seven-btn-hide')
+    if(x <= 200 ) {
       btnArrSeven[1].classList.remove('seven-btn-hide')
     } else {
-      btnArrSeven[0].classList.add('seven-btn-hide')
       btnArrSeven[1].classList.add('seven-btn-hide')
     }
+
+    if((window.innerWidth - x) <= 200) {
+      btnArrSeven[0].classList.remove('seven-btn-hide')
+    } else {
+      btnArrSeven[0].classList.add('seven-btn-hide')
+    }
+
+    // if(x <= 200 || (window.innerWidth - x) <= 200) {
+    //   btnArrSeven[0].classList.remove('seven-btn-hide')
+    //   btnArrSeven[1].classList.remove('seven-btn-hide')
+    // } else {
+    //   btnArrSeven[0].classList.add('seven-btn-hide')
+    //   btnArrSeven[1].classList.add('seven-btn-hide')
+    // }
+
   })
 }
 
 let currentSeven = Number(window.innerWidth)
-let widthSeven = 1054
-let heightSeven = 794
-let distanceSeven = 200
+let widthSeven = 1054 
+let heightSeven = 794 
+let distanceSeven = 290
 
 const fullScreenSeven = 1980
 let differenceSeven = fullScreen - currentSeven
@@ -583,10 +662,14 @@ if(currentSeven < 700) {
   heightSeven = 282
 } 
 
+if(currentSeven > 700 && currentSeven < 1285) {
+  distanceSeven = 200
+} 
+
 var carouselSeven = $("#carousel-photo").waterwheelCarousel({
   // number tweeks to change apperance
   startingItem:               1,   // item to place in the center of the carousel. Set to 0 for auto
-  separation:                 200, // distance between items in carousel
+  separation:                 distanceSeven, // distance between items in carousel
   separationMultiplier:       0.8, // multipled by separation distance to increase/decrease distance for each additional item //умножается на расстояние разделения, чтобы увеличить/уменьшить расстояние для каждого дополнительного элемента
   horizonOffset:              0,   // offset each item from the "horizon" by this amount (causes arching) //смещает каждый элемент от «горизонта» на эту величину (вызывает изгиб)
   horizonOffsetMultiplier:    1,   // multipled by horizon offset to increase/decrease offset for each additional item //умножается на смещение горизонта для увеличения/уменьшения смещения для каждого дополнительного элемента
@@ -715,9 +798,9 @@ if(Number(window.innerWidth) > 1000) {
 }
 
 let currentEight = Number(window.innerWidth)
-let widthEight = 1054
-let heightEight = 794
-let distanceEight = 200
+let widthEight = 1054 
+let heightEight = 794 
+let distanceEight = 450
 
 const fullScreenEight = 1980
 let differenceEight = fullScreen - currentEight
@@ -732,13 +815,17 @@ if(currentEight < 700) {
   heightEight = 282
 } 
 
+if(currentEight > 700 && currentEight < 1285) {
+  distanceEight = 290
+} 
+
 eightVideo.width = Number(widthEight) + (Number(widthEight) * 0.06)
 eightVideo.height = Number(heightEight) + (Number(heightEight)  * 0.06)
 
 var carouselEight = $("#carousel-eight").waterwheelCarousel({
   // number tweeks to change apperance
   startingItem:               1,   // item to place in the center of the carousel. Set to 0 for auto
-  separation:                 200, // distance between items in carousel
+  separation:                 distanceEight, // distance between items in carousel
   separationMultiplier:       0.8, // multipled by separation distance to increase/decrease distance for each additional item //умножается на расстояние разделения, чтобы увеличить/уменьшить расстояние для каждого дополнительного элемента
   horizonOffset:              0,   // offset each item from the "horizon" by this amount (causes arching) //смещает каждый элемент от «горизонта» на эту величину (вызывает изгиб)
   horizonOffsetMultiplier:    1,   // multipled by horizon offset to increase/decrease offset for each additional item //умножается на смещение горизонта для увеличения/уменьшения смещения для каждого дополнительного элемента
