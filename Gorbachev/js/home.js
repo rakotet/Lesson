@@ -62,25 +62,34 @@ let newsList = Array.from(document.querySelectorAll('.news-list a'))
 let newsListWrapWidth = Number(newsListWrap.offsetWidth)
 
 let rectFullElem = newsListFullElem.getBoundingClientRect();
-let xPositionFullElem = rectFullElem.left;
+let xPositionFullElem = Number(rectFullElem.left) + Number(newsListFullElem.offsetWidth);
+let xPositionFullElemWidth = Number(newsListFullElem.offsetWidth);
 
-let newsListElem = newsList[2].getBoundingClientRect();
-let xPositionNewsList = newsListElem.left;
+let countWidth = 0
 
-console.log(xPositionFullElem + Number(newsListFullElem.offsetWidth))
-console.log(xPositionNewsList + Number(newsList[2].offsetWidth))
+if(Number(window.innerWidth) > 700) {
+  for(let i = 0; i < newsList.length; i++) {
+    if(xPositionFullElem > Number((newsList[i].getBoundingClientRect()).left) + Number(newsList[i].offsetWidth)) {
+      newsList[i].classList.add('news-list-item-width')
+      countWidth += Number(newsList[i].offsetWidth)
+    } else {
+      newsList[i].classList.add('one-hide')
+    }
+  }
 
-//let countWidth = 0
-// for(let i = 0; i < newsList.length; i++) {
-//   countWidth += Number(newsList[i].offsetWidth)
-//   if(countWidth <= newsListWrapWidth) {
-//   } else {
-//     newsList[i].classList.add('one-hide')
-//   }
-// }
+  let newsList2 = Array.from(document.querySelectorAll('.news-list a'))
+  let widthPercent = (((xPositionFullElemWidth - countWidth) / xPositionFullElemWidth) * 100).toFixed(1)
 
-// console.log(newsListWrapWidth)
-// console.log(countWidth)
+  for(let i = 0; i < newsList2.length; i++) {
+    if(newsList2[i].classList.contains('news-list-item-width')) {
+      let item = newsList2[i].querySelector('.news-card')
+      let itemWidth = Number(item.offsetWidth)
+      item.style.width = `${itemWidth + (itemWidth * ((widthPercent * 1.5) / 100))}px`
+    }
+  }
+
+
+}
 
 //2 блок конец
 

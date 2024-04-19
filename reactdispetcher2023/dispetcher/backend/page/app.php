@@ -1,21 +1,21 @@
 <?php
   require_once "../src/Base.php";
 
-  if(/*!$auth_user || */!$cookie_result) {
+  if(!$auth_user /*|| !$cookie_result*/) {
     header('Location: /');
   } else {
-    $vals = [];
-    $p = xml_parser_create();
-    xml_parse_into_struct($p, $cookie_result, $vals);
+    // $vals = [];
+    // $p = xml_parser_create();
+    // xml_parse_into_struct($p, $cookie_result, $vals);
 
-    $login_user_sso = $vals[5]['value'];
+    // $login_user_sso = $vals[5]['value'];
 
-    $name_user_sso = file_get_contents("http://sso.eurochem.ru/user_info?login=$login_user_sso");
-    $vals = [];
-    $p = xml_parser_create();
-    xml_parse_into_struct($p, $name_user_sso, $vals);
+    // $name_user_sso = file_get_contents("http://sso.eurochem.ru/user_info?login=$login_user_sso");
+    // $vals = [];
+    // $p = xml_parser_create();
+    // xml_parse_into_struct($p, $name_user_sso, $vals);
 
-    $name_user_sso = $vals[3]['value'];
+    // $name_user_sso = $vals[3]['value'];
   }
 
 

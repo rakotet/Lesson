@@ -4,6 +4,7 @@
 
   session_start();
 
+  //define('DB_HOST', 'localhost');
   define('DB_HOST', '127.0.0.1');
   define('DB_USER', 'root'); 
   //define('DB_USER', 'logistics'); 
@@ -23,20 +24,20 @@
   define('ADMIN', 1);
 
   //define('SSO', 'https://sso.eurochem.ru/login?return_to=http%3A//logistics.sibgenco.ru');
-  define('SSO', 'https://sso.eurochem.ru/login?return_to=http%3A//disp.eurochem.ru/');
+  //define('SSO', 'https://sso.eurochem.ru/login?return_to=http%3A//disp.eurochem.ru/');
 
   set_include_path(get_include_path().PATH_SEPARATOR.'src'); 
   spl_autoload_register(); 
 
-  $cookie_result = isset($_COOKIE['sso_session']) ? $_COOKIE['sso_session'] : '';
+  // $cookie_result = isset($_COOKIE['sso_session']) ? $_COOKIE['sso_session'] : '';
 
-  if($cookie_result) {
-    $cookie_result = urlencode($cookie_result);
-    $cookie_result = file_get_contents("http://sso.eurochem.ru/check?cookie=$cookie_result");
+  // if($cookie_result) {
+  //   $cookie_result = urlencode($cookie_result);
+  //   $cookie_result = file_get_contents("http://sso.eurochem.ru/check?cookie=$cookie_result");
 
-  } else {
-    $cookie_result = false;
-  }
+  // } else {
+  //   $cookie_result = false;
+  // }
 
   class Request {
 

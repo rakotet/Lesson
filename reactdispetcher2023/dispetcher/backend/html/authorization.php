@@ -34,7 +34,7 @@
       <input type="text" name="login" placeholder="Логин" class="form-input">
       <input type="password" name="password" placeholder="Пароль" class="form-input">
       <div>
-        <input type="submit" name="auth" value="Вход" class="form-submit" disabled>
+        <input type="submit" name="auth" value="Вход" class="form-submit" >
       </div>
     </form>
   </div>
@@ -50,7 +50,7 @@
     img[4].style.top = '155px'
   } 
 
-  setTimeout(() => {
-    window.location.href = '/page/app'
-  }, 1000)
+  // setTimeout(() => {
+  //   window.location.href = '/page/app'
+  // }, 1000)
 </script>
