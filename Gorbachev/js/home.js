@@ -547,7 +547,7 @@ let widthBook = 408 - (408 * 0.05)
 let heightBook = 552 - (552 * 0.05)
 let distanceBook = 276 - (276 * 0.05)
 
-const fullScreen = 1980
+const fullScreen = 1920
 let differenceBook = fullScreen - currentBook
 let differencePercentBook = (((differenceBook / fullScreen) * 100) / 2).toFixed(0)
 
@@ -837,7 +837,7 @@ let widthEight = 1054
 let heightEight = 794 
 let distanceEight = 450
 
-const fullScreenEight = 1980
+const fullScreenEight = 1920
 let differenceEight = fullScreen - currentEight
 let differencePercentEight = (((differenceEight / fullScreen) * 100) / 1).toFixed(0)
 
