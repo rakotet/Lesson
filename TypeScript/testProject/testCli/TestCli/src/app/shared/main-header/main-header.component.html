@@ -1,1 +1,14 @@
-<p>main-header works!</p>
+<div class="row">
+  <div class="col-12 d-flex flex-row p-3 justify-content-between header">
+    <div>
+      <img class="header-logo" src="../../../assets/logo.svg" alt="logo">
+    </div>
+    <div>
+      <input [attr.placeholder]="pl" [(ngModel)]="log" (input)="sendValue()" type="text">
+    </div>
+    <ul>
+      <li>Войти</li>
+      <li>Выход</li> 
+    </ul>
+  </div>
+</div>

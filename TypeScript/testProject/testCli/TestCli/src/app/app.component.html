@@ -1,7 +1,4 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <div class="header-text">Test</div>
-    </div>
-  </div>
+  <app-main-header (messageEvent)="receiveMessage($event)"></app-main-header>
+  <app-main-body [bodyVal]="valChildComp"></app-main-body>
 </div>
