@@ -17,7 +17,5 @@ export class TestInput4Component implements OnInit {
     this.SendMessegeSubscriptionService.variable$.subscribe(value => {
       this.test4ValInput = value;
     });
-
-    console.log(this.test4ValInput)
   }
 }

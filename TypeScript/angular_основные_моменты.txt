@@ -1,0 +1,100 @@
+1) npm install -g @angular/cli - установка ангулар CLI глобально (после этого работать с проектами в CMD под администратором)
+
+2) ng new имя_проекта - создание нового проекта (далее следуем иструкциям в консоле)
+
+3) npm run start - запуск проекта (остальыне команды в файле package.json)
+
+4) ng g c папка_для_компанента имя_компанента(если в корне то сразу имя компанента, далее можно удалить файл с тестами)(также можно создавать сервисы и пайпы ng g s - создать сервис)
+
+5) @Component - декоратор, standalone: true(делает копанент автономным), imports: [FormsModule] в компаненте для работы с формами(что бы использовать [(ngModel)] и ему подобное)
+
+6) Стили для каждого компанента инкапсулируются и влияют только на его представление(шаблон) не затрагивая другие.
+
+7) <h1>Добро пожаловать {{name}}!</h1> - односторонняя привязка переменной компанента к шаблону, <input type="text" [value]="name" /> - привязка к свойству DOM элемента, <button (click)="addItem(text, price)">Добавить</button> - привязка ф-и к событию, <input [(ngModel)]="name" placeholder="name"> - двусторонняя привязка (переменная компанентка меняет значения value в input и изменение значения в input меняет переменную компанента)
+
+8) Привязка к атрибуту DOM элемента <input [attr.value]="text" />`
+
+9) <button (click)="increase($event)">Click</button>` - через $event передается информация о событии элемента
+
+    increase($event : any) : void {
+        this.count++;
+        console.log($event);
+    }
+
+10) <div [class.redbox]="isRed"></div> - привязка к классу элемента (если isRed == true тогда класс применяется, isRed - переменная компанента)
+    <div [class.redbox]="!isRed"></div>
+    <input type="checkbox" [(ngModel)]="isRed" />
+
+11) Условные конструкции и циклы в шаблонах 
+
+     @if(num==5){ - если условие верное то элемент отобразится
+        <p>Переменная num равна 5</p>
+      } @else if(num==6){
+        <p>Переменная num равна 6</p>
+      } @else {
+        <p>У переменной num неизвестное значение</p>
+      }
+
+    @for (item of items; track $index) { - track $index ключ для angular как key в React
+          <li>{{ item }}</li>
+    }
+
+    items = ["Tom", "Bob", "Sam"];
+
+    $index: индекс элемента в массиве
+
+    $count: количество элементов коллекции
+
+    $first: является ли текущий элемент первым в коллекции
+
+    $last: является ли текущий элемент последним в коллекции
+
+    $even: является ли индекс текущего элемента четным
+
+    $odd: является ли индекс текущего элемента нечетным
+
+12) Вложенные компаненты, нужно импортировать компанент в родительский и в родительский шаблон добавить тег компанента ребенка
+
+    import { Component } from "@angular/core";
+    import {ChildComponent} from './child.component';
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent],
+        template: `<h1>AppComponent Header</h1>
+                  <child-comp></child-comp>`,
+    })
+    export class AppComponent {}
+
+    ng-content
+    Элемент ng-content позволяет родительским компонентам внедрять код html в дочерние компоненты
+
+    import { Component } from "@angular/core";
+       
+    @Component({
+        selector: 'child-comp',
+        standalone: true,
+        template: `<ng-content></ng-content> - то что будет передаваться из родительского компанент
+                <p>Hello from {{name}}!</p>`,
+        styles: [`h2 {color:navy;}`]
+    })
+    export class ChildComponent { 
+        name= "ChildComponent";
+    }
+
+    import { Component } from "@angular/core";
+    import {ChildComponent} from './child.component';
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent],
+        template: `<child-comp><h2>Hello from {{name}}</h2></child-comp>`, - то что будет передаваться в дочерний компанент
+        styles: ["h2 {color:black;}"]
+    })
+    export class AppComponent { 
+        name = "AppComponent";
+    }
+
+13) 
