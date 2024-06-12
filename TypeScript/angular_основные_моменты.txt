@@ -6,11 +6,11 @@
 
 4) ng g c папка_для_компанента имя_компанента(если в корне то сразу имя компанента, далее можно удалить файл с тестами)(также можно создавать сервисы и пайпы ng g s - создать сервис)
 
-5) @Component - декоратор, standalone: true(делает копанент автономным), imports: [FormsModule] в компаненте для работы с формами(что бы использовать [(ngModel)] и ему подобное)
+5) @Component - декоратор, standalone: true(делает компанент автономным), imports: [FormsModule] в компаненте для работы с формами(что бы использовать [(ngModel)] и ему подобное)
 
 6) Стили для каждого компанента инкапсулируются и влияют только на его представление(шаблон) не затрагивая другие.
 
-7) <h1>Добро пожаловать {{name}}!</h1> - односторонняя привязка переменной компанента к шаблону, <input type="text" [value]="name" /> - привязка к свойству DOM элемента, <button (click)="addItem(text, price)">Добавить</button> - привязка ф-и к событию, <input [(ngModel)]="name" placeholder="name"> - двусторонняя привязка (переменная компанентка меняет значения value в input и изменение значения в input меняет переменную компанента)
+7) <h1>Добро пожаловать {{name}}!</h1> - односторонняя привязка переменной компанента к шаблону, <input type="text" [value]="name" /> - привязка к свойству DOM элемента, <button (click)="addItem(text, price)">Добавить</button> - привязка ф-и к событию, <input [(ngModel)]="name" placeholder="name"> - двусторонняя привязка (переменная компанента меняет значения value в input и изменение значения в input меняет переменную компанента "name")
 
 8) Привязка к атрибуту DOM элемента <input [attr.value]="text" />`
 
@@ -97,4 +97,397 @@
         name = "AppComponent";
     }
 
-13) 
+13) Передача данных в дочерний компонент
+
+    import { Input, Component} from "@angular/core";
+      
+    @Component({
+        selector: 'child-comp',
+        standalone: true,
+        template: `<p>Имя пользователя: {{userName}}</p>
+                <p>Возраст пользователя: {{userAge}}</p>`
+    })
+    export class ChildComponent{ 
+        @Input() userName: string = ""; - принимаем свойства из компанента родителя
+        @Input() userAge: number = 0;
+    }
+
+    ---------------
+
+    import { Component } from "@angular/core";
+    import { FormsModule } from '@angular/forms';
+    import {ChildComponent} from './child.component';
+        
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent, FormsModule],
+        template: `<child-comp [userName]="name" [userAge]="age"></child-comp> - передаем свойства в дочерний компанент 
+                    <input type="text" [(ngModel)]="name" />`
+    })
+    export class AppComponent { 
+        name = "Tom";
+        age = 24;
+    }
+
+14) Отправка данных из дочернего компанента в родительский, Привязка к событиям дочернего компонента. В принципе делает тоже что и пункт выше. 
+
+    import { Component, EventEmitter, Input, Output} from "@angular/core";
+       
+    @Component({
+        selector: 'child-comp',
+        standalone: true,
+        template: `<button (click)="change(true)">+</button> - вызывая ф-ю change отправляем данные из компанента
+                <button (click)="change(false)">-</button>`
+    })
+    export class ChildComponent{ 
+        
+        @Output() onChangedChild = new EventEmitter<boolean>(); - создаем объект отправки данных из компанента(<boolean> - тип данных которые будем отправлять)
+        change(increased:boolean) {
+            this.onChangedChild.emit(increased);
+        }
+    }
+
+    -------------
+
+    import { Component } from "@angular/core";
+    import { ChildComponent } from './child.component';
+        
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent],
+        template: `<h2>Количество кликов: {{clicks}}</h2>
+                <child-comp (onChangedChild)="onChanged($event)"></child-comp>` - $event это даныне из дочернего компанента, onChangedChild - объект передачи данных из дочернего компанента
+    })
+    export class AppComponent { 
+        
+        clicks  = 0;
+        onChanged(increased:boolean){
+            increased?this.clicks++:this.clicks--;
+        }
+    }
+
+    --------------
+
+    Двусторонняя привязка между свойствами главного и дочернего компонента
+
+    import { Component, Input, Output, EventEmitter } from "@angular/core";
+    import { FormsModule } from '@angular/forms';
+        
+    @Component({
+        selector: 'child-comp',
+        standalone: true,
+        imports: [FormsModule],
+        template: `<input [ngModel]="userName" (ngModelChange)="onNameChange($event)" />` - (ngModelChange) событие изменения значения input, $event - то чт оввели в input
+    })
+    export class ChildComponent{ 
+        
+        @Input() userName:string = "";
+        @Output() userNameChange = new EventEmitter<string>();
+        onNameChange(model: string){
+            
+            this.userName = model;
+            this.userNameChange.emit(model);
+        }
+    }
+
+    --------
+
+    import { Component} from "@angular/core";
+    import { ChildComponent} from './child.component';
+        
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent],
+        template: `<child-comp [(userName)]="name"></child-comp>
+                    <div>Выбранное имя: {{name}}</div>`
+    })
+    export class AppComponent { 
+    
+        name = "Tom";
+    }
+
+15) Жизненный цикл компонента
+
+    Пока что наиболее интересный только ngOnInit - в нем можно делать запросы в сервисы и на бэкенд
+
+16) Шаблонные переменные, ViewChild
+
+    import { Component} from "@angular/core";
+    import { FormsModule } from "@angular/forms";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [FormsModule],
+        template: `
+                    <p #userName>{{name}}</p> - #userName - по сути это переменная DOM элемента <p></p>
+                    <p>{{userName.textContent}}</p>
+                    <input type="text" [(ngModel)]="name" />`
+    })
+    export class AppComponent { 
+        name = "Tom";
+    }
+
+    ---------------
+
+    import { Component} from "@angular/core";
+       
+    @Component({
+        selector: "child-comp",
+        standalone: true,
+        template: `<p>{{counter}}</p>`
+    })
+    export class ChildComponent{
+        
+        counter  = 0;
+        increment() { this.counter++; }
+        decrement() { this.counter--; }
+    }
+
+
+    import { Component} from "@angular/core";
+    import { ChildComponent } from "./child.component";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent],
+        template: `<child-comp #counter></child-comp> - #counter - это получается объект дочернего компанента
+                    <button (click)="counter.increment()">+</button> - через counter можно вызывать методы дочернего компанента(работает толкьо в шаблоне!!!!)
+                    <button (click)="counter.decrement()">-</button>`
+    })
+    export class AppComponent { }
+
+    --------------
+
+    ViewChild - способ обращатсья к методам дочернего компаненнта из родительского компанента
+
+    import { Component, ViewChild } from "@angular/core";
+    import { ChildComponent} from "./child.component";
+        
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [ChildComponent],
+        template: `<child-comp></child-comp>
+                    <button (click)="increment()">+</button>
+                    <button (click)="decrement()">-</button>`
+    })
+    export class AppComponent { 
+    
+        @ViewChild(ChildComponent, {static: false}) - подписываемся на дочерний компанент через декоратор @ViewChild
+        private counterComponent: ChildComponent|undefined; - counterComponent объект представляющий дочерний элемент у которого уже можно вызывать методы дочернего компанента 
+        
+        increment() { this.counterComponent?.increment(); } - вызываем методы дочернего компанента
+        decrement() { this.counterComponent?.decrement(); }
+    }
+
+    -----------------
+
+17) Директивы
+
+    С помощью ngClass мы можем задать целый набор классов, которые применяются к элементу
+
+    import { Component} from "@angular/core";
+    import {NgClass} from "@angular/common";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [NgClass],
+        template: `<div [ngClass]="currentClasses">
+                        <h1>Hello Angular</h1>
+                        <p>
+                            Приложение Angular состоит из компонентов
+                        </p>
+                    </div>`,
+        styles: [
+            `.verdanaFont{font-size:13px; font-family:Verdana;}
+            .navyColor{color:navy;}`
+        ]
+    })
+    export class AppComponent { 
+        
+        isVerdana = true;
+        isNavy = true;
+    
+        currentClasses={ - объект с классами для элемента
+            verdanaFont: this.isVerdana,
+            navyColor: this.isNavy
+        }
+    }
+
+    ----------------
+
+    Директива ngClass позволяют устанавливать привязку к выражениям, благодаря чему мы можем динамически менять классы. Например:
+
+    import { Component} from "@angular/core";
+    import {NgClass} from "@angular/common";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [NgClass],
+        template: `<div [ngClass]="{invisible: visibility}">
+                        <h1>Hello Angular 17</h1>
+                        <p>
+                            Приложение Angular состоит из компонентов
+                        </p>
+                    </div>
+                    <button (click)="toggle()">Toggle</button>`,
+        styles: [ `.invisible{display:none;}`]
+    })
+    export class AppComponent { 
+        
+        visibility: boolean = true;
+        // переключаем переменную
+        toggle(){
+            this.visibility=!this.visibility;
+        }
+    }
+
+18) Создание атрибутивных директив
+
+    import {Directive, ElementRef} from "@angular/core";
+ 
+    @Directive({ - создаем директиву которая делает шрифт жирным у примененного элемента
+        selector: "[bold]",
+        standalone: true
+    })
+    export class BoldDirective{
+        
+        constructor(private elementRef: ElementRef){
+            
+            this.elementRef.nativeElement.style.fontWeight = "bold";
+        }
+    }
+
+
+    import { Component} from "@angular/core";
+    import { BoldDirective} from "./bold.directive";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [BoldDirective],
+        template: `<div>
+                    <p bold>Hello Angular</p> - применяем созданный нами атрибут
+                    <p>Приложение Angular состоит из компонентов</p>
+                </div>`
+    })
+    export class AppComponent {}
+
+    -----------
+
+19) Взаимодействие с пользователем, HostListener
+
+    import {Directive, ElementRef, Renderer2, HostListener} from "@angular/core";
+ 
+    @Directive({
+        selector: "[bold]",
+        standalone: true
+    })
+    export class BoldDirective{
+        
+        constructor(private element: ElementRef, private renderer: Renderer2){
+            
+            this.renderer.setStyle(this.element.nativeElement, "cursor", "pointer");
+        }
+        
+        @HostListener("mouseenter") onMouseEnter() { - при событии mouseenter, вызывается ф-я onMouseEnter()
+            this.setFontWeight("bold");
+        }
+    
+        @HostListener("mouseleave") onMouseLeave() {
+            this.setFontWeight("normal");
+        }
+    
+        private setFontWeight(val: string) {
+            this.renderer.setStyle(this.element.nativeElement, "font-weight", val);
+        }
+    }
+
+
+    import { Component} from "@angular/core";
+    import { BoldDirective} from "./bold.directive";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [BoldDirective],
+        template: `<div>
+                    <p bold>Hello Angular</p> - применяем директиву на элементе
+                    <p>Приложение Angular состоит из компонентов</p>
+                </div>`
+    })
+    export class AppComponent {}
+
+    ---------------
+
+20) Сервисы 
+
+    В отличие от компонентов и директив сервисы не работают с представлениями, то есть с разметкой html, не оказывают на нее прямого влияния. Они выполняют строго определенную и достаточно узкую задачу.
+
+    @Injectable({ - обязательный декоратор при создании сервиса
+    providedIn: 'root'
+    })
+
+    export class DataService{
+  
+        private data: string[] = [ "Tom", "Bob",  "Sam"];
+        
+        getData(): string[] {
+            
+            return this.data;
+        }
+        addData(name: string){
+            
+            this.data.push(name);
+        }
+    }
+
+
+    import { Component} from "@angular/core";
+    import { FormsModule } from "@angular/forms";
+    import {DataService} from "./data.service";
+    
+    @Component({
+        selector: "my-app",
+        standalone: true,
+        imports: [FormsModule],
+        providers: [DataService],
+        template: `<div>
+            <div><input [(ngModel)]="name" />
+                <button (click)="addItem(name)">Добавить</button>
+            </div>
+            <ul>
+            @for(item of items; track $index){
+                <li>{{item}}</li>
+            }
+            </ul>
+        </div>`
+    })
+    export class AppComponent{ 
+        
+        items: string[] = [];
+        name: string = "";
+        constructor(private dataService: DataService){} - создаем объект нашего сервиса в конструкторе компанента 
+        
+        addItem(name: string){
+            
+            this.dataService.addData(name); - используем метод нашего сервиса
+        }
+        ngOnInit(){
+            this.items = this.dataService.getData();
+        }
+    }
+
+    ------------------
+
+    В одном сервисе можно использовать другой, так же другие сервисы могут быть опциональными, для этого используется декоратор @Optional()
+    Что бы сервис был доступен и работал в всех дочерних компанентах, providers: [] нужно подключать только в родительском компаненте. 
+
+21) 
