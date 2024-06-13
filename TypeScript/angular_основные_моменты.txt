@@ -160,7 +160,7 @@
         standalone: true,
         imports: [ChildComponent],
         template: `<h2>Количество кликов: {{clicks}}</h2>
-                <child-comp (onChangedChild)="onChanged($event)"></child-comp>` - $event это даныне из дочернего компанента, onChangedChild - объект передачи данных из дочернего компанента
+                <child-comp (onChangedChild)="onChanged($event)"></child-comp>` - $event это даныне из дочернего компанента, onChangedChild - объект события передачи данных из дочернего компанента
     })
     export class AppComponent { 
         
