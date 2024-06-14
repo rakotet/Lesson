@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background: #333;
+  color: #fff;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo {
+  font-size: 1.5em;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1em;
+}
+
+header nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+main {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  background: #f4f4f4;
+  width: 250px;
+  padding: 1em;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar a {
+  text-decoration: none;
+  display: block;
+  padding: 0.5em 0;
+  color: #333;
+}
+
+.content {
+  flex: 1;
+  padding: 1em;
+}
+
+.task-list {
+  padding: 1em;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.task input[type="checkbox"] {
+  margin-right: 1em;
+}
+
+footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1em;
+}
+
+@media (max-width: 768px) {
+  main {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 100%;
+  }
+}
