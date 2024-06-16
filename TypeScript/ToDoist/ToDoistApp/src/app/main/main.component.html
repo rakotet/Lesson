@@ -1,9 +1,9 @@
 <main>
   <section class="sidebar">
       <ul class="p-0">
-          <li><a routerLink="/"><span>Добавить задачу</span></a></li>
-          <li><a routerLink="/today"><span>Сегодня</span></a></li>
-          <li><a routerLink="/upcoming"><span>Предстоящие</span></a></li>
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><span>Добавить задачу</span></a></li>
+          <li><a routerLink="/today" routerLinkActive="active"><span>Сегодня</span></a></li>
+          <li><a routerLink="/upcoming" routerLinkActive="active"><span>Предстоящие</span></a></li>
       </ul>
   </section>
   <section class="content">

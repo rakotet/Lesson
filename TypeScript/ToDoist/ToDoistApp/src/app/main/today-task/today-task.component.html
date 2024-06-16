@@ -1,1 +1,13 @@
-<p>today-task works!</p>
+<h1>Задачи на сегодня</h1>
+<div>
+  @for (item of arrTask; track $index) {
+    <div class="item-task mt-2">
+      <div class="line"></div>
+      <div>
+        {{item.taskName}} {{item.taskDate}} {{item.taskDescription}}
+      </div>
+      <div class="line"></div>
+    </div>
+  }
+</div>
+

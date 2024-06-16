@@ -21,8 +21,8 @@ main {
   color: #333;
 }
 
-.sidebar a span:hover {
-  color: rgb(13, 136, 13);
+.sidebar a:hover {
+  transform: scale(1.0, 1.1) !important;
 }
 
 .content {
@@ -44,6 +44,10 @@ main {
 
 .task input[type="checkbox"] {
   margin-right: 1em;
+}
+
+.active {
+  color: rgb(13, 136, 13) !important;
 }
 
 @media (max-width: 768px) {
