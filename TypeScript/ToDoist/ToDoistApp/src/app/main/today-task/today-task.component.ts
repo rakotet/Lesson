@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SendLocalStoreService } from '../../shared/send-local-store.service';
+import { arrToDay } from '../../shared/arrInterface';
+import { toDayDate } from '../../shared/allFunctions';
 
 @Component({
   selector: 'app-today-task',
@@ -9,15 +11,24 @@ import { SendLocalStoreService } from '../../shared/send-local-store.service';
   styleUrl: './today-task.component.css'
 })
 
-export class TodayTaskComponent implements OnInit {
+export class TodayTaskComponent implements OnInit  {
 
   constructor(private sendLocalStoreService: SendLocalStoreService) {}
 
-  arrTask: Array<any> = []
+  arrTask: Array<arrToDay> = []
 
+  toggleStatus(index: number) {
+    this.sendLocalStoreService.editJob(index)
+    this.arrTask = (this.sendLocalStoreService.getData()).filter((item: any) => {
+      if(toDayDate() == item.taskDate) return true
+      return false
+    })
+  }
 
   ngOnInit() {
-    this.arrTask = this.sendLocalStoreService.getData()
-    console.log(this.arrTask)
+    this.arrTask = (this.sendLocalStoreService.getData()).filter((item: any) => {
+      if(toDayDate() == item.taskDate) return true
+      return false
+    })
   }
 }

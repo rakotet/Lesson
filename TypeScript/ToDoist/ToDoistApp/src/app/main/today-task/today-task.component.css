@@ -1,5 +1,11 @@
 .item-task {
+  .onJob {
+    color: rgb(13, 136, 13);
+  }
 
+  .readyJob {
+    color: red;
+  }
 
   .line {
     width: 100%;

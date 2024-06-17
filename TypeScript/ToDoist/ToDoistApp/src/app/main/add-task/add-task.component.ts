@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { SendLocalStoreService } from '../../shared/send-local-store.service'
+import { toDayDate } from '../../shared/allFunctions';
 
 @Component({
   selector: 'app-add-task',
@@ -21,12 +22,11 @@ export class AddTaskComponent implements OnInit {
   }
 
   ngOnInit() {
-    let date = ((new Date).toLocaleDateString()).split('.')
-    this.localDate = `${date[2]}-${date[1]}-${date[0]}`
+    this.localDate = toDayDate()
   }
 
   onSubmit(form: NgForm) {
-    this.sendLocalStoreService.setData(form.form.value)
+    this.sendLocalStoreService.setData({...form.form.value, job: false})
     alert('Задача добавлена')
     this.taskName = ''
     this.taskDescription = ''

@@ -1,1 +1,21 @@
-<p>upcoming-task works!</p>
+<h1>Предстаящие задачи</h1>
+<div>
+  @for (item of arrTask; track $index) {
+    <div class="item-task mt-2">
+      <div class="line"></div>
+      <div class="d-flex flex-column">
+        <div class="mb-2">
+          {{item.taskDate}} 
+        </div>
+        <div class="mb-2">
+          {{item.taskName}} 
+        </div>
+        <div>
+          {{item.taskDescription}}
+        </div>
+      </div>
+      <div class="line"></div>
+    </div>
+  }
+</div>
+
