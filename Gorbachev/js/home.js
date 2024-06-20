@@ -102,7 +102,7 @@ for(let i = 0; i < arrImg.length; i++) {
 //5 блок конец
 
 //Карусель 4 блок
-input.max = 7
+input.max = 19 // Изменить input.max на 19
 let width = 362 
 let count = 1 
 let position = 0 
@@ -127,7 +127,7 @@ let objYearCount = {
 }
 
 let objYearVisibl = false
-let objYearClickOn = 1958
+let objYearClickOn = 1985
 
 let fourYearList = document.querySelector('.four-year-list')
 let fourItems = document.querySelectorAll('.four-item')
@@ -194,7 +194,7 @@ function fourHideItem(number) {
 
 fourHideItem(1985)
 
-fourYearList.addEventListener('click', (e) => {
+fourYearList.addEventListener('click', (e) => { // Изменить input.value на кратные 19 соответственно годам
   if(e.target.classList.contains('four-year')) {
     if(e.target.innerText == 1985) {
       input.value = 1
@@ -204,42 +204,42 @@ fourYearList.addEventListener('click', (e) => {
       document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1986) {
-      input.value = 2
+      input.value = 4
       fourHideItem(1986)
       objYearVisibl = false
       objYearClickOn = 1986
       document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1987) {
-      input.value = 3
+      input.value = 7
       fourHideItem(1987)
       objYearVisibl = false
       objYearClickOn = 1987
       document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1988) {
-      input.value = 4
+      input.value = 10
       fourHideItem(1988)
       objYearVisibl = false
       objYearClickOn = 1988
       document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1989) {
-      input.value = 5
+      input.value = 13
       fourHideItem(1989)
       objYearVisibl = false
       objYearClickOn = 1989
       document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1990) {
-      input.value = 6
+      input.value = 16
       fourHideItem(1990)
       objYearVisibl = false
       objYearClickOn = 1990
       document.querySelector('.four-item-list').scrollTo({left: 0})
     }
     else if(e.target.innerText == 1991) {
-      input.value = 7
+      input.value = 19
       fourHideItem(1991)
       objYearVisibl = false
       objYearClickOn = 1991
@@ -381,8 +381,6 @@ wrap.querySelector('.four-item-btn-right').onclick = function() {
     position = Math.max(position, -width * (listElems.length - count));
     list.style.marginLeft = position + 'px'
   }
-  
-  
 }
 
 wrap.querySelector('.four-item-btn-left').onclick = function() {
@@ -390,15 +388,15 @@ wrap.querySelector('.four-item-btn-left').onclick = function() {
   position = Math.min(position, 0)
   list.style.marginLeft = position + 'px'
 
-  if(position == 0 && input.value != 1) {
-    let count = Number(input.value) - 1
+  if(position == 0 && input.value != 1) { 
+    let count = Number(input.value) - 1 
 
-    if(count == 1) click1985.click()
-    if(count == 2) click1986.click()
-    if(count == 3) click1987.click()
-    if(count == 4) click1988.click()
-    if(count == 5) click1989.click()
-    if(count == 6) click1990.click()
+    if(count == 1 || count == 2 || count == 3) click1985.click() // Изменить countЫ на соответствие input.value
+    if(count == 4 || count == 5 || count == 6) click1986.click()
+    if(count == 7 || count == 8 || count == 9) click1987.click()
+    if(count == 10 || count == 11 || count == 12) click1988.click()
+    if(count == 13 || count == 14 || count == 15) click1989.click()
+    if(count == 16 || count == 17 || count == 18) click1990.click()
   }
 }
 
@@ -407,13 +405,35 @@ function swapCircle() {
   let input = wrap.querySelector('input')
 
   let count = Number(input.value)
-  if(count == 1) click1985.click()
-  if(count == 2) click1986.click()
-  if(count == 3) click1987.click()
-  if(count == 4) click1988.click()
-  if(count == 5) click1989.click()
-  if(count == 6) click1990.click()
-  if(count == 7) click1991.click()
+  if(count == 1) click1985.click() // Изменить countЫ на соответствие input.value
+  if(count == 4) click1986.click()
+  if(count == 7) click1987.click()
+  if(count == 10) click1988.click()
+  if(count == 13) click1989.click()
+  if(count == 16) click1990.click()
+  if(count == 19) click1991.click()
+
+}
+
+function monthToTheBeginning(year, month) { // Изменить добавить ф-ю
+  list.style.marginLeft = 0
+  position = 0 
+
+  let countIten = 0
+  let fourItems = document.querySelectorAll('.four-item')
+  fourItems = [...fourItems]
+
+  for(let i = 0; i < fourItems.length; i++) {
+    if(fourItems[i].dataset.header == year && !((fourItems[i].dataset.key).toLowerCase() == month)) {
+      countIten++
+    } else if(fourItems[i].dataset.header == year && ((fourItems[i].dataset.key).toLowerCase() == month)) {
+      break
+    }
+  }
+
+  position -= width * countIten
+  list.style.marginLeft = position + 'px'
+
 }
 
 input.addEventListener('click', (e) => {
@@ -424,6 +444,96 @@ input.addEventListener('touchmove', (e) => {
   swapCircle()
 });
 
+input.addEventListener('click', (e) => { // Изменить Добавить слушатель
+  let wrap = document.querySelector('.four')
+  let input = wrap.querySelector('input')
+  
+  if(input.value == 2) {
+    click1985.click()
+    setTimeout(() => {
+      input.value = 2
+    }, 1)
+    monthToTheBeginning(1985, 'апрель')
+
+  } else if(input.value == 3) {
+    click1985.click()
+    setTimeout(() => {
+      input.value = 3
+    }, 1)
+    monthToTheBeginning(1985, 'август')
+   
+  } else if(input.value == 5) {
+    click1986.click()
+    setTimeout(() => {
+      input.value = 5
+      monthToTheBeginning(1986, 'апрель')
+    }, 1)
+
+  } else if(input.value == 6) {
+    click1986.click()
+    setTimeout(() => {
+      input.value = 6
+      monthToTheBeginning(1986, 'август')
+    }, 1)
+
+  } else if(input.value == 8) {
+    click1987.click()
+    setTimeout(() => {
+      input.value = 8
+      monthToTheBeginning(1987, 'апрель')
+    }, 1)
+    
+  } else if(input.value == 9) {
+    click1987.click()
+    setTimeout(() => {
+      input.value = 9
+      monthToTheBeginning(1987, 'август')
+    }, 1)
+   
+  } else if(input.value == 11) {
+    click1988.click()
+    setTimeout(() => {
+      input.value = 11
+      monthToTheBeginning(1988, 'апрель')
+    }, 1)
+    
+  } else if(input.value == 12) {
+    click1988.click()
+    setTimeout(() => {
+      input.value = 12
+      monthToTheBeginning(1988, 'август')
+    }, 1)
+    
+  } else if(input.value == 14) {
+    click1989.click()
+    setTimeout(() => {
+      input.value = 14
+      monthToTheBeginning(1989, 'апрель')
+    }, 1)
+    
+  } else if(input.value == 15) {
+    click1989.click()
+    setTimeout(() => {
+      input.value = 15
+      monthToTheBeginning(1989, 'август')
+    }, 1)
+    
+  } else if(input.value == 17) {
+    click1990.click()
+    setTimeout(() => {
+      input.value = 17
+      monthToTheBeginning(1990, 'апрель')
+    }, 1)
+    
+  } else if(input.value == 18) {
+    click1990.click()
+    setTimeout(() => {
+      input.value = 18
+      monthToTheBeginning(1990, 'август')
+    }, 1)
+    
+  }
+});
 
 if(Number(window.innerWidth) > 810) {
   wrap.addEventListener('mousemove', function(event) {
@@ -431,14 +541,6 @@ if(Number(window.innerWidth) > 810) {
 
     btnArr[0].classList.remove('four-hide')
     btnArr[1].classList.remove('four-hide')
-  
-    // if(x <= 10000 || (window.innerWidth - x) <= 10000) {
-    //   btnArr[0].classList.remove('four-hide')
-    //   btnArr[1].classList.remove('four-hide')
-    // } else {
-    //     btnArr[0].classList.add('four-hide')
-    //     btnArr[1].classList.add('four-hide')
-    // }
   })
 
   document.querySelector('.three').addEventListener('mousemove', function(event) {
@@ -487,15 +589,15 @@ sliderFour.addEventListener('touchend', () => {
       }
 
     } else {
-      if(document.querySelector('.four-item-list').scrollLeft == 0 && input.value != 1) {
+      if(document.querySelector('.four-item-list').scrollLeft == 0 && input.value != 1) { 
         let count = Number(input.value) - 1
 
-        if(count == 1) click1985.click()
-        if(count == 2) click1986.click()
-        if(count == 3) click1987.click()
-        if(count == 4) click1988.click()
-        if(count == 5) click1989.click()
-        if(count == 6) click1990.click()
+        if(count == 1 || count == 2 || count == 3) click1985.click() // Изменить countЫ на соответствие input.value
+        if(count == 4 || count == 5 || count == 6) click1986.click()
+        if(count == 7 || count == 8 || count == 9) click1987.click()
+        if(count == 10 || count == 11 || count == 12) click1988.click()
+        if(count == 13 || count == 14 || count == 15) click1989.click()
+        if(count == 16 || count == 17 || count == 18) click1990.click()
       }
     }
   }
