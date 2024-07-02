@@ -71,13 +71,14 @@ margin: 0 auto;
 /* Шапка сайта */
 header {
 	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
 	width: 100%;
-	height: 1000px;
-	background: url('../images/home4.jpg');
+}
+
+.header-img {
+	position: relative;
+	width: 100%;
+	height: 700px;
+	background: url('../images/_TSA1153-1.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
 	filter: brightness(40%)
@@ -85,14 +86,20 @@ header {
 
 
 @media(max-width: 1180px) {
-	header {
-		height: 615px;
+	.header-img {
+		height: 500px;
 	}
 }
 
-@media(max-width: 700px) {
-	header {
-		height: 550px;
+@media(max-width: 768px) {
+	.header-img {
+		height: 400px;
+	}
+}
+
+@media(max-width: 425px) {
+	.header-img {
+		height: 215px;
 	}
 }
 
@@ -140,14 +147,16 @@ header {
 
 /* Контент в шапке */
 .header-memo {
+	position: absolute;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	width: 1154px;
-	height: 337px;
-	/* background-image: url('../images/memo-bg.png'); */
+	width: 860px;
 	background-repeat: no-repeat;
+	top:50%;
+	left:50%;
+	transform:translate(-50%, -50%);
 }
 
 .header-memo h1 {
@@ -184,6 +193,25 @@ header {
 	margin-left: 55px;
 }
 
+@media(max-width: 1000px) {
+	.header-memo {
+		width: 600px;
+	}
+
+	.header-memo h1 {
+		font-size: 40px;
+	}
+}
+
+@media(max-width: 768px) {
+	.header-memo {
+		width: 500px;
+	}
+
+	.header-memo h1 {
+		font-size: 40px;
+	}
+}
 
 /* Табы */
 /*.tabs-container {*/
@@ -1511,17 +1539,17 @@ display: flex;
 }
 
 @media(max-width: 1024px) {
-    .header-memo {
+    /* .header-memo {
         width: 100%;
-    }
+    } */
 
 @media(max-width: 768px) {
         .padding-arrows {
     padding-left:120px;
 }
-    .header-memo {
+    /* .header-memo {
         width: 100%;
-    }
+    } */
 	.out-history-rules-employees__slider-block:after {
 		display: none;
 	}
@@ -1797,8 +1825,8 @@ display: flex;
 	}
 
 	header {
-		height: 327px;
-		background-image: url('../images/header-bg-mobile.png');
+		/* height: 327px;
+		background-image: url('../images/header-bg-mobile.png'); */
 	}
 
 	.header-memo {
