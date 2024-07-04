@@ -5,4 +5,8 @@
     height: 1px;
     background-color: #f4f4f4;
   }
+
+  svg {
+    cursor: pointer;
+  }
 }

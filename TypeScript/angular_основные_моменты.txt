@@ -181,7 +181,7 @@
         selector: 'child-comp',
         standalone: true,
         imports: [FormsModule],
-        template: `<input [ngModel]="userName" (ngModelChange)="onNameChange($event)" />` - (ngModelChange) событие изменения значения input, $event - то чт оввели в input
+        template: `<input [ngModel]="userName" (ngModelChange)="onNameChange($event)" />` - (ngModelChange) событие изменения значения input, $event - то что ввели в input
     })
     export class ChildComponent{ 
         
@@ -438,7 +438,7 @@
     В отличие от компонентов и директив сервисы не работают с представлениями, то есть с разметкой html, не оказывают на нее прямого влияния. Они выполняют строго определенную и достаточно узкую задачу.
 
     @Injectable({ - обязательный декоратор при создании сервиса
-    providedIn: 'root'
+        providedIn: 'root'
     })
 
     export class DataService{
@@ -466,7 +466,8 @@
         imports: [FormsModule],
         providers: [DataService],
         template: `<div>
-            <div><input [(ngModel)]="name" />
+            <div>
+                <input [(ngModel)]="name" />
                 <button (click)="addItem(name)">Добавить</button>
             </div>
             <ul>

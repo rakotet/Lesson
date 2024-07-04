@@ -17,9 +17,20 @@ export class UpcomingTaskComponent {
   arrTask: Array<arrToDay> = []
 
   ngOnInit() {
-    this.arrTask = (this.sendLocalStoreService.getData()).filter((item: any) => {
-      if(toDayDate() != item.taskDate) return true
-      return false
+    this.arrTask = this.updateArrTask()
+  }
+
+  updateArrTask() {
+    return (this.sendLocalStoreService.getData()).map((item: any) => {
+      if(toDayDate() != item.taskDate) return item
     })
+  }
+
+  removeTask(index: number) {
+    let result = confirm("Удалить задачу?")
+    if(result) {
+      this.sendLocalStoreService.remove(index)
+      this.arrTask = this.updateArrTask()
+    }
   }
 }

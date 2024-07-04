@@ -1,21 +1,30 @@
-<h1>Предстоящие задачи</h1>
+<h1 class="mb-3">Предстоящие задачи</h1>
 <div>
   @for (item of arrTask; track $index) {
-    <div class="item-task mt-2">
-      <div class="line"></div>
-      <div class="d-flex flex-column">
-        <div class="mb-2">
-          {{item.taskDate}} 
+    @if(item) {
+      <div class="item-task mt-2">
+        <div class="line"></div>
+        <div class="d-flex flex-row">
+          <div class="d-flex flex-column justify-content-center align-items-center me-3">
+            <svg class="mb-2" (click)="removeTask($index)" width="20" height="20" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.156 5.984L8.01 4 6.865 5.984h2.291zm2.31 0h3.544l-2.015 10.047h-10L1.01 5.984h3.545L8.01 0l3.455 5.984zM5.181 9.57l1.414-1.414L8.01 9.57l1.415-1.414 1.414 1.414-1.414 1.415 1.414 1.414-1.415 1.414L8.01 12.4l-1.414 1.414L5.182 12.4l1.414-1.414L5.182 9.57z" fill="#000"></path>
+            </svg>
+          </div>
+          <div class="d-flex flex-column">
+            <div class="mb-2">
+              {{item.taskDate}} 
+            </div>
+            <div class="mb-2">
+              {{item.taskName}} 
+            </div>
+            <div>
+              {{item.taskDescription}}
+            </div>
+          </div>
         </div>
-        <div class="mb-2">
-          {{item.taskName}} 
-        </div>
-        <div>
-          {{item.taskDescription}}
-        </div>
+        <div class="line"></div>
       </div>
-      <div class="line"></div>
-    </div>
+    }
   }
 </div>
 

@@ -11,11 +11,7 @@ import { SendMessegeComponentService } from '../shared/send-messege-component.se
 export class TestInput2Component implements OnInit {
   receivedData: string;
 
-  constructor
-  (
-    private sendMessegeComponentService: SendMessegeComponentService,
-  ) 
-  {
+  constructor(private sendMessegeComponentService: SendMessegeComponentService,) {
     this.receivedData = this.sendMessegeComponentService.getData();
   }
 

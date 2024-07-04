@@ -17,18 +17,33 @@ export class TodayTaskComponent implements OnInit  {
 
   arrTask: Array<arrToDay> = []
 
-  toggleStatus(index: number) {
-    this.sendLocalStoreService.editJob(index)
-    this.arrTask = (this.sendLocalStoreService.getData()).filter((item: any) => {
-      if(toDayDate() == item.taskDate) return true
-      return false
+  ngOnInit() {
+    this.arrTask = this.updateArrTask()
+  }
+
+  updateArrTask() {
+    return (this.sendLocalStoreService.getData()).map((item: any) => {
+      if(toDayDate() == item.taskDate) return item
     })
   }
 
-  ngOnInit() {
-    this.arrTask = (this.sendLocalStoreService.getData()).filter((item: any) => {
-      if(toDayDate() == item.taskDate) return true
-      return false
-    })
+  toggleStatus(index: number) {
+    this.sendLocalStoreService.editJob(index)
+    this.arrTask = this.updateArrTask()
+  }
+
+  editTaskStatus(index: number) {
+    let result = confirm("Отменить выполнение задачи?")
+    if(result) {
+      this.toggleStatus(index)
+    }
+  }
+
+  removeTask(index: number) {
+    let result = confirm("Удалить задачу?")
+    if(result) {
+      this.sendLocalStoreService.remove(index)
+      this.arrTask = this.updateArrTask()
+    }
   }
 }

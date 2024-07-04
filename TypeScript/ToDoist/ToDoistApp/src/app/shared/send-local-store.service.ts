@@ -15,23 +15,50 @@ export class SendLocalStoreService {
     return []
   }
 
-  setData(data: arrToDay) {
+  updateStorage(data: Array<arrToDay>) {
+    localStorage.setItem(constObj.tasksObj, JSON.stringify(data));
+  }
+
+  getStorage() {
     const localObj: string | null = localStorage.getItem(constObj.tasksObj)
     if(localObj) {
       let localObjData: Array<arrToDay> = JSON.parse(localObj)
+      return localObjData
+    }
+
+    return []
+  }
+
+  setData(data: arrToDay) {
+    let localObjData = this.getStorage()
+
+    if(localObjData) {
       localObjData.push(data)
-      localStorage.setItem(constObj.tasksObj, JSON.stringify(localObjData));
+      this.updateStorage(localObjData);
     }
   }
 
   editJob(index: number) {
-    const localObj: string | null = localStorage.getItem(constObj.tasksObj)
-    if(localObj) {
-      let localObjData: Array<arrToDay> = JSON.parse(localObj)
+    let localObjData = this.getStorage()
 
+    if(localObjData) {
       localObjData[index] = {...localObjData[index], job: localObjData[index]['job'] ? false : true}
+      this.updateStorage(localObjData);
+    }
+  }
 
-      localStorage.setItem(constObj.tasksObj, JSON.stringify(localObjData));
+  remove(index: number) {
+    let localObjData = this.getStorage()
+
+    if(localObjData) {
+      delete localObjData[index]
+
+      localObjData = localObjData.filter((item: any) => {
+        if(item) return true
+        return false
+      })
+
+      this.updateStorage(localObjData);
     }
   }
 }

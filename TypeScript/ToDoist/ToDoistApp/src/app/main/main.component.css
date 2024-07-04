@@ -7,6 +7,7 @@ main {
 .sidebar {
   background: #f4f4f4;
   width: 250px;
+  height: 800px;
   padding: 1em;
 }
 
@@ -28,6 +29,7 @@ main {
 .content {
   flex: 1;
   padding: 1em;
+  /* height: 1000px; */
 }
 
 .task-list {

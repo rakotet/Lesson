@@ -17,9 +17,7 @@ export class AddTaskComponent implements OnInit {
   taskDescription: string = ''
   placeholder = 'Введите текст'
 
-  constructor(private sendLocalStoreService: SendLocalStoreService) {
-    
-  }
+  constructor(private sendLocalStoreService: SendLocalStoreService) {}
 
   ngOnInit() {
     this.localDate = toDayDate()

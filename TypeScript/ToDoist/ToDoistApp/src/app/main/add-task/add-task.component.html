@@ -4,7 +4,7 @@
     <label for="taskName">Название</label>
     <input id="taskName" class="mb-3" type="text" name="taskName" [attr.placeholder]="placeholder" [(ngModel)]="taskName" required>
     <label for="taskDate">Дата</label>
-    <input id="taskDate" class="mb-3" type="date" name="taskDate" [ngModel]="localDate" required>
+    <input id="taskDate" class="mb-3" type="date" name="taskDate" [ngModel]="localDate" [min]="localDate" required>
     <label for="taskDescription">Описание</label>
     <input id="taskDescription" class="mb-3" type="text" name="taskDescription" [attr.placeholder]="placeholder" [(ngModel)]="taskDescription" required>
     <input type="submit" [disabled]="myForm.invalid" value="Добавить" />

@@ -1,6 +1,12 @@
 .item-task {
   .onJob {
+    display: inline-block;
     color: rgb(13, 136, 13);
+  }
+
+  .onJob:hover {
+    cursor: pointer;
+    transform: scale(1.0, 1.1) !important;
   }
 
   .readyJob {
@@ -11,6 +17,10 @@
     width: 100%;
     height: 1px;
     background-color: #f4f4f4;
+  }
+
+  svg:hover {
+    cursor: pointer;
   }
 }
 
