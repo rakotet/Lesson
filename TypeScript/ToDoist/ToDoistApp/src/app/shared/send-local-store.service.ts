@@ -9,6 +9,8 @@ import { arrToDay } from './arrInterface';
 export class SendLocalStoreService {
   constructor() { }
 
+  item: arrToDay = {}
+
   getData() {
     const data: string | null = localStorage.getItem(constObj.tasksObj)
     if(data) return JSON.parse(data)
@@ -58,6 +60,23 @@ export class SendLocalStoreService {
         return false
       })
 
+      this.updateStorage(localObjData);
+    }
+  }
+
+  editTask(item: arrToDay) {
+    this.item = item
+  }
+
+  getItem() {
+    return this.item
+  }
+
+  editTaskItem(item: arrToDay, index: number) {
+    let localObjData = this.getStorage()
+
+    if(localObjData) {
+      localObjData[index] = item
       this.updateStorage(localObjData);
     }
   }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SendLocalStoreService } from '../../shared/send-local-store.service';
 import { arrToDay } from '../../shared/arrInterface';
 import { toDayDate } from '../../shared/allFunctions';
+import { Router} from "@angular/router";
 
 @Component({
   selector: 'app-upcoming-task',
@@ -12,7 +13,7 @@ import { toDayDate } from '../../shared/allFunctions';
 })
 export class UpcomingTaskComponent {
   
-  constructor(private sendLocalStoreService: SendLocalStoreService) {}
+  constructor(private sendLocalStoreService: SendLocalStoreService, private router: Router) {}
 
   arrTask: Array<arrToDay> = []
 
@@ -22,7 +23,7 @@ export class UpcomingTaskComponent {
 
   updateArrTask() {
     return (this.sendLocalStoreService.getData()).map((item: any) => {
-      if(toDayDate() != item.taskDate) return item
+      if((new Date(toDayDate()).getTime()) < (new Date(item.taskDate).getTime())) return item
     })
   }
 
@@ -32,5 +33,11 @@ export class UpcomingTaskComponent {
       this.sendLocalStoreService.remove(index)
       this.arrTask = this.updateArrTask()
     }
+  }
+
+  editTask(item: arrToDay, index: number) {
+    item.index = index
+    this.sendLocalStoreService.editTask(item)
+    this.router.navigate(["/editTask"]);
   }
 }

@@ -5,7 +5,9 @@
       <div class="item-task mt-2">
         <div class="line"></div>
         <div class="d-flex flex-row">
-          <div class="d-flex flex-column justify-content-center align-items-center me-3">
+          <div class="d-flex flex-column justify-content-between align-items-center me-3">
+            <svg class="mt-2" (click)="editTask(item, $index)" width="13" height="13" id="Layer_2" enable-background="new 0 0 32 32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g><path d="m4.29243 20.29243c2.37244 0 4.30348-1.92006 4.30348-4.29243 0-2.37244-1.93103-4.29243-4.30348-4.29243-2.3614 0-4.29243 1.91999-4.29243 4.29243 0 2.37237 1.93103 4.29243 4.29243 4.29243z"></path><circle cx="16" cy="16" r="4.292"></circle><path d="m27.70757 11.70757c-2.37237 0-4.30341 1.91999-4.30341 4.29243 0 2.37237 1.93104 4.29243 4.30341 4.29243 2.3614 0 4.29243-1.92006 4.29243-4.29243 0-2.37244-1.93103-4.29243-4.29243-4.29243z"></path></g>
+            </svg>
             <svg class="mb-2" (click)="removeTask($index)" width="20" height="20" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M9.156 5.984L8.01 4 6.865 5.984h2.291zm2.31 0h3.544l-2.015 10.047h-10L1.01 5.984h3.545L8.01 0l3.455 5.984zM5.181 9.57l1.414-1.414L8.01 9.57l1.415-1.414 1.414 1.414-1.414 1.415 1.414 1.414-1.415 1.414L8.01 12.4l-1.414 1.414L5.182 12.4l1.414-1.414L5.182 9.57z" fill="#000"></path>
             </svg>
