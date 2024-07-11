@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon-b.png">
+  <title>Document</title>
+</head>
+<body>
+  <div>11111</div>
+  <script>
+    let list = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+    let titleState = 0;
+
+    setInterval(()=>{
+    titleState ? list.forEach(function(element) {element.setAttribute('href', 'favicon-a.png')}) : 
+    list.forEach(function(element) {element.setAttribute('href', 'favicon-b.png')});
+
+    titleState = titleState ? 0 : 1;
+    },500);
+  </script>
+</body>
+</html>

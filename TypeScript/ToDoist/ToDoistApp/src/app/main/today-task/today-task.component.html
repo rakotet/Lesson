@@ -1,4 +1,9 @@
-<h1 class="mb-3">Задачи на сегодня</h1>
+@if(isItem) {
+  <h1 class="mb-3">Задачи на сегодня</h1>
+} @else {
+  <h1 class="mb-3">На сегодня задач нет</h1>
+}
+
 <div>
   @for (item of arrTask; track $index) {
     @if(item) {
@@ -11,7 +16,7 @@
               <div class="item-block"></div>
             } @else {
               <input class="mt-2" type="checkbox" (change)="toggleStatus($index)" [attr.checked]="item.job ? '' : null"/>
-              
+
               <svg (click)="editTask(item, $index)" width="13" height="13" id="Layer_2" enable-background="new 0 0 32 32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g><path d="m4.29243 20.29243c2.37244 0 4.30348-1.92006 4.30348-4.29243 0-2.37244-1.93103-4.29243-4.30348-4.29243-2.3614 0-4.29243 1.91999-4.29243 4.29243 0 2.37237 1.93103 4.29243 4.29243 4.29243z"></path><circle cx="16" cy="16" r="4.292"></circle><path d="m27.70757 11.70757c-2.37237 0-4.30341 1.91999-4.30341 4.29243 0 2.37237 1.93104 4.29243 4.30341 4.29243 2.3614 0 4.29243-1.92006 4.29243-4.29243 0-2.37244-1.93103-4.29243-4.29243-4.29243z"></path></g>
               </svg>
             }

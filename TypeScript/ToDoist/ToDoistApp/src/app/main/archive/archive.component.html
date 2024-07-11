@@ -1,4 +1,9 @@
-<h1 class="mb-3">Архив задач</h1>
+@if(isItem) {
+  <h1 class="mb-3">Архив задач</h1>
+} @else {
+  <h1 class="mb-3">Архив задач пуст</h1>
+}
+
 <div>
   @for (item of arrTask; track $index) {
     @if(item) {

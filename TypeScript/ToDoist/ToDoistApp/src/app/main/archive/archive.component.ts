@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SendLocalStoreService } from '../../shared/send-local-store.service';
 import { arrToDay } from '../../shared/arrInterface';
 import { toDayDate } from '../../shared/allFunctions';
+import { yesItem } from '../../shared/allFunctions';
 
 @Component({
   selector: 'app-archive',
@@ -15,9 +16,11 @@ export class ArchiveComponent {
   constructor(private sendLocalStoreService: SendLocalStoreService) {}
 
   arrTask: Array<arrToDay> = []
+  isItem: boolean = false
 
   ngOnInit() {
     this.arrTask = this.updateArrTask()
+    this.isItem = yesItem(this.arrTask)
   }
 
   updateArrTask() {
@@ -31,6 +34,7 @@ export class ArchiveComponent {
     if(result) {
       this.sendLocalStoreService.remove(index)
       this.arrTask = this.updateArrTask()
+      this.isItem = yesItem(this.arrTask)
     }
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SendLocalStoreService } from '../../shared/send-local-store.service';
 import { arrToDay } from '../../shared/arrInterface';
 import { toDayDate } from '../../shared/allFunctions';
+import { yesItem } from '../../shared/allFunctions';
 import { Router} from "@angular/router";
 
 @Component({
@@ -17,9 +18,11 @@ export class TodayTaskComponent implements OnInit  {
   constructor(private sendLocalStoreService: SendLocalStoreService, private router: Router) {}
 
   arrTask: Array<arrToDay> = []
+  isItem: boolean = false
 
   ngOnInit() {
     this.arrTask = this.updateArrTask()
+    this.isItem = yesItem(this.arrTask)
   }
 
   updateArrTask() {
@@ -45,6 +48,7 @@ export class TodayTaskComponent implements OnInit  {
     if(result) {
       this.sendLocalStoreService.remove(index)
       this.arrTask = this.updateArrTask()
+      this.isItem = yesItem(this.arrTask)
     }
   }
 

@@ -1,3 +1,7 @@
 input {
   width: 315px;
 }
+
+textarea {
+  width: 315px;
+}

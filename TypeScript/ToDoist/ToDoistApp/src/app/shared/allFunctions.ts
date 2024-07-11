@@ -4,3 +4,13 @@ export function toDayDate() {
 
   return localDate
 }
+
+export function yesItem(arr: Array<object>) {
+  let count = false
+
+  arr.forEach(item => {
+    if(item != undefined) count = true
+  });
+
+  return count
+}

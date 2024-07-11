@@ -6,7 +6,7 @@
     <label for="taskDate">Дата</label>
     <input id="taskDate" class="mb-3" type="date" name="taskDate" [ngModel]="localDate" [min]="localDate" required>
     <label for="taskDescription">Описание</label>
-    <input id="taskDescription" class="mb-3" type="text" name="taskDescription" [attr.placeholder]="placeholder" [(ngModel)]="taskDescription" required>
+    <textarea id="taskDescription" class="mb-3" type="text" name="taskDescription" [attr.placeholder]="placeholder" [(ngModel)]="taskDescription" required></textarea>
     <input type="submit" [disabled]="myForm.invalid" value="Добавить" />
   </div>
 </form>
