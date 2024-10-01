@@ -190,11 +190,11 @@ async function getCandles(coin, binance, opn, priceSymbolPamp, fs) { // полу
           console.log(mess)
           mess += '\n' + `${site}` + coin + '"' + '>Ссылка на инструмент ' + coin + '</a>'
           //sendTelega2(mess)
-          //opn('https://www.binance.com/ru/futures/' + coin)
+          // opn('https://www.binance.com/ru/futures/' + coin)
           timeOpenSymbolDamp[coin][0] = 1
           setTimeout(() => {
             timeOpenSymbolDamp[coin][0] = 0
-          }, 3000000)
+          }, 30000000)
         }
       }
 

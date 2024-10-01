@@ -121,27 +121,27 @@ export default function EditApplications({editDisp, companyCardData, setUploadin
 
               saveApplicationCounter = true
 
-              // fetch(url.urlBack1, {
-              //   method: 'POST',
-              //   header: {
-              //     'content-type': 'application/x-www-form-urlencoded',
-              //   },
-              //   body: JSON.stringify({mailToAutoUser: dataInput.theCarIsBusyAtThisTime})
+              fetch(url.urlBack1, {
+                method: 'POST',
+                header: {
+                  'content-type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify({mailToAutoUser: dataInput.theCarIsBusyAtThisTime})
               
-              //   })
-              //   .then(data => {
-              //     return data.text()
-              //   })
-              //   .then(data => {
-              //     if(data != 'null') {
-              //       //console.log(data)
-              //     } else {
+                })
+                .then(data => {
+                  return data.text()
+                })
+                .then(data => {
+                  if(data != 'null') {
+                    //console.log(data)
+                  } else {
                     
-              //     }
-              //   })
-              //   .catch((er) => {
-              //     console.log(er)
-              //   })
+                  }
+                })
+                .catch((er) => {
+                  console.log(er)
+                })
 
               fetch(url.urlBack1, {
                 method: 'POST',
